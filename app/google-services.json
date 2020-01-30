@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "867766116809",
+    "firebase_url": "https://hands-3e1b6.firebaseio.com",
+    "project_id": "hands-3e1b6",
+    "storage_bucket": "hands-3e1b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867766116809:android:a9287818b28c23da790818",
+        "android_client_info": {
+          "package_name": "com.example.a2hands"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867766116809-eoo1if5hl03r005tevij7lomlgq5psdr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz2eLVk3KskmqSVJg8-ZazQpUGBJeRNcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867766116809-eoo1if5hl03r005tevij7lomlgq5psdr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
