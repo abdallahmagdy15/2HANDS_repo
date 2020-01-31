@@ -1,21 +1,26 @@
 package com.example.a2hands;
 
+import com.google.firebase.firestore.DocumentReference;
+
+import org.w3c.dom.Document;
+
 import java.util.Date;
+import java.util.List;
 
 
- class Post {
+class Post {
 
-     String category;
-     String check_in;
-     String content_text;
-     Date date;
-     String user_id;
-     String[] videos;
-     int likes_count = 0;
-     String[] images;
-     String privacy;
-     boolean state;
-     String visibility;
+     public String category;
+     public String check_in;
+     public String content_text;
+     public Date date;
+     public String user_id;
+     public List<String> videos;
+     public int likes_count = 0;
+     public List<String> images;
+     public String privacy;
+     public boolean state;
+     public String visibility;
 
     //public Map<String, Boolean> stars = new HashMap<>();
 
@@ -24,8 +29,8 @@ import java.util.Date;
     }
 
      public Post(String category, String check_in, String content_text,
-                 Date date, String user_id, String[] videos, int likes_count,
-                 String[] images, String privacy, boolean state, String visibility) {
+                 Date date, String user_id, List<String> videos, int likes_count,
+                 List<String> images, String privacy, boolean state, String visibility) {
          this.category = category;
          this.check_in = check_in;
          this.content_text = content_text;
@@ -59,7 +64,7 @@ import java.util.Date;
         return user_id;
     }
 
-     String[] getVideos() {
+    List<String> getVideos() {
         return videos;
     }
 
@@ -67,7 +72,7 @@ import java.util.Date;
         return likes_count;
     }
 
-     String[] getImages() {
+    List<String> getImages() {
         return images;
     }
 

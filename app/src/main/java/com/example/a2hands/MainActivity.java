@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,17 +26,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+  interface Callback{
+      void firebaseResponseCallback(ArrayList<Post> posts);
+}
 public class MainActivity extends AppCompatActivity {
     String email;
     String uid;
     FirebaseUser fu;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-    public ArrayList<Post> posts;
+    public static ArrayList<Post> posts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        posts = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         autoSigningin();
@@ -47,16 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         //get posts from database
-        posts = getPosts();
-        for (Post p : posts) {
-            Log.i("post text",p.getContent_text());
-        }
+        getPosts(new Callback() {
+            @Override
+            public void firebaseResponseCallback(ArrayList<Post> posts) {
+                for (Post p : posts) {
+                    Log.i("post text",p.getContent_text());
+                }
+            }
+        });
+
 
 
     }
 
-    public ArrayList<Post> getPosts(){
-        final ArrayList<Post> posts = new ArrayList<>();
+    public void getPosts(final Callback callback){
         // Read from the database
         db.collection("/posts")
                 .get()
@@ -64,16 +75,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<Post> posts=new ArrayList<>();
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Post p = doc.toObject(Post.class);
                                 posts.add(p);
+                                callback.firebaseResponseCallback(posts);
                             }
                         } else {
                             Log.w("", "Error getting documents.", task.getException());
                         }
                     }
                 });
-        return posts;
     }
 
     public void autoSigningin(){
