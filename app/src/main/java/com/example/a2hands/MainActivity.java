@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -20,14 +21,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
-  interface Callback{
-      void firebaseResponseCallback(ArrayList<Post> posts);
+interface Callback{
+      void callback(User user);
 }
 public class MainActivity extends AppCompatActivity {
     String email;
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         posts = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
-        autoSigningin();
+        //autoSigningin();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -54,32 +57,49 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         //get posts from database
-        getPosts(new Callback() {
+
+        getUser(new Callback() {
             @Override
-            public void firebaseResponseCallback(ArrayList<Post> posts) {
-                for (Post p : posts) {
-                    Log.i("post text",p.getContent_text());
-                }
+            public void callback(User user) {
+                List<String> visibility =new ArrayList<>();
+                visibility.add(user.country);
+                visibility.add(user.region);
+                getPosts(visibility,"general");
             }
         });
 
-
-
     }
 
-    public void getPosts(final Callback callback){
+    public  void getUser(final Callback callback){
+        db.collection("/users").document(uid)
+            .get() .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if (task.isSuccessful()) {
+                DocumentSnapshot doc = task.getResult();
+                    User user = doc.toObject(User.class);
+                    callback.callback(user);
+            }
+            else {
+                Log.w("", "Error getting documents.", task.getException());
+            }
+        }
+    });
+}
+
+    public void getPosts(List<String> visibility, String category){
         // Read from the database
         db.collection("/posts")
+                .whereIn("visibility", visibility)
+                .whereEqualTo("category",category)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<Post> posts=new ArrayList<>();
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Post p = doc.toObject(Post.class);
-                                posts.add(p);
-                                callback.firebaseResponseCallback(posts);
+                                Log.i("    post text",p.content_text);
                             }
                         } else {
                             Log.w("", "Error getting documents.", task.getException());

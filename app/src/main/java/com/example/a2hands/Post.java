@@ -22,7 +22,6 @@ class Post {
      public boolean state;
      public String visibility;
 
-    //public Map<String, Boolean> stars = new HashMap<>();
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -43,48 +42,4 @@ class Post {
          this.state = state;
          this.visibility = visibility;
      }
-
-     String getCategory() {
-        return category;
-    }
-
-     String getCheck_in() {
-        return check_in;
-    }
-
-     String getContent_text() {
-        return content_text;
-    }
-
-     Date getDate() {
-        return date;
-    }
-
-     String getUser_id() {
-        return user_id;
-    }
-
-    List<String> getVideos() {
-        return videos;
-    }
-
-     int getLikes_count() {
-        return likes_count;
-    }
-
-    List<String> getImages() {
-        return images;
-    }
-
-     String getPrivacy() {
-        return privacy;
-    }
-
-     boolean getState() {
-        return state;
-    }
-
-     String getVisibility() {
-        return visibility;
-    }
 }
