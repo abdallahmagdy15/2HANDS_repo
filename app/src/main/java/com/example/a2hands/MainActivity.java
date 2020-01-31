@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
@@ -26,16 +29,14 @@ public class MainActivity extends AppCompatActivity {
     String uid;
     FirebaseUser fu;
     FirebaseAuth mAuth;
-    public DatabaseReference dbRef;
+    FirebaseFirestore db;
     public ArrayList<Post> posts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-
-
+        mAuth = FirebaseAuth.getInstance();
         autoSigningin();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -44,49 +45,37 @@ public class MainActivity extends AppCompatActivity {
             uid = user.getUid();
         }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("/posts");
+        db = FirebaseFirestore.getInstance();
         //get posts from database
         posts = getPosts();
         for (Post p : posts) {
             Log.i("post text",p.getContent_text());
         }
 
+
     }
 
     public ArrayList<Post> getPosts(){
         final ArrayList<Post> posts = new ArrayList<>();
         // Read from the database
-        dbRef.child("posts").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> posts_ss = dataSnapshot.getChildren();
-                for (DataSnapshot post_ss : posts_ss){
-                    Post p = new Post();
-                    p.setCategory(post_ss.getValue(Post.class).getCategory());
-                    p.setCheck_in(post_ss.getValue(Post.class).getCheck_in());
-                    p.setContent_text(post_ss.getValue(Post.class).getContent_text());
-                    p.setDate(post_ss.getValue(Post.class).getDate());
-                    p.setPrivacy(post_ss.getValue(Post.class).getPrivacy());
-                    p.setImages(post_ss.getValue(Post.class).getImages());
-                    p.setVideos(post_ss.getValue(Post.class).getVideos());
-                    p.setLikes_count(post_ss.getValue(Post.class).getLikes_count());
-                    p.setState(post_ss.getValue(Post.class).getState());
-                    p.setVisibility(post_ss.getValue(Post.class).getVisibility());
-                    p.setUser_id(post_ss.getValue(Post.class).getUser_id());
-                    posts.add(p);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TAG", "Failed to read value.", error.toException());
-            }
-        });
+        db.collection("/posts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                Post p = doc.toObject(Post.class);
+                                posts.add(p);
+                            }
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
         return posts;
     }
+
     public void autoSigningin(){
         mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

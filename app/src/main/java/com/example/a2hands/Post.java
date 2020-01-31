@@ -5,23 +5,39 @@ import java.util.Date;
 
  class Post {
 
-    private String category;
-    private String check_in;
-    private String content_text;
-    private Date date;
-    private String user_id;
-    private String[] videos;
-    private int likes_count = 0;
-    private String[] images;
-    private String privacy;
-    private boolean state;
-    private String visibility;
+     String category;
+     String check_in;
+     String content_text;
+     Date date;
+     String user_id;
+     String[] videos;
+     int likes_count = 0;
+     String[] images;
+     String privacy;
+     boolean state;
+     String visibility;
 
     //public Map<String, Boolean> stars = new HashMap<>();
 
-     Post() {
+    public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
+
+     public Post(String category, String check_in, String content_text,
+                 Date date, String user_id, String[] videos, int likes_count,
+                 String[] images, String privacy, boolean state, String visibility) {
+         this.category = category;
+         this.check_in = check_in;
+         this.content_text = content_text;
+         this.date = date;
+         this.user_id = user_id;
+         this.videos = videos;
+         this.likes_count = likes_count;
+         this.images = images;
+         this.privacy = privacy;
+         this.state = state;
+         this.visibility = visibility;
+     }
 
      String getCategory() {
         return category;
@@ -65,49 +81,5 @@ import java.util.Date;
 
      String getVisibility() {
         return visibility;
-    }
-
-     void setCategory(String category) {
-        this.category = category;
-    }
-
-     void setCheck_in(String check_in) {
-        this.check_in = check_in;
-    }
-
-     void setContent_text(String content_text) {
-        this.content_text = content_text;
-    }
-
-     void setDate(Date date) {
-        this.date = date;
-    }
-
-     void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-     void setVideos(String[] videos) {
-        this.videos = videos;
-    }
-
-     void setLikes_count(int likes_count) {
-        this.likes_count = likes_count;
-    }
-
-     void setImages(String[] images) {
-        this.images = images;
-    }
-
-     void setPrivacy(String privacy) {
-        this.privacy = privacy;
-    }
-
-     void setState(boolean state) {
-        this.state = state;
-    }
-
-     void setVisibility(String visibility) {
-        this.visibility = visibility;
     }
 }
