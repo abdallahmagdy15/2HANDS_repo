@@ -1,10 +1,16 @@
 package com.example.a2hands;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,10 +18,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    String email;
+    String uid;
+    FirebaseUser fu;
+    FirebaseAuth mAuth;
     public DatabaseReference dbRef;
     public ArrayList<Post> posts;
     @Override
@@ -26,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
         
 
 
-   /*autoSigningin();
+        autoSigningin();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             email = user.getEmail();
             uid = user.getUid();
-        }*/
+        }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("/posts");
@@ -49,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Read from the database
         dbRef.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> posts_ss = dataSnapshot.getChildren();
                 for (DataSnapshot post_ss : posts_ss){
                     Post p = new Post();
@@ -77,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return posts;
     }
-    /*public void autoSigningin(){
+    public void autoSigningin(){
         mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -90,5 +100,5 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }*/
+    }
 }
