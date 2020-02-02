@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         posts = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
-        //autoSigningin();
+        autoSigningin();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         db = FirebaseFirestore.getInstance();
-        //get posts from database
 
+        //get posts from database
         getUser(new Callback() {
             @Override
             public void callback(User user) {
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         db.collection("/posts")
                 .whereIn("visibility", visibility)
                 .whereEqualTo("category",category)
+                .orderBy("date")
+                .limitToLast(30)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

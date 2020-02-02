@@ -18,7 +18,6 @@ class Post {
      public List<String> videos;
      public int likes_count = 0;
      public List<String> images;
-     public String privacy;
      public boolean state;
      public String visibility;
 
@@ -29,7 +28,7 @@ class Post {
 
      public Post(String category, String check_in, String content_text,
                  Date date, String user_id, List<String> videos, int likes_count,
-                 List<String> images, String privacy, boolean state, String visibility) {
+                 List<String> images, boolean state, String visibility) {
          this.category = category;
          this.check_in = check_in;
          this.content_text = content_text;
@@ -38,7 +37,6 @@ class Post {
          this.videos = videos;
          this.likes_count = likes_count;
          this.images = images;
-         this.privacy = privacy;
          this.state = state;
          this.visibility = visibility;
      }
