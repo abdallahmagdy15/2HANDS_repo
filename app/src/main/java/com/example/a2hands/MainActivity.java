@@ -49,14 +49,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         signin();
-        FirebaseUser fu = mAuth.getCurrentUser();
-        email = fu.getEmail();
-        uid = fu.getUid();
-        TextView txt = findViewById(R.id.mainTXT);
-        txt.setText(email + " " + uid);
+
     }
     public void signin(){
-        mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552");
+        mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        FirebaseUser fu = mAuth.getCurrentUser();
+                        email = fu.getEmail();
+                        uid = fu.getUid();
+                        TextView txt = findViewById(R.id.mainTXT);
+                        txt.setText(email + " " + uid);
+                    }
+                });
     }
     @Override
     public void onStart() {
