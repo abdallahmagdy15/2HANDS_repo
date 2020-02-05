@@ -3,47 +3,53 @@ package com.example.a2hands;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a2hands.dummy.DummyContent;
+
 import com.example.a2hands.dummy.DummyContent.DummyItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+interface Callback{
+    void callbackUser(User user);
+    void callbackUserID(String uid);
+}
 public class PostFragment extends Fragment {
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public PostFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static PostFragment newInstance(int columnCount) {
+
+    public static PostFragment newInstance() {
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,27 +58,44 @@ public class PostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        //get posts from database
+        autoSigningin(new Callback() {
+            @Override
+            public void callbackUser(User user) { }
+            @Override
+            public void callbackUserID(String uid) {
+                getUser(new Callback() {
+                    @Override
+                    public void callbackUser(User user) {
+                        List<String> visibility =new ArrayList<>();
+                        visibility.add(user.country);
+                        visibility.add(user.region);
+
+                        getPosts(visibility,"general",view);
+                    }
+
+                    @Override
+                    public void callbackUserID(String uid){ }
+                },uid);
+
             }
-            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        });
+        //End get posts
+
+
         return view;
     }
 
@@ -94,16 +117,67 @@ public class PostFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    public  void getUser(final Callback callback,String uid){
+        db.collection("/users").document(uid)
+                .get() .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    User user = doc.toObject(User.class);
+                    callback.callbackUser(user);
+                }
+                else {
+                    Log.w("", "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+    public void getPosts(List<String> visibility, String category , View view){
+        // Read from the database
+        db.collection("/posts")
+                .whereIn("visibility", visibility)
+                .whereEqualTo("category",category)
+                .orderBy("date")
+                .limitToLast(30)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Post> posts = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                Post p = doc.toObject(Post.class);
+                                posts.add(p);
+                            }
+                            updateHomeWithPosts(posts , view);
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void autoSigningin(final Callback callback){
+        mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
+                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        callback.callbackUserID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    }
+                });
+    }
+    public void updateHomeWithPosts(List<Post> posts , View view){
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts, mListener));
+        }
+    }
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
