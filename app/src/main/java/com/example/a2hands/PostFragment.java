@@ -36,15 +36,13 @@ interface Callback{
     void callbackUserID(String uid);
 }
 public class PostFragment extends Fragment {
+
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-
     private OnListFragmentInteractionListener mListener;
-
 
     public PostFragment() {
     }
-
 
     public static PostFragment newInstance() {
         PostFragment fragment = new PostFragment();
@@ -58,18 +56,16 @@ public class PostFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+
+
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         //get posts from database
         autoSigningin(new Callback() {
@@ -84,7 +80,7 @@ public class PostFragment extends Fragment {
                         visibility.add(user.country);
                         visibility.add(user.region);
 
-                        getPosts(visibility,"general",view);
+                        getPosts(visibility,"general", view);
                     }
 
                     @Override
@@ -94,7 +90,6 @@ public class PostFragment extends Fragment {
             }
         });
         //End get posts
-
 
         return view;
     }
@@ -134,7 +129,7 @@ public class PostFragment extends Fragment {
         });
     }
 
-    public void getPosts(List<String> visibility, String category , View view){
+    public void getPosts(List<String> visibility, String category,final View view ){
         // Read from the database
         db.collection("/posts")
                 .whereIn("visibility", visibility)
@@ -151,7 +146,7 @@ public class PostFragment extends Fragment {
                                 Post p = doc.toObject(Post.class);
                                 posts.add(p);
                             }
-                            updateHomeWithPosts(posts , view);
+                            updateHomeWithPosts(posts,view);
                         } else {
                             Log.w("", "Error getting documents.", task.getException());
                         }
@@ -161,14 +156,14 @@ public class PostFragment extends Fragment {
 
     public void autoSigningin(final Callback callback){
         mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         callback.callbackUserID(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     }
                 });
     }
-    public void updateHomeWithPosts(List<Post> posts , View view){
+    public void updateHomeWithPosts(List<Post> posts , View view ){
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

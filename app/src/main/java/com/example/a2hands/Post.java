@@ -1,20 +1,25 @@
 package com.example.a2hands;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.DocumentReference;
 
 import org.w3c.dom.Document;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-class Post {
+public class Post {
 
      public String category;
      public String check_in;
      public String content_text;
      public Date date;
-     public String postOwner;
+     public String user_id;
      public List<String> videos;
      public int likes_count = 0;
      public List<String> images;
@@ -27,13 +32,13 @@ class Post {
     }
 
      public Post(String category, String check_in, String content_text,
-                 Date date, String postOwner, List<String> videos, int likes_count,
+                 Date date, String user_id, List<String> videos, int likes_count,
                  List<String> images, boolean state, String visibility) {
          this.category = category;
          this.check_in = check_in;
          this.content_text = content_text;
          this.date = date;
-         this.postOwner = postOwner;
+         this.user_id = user_id;
          this.videos = videos;
          this.likes_count = likes_count;
          this.images = images;
