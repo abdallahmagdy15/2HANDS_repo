@@ -72,7 +72,7 @@ public class PostFragment extends Fragment {
             @Override
             public void callbackUser(User user) { }
             @Override
-            public void callbackUserID(String uid) {
+            public void callbackUserID(final String uid) {
                 getUser(new Callback() {
                     @Override
                     public void callbackUser(User user) {
@@ -80,7 +80,7 @@ public class PostFragment extends Fragment {
                         visibility.add(user.country);
                         visibility.add(user.region);
 
-                        getPosts(visibility,"general", view);
+                        getPosts(visibility,"general", view );
                     }
 
                     @Override
@@ -129,24 +129,42 @@ public class PostFragment extends Fragment {
         });
     }
 
-    public void getPosts(List<String> visibility, String category,final View view ){
+    public void getPosts(final List<String> visibility,final String category,final View view ){
         // Read from the database
-        db.collection("/posts")
-                .whereIn("visibility", visibility)
-                .whereEqualTo("category",category)
-                .orderBy("date")
-                .limitToLast(30)
-                .get()
+        db.collection("/users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<Post> posts = new ArrayList<>();
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Post p = doc.toObject(Post.class);
-                                posts.add(p);
+                                String userid = doc.getId();
+                                final User user = doc.toObject(User.class);
+                                db.collection("/users/"+userid+"/posts")
+                                        .whereIn("visibility", visibility)
+                                        .whereEqualTo("category",category)
+                                        .orderBy("date")
+                                        .limitToLast(30)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                                List<Post> posts = new ArrayList<>();
+                                                if (task2.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot doc2 : task2.getResult()) {
+                                                        final Post p = doc2.toObject(Post.class);
+                                                        p.postOwner = user.first_name + " " + user.last_name;
+                                                        posts.add(p);
+                                                    }
+                                                    updateHomeWithPosts(posts,view);
+                                                }
+                                                else {
+                                                    Log.w("", "Error getting documents.", task2.getException());
+
+                                                }
+                                            }
+                                        });
                             }
-                            updateHomeWithPosts(posts,view);
+
                         } else {
                             Log.w("", "Error getting documents.", task.getException());
                         }

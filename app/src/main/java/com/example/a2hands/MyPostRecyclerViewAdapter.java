@@ -50,6 +50,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.post = postsList.get(position);
+        holder.postOwner.setText(postsList.get(position).postOwner);
         holder.postContent.setText(postsList.get(position).content_text);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
