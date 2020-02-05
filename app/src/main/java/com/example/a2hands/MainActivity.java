@@ -8,6 +8,7 @@ import android.telecom.Call;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.example.a2hands.dummy.DummyContent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,12 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 interface Callback{
-      void callback(User user);
+      void callbackUser(User user);
+      void callbackUserID(String uid);
 }
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener {
     String email;
     String uid;
-    FirebaseUser fu;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     public static ArrayList<Post> posts;
@@ -45,32 +46,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         posts = new ArrayList<>();
-
-        mAuth = FirebaseAuth.getInstance();
-        autoSigningin();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        }
-
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+
 
         //get posts from database
-        getUser(new Callback() {
+        autoSigningin(new Callback() {
             @Override
-            public void callback(User user) {
-                List<String> visibility =new ArrayList<>();
-                visibility.add(user.country);
-                visibility.add(user.region);
-                getPosts(visibility,"general");
+            public void callbackUser(User user) { }
+            @Override
+            public void callbackUserID(String uid) {
+                getUser(new Callback() {
+                    @Override
+                    public void callbackUser(User user) {
+                        List<String> visibility =new ArrayList<>();
+                        visibility.add(user.country);
+                        visibility.add(user.region);
+
+                        getPosts(visibility,"general");
+                    }
+                    @Override
+                    public void callbackUserID(String uid){ }
+                },uid);
+
             }
         });
 
     }
 
-    public  void getUser(final Callback callback){
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    public  void getUser(final Callback callback,String uid){
         db.collection("/users").document(uid)
             .get() .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -78,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 DocumentSnapshot doc = task.getResult();
                     User user = doc.toObject(User.class);
-                    callback.callback(user);
+                    callback.callbackUser(user);
             }
             else {
                 Log.w("", "Error getting documents.", task.getException());
@@ -110,17 +120,18 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void autoSigningin(){
+    public void autoSigningin(final Callback callback){
         mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            fu =  mAuth.getCurrentUser();
+
+                            Log.i("login","auth success");
                         } else {
-                            Log.i("TAG","auth failed");
+                            Log.i("login","auth failed");
                         }
+                        callback.callbackUserID(mAuth.getCurrentUser().getUid());
                     }
                 });
     }
