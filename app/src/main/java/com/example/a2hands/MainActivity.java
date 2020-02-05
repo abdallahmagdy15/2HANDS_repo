@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.internal.firebase_auth.zzcz;
@@ -33,6 +34,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
@@ -45,7 +47,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth = FirebaseAuth.getInstance();
+        signin();
+        FirebaseUser fu = mAuth.getCurrentUser();
+        email = fu.getEmail();
+        uid = fu.getUid();
+        TextView txt = findViewById(R.id.mainTXT);
+        txt.setText(email + " " + uid);
+    }
+    public void signin(){
+        mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552");
     }
     @Override
     public void onStart() {
