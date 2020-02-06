@@ -39,6 +39,7 @@ public class PostFragment extends Fragment {
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    String selectedCat;
     private OnListFragmentInteractionListener mListener;
 
     public PostFragment() {
@@ -63,7 +64,10 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+             selectedCat = bundle.getString("category", "General");
+        }
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
@@ -80,7 +84,7 @@ public class PostFragment extends Fragment {
                         visibility.add(user.country);
                         visibility.add(user.region);
 
-                        getPosts(visibility,"general", view );
+                        getPosts(visibility,selectedCat, view );
                     }
 
                     @Override

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">2HANDS</string>
+    <string-array name="categories">
+        <item>General</item>
+        <item>Medicine</item>
+        <item>Psychology</item>
+        <item>Financial</item>
+        <item>Social</item>
+        <item>Family</item>
+    </string-array>
 </resources>
