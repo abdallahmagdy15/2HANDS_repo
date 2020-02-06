@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements PostFragment.OnLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         Spinner cats = findViewById(R.id.spinner);
         cats.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
