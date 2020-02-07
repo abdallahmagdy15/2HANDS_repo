@@ -16,7 +16,7 @@ import com.example.a2hands.R;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class homeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class homeActivity extends AppCompatActivity implements PostFragment.OnListFragmentInteractionListener,  BottomNavigationView.OnNavigationItemSelectedListener{
 
     private BottomNavigationView nav;
     private int navItemId;
@@ -26,7 +26,7 @@ public class homeActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
         nav = findViewById(R.id.bottom_navigation);
         nav.setOnNavigationItemSelectedListener(this);
         BadgeDrawable badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
@@ -80,4 +80,8 @@ public class homeActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
+    @Override
+    public void onListFragmentInteraction(Post item) {
+
+    }
 }
