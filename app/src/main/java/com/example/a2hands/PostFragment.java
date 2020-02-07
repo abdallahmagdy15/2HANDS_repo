@@ -22,10 +22,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.local.ReferenceSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,12 +146,14 @@ public class PostFragment extends Fragment {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 String userid = doc.getId();
                                 final User user = doc.toObject(User.class);
-                                db.collection("/users/"+userid+"/posts")
-                                        .whereIn("visibility", visibility)
-                                        .whereEqualTo("category",category)
-                                        .orderBy("date")
-                                        .limitToLast(30)
-                                        .get()
+                                Query query = db.collection("/users/"+userid+"/posts")
+                                        .whereIn("visibility", visibility);
+                                        /*.orderBy("date")
+                                        .limitToLast(30);*/
+                                if(!category.equals("General")){
+                                    query = query.whereEqualTo("category",category);
+                                }
+                                query.get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {

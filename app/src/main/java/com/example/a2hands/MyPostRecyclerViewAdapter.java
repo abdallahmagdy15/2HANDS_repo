@@ -10,8 +10,9 @@ import android.widget.TextView;
 import com.example.a2hands.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.dummy.DummyContent.DummyItem;
 
+import java.util.Date;
 import java.util.List;
-
+import org.ocpsoft.prettytime.PrettyTime;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder> {
 
@@ -33,11 +34,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final View mView;
         public final TextView postOwner;
         public final TextView postContent;
+        public final TextView time;
+        public final TextView visibility;
         public Post post;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            time=view.findViewById(R.id.postTime);
+            visibility=view.findViewById(R.id.postVisibility);
             postOwner = view.findViewById(R.id.postOwner);
             postContent =  view.findViewById(R.id.content);
         }
@@ -52,6 +57,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.post = postsList.get(position);
         holder.postOwner.setText(postsList.get(position).postOwner);
         holder.postContent.setText(postsList.get(position).content_text);
+        PrettyTime p = new PrettyTime();
+        holder.time.setText(p.format(postsList.get(position).date));
+        holder.visibility.setText(postsList.get(position).visibility);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
