@@ -9,6 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".homeActivity"></activity>
+        <activity android:name=".signUpSetFavTopicsActivity" />
+        <activity android:name=".signupSetBioActivity" />
+        <activity android:name=".signupPickPictureActivity" />
+        <activity android:name=".signupSetLocationActivity" />
+        <activity android:name=".signupCreatePasswordActivity" />
+        <activity android:name=".signUpPhoneVerificationActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
