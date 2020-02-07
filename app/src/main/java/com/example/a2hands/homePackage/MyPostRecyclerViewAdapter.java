@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.a2hands.PostFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
-import com.example.a2hands.dummy.DummyContent.DummyItem;
 
-import java.util.Date;
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
 
