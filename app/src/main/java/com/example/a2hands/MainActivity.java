@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a2hands.homePackage.homeActivity;
 import com.google.android.gms.internal.firebase_auth.zzcz;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                         txt.setText(email + " " + uid);
                     }
                 });
+        Intent intent = new Intent(this,homeActivity.class);
+        startActivity(intent);
     }
     @Override
     public void onStart() {

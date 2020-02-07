@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".homePackage.homeActivity"></activity>
+        android:theme="@style/Theme.MaterialComponents">
+        <activity android:name=".homePackage.homeActivity"
+
+            ></activity>
         <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
         <activity android:name=".signupPackage.signupSetBioActivity" />
         <activity android:name=".signupPackage.signupPickPictureActivity" />
