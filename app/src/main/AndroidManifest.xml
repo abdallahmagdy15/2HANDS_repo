@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".homeActivity"></activity>
-        <activity android:name=".signUpSetFavTopicsActivity" />
-        <activity android:name=".signupSetBioActivity" />
-        <activity android:name=".signupPickPictureActivity" />
-        <activity android:name=".signupSetLocationActivity" />
-        <activity android:name=".signupCreatePasswordActivity" />
-        <activity android:name=".signUpPhoneVerificationActivity" />
+        <activity android:name=".homePackage.homeActivity"></activity>
+        <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
+        <activity android:name=".signupPackage.signupSetBioActivity" />
+        <activity android:name=".signupPackage.signupPickPictureActivity" />
+        <activity android:name=".signupPackage.signupSetLocationActivity" />
+        <activity android:name=".signupPackage.signupCreatePasswordActivity" />
+        <activity android:name=".signupPackage.signUpPhoneVerificationActivity" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -1,8 +1,10 @@
-package com.example.a2hands;
+package com.example.a2hands.signupPackage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.a2hands.R;
 
 public class signupCreatePasswordActivity extends AppCompatActivity {
 

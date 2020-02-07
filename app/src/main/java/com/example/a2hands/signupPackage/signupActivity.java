@@ -1,7 +1,8 @@
-package com.example.a2hands;
+package com.example.a2hands.signupPackage;
 
 import android.os.Bundle;
 
+import com.example.a2hands.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
