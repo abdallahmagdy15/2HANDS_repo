@@ -16,29 +16,49 @@
         android:paddingTop="10dp"
         android:paddingBottom="15dp">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="#FF000000"
+                app:civ_border_overlay="false"
+                app:civ_border_width="0dp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="7"
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
             <TextView
                 android:id="@+id/postOwner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="start|center_vertical"
                 android:text="Ahmed Kamal"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="#1B1B1B"
+                android:textSize="14sp"
                 android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/postOptions"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_more_horiz_black_24dp"
+                android:backgroundTint="#1D1D1D"
+                android:entries="@array/postOptions" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="#2B2B2B" />
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/postVisibility"
@@ -59,17 +80,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="TextView"
-                    android:textColor="#2B2B2B" />
+                    android:textColor="#2B2B2B"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="50dp"
                 android:text="post is here post is herepost is herepost is herepost is herepost is here4"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#1B1B1B" />
+                android:textColor="#1B1B1B"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 

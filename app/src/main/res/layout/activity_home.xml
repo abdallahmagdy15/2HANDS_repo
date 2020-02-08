@@ -19,7 +19,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:background="#161616">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -27,7 +27,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/googleg_standard_color_18"
                 app:civ_border_color="#FF000000"
                 app:civ_border_overlay="false"
@@ -48,7 +48,7 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="60dp"
             android:layout_weight="1"
             android:background="#F5F5F5"
             android:paddingTop="0dp">
@@ -64,11 +64,12 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Theme.MaterialComponents.Dialog.Alert"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:background="#FFFFFF"
         android:backgroundTint="#00D33D3D"
         app:elevation="0dp"

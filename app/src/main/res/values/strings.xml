@@ -17,4 +17,12 @@
         <item>Social</item>
         <item>Family</item>
     </string-array>
+    <string-array name="postOptions">
+        <item>Disable react</item>
+        <item>Save post</item>
+        <item>Hide post</item>
+        <item>Mute</item>
+        <item>Block</item>
+        <item>Report</item>
+    </string-array>
 </resources>

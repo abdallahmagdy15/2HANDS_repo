@@ -147,12 +147,11 @@ public class PostFragment extends Fragment {
                                 final User user = doc.toObject(User.class);
                                 Query query = db.collection("/users/"+userid+"/posts")
                                         .whereIn("visibility", visibility);
-                                        /*.orderBy("date")
-                                        .limitToLast(30);*/
                                 if(!category.equals("General")){
                                     query = query.whereEqualTo("category",category);
                                 }
-                                query.get()
+                                query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+                                .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
