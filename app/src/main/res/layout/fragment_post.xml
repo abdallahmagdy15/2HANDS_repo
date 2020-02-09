@@ -6,6 +6,8 @@
     android:id="@+id/postContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
@@ -99,6 +101,11 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".7dp"
+        android:background="#B3B3B3" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -110,10 +117,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#008B8B8B"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
             app:icon="@drawable/ic_comment_black_24dp"
             app:iconGravity="textStart"
-            app:iconPadding="0dp" />
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:iconTint="#313131" />
 
         <Button
             android:id="@+id/shareBtn"
@@ -121,10 +131,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#00000000"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
             app:icon="@drawable/ic_share_black_24dp"
             app:iconGravity="textStart"
-            app:iconPadding="0dp" />
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:iconTint="#313131" />
 
         <Button
             android:id="@+id/likeBtn"
@@ -132,10 +145,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#00000000"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
             app:icon="@drawable/ic_thumb_up_black_24dp"
             app:iconGravity="textStart"
-            app:iconPadding="0dp" />
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:iconTint="#313131" />
 
         <Button
             android:id="@+id/helpBtn"
@@ -143,10 +159,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#00000000"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
             app:icon="@drawable/ic_sentiment_satisfied_black_24dp"
             app:iconGravity="textStart"
-            app:iconPadding="0dp" />
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:iconTint="#313131" />
 
         <Button
             android:id="@+id/ratingsBtn"
@@ -154,14 +173,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#00000000"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
             app:icon="@drawable/ic_poll_black_24dp"
             app:iconGravity="textStart"
-            app:iconPadding="0dp" />
+            app:iconPadding="0dp"
+            app:iconSize="18dp"
+            app:iconTint="#313131" />
     </LinearLayout>
 
     <View
-        android:id="@+id/postSeparate"
         android:layout_width="match_parent"
         android:layout_height=".7dp"
         android:background="#B3B3B3" />
