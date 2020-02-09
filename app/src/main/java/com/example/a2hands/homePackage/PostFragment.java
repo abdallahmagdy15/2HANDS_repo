@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 
 import com.google.android.gms.tasks.Task;
@@ -31,7 +35,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 interface Callback{
     void callbackUser(User user);
@@ -42,6 +45,7 @@ public class PostFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     String selectedCat;
+
     private OnListFragmentInteractionListener mListener;
 
     public PostFragment() {
@@ -65,7 +69,6 @@ public class PostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
              selectedCat = bundle.getString("category", "General");
@@ -99,7 +102,6 @@ public class PostFragment extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -188,6 +190,7 @@ public class PostFragment extends Fragment {
                     }
                 });
     }
+
     public void updateHomeWithPosts(List<Post> posts , View view ){
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -198,6 +201,7 @@ public class PostFragment extends Fragment {
             recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts, mListener));
         }
     }
+
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Post item);

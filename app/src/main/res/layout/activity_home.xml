@@ -6,56 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".homePackage.homeActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <FrameLayout
+        android:id="@+id/homeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#161616">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/googleg_standard_color_18"
-                app:civ_border_color="#FF000000"
-                app:civ_border_overlay="false"
-                app:civ_border_width="0dp" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="100dp"
-                android:entries="@array/categories"
-                android:spinnerMode="dialog" />
-
-
-        </RelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="60dp"
-            android:layout_weight="1"
-            android:background="#F5F5F5"
-            android:paddingTop="0dp">
-
-        </FrameLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

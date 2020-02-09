@@ -35,6 +35,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView postContent;
         public final TextView time;
         public final TextView visibility;
+        public final TextView category;
         public Post post;
 
         public ViewHolder(View view) {
@@ -44,6 +45,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             visibility=view.findViewById(R.id.postVisibility);
             postOwner = view.findViewById(R.id.postOwner);
             postContent =  view.findViewById(R.id.content);
+            category = view.findViewById(R.id.postCategory);
         }
 
         @Override
@@ -59,7 +61,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         PrettyTime p = new PrettyTime();
         holder.time.setText(p.format(postsList.get(position).date));
         holder.visibility.setText(postsList.get(position).visibility);
-
+        String cat = postsList.get(position).category;
+        holder.category.setText((!cat.equals("General"))?cat:"");
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

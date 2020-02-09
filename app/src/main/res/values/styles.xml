@@ -6,8 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
+        <item name="android:editTextColor">#1F1F1F</item>
 
+    </style>
+    <style name="MaterialComponent" parent="Theme.MaterialComponents">
+        <item name="android:editTextColor">#1F1F1F</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
