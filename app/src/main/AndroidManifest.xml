@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a2hands">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,16 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light">
-        <activity android:name=".homePackage.homeActivity"
-
-            ></activity>
+        <activity android:name=".CreatePost"></activity>
+        <activity android:name=".homePackage.homeActivity" />
         <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
         <activity android:name=".signupPackage.signupSetBioActivity" />
         <activity android:name=".signupPackage.signupPickPictureActivity" />
         <activity android:name=".signupPackage.signupSetLocationActivity" />
         <activity android:name=".signupPackage.signupCreatePasswordActivity" />
         <activity android:name=".signupPackage.signUpPhoneVerificationActivity" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.example.a2hands.CreatePost;
 import com.example.a2hands.R;
 import com.example.a2hands.SearchFragment;
 import com.google.android.material.badge.BadgeDrawable;
@@ -29,8 +31,6 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
-        setTheme(R.style.appThemeColorPrimaryDark);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -54,6 +54,11 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         ft.commit();
     }
 
+    public void navigateCreatePost(){
+        Intent intent = new Intent(this, CreatePost.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int pos =0;
@@ -70,7 +75,7 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
                 break;
             case 1:navigateSearch() ;
                 break;
-            case 2: ;
+            case 2:navigateCreatePost() ;
                 break;
             case 3: ;
                 break;
