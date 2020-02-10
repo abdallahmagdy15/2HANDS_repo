@@ -16,17 +16,17 @@
             android:layout_height="60dp"
             android:background="#FFFFFF">
 
-            <Button
-                android:id="@+id/searchBackBtn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:backgroundTint="#00C9C9C9"
-                app:icon="@drawable/ic_arrow_back_black_24dp"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="#000000" />
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/googleg_standard_color_18"
+                app:civ_border_color="#FF000000"
+                app:civ_border_overlay="false"
+                app:civ_border_width="0dp" />
             <SearchView
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
@@ -36,6 +36,48 @@
                 android:closeIcon="@drawable/ic_close_24dp"
                 android:searchIcon="@drawable/ic_search_black_24dp" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:background="#DBDBDB">
+
+        </View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:text="Recent searches"
+                android:textColor="#222222"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#00E9E9E9"
+                android:gravity="center_vertical|end"
+                android:text="Edit"
+                android:textColor="#242424" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:background="#DBDBDB">
+
+        </View>
 
         <FrameLayout
             android:layout_width="match_parent"

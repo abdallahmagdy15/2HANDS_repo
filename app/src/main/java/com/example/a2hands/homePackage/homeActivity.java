@@ -27,21 +27,26 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
+        setTheme(R.style.appThemeColorPrimaryDark);
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         nav = findViewById(R.id.bottom_navigation);
         nav.setOnNavigationItemSelectedListener(this);
+
         BadgeDrawable badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
         badge.setVisible(true);
         navigateHome();
     }
+
     public void navigateHome(){
                 final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.homeFragment,new HomeFragment()).addToBackStack(null);
+                ft.replace(R.id.homeFragment,new HomeFragment()).addToBackStack("home");
                 ft.commit();
+
     }
     public void navigateSearch(){
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

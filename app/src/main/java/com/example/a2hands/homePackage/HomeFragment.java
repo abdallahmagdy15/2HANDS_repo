@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.a2hands.R;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment implements PostFragment.OnListFragmen
         }
         catsStrings = getResources().getStringArray(R.array.categories);
         catsSpinner = view.findViewById(R.id.catsSpinner);
+
         loadPostsFrag();
 
         return view;
