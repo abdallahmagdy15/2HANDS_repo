@@ -1,6 +1,7 @@
 package com.example.a2hands.homePackage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,7 +16,11 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.example.a2hands.Post;
+import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
+import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeFragment extends Fragment implements PostFragment.OnListFragmentInteractionListener {
 
@@ -24,6 +29,7 @@ public class HomeFragment extends Fragment implements PostFragment.OnListFragmen
     Spinner catsSpinner;
     FragmentActivity homeContext;
     String[] catsStrings;
+    CircleImageView profile_image ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -45,7 +51,14 @@ public class HomeFragment extends Fragment implements PostFragment.OnListFragmen
         }
         catsStrings = getResources().getStringArray(R.array.categories);
         catsSpinner = view.findViewById(R.id.catsSpinner);
-
+        profile_image = view.findViewById(R.id.profile_image);
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         loadPostsFrag();
 
         return view;

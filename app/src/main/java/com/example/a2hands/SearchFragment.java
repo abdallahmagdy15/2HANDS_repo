@@ -1,6 +1,7 @@
 package com.example.a2hands;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,15 +22,19 @@ import com.example.a2hands.homePackage.HomeFragment;
 import com.example.a2hands.homePackage.PostFragment;
 import com.example.a2hands.homePackage.homeActivity;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class SearchFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     FragmentActivity searchContext;
+    CircleImageView profile_image;
+
+
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,14 @@ public class SearchFragment extends Fragment {
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView =  searchView.findViewById(id);
         textView.setTextColor(Color.BLACK);
+        profile_image = view.findViewById(R.id.profile_image);
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
