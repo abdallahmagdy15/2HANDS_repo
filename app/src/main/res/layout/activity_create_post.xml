@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -63,9 +63,9 @@
                     android:background="#ADADAD" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:id="@+id/postOwnerPic"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
                     android:src="@mipmap/ic_launcher"
@@ -81,21 +81,19 @@
 
                     <Button
                         android:id="@+id/button2"
-                        style="@style/Widget.AppCompat.Button"
+                        style="@android:style/Widget.Material.Light.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:background="#FFFCFC"
-                        android:backgroundTint="#00FDFDFD"
+                        android:backgroundTint="#E9E9E9"
                         android:drawableLeft="@drawable/ic_location_on_black_24dp"
-                        android:shadowColor="#DADADA"
-                        android:shadowRadius="20"
+                        android:shadowColor="#00DADADA"
                         android:text="Location"
                         android:textAllCaps="false"
                         android:textColor="#1F1F1F"
                         android:textSize="13sp" />
 
                     <Spinner
-                        android:id="@+id/spinner2"
+                        android:id="@+id/catSpinner"
                         style="@android:style/Widget.Material.Light.Spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
@@ -109,41 +107,101 @@
             </RelativeLayout>
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/createdPostText"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:background="@null"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Let's get some help!"
                 android:inputType="textMultiLine"
+                android:paddingTop="5dp"
                 android:textColorHighlight="#CE432094"
                 android:textColorLink="#34079C" />
 
             <Switch
-                android:id="@+id/switch2"
+                android:id="@+id/createdPostIsAnon"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:text="Post anonymously?" />
 
-        </LinearLayout>
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="#ADADAD" />
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomAppBar2"
-                style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:backgroundTint="#6200EE" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="0dp"
+                    android:text="Add to your post"
+                    android:textColor="#1A1A1A"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/button3"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:drawableStart="@drawable/ic_insert_photo_black_24dp"
+                    app:icon="@drawable/ic_insert_photo_black_24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="#1F1F1F" />
+
+                <Button
+                    android:id="@+id/button4"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:drawableStart="@drawable/ic_videocam_black_24dp"
+                    app:icon="@drawable/ic_videocam_black_24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="#1F1F1F" />
+
+                <Button
+                    android:id="@+id/button5"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:drawableStart="@drawable/ic_photo_camera_black_24dp"
+                    app:icon="@drawable/ic_photo_camera_black_24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="#1F1F1F" />
+
+                <Button
+                    android:id="@+id/button6"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:drawableStart="@drawable/ic_location_on_black_24dp"
+                    app:icon="@drawable/ic_location_on_black_24dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="#1F1F1F" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -2,21 +2,16 @@ package com.example.a2hands.homePackage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 import com.example.a2hands.CreatePost;
+import com.example.a2hands.Post;
 import com.example.a2hands.R;
 import com.example.a2hands.SearchFragment;
 import com.google.android.material.badge.BadgeDrawable;

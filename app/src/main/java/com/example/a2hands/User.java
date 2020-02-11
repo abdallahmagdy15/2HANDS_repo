@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands;
 
 import java.util.Date;
 

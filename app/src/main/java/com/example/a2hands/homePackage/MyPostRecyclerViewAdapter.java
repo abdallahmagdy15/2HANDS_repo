@@ -5,13 +5,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.a2hands.Post;
 import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
 
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder> {
 
@@ -34,18 +38,20 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView postOwner;
         public final TextView postContent;
         public final TextView time;
-        public final TextView visibility;
+        public final TextView location;
         public final TextView category;
+        public final CircleImageView postOwnerPic;
         public Post post;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             time=view.findViewById(R.id.postTime);
-            visibility=view.findViewById(R.id.postVisibility);
+            location =view.findViewById(R.id.postLocation);
             postOwner = view.findViewById(R.id.postOwner);
             postContent =  view.findViewById(R.id.content);
             category = view.findViewById(R.id.postCategory);
+            postOwnerPic = view.findViewById(R.id.postOwnerPic);
         }
 
         @Override
@@ -56,11 +62,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.post = postsList.get(position);
-        holder.postOwner.setText(postsList.get(position).postOwner);
         holder.postContent.setText(postsList.get(position).content_text);
         PrettyTime p = new PrettyTime();
         holder.time.setText(p.format(postsList.get(position).date));
-        holder.visibility.setText(postsList.get(position).visibility);
+        holder.location.setText(postsList.get(position).location);
         String cat = postsList.get(position).category;
         holder.category.setText((!cat.equals("General"))?cat:"");
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +78,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             }
         });
+        if(!postsList.get(position).visibility){
+            holder.postOwner.setText("Anonymous");
+            holder.postOwnerPic.setImageResource(R.drawable.ic_person_black_24dp);
+        }
+        else {
+            holder.postOwner.setText(postsList.get(position).postOwner);
+        }
+
     }
 
     @Override

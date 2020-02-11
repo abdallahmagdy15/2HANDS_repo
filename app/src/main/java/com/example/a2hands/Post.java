@@ -1,9 +1,11 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import org.w3c.dom.Document;
 
@@ -12,18 +14,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+@IgnoreExtraProperties
 public class Post {
 
      public String category;
-         public String check_in;
+     public String check_in;
      public String content_text;
-     public Date date;
+     public @ServerTimestamp Date date;
      public List<String> videos;
      public int likes_count = 0;
      public List<String> images;
      public boolean state;
-     public String visibility;
+     public boolean visibility;
+     public String location;
      public String postOwner;
 
     public Post() {
@@ -31,8 +34,8 @@ public class Post {
     }
 
      public Post(String category, String check_in, String content_text,
-                 Date date, String user_id, List<String> videos, int likes_count,
-                 List<String> images, boolean state, String visibility) {
+                 Date date, List<String> videos, int likes_count,
+                 List<String> images, boolean state, boolean visibility , String location) {
          this.category = category;
          this.check_in = check_in;
          this.content_text = content_text;
@@ -42,5 +45,6 @@ public class Post {
          this.images = images;
          this.state = state;
          this.visibility = visibility;
+         this.location = location;
      }
 }

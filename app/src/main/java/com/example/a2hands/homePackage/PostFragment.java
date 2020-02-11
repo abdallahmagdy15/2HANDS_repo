@@ -6,11 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.a2hands.Post;
 import com.example.a2hands.R;
+import com.example.a2hands.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,8 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 
 import com.google.android.gms.tasks.Task;
@@ -85,11 +83,11 @@ public class PostFragment extends Fragment {
                 getUser(new Callback() {
                     @Override
                     public void callbackUser(User user) {
-                        List<String> visibility =new ArrayList<>();
-                        visibility.add(user.country);
-                        visibility.add(user.region);
+                        List<String> location =new ArrayList<>();
+                        location.add(user.country);
+                        location.add(user.region);
 
-                        getPosts(visibility,selectedCat, view );
+                        getPosts(location,selectedCat, view );
                     }
 
                     @Override
@@ -137,7 +135,7 @@ public class PostFragment extends Fragment {
         });
     }
 
-    public void getPosts(final List<String> visibility,final String category,final View view ){
+    public void getPosts(final List<String> location,final String category,final View view ){
         // Read from the database
         db.collection("/users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -148,7 +146,7 @@ public class PostFragment extends Fragment {
                                 String userid = doc.getId();
                                 final User user = doc.toObject(User.class);
                                 Query query = db.collection("/users/"+userid+"/posts")
-                                        .whereIn("visibility", visibility);
+                                        .whereIn("location", location);
                                 if(!category.equals("General")){
                                     query = query.whereEqualTo("category",category);
                                 }
