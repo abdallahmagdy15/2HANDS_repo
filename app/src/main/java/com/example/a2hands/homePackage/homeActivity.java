@@ -24,8 +24,7 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        getSupportActionBar().hide();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 

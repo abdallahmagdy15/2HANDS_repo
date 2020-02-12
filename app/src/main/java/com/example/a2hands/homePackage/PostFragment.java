@@ -49,14 +49,6 @@ public class PostFragment extends Fragment {
     public PostFragment() {
     }
 
-    public static PostFragment newInstance() {
-        PostFragment fragment = new PostFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,35 +60,41 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
-             selectedCat = bundle.getString("category", "General");
-        }
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        //get posts from database
-        autoSigningin(new Callback() {
-            @Override
-            public void callbackUser(User user) { }
-            @Override
-            public void callbackUserID(final String uid) {
-                getUser(new Callback() {
-                    @Override
-                    public void callbackUser(User user) {
-                        List<String> location =new ArrayList<>();
-                        location.add(user.country);
-                        location.add(user.region);
+        if (bundle != null) {
+            selectedCat = bundle.getString("category", "General");
+            //get posts from database
+            autoSigningin(new Callback() {
+                @Override
+                public void callbackUser(User user) { }
+                @Override
+                public void callbackUserID(final String uid) {
+                    getUser(new Callback() {
+                        @Override
+                        public void callbackUser(User user) {
+                            List<String> location =new ArrayList<>();
+                            location.add(user.country);
+                            location.add(user.region);
 
-                        getPosts(location,selectedCat, view );
-                    }
+                            getPostsForHome(location,selectedCat, view );
+                        }
 
-                    @Override
-                    public void callbackUserID(String uid){ }
-                },uid);
+                        @Override
+                        public void callbackUserID(String uid){ }
+                    },uid);
 
-            }
-        });
-        //End get posts
+                }
+            });
+            //End get posts
+        }
+        else
+        {
+            //get posts for profile from database
+                getPostsForProfile(FirebaseAuth.getInstance().getCurrentUser().getUid() ,view );
+            //End get posts
+        }
 
         return view;
     }
@@ -135,7 +133,7 @@ public class PostFragment extends Fragment {
         });
     }
 
-    public void getPosts(final List<String> location,final String category,final View view ){
+    public void getPostsForHome(final List<String> location,final String category,final View view ){
         // Read from the database
         db.collection("/users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -151,7 +149,7 @@ public class PostFragment extends Fragment {
                                     query = query.whereEqualTo("category",category);
                                 }
                                 query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
-                                .get()
+                                        .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
@@ -174,6 +172,41 @@ public class PostFragment extends Fragment {
 
                         } else {
                             Log.w("", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+    public void getPostsForProfile(final String uid ,final View view ){
+        // Read from the database
+        db.collection("/users/").document(uid).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                final User user = doc.toObject(User.class);
+                                db.collection("/users/" + uid + "/posts")
+                                        .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                                List<Post> posts = new ArrayList<>();
+                                                if (task2.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot doc2 : task2.getResult()) {
+                                                        final Post p = doc2.toObject(Post.class);
+                                                        p.postOwner = user.first_name + " " + user.last_name;
+                                                        posts.add(p);
+                                                    }
+                                                    updateHomeWithPosts(posts, view);
+                                                } else {
+                                                    Log.w("", "Error getting documents.", task2.getException());
+
+                                                }
+                                            }
+                                        });
+                            }
                         }
                     }
                 });
