@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +22,15 @@ import android.widget.TextView;
 import com.example.a2hands.homePackage.HomeFragment;
 import com.example.a2hands.homePackage.PostFragment;
 import com.example.a2hands.homePackage.homeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,6 +62,26 @@ public class SearchFragment extends Fragment {
         TextView textView =  searchView.findViewById(id);
         textView.setTextColor(Color.BLACK);
         profile_image = view.findViewById(R.id.profile_image);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseFirestore.getInstance().collection("users/").document(uid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user = task.getResult().toObject(User.class);
+                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri.toString()).into(profile_image);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            }
+        });
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

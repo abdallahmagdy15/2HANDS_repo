@@ -13,7 +13,7 @@ public class User {
     public String phone;
     public String user_name;
     public Date birth_date;
-    public double rate;
+    public float rate;
     public String bio;
     public String profile_pic;
     public String profile_cover;

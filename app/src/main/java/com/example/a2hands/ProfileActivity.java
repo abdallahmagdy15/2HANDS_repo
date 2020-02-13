@@ -11,12 +11,14 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.a2hands.dummy.DummyContent;
@@ -52,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     TextView country_region;
     TextView profileBio;
     TextView profileRate;
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         profileRate = findViewById(R.id.profileRate);
         profileEditBtn = findViewById(R.id.profileEditBtn);
         profileFollowBtn = findViewById(R.id.profileFollowBtn);
+        ratingBar = findViewById(R.id.ratingBar);
 
         // setup
         setSupportActionBar(toolbar);
@@ -121,7 +125,8 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                 jobTitle.setText(user.job_title);
                 country_region.setText(user.country+", "+user.region);
                 profileBio.setText(user.bio);
-                profileRate.setText(Double.toString(user.rate));
+                profileRate.setText(Float.toString(user.rate));
+                ratingBar.setRating( user.rate);
             }
         });
     }

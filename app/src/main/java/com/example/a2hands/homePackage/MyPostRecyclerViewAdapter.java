@@ -108,24 +108,13 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     v.getContext().startActivity(i);
                 }
             });
-            FirebaseFirestore.getInstance().collection("/users/")
-                    .document(postsList.get(position).user_id).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot doc = task.getResult();
-                                User user = doc.toObject(User.class);
-                                FirebaseStorage.getInstance().getReference().child("Profile_Pics/" + user.profile_pic)
-                                        .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        Picasso.get().load(uri.toString()).into(holder.postOwnerPic);
-                                    }
-                                });
-                            }
-                        }
-                    });
+            FirebaseStorage.getInstance().getReference().child("Profile_Pics/" + postsList.get(position).profile_pic)
+                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri.toString()).into(holder.postOwnerPic);
+                }
+            });
         }
 
     }

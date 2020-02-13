@@ -89,4 +89,5 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
     public void onListFragmentInteraction(Post item) {
 
     }
+
 }

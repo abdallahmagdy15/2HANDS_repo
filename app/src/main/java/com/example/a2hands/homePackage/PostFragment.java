@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.a2hands.Callback;
 import com.example.a2hands.Post;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
@@ -21,12 +22,15 @@ import android.view.ViewGroup;
 
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -34,15 +38,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-interface Callback{
-    void callbackUser(User user);
-    void callbackUserID(String uid);
-}
+
 public class PostFragment extends Fragment {
 
     FirebaseAuth mAuth;
-    FirebaseFirestore db;
     String selectedCat;
+    String uid;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -60,41 +61,27 @@ public class PostFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
         Bundle bundle = this.getArguments();
-        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
+        uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         if (bundle.getString("for").equals("home") ) {
             selectedCat = bundle.getString("category", "General");
-            //get posts from database
-            autoSigningin(new Callback() {
+            getUser(new Callback() {
                 @Override
-                public void callbackUser(User user) { }
-                @Override
-                public void callbackUserID(final String uid) {
-                    getUser(new Callback() {
-                        @Override
-                        public void callbackUser(User user) {
-                            List<String> location =new ArrayList<>();
-                            location.add(user.country);
-                            location.add(user.region);
+                public void callbackUser(User user) {
+                    List<String> location =new ArrayList<>();
+                    location.add(user.country);
+                    location.add(user.region);
 
-                            getPostsForHome(location,selectedCat, view );
-                        }
-
-                        @Override
-                        public void callbackUserID(String uid){ }
-                    },uid);
-
+                    getPostsForHome(location,selectedCat, view );
                 }
-            });
-            //End get posts
+            },uid);
         }
         else
         {
-            String uid = bundle.getString("uid");
+            String postuid = bundle.getString("uid");
             //get posts for profile from database
-                getPostsForProfile(uid ,view );
+            getPostsForProfile(postuid ,view );
             //End get posts
         }
 
@@ -118,8 +105,21 @@ public class PostFragment extends Fragment {
         mListener = null;
     }
 
-    public  void getUser(final Callback callback,String uid){
-        db.collection("/users").document(uid)
+    public static void getUser(final Callback callback,String uid) {
+        FirebaseFirestore.getInstance().collection("/users")
+                .document(uid).get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                User user = task.getResult().toObject(User.class);
+                                callback.callbackUser(user);
+                            }
+                        }
+                );
+    }
+
+        /*db.collection("/users").document(uid)
                 .get() .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -133,91 +133,100 @@ public class PostFragment extends Fragment {
                 }
             }
         });
-    }
+    */
 
     public void getPostsForHome(final List<String> location,final String category,final View view ){
         final List<Post> posts = new ArrayList<>();
+        /*Query q = db.child("posts").orderByChild("location").startAt(location.get(0)).endAt(location.get(1));
+        if(!category.equals("General")){
+            q = q.orderByChild("category").equalTo(category);
+        }
+        q.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    final Post p = postSnapshot.getValue(Post.class);
+                    posts.add(p);
+                }
+                updateHomeWithPosts(posts,view);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
 
         // Read from the database
-        db.collection("/users").get()
+        Query query = FirebaseFirestore.getInstance().collection("/posts")
+                .whereIn("location", location);
+
+        if(!category.equals("General")){
+            query = query.whereEqualTo("category",category);
+        }
+
+        query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                final String userid = doc.getId();
-                                final User user = doc.toObject(User.class);
-                                Query query = db.collection("/users/"+userid+"/posts")
-                                        .whereIn("location", location);
-                                if(!category.equals("General")){
-                                    query = query.whereEqualTo("category",category);
-                                }
-                                query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
-                                                if (task2.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot doc2 : task2.getResult()) {
-                                                        final Post p = doc2.toObject(Post.class);
-                                                        p.postOwner = user.first_name + " " + user.last_name;
-                                                        p.user_id= userid;
-                                                        posts.add(p);
-                                                    }
-                                                    updateHomeWithPosts(posts,view);
-                                                }
-                                                else {
-                                                    Log.w("", "Error getting documents.", task2.getException());
-
-                                                }
-                                            }
-                                        });
+                                final Post p = doc.toObject(Post.class);
+                                posts.add(p);
                             }
-
+                            updateHomeWithPosts(posts, view);
                         } else {
                             Log.w("", "Error getting documents.", task.getException());
+
                         }
                     }
                 });
     }
     public void getPostsForProfile(final String uid ,final View view ){
-        // Read from the database
-        db.collection("/users/").document(uid).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            if (doc.exists()) {
-                                final User user = doc.toObject(User.class);
-                                db.collection("/users/" + uid + "/posts")
-                                        .whereEqualTo("visibility",true)
-                                        .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task2) {
-                                                List<Post> posts = new ArrayList<>();
-                                                if (task2.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot doc2 : task2.getResult()) {
-                                                        final Post p = doc2.toObject(Post.class);
-                                                        p.postOwner = user.first_name + " " + user.last_name;
-                                                        p.user_id = uid;
-                                                        posts.add(p);
-                                                    }
-                                                    updateHomeWithPosts(posts, view);
-                                                } else {
-                                                    Log.w("", "Error getting documents.", task2.getException());
+        final List<Post> posts = new ArrayList<>();
 
-                                                }
-                                            }
-                                        });
+        FirebaseFirestore.getInstance().collection("/posts")
+                .whereEqualTo("visibility",true)
+                .whereEqualTo("user_id",uid)
+                .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                        List<Post> posts = new ArrayList<>();
+                        if (task2.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc2 : task2.getResult()) {
+                                final Post p = doc2.toObject(Post.class);
+                                posts.add(p);
                             }
+                            updateHomeWithPosts(posts, view);
+                        } else {
+                            Log.w("", "Error getting documents.", task2.getException());
+
                         }
                     }
                 });
     }
+    /*db.child("posts").orderByChild("user_id").equalTo(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                            final Post p = postSnapshot.getValue(Post.class);
+                            posts.add(p);
+                        }
+                        updateHomeWithPosts(posts,view);
 
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });*/
+
+/*
     public void autoSigningin(final Callback callback){
         mAuth.signInWithEmailAndPassword("test@test.com", "123456789#A")
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
@@ -227,6 +236,7 @@ public class PostFragment extends Fragment {
                     }
                 });
     }
+*/
 
     public void updateHomeWithPosts(List<Post> posts , View view ){
         // Set the adapter
@@ -239,8 +249,8 @@ public class PostFragment extends Fragment {
         }
     }
 
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Post item);
-    }
+public interface OnListFragmentInteractionListener {
+    // TODO: Update argument type and name
+    void onListFragmentInteraction(Post item);
+}
 }
