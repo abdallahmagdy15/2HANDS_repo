@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment implements PostFragment.OnListFragmen
                 Fragment frg = new PostFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("category", catsStrings[position]);
+                bundle.putString("for","home");
                 frg.setArguments(bundle);
                 final FragmentTransaction ft = homeContext.getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.postsFragment,frg).addToBackStack(null);

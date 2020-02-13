@@ -17,25 +17,17 @@
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="5dp"
-        android:paddingBottom="15dp">
+        android:paddingBottom="10dp">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/postOwnerPic"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="10dp"
-                android:src="@mipmap/ic_launcher"
-                app:civ_border_color="#FF000000"
-                app:civ_border_overlay="false"
-                app:civ_border_width="0dp" />
-        </RelativeLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/postOwnerPic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="#FF000000"
+            app:civ_border_overlay="false"
+            app:civ_border_width="0dp" />
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -97,23 +89,46 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="post is here post is herepost is herepost is herepost is herepost is here4"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textColor="#1B1B1B"
-                android:textSize="14sp" />
-
         </RelativeLayout>
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="post is here post is herepost is herepost is herepost is herepost is here4"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="#1B1B1B"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/postImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="600dp"
+        android:minHeight="150dp"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <VideoView
+            android:id="@+id/postVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height=".7dp"
+        android:layout_marginTop="10dp"
         android:background="#DADADA" />
 
     <LinearLayout
@@ -196,4 +211,10 @@
         android:layout_width="match_parent"
         android:layout_height=".7dp"
         android:background="#B3B3B3" />
+
+    <TextView
+        android:id="@+id/postUserId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

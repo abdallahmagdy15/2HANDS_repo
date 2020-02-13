@@ -30,7 +30,7 @@
 
                 android:scaleType="centerCrop"
                 android:src="@android:drawable/sym_def_app_icon"
-                app:layout_collapseMode="parallax"
+                app:layout_collapseMode="pin"
                 app:srcCompat="@drawable/fui_idp_button_background_phone" />
 
             <androidx.appcompat.widget.Toolbar
@@ -66,32 +66,29 @@
                     android:paddingRight="0dp">
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/profileName"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="Ahmed Kamal"
                         android:textColor="#181818"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/jobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="Software Engineer"
                         android:textColor="#222222"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/country_region"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="Egypt , Cairo"
                         android:textColor="#242424"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/bio"
+                        android:id="@+id/profileBio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -120,13 +117,24 @@
                             android:src="@drawable/ic_mail_black_24dp" />
 
                         <Button
-                            android:id="@+id/button8"
+                            android:id="@+id/profileEditBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:backgroundTint="#E6E6E6"
+                            android:text="Edit Profile"
+                            android:textColor="#202020"
+                            android:textSize="13sp" />
+
+                        <Button
+                            android:id="@+id/profileFollowBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="#E6E6E6"
                             android:text="Follow"
                             android:textColor="#202020"
-                            android:textSize="14sp" />
+                            android:textSize="13sp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -140,11 +148,10 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/profileRate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="8.7"
                         android:textSize="50sp"
                         android:textStyle="bold" />
 
@@ -167,7 +174,7 @@
 
         android:fillViewport="true"
         android:fitsSystemWindows="false"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"

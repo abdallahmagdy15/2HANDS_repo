@@ -63,7 +63,8 @@ public class PostFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        if (bundle != null) {
+
+        if (bundle.getString("for").equals("home") ) {
             selectedCat = bundle.getString("category", "General");
             //get posts from database
             autoSigningin(new Callback() {
@@ -91,8 +92,9 @@ public class PostFragment extends Fragment {
         }
         else
         {
+            String uid = bundle.getString("uid");
             //get posts for profile from database
-                getPostsForProfile(FirebaseAuth.getInstance().getCurrentUser().getUid() ,view );
+                getPostsForProfile(uid ,view );
             //End get posts
         }
 
@@ -134,6 +136,8 @@ public class PostFragment extends Fragment {
     }
 
     public void getPostsForHome(final List<String> location,final String category,final View view ){
+        final List<Post> posts = new ArrayList<>();
+
         // Read from the database
         db.collection("/users").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -141,7 +145,7 @@ public class PostFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                String userid = doc.getId();
+                                final String userid = doc.getId();
                                 final User user = doc.toObject(User.class);
                                 Query query = db.collection("/users/"+userid+"/posts")
                                         .whereIn("location", location);
@@ -153,11 +157,11 @@ public class PostFragment extends Fragment {
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task2) {
-                                                List<Post> posts = new ArrayList<>();
                                                 if (task2.isSuccessful()) {
                                                     for (QueryDocumentSnapshot doc2 : task2.getResult()) {
                                                         final Post p = doc2.toObject(Post.class);
                                                         p.postOwner = user.first_name + " " + user.last_name;
+                                                        p.user_id= userid;
                                                         posts.add(p);
                                                     }
                                                     updateHomeWithPosts(posts,view);
@@ -187,6 +191,7 @@ public class PostFragment extends Fragment {
                             if (doc.exists()) {
                                 final User user = doc.toObject(User.class);
                                 db.collection("/users/" + uid + "/posts")
+                                        .whereEqualTo("visibility",true)
                                         .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -197,6 +202,7 @@ public class PostFragment extends Fragment {
                                                     for (QueryDocumentSnapshot doc2 : task2.getResult()) {
                                                         final Post p = doc2.toObject(Post.class);
                                                         p.postOwner = user.first_name + " " + user.last_name;
+                                                        p.user_id = uid;
                                                         posts.add(p);
                                                     }
                                                     updateHomeWithPosts(posts, view);
@@ -213,7 +219,7 @@ public class PostFragment extends Fragment {
     }
 
     public void autoSigningin(final Callback callback){
-        mAuth.signInWithEmailAndPassword("ahmedKamal9@gmail.com", "556558554552")
+        mAuth.signInWithEmailAndPassword("test@test.com", "123456789#A")
                 .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
