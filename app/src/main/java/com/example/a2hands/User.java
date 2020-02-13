@@ -19,10 +19,21 @@ public class User {
     public String profile_cover;
     public String job_title;
 
-    public User(String country, String region, String first_name,
-                boolean gender, String last_name, String job_title,
-                String phone, String user_name,String profile_cover ,
-                Date birth_date , int rate , String bio , String profile_pic) {
+    public User(
+            String first_name,
+            String last_name,
+            boolean gender,
+            Date birth_date ,
+            String country,
+            String phone,
+            String bio ,
+            String profile_pic,
+            float rate ,
+            String region,
+            String job_title,
+            String user_name,
+            String profile_cover
+    ) {
         this.country = country;
         this.region = region;
         this.first_name = first_name;

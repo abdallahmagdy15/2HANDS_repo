@@ -49,4 +49,10 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:+'
     implementation 'com.squareup.picasso:picasso:+'
 
+    //    country picker with its code
+    implementation 'com.hbb20:ccp:2.3.7'
+
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
 }
+apply plugin: 'com.google.gms.google-services'
