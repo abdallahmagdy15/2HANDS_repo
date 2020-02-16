@@ -62,7 +62,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:numStars="5" />
+                    android:numStars="5"
+                    android:rating="4" />
 
                 <TextView
                     android:id="@+id/ratingDate"
@@ -77,7 +78,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <EditText
                     android:id="@+id/ratingWriteReview"
@@ -106,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="10dp"
-                android:text="TextView"
+                android:text="This is an exmple of review"
                 android:textColor="#141414"
                 android:textSize="15sp"
                 android:visibility="gone" />
