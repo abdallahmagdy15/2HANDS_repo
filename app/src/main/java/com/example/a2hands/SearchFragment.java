@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,8 +41,6 @@ public class SearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     FragmentActivity searchContext;
     CircleImageView profile_image;
-
-
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -49,7 +48,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -62,14 +60,15 @@ public class SearchFragment extends Fragment {
         TextView textView =  searchView.findViewById(id);
         textView.setTextColor(Color.BLACK);
         profile_image = view.findViewById(R.id.profile_image);
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseFirestore.getInstance().collection("users/").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+uid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri.toString()).into(profile_image);
@@ -97,6 +96,11 @@ public class SearchFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }*/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onAttach(Context context) {

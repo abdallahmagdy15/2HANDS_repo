@@ -31,13 +31,14 @@ public class Post {
     public String postOwner;
     public String user_id;
     public String profile_pic;
+    public String post_id;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
     public Post(String category, String check_in, String content_text,
-                Date date, List<String> videos, int likes_count,
+                Date date, List<String> videos, int likes_count, String post_id,
                 List<String> images, boolean state, String profile_pic ,
                 boolean visibility , String location , String user_id) {
         this.category = category;
@@ -52,5 +53,6 @@ public class Post {
         this.location = location;
         this.user_id = user_id;
         this.profile_pic = profile_pic;
+        this.post_id = post_id;
     }
 }

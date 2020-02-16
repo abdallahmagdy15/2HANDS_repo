@@ -16,6 +16,7 @@ import com.example.a2hands.R;
 import com.example.a2hands.SearchFragment;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class homeActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener,  HomeFragment.OnFragmentInteractionListener,  BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -50,6 +51,7 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
 
     public void navigateCreatePost(){
         Intent intent = new Intent(this, CreatePost.class);
+        intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         startActivity(intent);
     }
 

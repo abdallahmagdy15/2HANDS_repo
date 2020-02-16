@@ -30,7 +30,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
@@ -144,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FirebaseAuth.getInstance().signOut();
     }
 
     //// google
@@ -202,15 +200,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         if (task.isSuccessful()) {
                             if(auth.getCurrentUser().isEmailVerified()){
-                                //Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this , homeActivity.class));
                                 finish();
-                                // Sign in success, update UI with the signed-in user's information
-                                //FirebaseUser user = auth.getCurrentUser();
-                                //updateUI(user);
+
                             }else{
                                 Toast.makeText(LoginActivity.this, "Check your email for verification",
                                         Toast.LENGTH_SHORT).show();

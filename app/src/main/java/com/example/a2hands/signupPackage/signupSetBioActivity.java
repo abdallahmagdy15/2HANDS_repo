@@ -81,6 +81,7 @@ public class signupSetBioActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d("addBio", "Done");
+                                finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

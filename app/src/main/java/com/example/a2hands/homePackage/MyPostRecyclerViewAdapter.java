@@ -3,11 +3,14 @@ package com.example.a2hands.homePackage;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +37,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     private final List<Post> postsList;
     private final OnListFragmentInteractionListener mListener;
+    private  Context context;
 
     public MyPostRecyclerViewAdapter(List<Post> posts, OnListFragmentInteractionListener listener) {
         postsList = posts;
@@ -44,6 +48,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
+        context = parent.getContext();
         return new ViewHolder(view);
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +61,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final CircleImageView postOwnerPic;
         public Post post;
         public final TextView postUserId;
+        public final Button ratingsBtn;
 
         public ViewHolder(View view) {
             super(view);
@@ -67,6 +73,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             postUserId = view.findViewById(R.id.postUserId);
+            ratingsBtn = view.findViewById(R.id.ratingsBtn);
         }
 
         @Override
@@ -108,7 +115,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     v.getContext().startActivity(i);
                 }
             });
-            FirebaseStorage.getInstance().getReference().child("Profile_Pics/" + postsList.get(position).profile_pic)
+            FirebaseStorage.getInstance().getReference()
+                    .child("Profile_Pics/" +postsList.get(position).user_id+ "/"
+                            + postsList.get(position).profile_pic)
                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -116,6 +125,16 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             });
         }
+
+        holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,RatingsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("postId",postsList.get(position).post_id);
+                context.startActivity(i);
+            }
+        });
 
     }
 

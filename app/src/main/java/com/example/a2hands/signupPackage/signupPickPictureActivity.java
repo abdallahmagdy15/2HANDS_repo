@@ -108,9 +108,9 @@ public class signupPickPictureActivity extends AppCompatActivity {
 
     private void uploadImage() {
         if (mImageUri != null) {
-            final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"
-                    + System.currentTimeMillis() + "." + getFileExtension(mImageUri).trim());
-
+            final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("Profile_Pics/"
+                    + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +
+                    System.currentTimeMillis() + "." + getFileExtension(mImageUri).trim());
             profileImageRef.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -121,14 +121,14 @@ public class signupPickPictureActivity extends AppCompatActivity {
                                 public void run() {
                                     mProgressBar.setProgress(0);
                                 }
-                            }, 1000);
+                            }, 2000);
 
                             Toast.makeText(signupPickPictureActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
 
-                            Map<String,Object> profile_picture_url = new HashMap<>();
-                            profile_picture_url.put("profile_picture_url", taskSnapshot.getMetadata().getPath());
+                            Map<String,Object> profile_pic = new HashMap<>();
+                            profile_pic.put("profile_pic", taskSnapshot.getMetadata().getName());
 
-                            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(profile_picture_url)
+                            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(profile_pic)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
