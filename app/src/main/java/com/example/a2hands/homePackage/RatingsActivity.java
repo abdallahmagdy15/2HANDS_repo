@@ -5,7 +5,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.example.a2hands.R;
@@ -25,8 +27,17 @@ public class RatingsActivity extends AppCompatActivity implements RatingFragment
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Ratings");
 
+        Intent i = getIntent();
+        String postId  = i.getStringExtra("postId");
+        String postOwnerId  = i.getStringExtra("postOwnerId");
+
+        Fragment frg = new RatingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("postOwnerId",postOwnerId);
+        bundle.putString("postId",postId);
+        frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.ratingsContainer,new RatingFragment()).addToBackStack("");
+        ft.replace(R.id.ratingsContainer,frg).addToBackStack("");
         ft.commit();
     }
 

@@ -55,10 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <RatingBar
                     android:id="@+id/ratingBar"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -71,19 +72,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="16/2/2020"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/postReviewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/ratingWriteReview"
-                    style="@android:style/Widget.Material.EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -96,7 +97,7 @@
                     android:visibility="visible" />
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
+                    android:id="@+id/postReview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_comment_black_24dp" />
@@ -111,7 +112,7 @@
                 android:text="This is an exmple of review"
                 android:textColor="#141414"
                 android:textSize="15sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 

@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -124,21 +125,15 @@ public class CreatePost extends AppCompatActivity {
                 post.postOwner = u.first_name+" "+u.last_name;
                 post.user_id = uid;
                 post.profile_pic = u.profile_pic;
-                FirebaseFirestore.getInstance().collection("/posts")
-                        .add(post)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                            }
-                        });
+                CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                ref.document(ref.document().getId())
+                        .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
             }
         },uid);
 

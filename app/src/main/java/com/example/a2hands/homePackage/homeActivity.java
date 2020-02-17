@@ -11,14 +11,17 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.example.a2hands.CreatePost;
+import com.example.a2hands.Notification;
+import com.example.a2hands.NotificationFragment;
 import com.example.a2hands.Post;
 import com.example.a2hands.R;
 import com.example.a2hands.SearchFragment;
+import com.example.a2hands.dummy.DummyContent;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class homeActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener,  HomeFragment.OnFragmentInteractionListener,  BottomNavigationView.OnNavigationItemSelectedListener{
+public class homeActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener,  HomeFragment.OnFragmentInteractionListener,  BottomNavigationView.OnNavigationItemSelectedListener , NotificationFragment.OnListFragmentInteractionListener {
 
     private BottomNavigationView nav;
     private int navItemId;
@@ -54,6 +57,11 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         startActivity(intent);
     }
+    void navigateNotification(){
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.homeFragment,new NotificationFragment()).addToBackStack(null);
+        ft.commit();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -73,7 +81,7 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
                 break;
             case 2:navigateCreatePost() ;
                 break;
-            case 3: ;
+            case 3: navigateNotification(); ;
                 break;
             case 4: ;
                 break;
@@ -92,4 +100,8 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
 
     }
 
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 }

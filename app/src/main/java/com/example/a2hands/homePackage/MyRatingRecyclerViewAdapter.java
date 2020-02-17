@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a2hands.Notification;
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.RatingFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.homePackage.dummy.DummyContent.DummyItem;
