@@ -98,7 +98,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                 @Override
                 public void onClick(View v) {
                     deleteNotifiAndhelpReq(pos,holder);
-                    Toast.makeText(holder.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT);
+                    Toast.makeText(holder.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT).show();
                 }
             });
         }

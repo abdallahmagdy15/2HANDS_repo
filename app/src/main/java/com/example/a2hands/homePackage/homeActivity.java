@@ -20,12 +20,17 @@ import com.example.a2hands.dummy.DummyContent;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class homeActivity extends AppCompatActivity implements SearchFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener,  HomeFragment.OnFragmentInteractionListener,  BottomNavigationView.OnNavigationItemSelectedListener , NotificationFragment.OnListFragmentInteractionListener {
 
     private BottomNavigationView nav;
     private int navItemId;
-
+    private BadgeDrawable badge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,8 +40,24 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         nav = findViewById(R.id.bottom_navigation);
         nav.setOnNavigationItemSelectedListener(this);
 
-        BadgeDrawable badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
-        badge.setVisible(true);
+        badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
+        badge.setVisible(false);
+
+
+        FirebaseDatabase.getInstance().getReference("notifications")
+                .orderByChild("subscriber_id")
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount() > 0){
+                            badge.setVisible(true);
+                            badge.setNumber(( (int)dataSnapshot.getChildrenCount()));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
         navigateHome();
     }
 
@@ -61,6 +82,9 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFragment,new NotificationFragment()).addToBackStack(null);
         ft.commit();
+        badge.clearNumber();
+        badge.setVisible(false);
+
     }
 
     @Override
@@ -81,9 +105,9 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
                 break;
             case 2:navigateCreatePost() ;
                 break;
-            case 3: navigateNotification(); ;
+            case 3: navigateNotification();
                 break;
-            case 4: ;
+            case 4:
                 break;
         }
         return true;
