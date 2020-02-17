@@ -36,7 +36,7 @@
         android:backgroundTint="#00D33D3D"
         app:elevation="0dp"
         app:itemIconSize="25dp"
-        app:itemIconTint="#636363"
+        app:itemIconTint="@color/bottom_nav_colors"
         app:itemTextColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
