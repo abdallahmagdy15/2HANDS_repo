@@ -29,11 +29,9 @@ public class RatingsActivity extends AppCompatActivity implements RatingFragment
 
         Intent i = getIntent();
         String postId  = i.getStringExtra("postId");
-        String postOwnerId  = i.getStringExtra("postOwnerId");
 
         Fragment frg = new RatingFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("postOwnerId",postOwnerId);
         bundle.putString("postId",postId);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

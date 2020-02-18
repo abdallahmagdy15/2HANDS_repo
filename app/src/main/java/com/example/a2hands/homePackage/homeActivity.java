@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.example.a2hands.CreatePost;
+import com.example.a2hands.LoginActivity;
 import com.example.a2hands.Notification;
 import com.example.a2hands.NotificationFragment;
 import com.example.a2hands.Post;
@@ -108,6 +109,8 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
             case 3: navigateNotification();
                 break;
             case 4:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
         return true;

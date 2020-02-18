@@ -37,7 +37,7 @@
         app:elevation="0dp"
         app:itemIconSize="25dp"
         app:itemIconTint="@color/bottom_nav_colors"
-        app:itemTextColor="#000000"
+        app:itemTextColor="@color/bottom_nav_colors"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

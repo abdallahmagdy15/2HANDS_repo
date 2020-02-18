@@ -11,7 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
-import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,9 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         profileRate = findViewById(R.id.profileRate);
         profileEditBtn = findViewById(R.id.profileEditBtn);
         profileFollowBtn = findViewById(R.id.profileFollowBtn);
-        ratingBar = findViewById(R.id.ratingBar);
+        ratingBar = findViewById(R.id.ratingBarGet);
 
         // setup
         setSupportActionBar(toolbar);

@@ -3,6 +3,7 @@ package com.example.a2hands.homePackage;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a2hands.R;
+import com.example.a2hands.Rating;
 import com.example.a2hands.homePackage.dummy.DummyContent;
 import com.example.a2hands.homePackage.dummy.DummyContent.DummyItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,15 +49,27 @@ public class RatingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rating_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_rating_list, container, false);
+        String post_id = getArguments().getString("postId");
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        FirebaseDatabase.getInstance().getReference("ratings")
+                .orderByChild("post_id").equalTo(post_id)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Rating> ratings = new ArrayList<>();
+                        for( DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            ratings.add(snapshot.getValue(Rating.class));
+                        }
+                        updatePostRatingsUI(ratings,view);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
         return view;
     }
 
@@ -58,6 +82,16 @@ public class RatingFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    void updatePostRatingsUI(List<Rating> ratings, View view ){
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener));
         }
     }
 

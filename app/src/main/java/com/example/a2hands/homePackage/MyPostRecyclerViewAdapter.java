@@ -130,8 +130,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             public void onClick(View v) {
                 Intent i = new Intent(context,RatingsActivity.class);
                 i.putExtra("postId",postsList.get(position).post_id);
-                i.putExtra("postOwnerId",postsList.get(position).user_id);
-
                 context.startActivity(i);
             }
         });

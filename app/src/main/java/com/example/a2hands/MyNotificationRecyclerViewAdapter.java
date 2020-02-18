@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -88,10 +89,16 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                     rating.post_id = notifisList.get(pos).post_id;
                     rating.subscriber_pic = notifisList.get(pos).publisher_pic;
                     rating.subscriber_name = notifisList.get(pos).publisher_name;
-
-                    FirebaseFirestore.getInstance().collection("ratings")
-                            .add(rating);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ratings");
+                    String rating_id = ref.push().getKey();
+                    rating.rating_id = rating_id;
+                    rating.review_text="";
+                    ref.child(rating_id).setValue(rating);
                     Toast.makeText(holder.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
+                    //delete help request
+                    FirebaseFirestore.getInstance().collection("help_requests")
+                            .document(notifisList.get(pos).help_request_id).delete();
+
                 }
             });
             holder.refuseReq.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +106,9 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                 public void onClick(View v) {
                     deleteNotifiAndhelpReq(pos,holder);
                     Toast.makeText(holder.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT).show();
+                    //delete help request
+                    FirebaseFirestore.getInstance().collection("help_requests")
+                            .document(notifisList.get(pos).help_request_id).delete();
                 }
             });
         }

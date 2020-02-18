@@ -22,5 +22,5 @@
     <item
         android:id="@+id/menuNav"
         android:icon="@drawable/ic_menu_black_24dp"
-        android:title="Menu" />
+        android:title="Logout" />
 </menu>
