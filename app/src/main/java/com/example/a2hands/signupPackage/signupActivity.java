@@ -313,11 +313,12 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 ccpCode.getFullNumber(),
                 "",
                 "",
-                0.0f,
+                0,
                 "",
                 "",
                 "",
-                ""
+                "",
+                0
                 );
 
         Map<String,Object> registerDate = new HashMap<>();

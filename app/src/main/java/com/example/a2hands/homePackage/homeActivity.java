@@ -12,12 +12,10 @@ import android.view.Window;
 
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
-import com.example.a2hands.Notification;
 import com.example.a2hands.NotificationFragment;
 import com.example.a2hands.Post;
 import com.example.a2hands.R;
 import com.example.a2hands.SearchFragment;
-import com.example.a2hands.dummy.DummyContent;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,7 +126,7 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(int x) {
 
     }
 }

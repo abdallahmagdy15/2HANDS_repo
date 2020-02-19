@@ -50,26 +50,50 @@ public class RatingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_rating_list, container, false);
-        String post_id = getArguments().getString("postId");
+        //check fragment is called for home post or profile reviews tab
+        if(getArguments().getString("for").equals("home")){
+            String post_id = getArguments().getString("postId");
 
-        FirebaseDatabase.getInstance().getReference("ratings")
-                .orderByChild("post_id").equalTo(post_id)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Rating> ratings = new ArrayList<>();
-                        for( DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            ratings.add(snapshot.getValue(Rating.class));
+            FirebaseDatabase.getInstance().getReference("ratings")
+                    .orderByChild("post_id").equalTo(post_id)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            List<Rating> ratings = new ArrayList<>();
+                            for( DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                ratings.add(snapshot.getValue(Rating.class));
+                            }
+                            updatePostRatingsUI(ratings,view);
                         }
-                        updatePostRatingsUI(ratings,view);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+        }
+        else{
+            String uid = getArguments().getString("uid");
 
+            FirebaseDatabase.getInstance().getReference("ratings")
+                    .orderByChild("subscriber_id").equalTo(uid)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            List<Rating> ratings = new ArrayList<>();
+                            for( DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                ratings.add(snapshot.getValue(Rating.class));
+                            }
+                            updatePostRatingsUI(ratings,view);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+        }
         return view;
     }
 

@@ -138,60 +138,66 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fill object of help request with data
-                final HelpRequest helpReq = new HelpRequest();
-                helpReq.post_id = postsList.get(position).post_id ;
-                helpReq.publisher_id = FirebaseAuth.getInstance().getUid();
-                helpReq.subscriber_id = postsList.get(position).user_id;
-                //show confirmation dialog if u want to send help request
-                new AlertDialog.Builder(context)
-                        .setTitle("Send Help Request to "+
-                                ((postsList.get(position).visibility)?postsList.get(position).postOwner:"Anonymous") +"?")
-                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                //check if post owner clicks on help button
+                final String uid = FirebaseAuth.getInstance().getUid();
+                if (uid.equals(postsList.get(position).user_id))
+                    Toast.makeText(context, "Can't send help request to yourself!", Toast.LENGTH_LONG).show();
+                else {
+                    //fill object of help request with data
+                    final HelpRequest helpReq = new HelpRequest();
+                    helpReq.post_id = postsList.get(position).post_id;
+                    helpReq.publisher_id = uid;
+                    helpReq.subscriber_id = postsList.get(position).user_id;
+                    //show confirmation dialog if u want to send help request
+                    new AlertDialog.Builder(context)
+                            .setTitle("Send Help Request to " +
+                                    ((postsList.get(position).visibility) ? postsList.get(position).postOwner : "Anonymous") + "?")
+                            .setPositiveButton("Send", new DialogInterface.OnClickListener() {
 
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //save help request to firestore
-                                FirebaseFirestore.getInstance()
-                                        .collection("help_requests")
-                                        .add(helpReq).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                                        Toast.makeText(context,"Help Request Sent !",Toast.LENGTH_SHORT).show();
-                                        //get name of current logged in user
-                                        FirebaseFirestore.getInstance()
-                                                .collection("users").document(helpReq.publisher_id)
-                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                ///////send notification to the subscriber(who notifi is sent to)
-                                                //fill notification obj with data from helpReq obj
-                                                final Notification notifi = new Notification();
-                                                User user  = task.getResult().toObject(User.class);
-                                                String userName = user.first_name + " "+user.last_name ;
-                                                notifi.publisher_name = userName;
-                                                notifi.content = userName + " sent you a help request";
-                                                notifi.subscriber_id = helpReq.subscriber_id;
-                                                notifi.publisher_id = helpReq.publisher_id;
-                                                notifi.publisher_pic = user.profile_pic;
-                                                notifi.type="HELP_REQUEST";
-                                                notifi.help_request_id = task.getResult().getId();
-                                                notifi.post_id = postsList.get(position).post_id;
-                                                /////save notifi obj to realtime
-                                                //push empty record and get its key
-                                                DatabaseReference ref = FirebaseDatabase.getInstance()
-                                                        .getReference("notifications");
-                                                notifi.notification_id =ref.push().getKey();
-                                                //push the notifi obj to this id
-                                                ref.child(notifi.notification_id).setValue(notifi);
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    //save help request to firestore
+                                    FirebaseFirestore.getInstance()
+                                            .collection("help_requests")
+                                            .add(helpReq).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull final Task<DocumentReference> helpReqTask) {
+                                            Toast.makeText(context, "Help Request Sent !", Toast.LENGTH_SHORT).show();
+                                            //get name of current logged in user
+                                            FirebaseFirestore.getInstance()
+                                                    .collection("users").document(helpReq.publisher_id)
+                                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    ///////send notification to the subscriber(who notifi is sent to)
+                                                    //fill notification obj with data from helpReq obj
+                                                    final Notification notifi = new Notification();
+                                                    User user = task.getResult().toObject(User.class);
+                                                    String userName = user.first_name + " " + user.last_name;
+                                                    notifi.publisher_name = userName;
+                                                    notifi.content = userName + " sent you a help request";
+                                                    notifi.subscriber_id = helpReq.subscriber_id;
+                                                    notifi.publisher_id = helpReq.publisher_id;
+                                                    notifi.publisher_pic = user.profile_pic;
+                                                    notifi.type = "HELP_REQUEST";
+                                                    notifi.help_request_id = helpReqTask.getResult().getId();
+                                                    notifi.post_id = postsList.get(position).post_id;
+                                                    /////save notifi obj to realtime
+                                                    //push empty record and get its key
+                                                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                                                            .getReference("notifications");
+                                                    notifi.notification_id = ref.push().getKey();
+                                                    //push the notifi obj to this id
+                                                    ref.child(notifi.notification_id).setValue(notifi);
 
-                                            }
-                                        });
+                                                }
+                                            });
 
-                                    }
-                                });
-                            }
-                        })
-                        .setNegativeButton("Cancel", null).show();
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Cancel", null).show();
+                }
             }
         });
 

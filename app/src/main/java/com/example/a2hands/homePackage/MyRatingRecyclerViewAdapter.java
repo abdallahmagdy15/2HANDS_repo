@@ -1,37 +1,34 @@
 package com.example.a2hands.homePackage;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.Rating;
+import com.example.a2hands.User;
 import com.example.a2hands.homePackage.RatingFragment.OnListFragmentInteractionListener;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,7 +37,6 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
 
     private final List<Rating> ratingsList;
     private final OnListFragmentInteractionListener mListener;
-
     public MyRatingRecyclerViewAdapter(List<Rating> ratings, OnListFragmentInteractionListener listener) {
         ratingsList = ratings;
         mListener = listener;
@@ -50,6 +46,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_rating, parent, false);
+
         return new ViewHolder(view);
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -100,13 +97,39 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                 holder.ratingBarGet.setVisibility(View.GONE);
                 holder.postReviewContainer.setVisibility(View.VISIBLE);
                 holder.ratingBarSet.setVisibility(View.VISIBLE);
+                holder.ratingBarSet.setRating(ratingsList.get(pos).rate);
                 holder.ratingBarSet.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                     @Override
-                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                        //save to ratings in db
+                    public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
+                        //save rating to ratings && calc the total rate for the subscriber
                         FirebaseDatabase.getInstance().getReference("ratings")
                                 .child(ratingsList.get(pos).rating_id)
                                 .child("rate").setValue((int)rating);
+                        FirebaseFirestore.getInstance().collection("users")
+                                .document(ratingsList.get(pos).subscriber_id).get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot doc) {
+                                        User user = doc.toObject(User.class);
+                                        //basic added rate value ranging between [0.1 , -0.1]
+                                        double basicRating =  (rating/50)- 0.05;
+
+                                        double bonusRating;
+                                        if(basicRating>0) {
+                                            //using quadratic eq (more previous rating , more bonus rating)
+                                            bonusRating = Math.pow(rating, 1.8) * basicRating;
+                                        }
+                                        else {
+                                            bonusRating = 0;
+                                        }
+
+                                        user.rate += bonusRating+basicRating;
+                                        user.ratings_count++;
+                                        FirebaseFirestore.getInstance().collection("users")
+                                                .document(ratingsList.get(pos).subscriber_id)
+                                                .set(user);
+                                    }
+                                });
                     }
                 });
                 holder.postReview.setOnClickListener(new View.OnClickListener() {
@@ -115,14 +138,13 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                         //save review to the ratings db
                         FirebaseDatabase.getInstance().getReference().child("ratings")
                                 .child(ratingsList.get(pos).rating_id)
-                                .child("review_text").setValue(holder.ratingWriteReview.getText());
+                                .child("review_text").setValue(holder.ratingWriteReview.getText().toString());
                     }
                 });
 
             }
             else{//yes
                 holder.ratingBarGet.setRating(ratingsList.get(pos).rate);
-                holder.ratingBarGet.setEnabled(false);
                 PrettyTime p = new PrettyTime();
                 holder.ratingDate.setText(p.format(ratingsList.get(pos).date));
                 holder.reviewText.setText(ratingsList.get(pos).review_text);
@@ -132,19 +154,25 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
             //check if a review was submitted
             if(ratingsList.get(pos).review_text.equals("")){//not
                 holder.ratingBarGet.setRating(ratingsList.get(pos).rate);
-                holder.ratingBarGet.setEnabled(false);
                 PrettyTime p = new PrettyTime();
                 holder.ratingDate.setText(p.format(ratingsList.get(pos).date));
             }
             else {//yes
                 holder.ratingBarGet.setRating(ratingsList.get(pos).rate);
-                holder.ratingBarGet.setEnabled(false);
                 PrettyTime p = new PrettyTime();
                 holder.ratingDate.setText(p.format(ratingsList.get(pos).date));
                 holder.reviewText.setText(ratingsList.get(pos).review_text);
             }
 
         }
+        holder.ratingsPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(holder.mView.getContext(), ProfileActivity.class);
+                i.putExtra("uid",ratingsList.get(pos).publisher_id);
+                holder.mView.getContext().startActivity(i);
+            }
+        });
 
     }
 

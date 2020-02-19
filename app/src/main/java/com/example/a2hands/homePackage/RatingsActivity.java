@@ -33,6 +33,8 @@ public class RatingsActivity extends AppCompatActivity implements RatingFragment
         Fragment frg = new RatingFragment();
         Bundle bundle = new Bundle();
         bundle.putString("postId",postId);
+        bundle.putString("for","home");
+
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.ratingsContainer,frg).addToBackStack("");

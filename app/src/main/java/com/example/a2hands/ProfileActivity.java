@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.a2hands.homePackage.PostFragment;
 import com.example.a2hands.homePackage.RatingFragment;
+import com.example.a2hands.homePackage.RatingsActivity;
 import com.example.a2hands.homePackage.dummy.DummyContent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +34,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.text.DecimalFormat;
+
+import static java.lang.StrictMath.round;
 
 
 public class ProfileActivity extends AppCompatActivity  implements PostFragment.OnListFragmentInteractionListener , RatingFragment.OnListFragmentInteractionListener {
@@ -123,8 +128,9 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                 jobTitle.setText(user.job_title);
                 country_region.setText(user.country+", "+user.region);
                 profileBio.setText(user.bio);
-                profileRate.setText(Float.toString(user.rate));
-                ratingBar.setRating( user.rate);
+                DecimalFormat df = new DecimalFormat("##.##");
+                profileRate.setText(df.format(user.rate));
+                ratingBar.setRating( (float)user.rate);
             }
         });
     }
@@ -179,7 +185,12 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
             else
             {
 
-                return new RatingFragment();
+                Fragment frg = new RatingFragment();
+                Bundle b = new Bundle();
+                b.putString("uid",uid);
+                b.putString("for","profile");
+                frg.setArguments(b);
+                return frg;
             }
 
         }

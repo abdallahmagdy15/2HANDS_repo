@@ -13,27 +13,28 @@ public class User {
     public String phone;
     public String user_name;
     public Date birth_date;
-    public float rate;
+    public double rate;
     public String bio;
     public String profile_pic;
     public String profile_cover;
     public String job_title;
+    public int ratings_count;
 
     public User(
-            String first_name,
-            String last_name,
-            boolean gender,
-            Date birth_date ,
+                String first_name,
+                String last_name,
+                boolean gender,
+                Date birth_date,
             String country,
-            String phone,
-            String bio ,
-            String profile_pic,
-            float rate ,
-            String region,
-            String job_title,
-            String user_name,
-            String profile_cover
-    ) {
+                String phone,
+                String region,
+                String user_name,
+                double rate,
+                String bio,
+                String profile_pic,
+                String profile_cover,
+                String job_title,
+                int ratings_count) {
         this.country = country;
         this.region = region;
         this.first_name = first_name;
@@ -47,6 +48,7 @@ public class User {
         this.profile_pic = profile_pic;
         this.profile_cover = profile_cover;
         this.job_title = job_title;
+        this.ratings_count = ratings_count;
     }
 
     public User(){
