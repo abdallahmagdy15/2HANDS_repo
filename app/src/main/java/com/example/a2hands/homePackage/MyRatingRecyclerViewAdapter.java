@@ -37,9 +37,11 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
 
     private final List<Rating> ratingsList;
     private final OnListFragmentInteractionListener mListener;
-    public MyRatingRecyclerViewAdapter(List<Rating> ratings, OnListFragmentInteractionListener listener) {
+    private final String uid;
+    public MyRatingRecyclerViewAdapter(List<Rating> ratings, OnListFragmentInteractionListener listener , String uid) {
         ratingsList = ratings;
         mListener = listener;
+        this.uid = uid;
     }
 
     @Override
@@ -87,7 +89,6 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                     }
                 });
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         /////check if the current user is the owner of ratings post
         if(uid.equals(ratingsList.get(pos).publisher_id)){
             //check if a review was submitted
@@ -139,6 +140,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                         FirebaseDatabase.getInstance().getReference().child("ratings")
                                 .child(ratingsList.get(pos).rating_id)
                                 .child("review_text").setValue(holder.ratingWriteReview.getText().toString());
+
                     }
                 });
 
@@ -169,7 +171,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(holder.mView.getContext(), ProfileActivity.class);
-                i.putExtra("uid",ratingsList.get(pos).publisher_id);
+                i.putExtra("uid",ratingsList.get(pos).subscriber_id);
                 holder.mView.getContext().startActivity(i);
             }
         });

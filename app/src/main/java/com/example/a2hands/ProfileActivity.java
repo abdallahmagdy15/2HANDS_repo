@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import static java.lang.StrictMath.round;
 
@@ -58,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     TextView profileBio;
     TextView profileRate;
     RatingBar ratingBar;
+    TextView ratings_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         profileEditBtn = findViewById(R.id.profileEditBtn);
         profileFollowBtn = findViewById(R.id.profileFollowBtn);
         ratingBar = findViewById(R.id.ratingBarGet);
+        ratings_count = findViewById(R.id.ratings_count);
 
         // setup
         setSupportActionBar(toolbar);
@@ -131,6 +134,10 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                 DecimalFormat df = new DecimalFormat("##.##");
                 profileRate.setText(df.format(user.rate));
                 ratingBar.setRating( (float)user.rate);
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setGroupingUsed(true);
+                ratings_count.setText( nf.format(user.ratings_count) );
+
             }
         });
     }

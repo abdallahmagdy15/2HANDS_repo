@@ -19,6 +19,7 @@ import com.example.a2hands.homePackage.dummy.DummyContent;
 import com.example.a2hands.homePackage.dummy.DummyContent.DummyItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -63,7 +64,8 @@ public class RatingFragment extends Fragment {
                             for( DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 ratings.add(snapshot.getValue(Rating.class));
                             }
-                            updatePostRatingsUI(ratings,view);
+                            String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            updatePostRatingsUI(ratings,view,uid);
                         }
 
                         @Override
@@ -73,7 +75,7 @@ public class RatingFragment extends Fragment {
                     });
         }
         else{
-            String uid = getArguments().getString("uid");
+            final String uid = getArguments().getString("uid");
 
             FirebaseDatabase.getInstance().getReference("ratings")
                     .orderByChild("subscriber_id").equalTo(uid)
@@ -84,7 +86,7 @@ public class RatingFragment extends Fragment {
                             for( DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 ratings.add(snapshot.getValue(Rating.class));
                             }
-                            updatePostRatingsUI(ratings,view);
+                            updatePostRatingsUI(ratings,view ,uid);
                         }
 
                         @Override
@@ -109,13 +111,13 @@ public class RatingFragment extends Fragment {
         }
     }
 
-    void updatePostRatingsUI(List<Rating> ratings, View view ){
+    void updatePostRatingsUI(List<Rating> ratings, View view ,String uid){
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener));
+            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener , uid));
         }
     }
 
