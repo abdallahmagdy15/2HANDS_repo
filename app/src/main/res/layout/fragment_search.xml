@@ -11,32 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#FFFFFF">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/googleg_standard_color_18"
-                app:civ_border_color="#FF000000"
-                app:civ_border_overlay="false"
-                app:civ_border_width="0dp" />
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="80dp"
-                android:layout_marginEnd="10dp"
-                android:closeIcon="@drawable/ic_close_24dp"
-                android:searchIcon="@drawable/ic_search_black_24dp" />
-        </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height=".5dp"
@@ -52,7 +26,7 @@
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
@@ -64,9 +38,11 @@
                 android:id="@+id/button"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:backgroundTint="#00E9E9E9"
                 android:gravity="center_vertical|end"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:text="Edit"
                 android:textColor="#242424" />
         </LinearLayout>

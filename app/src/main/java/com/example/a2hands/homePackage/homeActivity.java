@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
@@ -50,7 +52,8 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
     Spinner catsSpinner;
     String[] catsStrings;
     CircleImageView profile_image ;
-    RelativeLayout homeTopMenu;
+    SearchView searchView;
+    TextView notificationsTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,7 +66,8 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
         badge.setVisible(false);
 
-        homeTopMenu = findViewById(R.id.homeTopMenu);
+        searchView = findViewById(R.id.searchView);
+        notificationsTitle = findViewById(R.id.notificationsTitle);
 
         //category spinner declaration
         catsStrings = getResources().getStringArray(R.array.categories);
@@ -100,8 +104,6 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
             }
         });
 
-        loadPostsFrag();
-
         //check notifications
         FirebaseDatabase.getInstance().getReference("notifications")
                 .orderByChild("subscriber_id")
@@ -118,15 +120,40 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
 
+        catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                loadPosts(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
         navigateHome();
     }
 
+    void loadPosts(int pos){
+        Fragment frg = new PostFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("category", catsStrings[pos]);
+        bundle.putString("for","home");
+        frg.setArguments(bundle);
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.homeFrag,frg).addToBackStack("");
+        ft.commit();
+    }
     public void navigateHome(){
-        homeTopMenu.setVisibility(View.VISIBLE);
-        loadPostsFrag();
-
+        catsSpinner.setVisibility(View.VISIBLE);
+        searchView.setVisibility(View.GONE);
+        notificationsTitle.setVisibility(View.GONE);
+        loadPosts(0);
     }
     public void navigateSearch(){
+        searchView.setVisibility(View.VISIBLE);
+        catsSpinner.setVisibility(View.GONE);
+        notificationsTitle.setVisibility(View.GONE);
+
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new SearchFragment()).addToBackStack(null);
         ft.commit();
@@ -138,6 +165,10 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
         startActivity(intent);
     }
     void navigateNotification(){
+        notificationsTitle.setVisibility(View.VISIBLE);
+        catsSpinner.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
+
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new NotificationFragment()).addToBackStack(null);
         ft.commit();
@@ -146,29 +177,9 @@ public class homeActivity extends AppCompatActivity implements SearchFragment.On
 
     }
 
-    public void loadPostsFrag(){
-        catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Fragment frg = new PostFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("category", catsStrings[position]);
-                bundle.putString("for","home");
-                frg.setArguments(bundle);
-                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.homeFrag,frg).addToBackStack(null);
-                ft.commit();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        catsSpinner.setSelection(0);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        homeTopMenu.setVisibility(View.GONE);
         int pos =0;
         navItemId = item.getItemId();
         for (int i = 0; i < nav.getMenu().size(); i++) {
