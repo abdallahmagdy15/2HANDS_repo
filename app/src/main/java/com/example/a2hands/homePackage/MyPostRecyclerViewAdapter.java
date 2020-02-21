@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -143,9 +144,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         }
         else if(postsList.get(position).videos != null){
             holder.videoContainer.setVisibility(View.VISIBLE);
-                    holder.postVideo.setVideoURI(Uri.parse(postsList.get(position).videos.get(0)));
-                    holder.postVideo.requestFocus();
-                    holder.postVideo.start();
+            holder.postVideo.setVideoURI(Uri.parse(postsList.get(position).videos.get(0)));
+            holder.postVideo.requestFocus();
+            MediaController mediaController = new MediaController(context);
+            mediaController.setAnchorView(holder.postVideo);
+            holder.postVideo.setMediaController(mediaController);
         }
 
         holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +228,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         });
         ////////////likes
         //check if post is liked by current user or not
-        isliked(postsList.get(position).post_id,holder.uid, holder.likeBtn);
+        try {
+            isliked(postsList.get(position).post_id,holder.uid, holder.likeBtn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

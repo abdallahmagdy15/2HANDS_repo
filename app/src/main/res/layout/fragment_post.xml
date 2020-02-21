@@ -107,9 +107,7 @@
     <ImageView
         android:id="@+id/postImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="500dp"
-        android:minHeight="150dp"
+        android:layout_height="192dp"
         android:visibility="gone" />
 
     <FrameLayout
@@ -122,9 +120,12 @@
 
         <VideoView
             android:id="@+id/postVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true" />
     </FrameLayout>
 
     <View
@@ -135,7 +136,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -145,8 +146,8 @@
             android:layout_weight="1"
             android:background="#005E5E5E"
             android:backgroundTint="#003C3C3C"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:srcCompat="@drawable/like" />
 
         <ImageView
@@ -156,8 +157,8 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:srcCompat="@drawable/comment2" />
 
         <ImageView
@@ -167,8 +168,8 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:srcCompat="@drawable/help" />
 
         <ImageView
@@ -178,8 +179,8 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:srcCompat="@drawable/rate" />
 
         <ImageView
@@ -189,8 +190,8 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             app:srcCompat="@drawable/share" />
     </LinearLayout>
 
