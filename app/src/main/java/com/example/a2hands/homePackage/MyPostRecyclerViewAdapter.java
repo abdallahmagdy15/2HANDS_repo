@@ -220,7 +220,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         });*/
 
         isliked(postsList.get(position).post_id, holder.like);
-        //mlikes(holder.likes_num, post.getPostID());
+        mlikes(postsList.get(position).post_id);
        holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,7 +268,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
     }
-    private void mlikes(final TextView likes, String postid){
+    private void mlikes(final String postid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("likes")
                 .child(postid);
         reference.addValueEventListener(new ValueEventListener() {
@@ -276,6 +276,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //likes.setText(dataSnapshot.getChildrenCount() + " Likes");
                 //updatepost with count likes
+                DocumentReference ref = FirebaseFirestore.getInstance().collection("posts").document(postid);
+                ref.update("likes_count", dataSnapshot.getChildrenCount());
             }
 
             @Override
