@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
@@ -79,6 +80,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView postUserId;
         public final Button ratingsBtn;
         ImageView like;
+        ImageView postImage;
+        VideoView postedVideo;
 
         public ViewHolder(View view) {
             super(view);
@@ -93,9 +96,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             ratingsBtn = view.findViewById(R.id.ratingsBtn);
             helpBtn = view.findViewById(R.id.helpBtn);
             like = view.findViewById(R.id.likeBtn);
+            postImage = view.findViewById(R.id.postImage);
+            postedVideo = view.findViewById(R.id.postedVideo);
         }
-
-
     }
     @Override
     public void onBindViewHolder(final ViewHolder holder,final int position) {
@@ -209,7 +212,21 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
 
-
+        if(postsList.get(position).image != null){
+            Picasso.get().load(postsList.get(position).image).into(holder.postImage);
+            holder.postImage.setVisibility(View.VISIBLE);
+            holder.postedVideo.setVisibility(View.GONE);
+        }
+        else if(postsList.get(position).video != null){
+            holder.postedVideo.setVideoURI(Uri.parse(postsList.get(position).video));
+            holder.postedVideo.start();
+            holder.postedVideo.setVisibility(View.VISIBLE);
+            holder.postImage.setVisibility(View.GONE);
+        }
+        else {
+            holder.postedVideo.setVisibility(View.GONE);
+            holder.postImage.setVisibility(View.GONE);
+        }
         //likes
         /*holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +241,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
        holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),  postsList.get(position).post_id, Toast.LENGTH_SHORT).show();;
+                //Toast.makeText(view.getContext(),  postsList.get(position).post_id, Toast.LENGTH_SHORT).show();;
+                Toast.makeText(view.getContext(), postsList.get(position).video, Toast.LENGTH_SHORT).show();
                 if(holder.like.getTag().equals("like")){
                     FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
                 }

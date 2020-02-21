@@ -110,6 +110,13 @@
         android:maxHeight="600dp"
         android:minHeight="150dp"
         android:visibility="gone" />
+    <VideoView
+        android:id="@+id/postedVideo"
+        android:layout_width="match_parent"
+        android:layout_height="250sp"
+        android:maxHeight="600dp"
+        android:minHeight="150dp"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/videoContainer"

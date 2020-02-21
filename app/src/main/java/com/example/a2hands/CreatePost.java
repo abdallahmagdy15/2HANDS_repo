@@ -212,30 +212,42 @@ public class CreatePost extends AppCompatActivity {
         post.user_id = uid;
         post.profile_pic = user.profile_pic;
         if (videoUri != null){
-            storageReference.child(videoName).putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            final StorageReference fileReference = storageReference.child(videoName);
+            uploadTask = fileReference.putFile(videoUri);
+            uploadTask.continueWithTask(new Continuation() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUri = taskSnapshot.getUploadSessionUri();
-                    videoUrl = downloadUri.toString();
-                    post.video = videoUrl;
-                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                    String postid = ref.document().getId();
-                    post.post_id = postid;
-                    ref.document(postid)
-                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    });
-                    startActivity(new Intent(CreatePost.this, MainActivity.class));
-                    finish();
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri = (Uri) task.getResult();
+                        videoUrl = downloadUri.toString();
+                        post.video = videoUrl;
+                        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                        String postid = ref.document().getId();
+                        post.post_id = postid;
+                        ref.document(postid)
+                                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+                        startActivity(new Intent(CreatePost.this, MainActivity.class));
+                        finish();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreatePost.this, "Failed to Upload video", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

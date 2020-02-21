@@ -127,7 +127,8 @@
                 android:layout_height="150sp"
                 android:background="#79D6D6D6"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_add_photo" />
+                android:src="@drawable/ic_add_photo"
+                android:visibility="gone"/>
             <VideoView
                 android:id="@+id/selectedVideo"
                 android:layout_width="150dp"
