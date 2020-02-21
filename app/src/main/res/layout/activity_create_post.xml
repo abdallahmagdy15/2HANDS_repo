@@ -121,6 +121,13 @@
                 android:paddingTop="5dp"
                 android:textColorHighlight="#CE432094"
                 android:textColorLink="#34079C" />
+            <ImageView
+                android:id="@+id/selectedImage"
+                android:layout_width="150dp"
+                android:layout_height="150sp"
+                android:background="#79D6D6D6"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_add_photo" />
 
             <Switch
                 android:id="@+id/createdPostIsAnon"
@@ -153,7 +160,7 @@
                     android:textSize="15sp" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/add_image"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
