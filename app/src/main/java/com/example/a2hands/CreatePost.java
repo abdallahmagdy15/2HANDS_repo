@@ -219,7 +219,9 @@ public class CreatePost extends AppCompatActivity {
                     videoUrl = downloadUri.toString();
                     post.video = videoUrl;
                     CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                    ref.document(ref.document().getId())
+                    String postid = ref.document().getId();
+                    post.post_id = postid;
+                    ref.document(postid)
                             .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -256,7 +258,9 @@ public class CreatePost extends AppCompatActivity {
                         imageUrl = downloadUri.toString();
                         post.image = imageUrl;
                         CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                        ref.document(ref.document().getId())
+                        String postid = ref.document().getId();
+                        post.post_id = postid;
+                        ref.document(postid)
                                 .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -281,7 +285,9 @@ public class CreatePost extends AppCompatActivity {
         }
         else{
             CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-            ref.document(ref.document().getId())
+            String postid = ref.document().getId();
+            post.post_id = postid;
+            ref.document(postid)
                     .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

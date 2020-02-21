@@ -163,19 +163,16 @@
             app:iconSize="18dp"
             app:iconTint="#313131" />
 
-        <Button
+        <ImageView
             android:id="@+id/likeBtn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:scaleType="centerInside"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_thumb_up_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
+            android:src="@drawable/ic_like" />
 
         <Button
             android:id="@+id/helpBtn"

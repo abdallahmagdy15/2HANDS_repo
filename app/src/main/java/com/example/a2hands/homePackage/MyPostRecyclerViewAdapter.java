@@ -31,8 +31,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -74,6 +78,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final Button helpBtn;
         public final TextView postUserId;
         public final Button ratingsBtn;
+        ImageView like;
 
         public ViewHolder(View view) {
             super(view);
@@ -87,6 +92,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postUserId = view.findViewById(R.id.postUserId);
             ratingsBtn = view.findViewById(R.id.ratingsBtn);
             helpBtn = view.findViewById(R.id.helpBtn);
+            like = view.findViewById(R.id.likeBtn);
         }
 
 
@@ -99,6 +105,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.location.setText(postsList.get(position).location);
         String cat = postsList.get(position).category;
         holder.category.setText((!cat.equals("General"))?cat:"");
+
+        //post
 
         if(!postsList.get(position).visibility){
             holder.postOwner.setText("Anonymous");
@@ -201,10 +209,79 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
 
+
+        //likes
+        /*holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isliked(postsList.get(position).post_id, holder.like);
+                Toast.makeText(view.getContext(), "ID: "+ postsList.get(position).post_id, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+        isliked(postsList.get(position).post_id, holder.like);
+        //mlikes(holder.likes_num, post.getPostID());
+       holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(),  postsList.get(position).post_id, Toast.LENGTH_SHORT).show();;
+                if(holder.like.getTag().equals("like")){
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                }
+                else {
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return postsList.size();
+    }
+    private void isliked(String postid, final ImageView imageView){
+        imageView.setImageResource(R.drawable.ic_liked);
+        imageView.setTag("liked");
+        imageView.setImageResource(R.drawable.ic_liked);
+        imageView.setTag("liked");
+
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes").child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(firebaseUser.getUid()).exists()){
+                    imageView.setImageResource(R.drawable.ic_liked);
+                    imageView.setTag("liked");
+                }
+                else {
+                    imageView.setImageResource(R.drawable.ic_like);
+                    imageView.setTag("like");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void mlikes(final TextView likes, String postid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("likes")
+                .child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //likes.setText(dataSnapshot.getChildrenCount() + " Likes");
+                //updatepost with count likes
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
