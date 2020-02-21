@@ -96,32 +96,35 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="post is here post is herepost is herepost is herepost is herepost is here4"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="#1B1B1B"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/postImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="600dp"
+        android:maxHeight="500dp"
         android:minHeight="150dp"
         android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/videoContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="192dp"
+        android:background="#00FFFDFD"
+        android:minHeight="192dp"
         android:visibility="gone">
 
         <VideoView
             android:id="@+id/postVideo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:layout_gravity="center" />
     </FrameLayout>
 
     <View
@@ -132,78 +135,63 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/commentBtn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_comment_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
-
-        <Button
-            android:id="@+id/shareBtn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_share_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
-
-        <Button
+        <ImageView
             android:id="@+id/likeBtn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#005E5E5E"
+            android:backgroundTint="#003C3C3C"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/commentBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_thumb_up_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/comment2" />
 
-        <Button
+        <ImageView
             android:id="@+id/helpBtn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_sentiment_satisfied_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/help" />
 
-        <Button
-            android:id="@+id/ratingsBtn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/ratingBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            app:icon="@drawable/ic_poll_black_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconSize="18dp"
-            app:iconTint="#313131" />
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/rate" />
+
+        <ImageView
+            android:id="@+id/shareBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#003C3C3C"
+            android:hapticFeedbackEnabled="true"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/share" />
     </LinearLayout>
 
     <View

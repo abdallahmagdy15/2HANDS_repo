@@ -1,20 +1,35 @@
 package com.example.a2hands;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.a2hands.homePackage.PostFragment;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +42,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public class CreatePost extends AppCompatActivity {
@@ -39,6 +62,37 @@ public class CreatePost extends AppCompatActivity {
     Switch createdPostIsAnon;
     DatabaseReference db;
     ImageView ownerPic;
+    final Post post = new Post();
+
+
+    //creating images and camera
+    Uri imageUri;
+    String imageUrl = "";
+    StorageTask uploadTask;
+    StorageReference storageReference;
+    private static final int PICK_IMAGE_REQUEST = 1;
+
+    ImageView selectedImage;
+    Button add_image;
+
+
+    //cameraRequest
+    //camera request
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
+    Button camerabtn;
+    String currentPhotoPath;
+
+    //uploadVideo
+    public static final int VIDEO_REQUEST_CODE = 3;
+    VideoView selectedVideo ;
+    Button videobtn;
+    Uri videoUri;
+    String videoUrl = "";
+    MediaController mc;
+    String videoName;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +128,50 @@ public class CreatePost extends AppCompatActivity {
             }
         });
 
+
+        ////camera and video upload - waleed
+        camerabtn = findViewById(R.id.createPostWithImageCamera);
+        camerabtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermissions();
+            }
+        });
+
+        //uploadVideo
+        videobtn = findViewById(R.id.createPostWithVideo);
+        selectedVideo = findViewById(R.id.selectedVideo);
+
+        selectedVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mc = new MediaController(CreatePost.this);
+                selectedVideo.setMediaController(mc);
+                mc.setAnchorView(selectedVideo);
+            }
+        });
+
+
+        videobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openVideoChooser();
+            }
+        });
+        //camerabtn
+        //addimage decleartion
+        storageReference = FirebaseStorage.getInstance().getReference("posts");
+        selectedImage = findViewById(R.id.selectedImage);
+        add_image = findViewById(R.id.createPostWithImage);
+        add_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
+            }
+        });
+
+        ///--------end waleed task
+
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +187,6 @@ public class CreatePost extends AppCompatActivity {
     }
 
     public void submitPost() {
-        final Post post = new Post();
         post.category = catSpinner.getSelectedItem().toString();
         post.content_text = createdPostText.getText().toString();
         post.location = "Egypt";
@@ -98,26 +195,7 @@ public class CreatePost extends AppCompatActivity {
 
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        /*db.child("users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User u = dataSnapshot.getValue(User.class);
-                post.postOwner = u.first_name+" "+u.last_name;
-                post.user_id = uid;
-                post.profile_pic = u.profile_pic;
-                db.child("posts").setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });*/
         // Add a new document with a generated ID
         PostFragment.getUser(new Callback() {
             @Override
@@ -125,18 +203,242 @@ public class CreatePost extends AppCompatActivity {
                 post.postOwner = u.first_name+" "+u.last_name;
                 post.user_id = uid;
                 post.profile_pic = u.profile_pic;
-                CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                ref.document(ref.document().getId())
-                        .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
+                uploadPost();
             }
         },uid);
 
+
+
+
+    }
+
+void uploadPost(){
+    //////// add media to post by  --- waleed
+    if (videoUri != null){
+        final StorageReference fileReference = storageReference.child(videoName);
+        uploadTask = fileReference.putFile(videoUri);
+        uploadTask.continueWithTask(new Continuation() {
+            @Override
+            public Object then(@NonNull Task task) throws Exception {
+                if(!task.isSuccessful()){
+                    task.getException();
+                }
+                return fileReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Uri downloadUri = (Uri) task.getResult();
+                    videoUrl = downloadUri.toString();
+                    post.videos = new ArrayList<>();
+                    post.videos.add(videoUrl);
+                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                    String postid = ref.document().getId();
+                    post.post_id = postid;
+                    ref.document(postid)
+                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                    startActivity(new Intent(CreatePost.this, MainActivity.class));
+                    finish();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    else if (imageUri != null){
+        final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        uploadTask = fileReference.putFile(imageUri);
+        uploadTask.continueWithTask(new Continuation() {
+            @Override
+            public Object then(@NonNull Task task) throws Exception {
+                if(!task.isSuccessful()){
+                    task.getException();
+                }
+                return fileReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()){
+                    Uri downloadUri = task.getResult();
+                    imageUrl = downloadUri.toString();
+                    post.images = new ArrayList<>();
+                    post.images.add(imageUrl);
+                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                    String postid = ref.document().getId();
+                    post.post_id = postid;
+                    ref.document(postid)
+                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                    startActivity(new Intent(CreatePost.this, MainActivity.class));
+                    finish();
+                }
+                else {
+                    Toast.makeText(CreatePost.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    else{
+        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+        String postid = ref.document().getId();
+        post.post_id = postid;
+        ref.document(postid)
+                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+        startActivity(new Intent(CreatePost.this, MainActivity.class));
+        finish();
+    }
+}
+
+
+    ///////////--- methods for media upload - waleed
+    private void openVideoChooser() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, VIDEO_REQUEST_CODE);
+
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            videoUri = data.getData();
+            selectedVideo.setVideoURI(videoUri);
+            selectedVideo.setVisibility(View.VISIBLE);
+            selectedImage.setVisibility(View.GONE);
+            //getting video Extension
+            String mimeType = getContentResolver().getType(videoUri);
+            String extension = mimeType.substring(mimeType.lastIndexOf("/")+1);
+            videoName = System.currentTimeMillis() + "." + extension;
+            //Toast.makeText(PostActivity.this, videoName, Toast.LENGTH_LONG).show();
+        }
+        else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+            File f = new File(currentPhotoPath);
+            imageUri = Uri.fromFile(f);
+            selectedImage.setImageURI(imageUri);
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
+
+        }
+        else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
+            imageUri = data.getData();
+            selectedImage.setImageURI(imageUri);
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
+        }
+        else {
+            startActivity(new Intent(CreatePost.this, MainActivity.class));
+            finish();
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    //methods to convert bitmap to uriImage to upload it
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName;
+        imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File...
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.a2hands.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+            }
+        }
+    }
+
+
+    //camera methods
+    private void askCameraPermissions() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        }else {
+            dispatchTakePictureIntent();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CAMERA_PERM_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                dispatchTakePictureIntent();
+            }else {
+                Toast.makeText(this, "Camera Permission is Required to Use camera.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }

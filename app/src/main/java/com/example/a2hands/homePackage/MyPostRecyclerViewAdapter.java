@@ -8,38 +8,39 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.text.SpannableStringBuilder;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
 import com.example.a2hands.Post;
 import com.example.a2hands.ProfileActivity;
-import com.example.a2hands.Rating;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-import java.net.UnknownServiceException;
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -71,9 +72,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView location;
         public final TextView category;
         public final CircleImageView postOwnerPic;
-        public final Button helpBtn;
         public final TextView postUserId;
-        public final Button ratingsBtn;
+        public final FrameLayout videoContainer;
+        public final ImageView postImage;
+        public final VideoView postVideo;
+        public final ImageView helpBtn;
+        public final ImageView ratingsBtn;
+        public final ImageView likeBtn;
+        public final String uid = FirebaseAuth.getInstance().getUid();
+
 
         public ViewHolder(View view) {
             super(view);
@@ -85,8 +92,12 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             postUserId = view.findViewById(R.id.postUserId);
-            ratingsBtn = view.findViewById(R.id.ratingsBtn);
+            ratingsBtn = view.findViewById(R.id.ratingBtn);
             helpBtn = view.findViewById(R.id.helpBtn);
+            videoContainer = view.findViewById(R.id.videoContainer);
+            postImage = view.findViewById(R.id.postImage);
+            postVideo = view.findViewById(R.id.postVideo);
+            likeBtn = view.findViewById(R.id.likeBtn);
         }
 
 
@@ -125,6 +136,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             });
         }
 
+        ////check if there is any media attached with the post
+        if(postsList.get(position).images != null){
+            holder.postImage.setVisibility(View.VISIBLE);
+            Picasso.get().load(Uri.parse(postsList.get(position).images.get(0))).into(holder.postImage);
+        }
+        else if(postsList.get(position).videos != null){
+            holder.videoContainer.setVisibility(View.VISIBLE);
+                    holder.postVideo.setVideoURI(Uri.parse(postsList.get(position).videos.get(0)));
+                    holder.postVideo.requestFocus();
+                    holder.postVideo.start();
+        }
+
         holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,19 +157,19 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
 
+
         //set listener for help button in any post
         holder.helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //check if post owner clicks on help button
-                final String uid = FirebaseAuth.getInstance().getUid();
-                if (uid.equals(postsList.get(position).user_id))
+                if (holder.uid.equals(postsList.get(position).user_id))
                     Toast.makeText(context, "Can't send help request to yourself!", Toast.LENGTH_LONG).show();
                 else {
                     //fill object of help request with data
                     final HelpRequest helpReq = new HelpRequest();
                     helpReq.post_id = postsList.get(position).post_id;
-                    helpReq.publisher_id = uid;
+                    helpReq.publisher_id = holder.uid;
                     helpReq.subscriber_id = postsList.get(position).user_id;
                     //show confirmation dialog if u want to send help request
                     new AlertDialog.Builder(context)
@@ -200,11 +223,70 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             }
         });
+        ////////////likes
+        //check if post is liked by current user or not
+        isliked(postsList.get(position).post_id,holder.uid, holder.likeBtn);
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.likeBtn.getTag().equals("like")){
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id)
+                            .child(holder.uid).setValue(true);
+                    updatePostLikes(postsList.get(position).post_id);
 
+                }
+                else {
+                    FirebaseDatabase.getInstance().getReference().child("likes")
+                            .child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+
+                }
+            }
+        });
     }
+//------------------------
 
     @Override
     public int getItemCount() {
         return postsList.size();
     }
+
+    private void isliked(String postid ,final String uid, final ImageView imageView){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes").child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(uid).exists()){
+                    imageView.setImageResource(R.drawable.like_filled);
+                    imageView.setTag("liked");
+                }
+                else {
+                    imageView.setImageResource(R.drawable.like);
+                    imageView.setTag("like");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void updatePostLikes(final String postid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("likes")
+                .child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //update post with count likes
+                DocumentReference ref = FirebaseFirestore.getInstance().collection("posts").document(postid);
+                ref.update("likes_count", dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
