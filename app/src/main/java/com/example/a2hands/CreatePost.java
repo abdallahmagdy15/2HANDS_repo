@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,9 +22,11 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.a2hands.homePackage.PostFragment;
 
@@ -42,6 +45,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -80,6 +84,15 @@ public class CreatePost extends AppCompatActivity {
     Button camerabtn;
     String currentPhotoPath;
 
+    //uploadVideo
+    public static final int VIDEO_REQUEST_CODE = 3;
+    VideoView selectedVideo ;
+    Button videobtn;
+    Uri videoUri;
+    String videoUrl = "";
+    MediaController mc;
+    String videoName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +114,26 @@ public class CreatePost extends AppCompatActivity {
             }
         });
 
+        //uploadVideo
+        videobtn = findViewById(R.id.videobtn);
+        selectedVideo = findViewById(R.id.selectedVideo);
+
+        selectedVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mc = new MediaController(CreatePost.this);
+                selectedVideo.setMediaController(mc);
+                mc.setAnchorView(selectedVideo);
+            }
+        });
+
+
+        videobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openVideoChooser();
+            }
+        });
         //camerabtn
         //addimage decleartion
         storageReference = FirebaseStorage.getInstance().getReference("posts");
@@ -148,6 +181,14 @@ public class CreatePost extends AppCompatActivity {
         });
     }
 
+    private void openVideoChooser() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, VIDEO_REQUEST_CODE);
+
+    }
+
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -170,7 +211,33 @@ public class CreatePost extends AppCompatActivity {
         post.postOwner = user.first_name+" "+user.last_name;
         post.user_id = uid;
         post.profile_pic = user.profile_pic;
-        if (imageUri != null){
+        if (videoUri != null){
+            storageReference.child(videoName).putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUri = taskSnapshot.getUploadSessionUri();
+                    videoUrl = downloadUri.toString();
+                    post.video = videoUrl;
+                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                    ref.document(ref.document().getId())
+                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                    startActivity(new Intent(CreatePost.this, MainActivity.class));
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(CreatePost.this, "Failed to Upload video", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else if (imageUri != null){
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
             uploadTask = fileReference.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation() {
@@ -270,19 +337,37 @@ public class CreatePost extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
+
+        if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK && data != null){
+            videoUri = data.getData();
+            selectedVideo.setVideoURI(videoUri);
+            selectedVideo.setVisibility(View.VISIBLE);
+            selectedImage.setVisibility(View.GONE);
+            //getting video Extension
+            String mimeType = getContentResolver().getType(videoUri);
+            String extension = mimeType.substring(mimeType.lastIndexOf("/")+1);
+            videoName = System.currentTimeMillis() + "." + extension;
+            //Toast.makeText(PostActivity.this, videoName, Toast.LENGTH_LONG).show();
+        }
+        else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
             File f = new File(currentPhotoPath);
             imageUri = Uri.fromFile(f);
             selectedImage.setImageURI(imageUri);
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
 
         }
         else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
             imageUri = data.getData();
             selectedImage.setImageURI(imageUri);
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
         }
         else {
             startActivity(new Intent(CreatePost.this, MainActivity.class));
             finish();
+            selectedVideo.setVisibility(View.GONE);
+            selectedImage.setVisibility(View.VISIBLE);
         }
     }
 

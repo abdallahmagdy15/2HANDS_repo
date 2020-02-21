@@ -128,6 +128,12 @@
                 android:background="#79D6D6D6"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_add_photo" />
+            <VideoView
+                android:id="@+id/selectedVideo"
+                android:layout_width="150dp"
+                android:layout_height="150sp"
+                android:visibility="gone"
+                android:src="@drawable/ic_add_photo" />
 
             <Switch
                 android:id="@+id/createdPostIsAnon"
@@ -172,7 +178,7 @@
                     app:iconTint="#1F1F1F" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/videobtn"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"

@@ -21,7 +21,7 @@ public class Post {
     public String check_in;
     public String content_text;
     public @ServerTimestamp Date date;
-    public List<String> videos;
+    public String video;
     public int likes_count = 0;
     public String image;
     public boolean state;
@@ -38,14 +38,14 @@ public class Post {
     }
 
     public Post(String category, String check_in, String content_text,
-                Date date, List<String> videos, int likes_count, String post_id,
+                Date date, String video, int likes_count, String post_id,
                 String image, boolean state, String profile_pic ,
                 boolean visibility , String location , String user_id) {
         this.category = category;
         this.check_in = check_in;
         this.content_text = content_text;
         this.date = date;
-        this.videos = videos;
+        this.video = video;
         this.likes_count = likes_count;
         this.image = image;
         this.state = state;
