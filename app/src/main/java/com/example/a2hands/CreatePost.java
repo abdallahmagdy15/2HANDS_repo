@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -187,6 +188,8 @@ public class CreatePost extends AppCompatActivity {
     }
 
     public void submitPost() {
+        submitPost.setEnabled(false);
+        submitPost.setTextColor(Color.GRAY);
         post.category = catSpinner.getSelectedItem().toString();
         post.content_text = createdPostText.getText().toString();
         post.location = "Egypt";
@@ -212,110 +215,110 @@ public class CreatePost extends AppCompatActivity {
 
     }
 
-void uploadPost(){
-    //////// add media to post by  --- waleed
-    if (videoUri != null){
-        final StorageReference fileReference = storageReference.child(videoName);
-        uploadTask = fileReference.putFile(videoUri);
-        uploadTask.continueWithTask(new Continuation() {
-            @Override
-            public Object then(@NonNull Task task) throws Exception {
-                if(!task.isSuccessful()){
-                    task.getException();
+    void uploadPost(){
+        //////// add media to post by  --- waleed
+        if (videoUri != null){
+            final StorageReference fileReference = storageReference.child(videoName);
+            uploadTask = fileReference.putFile(videoUri);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
                 }
-                return fileReference.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
-                    Uri downloadUri = (Uri) task.getResult();
-                    videoUrl = downloadUri.toString();
-                    post.videos = new ArrayList<>();
-                    post.videos.add(videoUrl);
-                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                    String postid = ref.document().getId();
-                    post.post_id = postid;
-                    ref.document(postid)
-                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    });
-                    startActivity(new Intent(CreatePost.this, MainActivity.class));
-                    finish();
+            }).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri = (Uri) task.getResult();
+                        videoUrl = downloadUri.toString();
+                        post.videos = new ArrayList<>();
+                        post.videos.add(videoUrl);
+                        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                        String postid = ref.document().getId();
+                        post.post_id = postid;
+                        ref.document(postid)
+                                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+                        startActivity(new Intent(CreatePost.this, LoginActivity.class));
+                        finish();
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    else if (imageUri != null){
-        final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-        uploadTask = fileReference.putFile(imageUri);
-        uploadTask.continueWithTask(new Continuation() {
-            @Override
-            public Object then(@NonNull Task task) throws Exception {
-                if(!task.isSuccessful()){
-                    task.getException();
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                return fileReference.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()){
-                    Uri downloadUri = task.getResult();
-                    imageUrl = downloadUri.toString();
-                    post.images = new ArrayList<>();
-                    post.images.add(imageUrl);
-                    CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                    String postid = ref.document().getId();
-                    post.post_id = postid;
-                    ref.document(postid)
-                            .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    });
-                    startActivity(new Intent(CreatePost.this, MainActivity.class));
-                    finish();
+            });
+        }
+        else if (imageUri != null){
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
                 }
-                else {
-                    Toast.makeText(CreatePost.this, "Failed", Toast.LENGTH_SHORT).show();
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()){
+                        Uri downloadUri = task.getResult();
+                        imageUrl = downloadUri.toString();
+                        post.images = new ArrayList<>();
+                        post.images.add(imageUrl);
+                        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+                        String postid = ref.document().getId();
+                        post.post_id = postid;
+                        ref.document(postid)
+                                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+                        startActivity(new Intent(CreatePost.this, LoginActivity.class));
+                        finish();
+                    }
+                    else {
+                        Toast.makeText(CreatePost.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+            String postid = ref.document().getId();
+            post.post_id = postid;
+            ref.document(postid)
+                    .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+            startActivity(new Intent(CreatePost.this, LoginActivity.class));
+            finish();
+        }
     }
-    else{
-        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-        String postid = ref.document().getId();
-        post.post_id = postid;
-        ref.document(postid)
-                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
-        startActivity(new Intent(CreatePost.this, MainActivity.class));
-        finish();
-    }
-}
 
 
     ///////////--- methods for media upload - waleed
@@ -368,7 +371,7 @@ void uploadPost(){
             selectedImage.setVisibility(View.VISIBLE);
         }
         else {
-            startActivity(new Intent(CreatePost.this, MainActivity.class));
+            startActivity(new Intent(CreatePost.this, LoginActivity.class));
             finish();
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);

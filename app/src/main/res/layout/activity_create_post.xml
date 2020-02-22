@@ -53,7 +53,7 @@
                         android:backgroundTint="#00F7F7F7"
                         android:gravity="center_vertical|end"
                         android:text="Post"
-                        android:textColor="#FFFFFF" />
+                        android:textColor="#fff" />
                 </LinearLayout>
 
                 <View
@@ -121,13 +121,14 @@
                 android:paddingTop="5dp"
                 android:textColorHighlight="#CE432094"
                 android:textColorLink="#34079C" />
+
             <ImageView
                 android:id="@+id/selectedImage"
-                android:layout_width="150dp"
-                android:layout_height="150sp"
-                android:background="#79D6D6D6"
+                android:layout_width="wrap_content"
+                android:layout_height="192dp"
+                android:layout_marginStart="15dp"
                 android:scaleType="centerInside"
-                android:visibility="gone"/>
+                android:visibility="gone" />
             <VideoView
                 android:id="@+id/selectedVideo"
                 android:layout_width="150dp"

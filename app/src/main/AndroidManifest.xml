@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a2hands">
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,9 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".homePackage.RatingsActivity" android:parentActivityName=".homePackage.RatingsActivity"></activity>
+        <activity android:name=".SavedActivity"></activity>
+        <activity android:name=".homePackage.RatingsActivity"
+            android:parentActivityName=".homePackage.RatingsActivity" />
         <activity android:name=".ForgetPasswordActivity" />
-        <activity android:name=".LoginActivity" />
         <activity
             android:name=".ProfileActivity"
             android:parentActivityName=".ProfileActivity" />
@@ -27,15 +31,27 @@
         <activity android:name=".signupPackage.signupSetBioActivity" />
         <activity android:name=".signupPackage.signupPickPictureActivity" />
         <activity android:name=".signupPackage.signupSetLocationActivity" />
-        <activity android:name=".signupPackage.signupCreatePasswordActivity" />
         <activity android:name=".signupPackage.signUpPhoneVerificationActivity" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".settingsPackage.SettingsActivity" />
+        <activity android:name=".settingsPackage.AboutAppActivity" />
+        <activity android:name=".settingsPackage.BlockedAccsActivity" />
+        <activity android:name=".settingsPackage.DeleteAccActivity" />
+        <activity android:name=".settingsPackage.EditCountryActivity" />
+        <activity android:name=".settingsPackage.EditEmailActivity" />
+        <activity android:name=".settingsPackage.EditNameActivity" />
+        <activity android:name=".settingsPackage.EditPassActivity" />
+        <activity android:name=".settingsPackage.EditPhoneActivity" />
+        <activity android:name=".settingsPackage.LanguageActivity" />
+        <activity android:name=".settingsPackage.NotificationActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.a2hands.fileprovider"
@@ -43,7 +59,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 
