@@ -74,20 +74,20 @@ public class CreatePost extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     ImageView selectedImage;
-    Button add_image;
+    ImageView add_image;
 
 
     //cameraRequest
     //camera request
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
-    Button camerabtn;
+    ImageView camerabtn;
     String currentPhotoPath;
 
     //uploadVideo
     public static final int VIDEO_REQUEST_CODE = 3;
     VideoView selectedVideo ;
-    Button videobtn;
+    ImageView videobtn;
     Uri videoUri;
     String videoUrl = "";
     MediaController mc;
@@ -189,7 +189,7 @@ public class CreatePost extends AppCompatActivity {
 
     public void submitPost() {
         submitPost.setEnabled(false);
-        submitPost.setTextColor(Color.GRAY);
+        submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
         post.category = catSpinner.getSelectedItem().toString();
         post.content_text = createdPostText.getText().toString();
         post.location = "Egypt";

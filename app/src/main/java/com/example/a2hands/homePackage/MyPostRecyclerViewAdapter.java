@@ -73,7 +73,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView location;
         public final TextView category;
         public final CircleImageView postOwnerPic;
-        public final TextView postUserId;
         public final FrameLayout videoContainer;
         public final ImageView postImage;
         public final VideoView postVideo;
@@ -92,7 +91,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postContent =  view.findViewById(R.id.content);
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
-            postUserId = view.findViewById(R.id.postUserId);
             ratingsBtn = view.findViewById(R.id.ratingBtn);
             helpBtn = view.findViewById(R.id.helpBtn);
             videoContainer = view.findViewById(R.id.videoContainer);
@@ -114,7 +112,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
         if(!postsList.get(position).visibility){
             holder.postOwner.setText("Anonymous");
-            holder.postOwnerPic.setImageResource(R.drawable.ic_person_black_24dp);
+            holder.postOwnerPic.setImageResource(R.drawable.anon);
         }
         else {
             holder.postOwner.setText(postsList.get(position).postOwner);

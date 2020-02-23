@@ -48,8 +48,9 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     private PagerAdapter pagerAdapter;
     ImageView coverPhoto;
     ImageView profilePic;
-    Button profileEditBtn;
     Button profileFollowBtn;
+    Button profileEditBtn;
+    ImageView profileMessaging;
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
     public String uid;
@@ -84,10 +85,11 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         jobTitle = findViewById(R.id.jobTitle);
         country_region = findViewById(R.id.country_region);
         profileRate = findViewById(R.id.profileRate);
-        profileEditBtn = findViewById(R.id.profileEditBtn);
         profileFollowBtn = findViewById(R.id.profileFollowBtn);
         ratingBar = findViewById(R.id.ratingBarGet);
         ratings_count = findViewById(R.id.ratings_count);
+        profileEditBtn = findViewById(R.id.profileEditBtn);
+        profileMessaging = findViewById(R.id.profileMessaging);
 
         // setup
         setSupportActionBar(toolbar);
@@ -99,10 +101,11 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
 
         if(uid != null){
             profileFollowBtn.setVisibility(View.VISIBLE);
-            profileEditBtn.setVisibility(View.GONE);
+            profileMessaging.setVisibility(View.VISIBLE);
         }
         else {
             uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+            profileEditBtn.setVisibility(View.VISIBLE);
         }
         loadUserProfile();
 

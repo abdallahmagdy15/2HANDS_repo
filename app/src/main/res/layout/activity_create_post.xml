@@ -68,7 +68,7 @@
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/male"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="0dp" />
 
@@ -80,12 +80,12 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/createdPostLocation"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:backgroundTint="#E9E9E9"
-                        android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                        android:drawableLeft="@drawable/location_btn_drawable"
                         android:shadowColor="#00DADADA"
                         android:text="Location"
                         android:textAllCaps="false"
@@ -158,6 +158,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="3"
                     android:paddingStart="15dp"
                     android:paddingEnd="0dp"
@@ -165,53 +166,49 @@
                     android:textColor="#1A1A1A"
                     android:textSize="15sp" />
 
-                <Button
+                <ImageView
                     android:id="@+id/createPostWithImage"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:backgroundTint="#00FFFFFF"
-                    android:drawableStart="@drawable/ic_insert_photo_black_24dp"
-                    app:icon="@drawable/ic_insert_photo_black_24dp"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F" />
+                    app:iconTint="#1F1F1F"
+                    app:srcCompat="@drawable/add_image" />
 
-                <Button
+                <ImageView
                     android:id="@+id/createPostWithVideo"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:backgroundTint="#00FFFFFF"
-                    android:drawableStart="@drawable/ic_videocam_black_24dp"
-                    app:icon="@drawable/ic_videocam_black_24dp"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F" />
+                    app:iconTint="#1F1F1F"
+                    app:srcCompat="@drawable/video" />
 
-                <Button
+                <ImageView
                     android:id="@+id/createPostWithImageCamera"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:backgroundTint="#00FFFFFF"
-                    android:drawableStart="@drawable/ic_photo_camera_black_24dp"
-                    app:icon="@drawable/ic_photo_camera_black_24dp"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F" />
+                    app:iconTint="#1F1F1F"
+                    app:srcCompat="@drawable/camera" />
 
-                <Button
+                <ImageView
                     android:id="@+id/createPostWithCheckIn"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:backgroundTint="#00FFFFFF"
-                    android:drawableStart="@drawable/ic_location_on_black_24dp"
-                    app:icon="@drawable/ic_location_on_black_24dp"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F" />
+                    app:iconTint="#1F1F1F"
+                    app:srcCompat="@drawable/check_in" />
             </LinearLayout>
 
         </LinearLayout>

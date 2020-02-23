@@ -5,14 +5,16 @@
     <item
         android:id="@+id/homeNav"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="Home"
+        />
+
     <item
         android:id="@+id/searchNav"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search" />
     <item
         android:id="@+id/postNav"
-        android:icon="@drawable/ic_add_circle_black_24dp"
+        android:icon="@drawable/ic_add_box_black_24dp"
         android:title="Post" />
     <item
         android:id="@+id/notifiNav"
@@ -20,7 +22,7 @@
         android:title="Notifications" />
 
     <item
-        android:id="@+id/menuNav"
-        android:icon="@drawable/ic_menu_black_24dp"
-        android:title="Logout" />
+        android:id="@+id/messagingNav"
+        android:icon="@drawable/ic_mail_black_24dp"
+        android:title="Messaging" />
 </menu>

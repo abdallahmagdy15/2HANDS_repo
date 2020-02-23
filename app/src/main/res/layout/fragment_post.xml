@@ -5,7 +5,8 @@
     android:id="@+id/postContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="10dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
@@ -24,7 +25,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/male"
             app:civ_border_overlay="false"
             app:civ_border_width="0dp" />
 
@@ -48,10 +49,10 @@
 
             <Spinner
                 android:id="@+id/postOptions"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/ic_more_horiz_black_24dp"
+                android:background="@drawable/more"
                 android:backgroundTint="#1D1D1D"
                 android:entries="@array/postOptions" />
 
@@ -122,14 +123,38 @@
         <VideoView
             android:id="@+id/postVideo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-             />
+            android:layout_height="match_parent" />
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/postLikesCommentsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorDisabled" />
+
+        <TextView
+            android:id="@+id/postRatingsSharesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/colorDisabled" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height=".7dp"
+        android:layout_height=".5dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
         android:background="#DADADA" />
 
     <LinearLayout
@@ -144,8 +169,8 @@
             android:layout_weight="1"
             android:background="#005E5E5E"
             android:backgroundTint="#003C3C3C"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
             app:srcCompat="@drawable/like" />
 
         <ImageView
@@ -155,9 +180,9 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            app:srcCompat="@drawable/comment2" />
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            app:srcCompat="@drawable/comment" />
 
         <ImageView
             android:id="@+id/helpBtn"
@@ -166,8 +191,8 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
             app:srcCompat="@drawable/help" />
 
         <ImageView
@@ -177,9 +202,9 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            app:srcCompat="@drawable/rate" />
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            app:srcCompat="@drawable/star" />
 
         <ImageView
             android:id="@+id/shareBtn"
@@ -188,19 +213,9 @@
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
             android:hapticFeedbackEnabled="true"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
             app:srcCompat="@drawable/share" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height=".7dp"
-        android:background="#B3B3B3" />
-
-    <TextView
-        android:id="@+id/postUserId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 </LinearLayout>

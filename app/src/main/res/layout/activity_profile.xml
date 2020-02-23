@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                app:srcCompat="@drawable/default_bg" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/profileToolbar"
@@ -40,9 +41,9 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="70dp"
-                android:src="@drawable/ic_person_black_24dp"
-                app:civ_border_color="#954E4E4E"
-                app:civ_border_width="1dp"
+                android:src="@drawable/male"
+                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_width="2dp"
                 app:layout_collapseMode="parallax" />
 
             <LinearLayout
@@ -111,29 +112,32 @@
                         android:gravity="right"
                         android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/imageButton"
-                            android:layout_width="70dp"
+                        <ImageView
+                            android:id="@+id/profileMessaging"
+                            android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#00000000"
-                            android:src="@drawable/ic_mail_black_24dp" />
-
-                        <Button
-                            android:id="@+id/profileEditBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="#E6E6E6"
-                            android:text="Edit"
-                            android:textColor="#202020"
-                            android:textSize="13sp" />
+                            android:src="@drawable/messaging"
+                            android:visibility="gone" />
 
                         <Button
                             android:id="@+id/profileFollowBtn"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
                             android:backgroundTint="#E6E6E6"
                             android:text="Follow"
+                            android:textColor="#202020"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/profileEditBtn"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:backgroundTint="#E6E6E6"
+                            android:text="Edit"
                             android:textColor="#202020"
                             android:textSize="13sp"
                             android:visibility="gone" />
@@ -169,8 +173,7 @@
                         android:id="@+id/ratings_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="52000" />
+                        android:gravity="end" />
                 </LinearLayout>
             </LinearLayout>
 

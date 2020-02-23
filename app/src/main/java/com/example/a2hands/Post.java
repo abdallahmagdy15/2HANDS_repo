@@ -23,11 +23,13 @@ public class Post {
     public @ServerTimestamp Date date;
     public List<String> videos;
     public int likes_count = 0;
+    public int comments_count = 0;
+    public int ratings_count = 0;
+    public int shares_count = 0;
     public List<String> images;
     public boolean state;
     public boolean visibility;
     public String location;
-
     public String postOwner;
     public String user_id;
     public String profile_pic;
@@ -40,7 +42,9 @@ public class Post {
     public Post(String category, String check_in, String content_text,
                 Date date, List<String> videos, int likes_count, String post_id,
                 List<String> images, boolean state, String profile_pic ,
-                boolean visibility , String location , String user_id) {
+                boolean visibility , String location , String user_id,
+                int comments_count, int ratings_count , int shares_count
+    ) {
         this.category = category;
         this.check_in = check_in;
         this.content_text = content_text;
@@ -54,5 +58,9 @@ public class Post {
         this.user_id = user_id;
         this.profile_pic = profile_pic;
         this.post_id = post_id;
+        this.comments_count = comments_count ;
+        this.ratings_count = ratings_count ;
+        this.shares_count = shares_count;
+
     }
 }
