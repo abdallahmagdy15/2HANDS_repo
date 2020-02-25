@@ -188,7 +188,6 @@ public class CreatePost extends AppCompatActivity {
         startActivityForResult(intent, VIDEO_REQUEST_CODE);
 
     }
-
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");

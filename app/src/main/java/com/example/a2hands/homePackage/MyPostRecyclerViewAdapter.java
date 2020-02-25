@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.CommentActivity;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
 import com.example.a2hands.Post;
 import com.example.a2hands.ProfileActivity;
-import com.example.a2hands.Rating;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +41,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-import java.net.UnknownServiceException;
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -82,6 +78,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         ImageView like;
         ImageView postImage;
         VideoView postedVideo;
+        //declare commentbtn
+        Button commentBtn;
 
         public ViewHolder(View view) {
             super(view);
@@ -98,6 +96,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             like = view.findViewById(R.id.likeBtn);
             postImage = view.findViewById(R.id.postImage);
             postedVideo = view.findViewById(R.id.postedVideo);
+            //declare comment btn
+            commentBtn = view.findViewById(R.id.commentBtn);
         }
     }
     @Override
@@ -235,23 +235,40 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 Toast.makeText(view.getContext(), "ID: "+ postsList.get(position).post_id, Toast.LENGTH_SHORT).show();
             }
         });*/
+        try {
+            isliked(postsList.get(position).post_id, holder.like);
+            mlikes(postsList.get(position).post_id);
+            holder.like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Toast.makeText(view.getContext(),  postsList.get(position).post_id, Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(view.getContext(), postsList.get(position).video, Toast.LENGTH_SHORT).show();
+                    if(holder.like.getTag().equals("like")){
+                        FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
+                    }
+                    else {
+                        FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
 
-        isliked(postsList.get(position).post_id, holder.like);
-        mlikes(postsList.get(position).post_id);
-       holder.like.setOnClickListener(new View.OnClickListener() {
+                    }
+                }
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        //comment open layout comments and pass data to activity
+        holder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(view.getContext(),  postsList.get(position).post_id, Toast.LENGTH_SHORT).show();;
-                Toast.makeText(view.getContext(), postsList.get(position).video, Toast.LENGTH_SHORT).show();
-                if(holder.like.getTag().equals("like")){
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
-                }
-                else {
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-
-                }
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postid", postsList.get(position).post_id);
+                intent.putExtra("publisherid", postsList.get(position).user_id);
+                context.startActivity(intent);
             }
         });
+
 
     }
 
@@ -287,6 +304,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         });
     }
     private void mlikes(final String postid){
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("likes")
                 .child(postid);
         reference.addValueEventListener(new ValueEventListener() {
@@ -296,6 +314,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 //updatepost with count likes
                 DocumentReference ref = FirebaseFirestore.getInstance().collection("posts").document(postid);
                 ref.update("likes_count", dataSnapshot.getChildrenCount());
+
             }
 
             @Override

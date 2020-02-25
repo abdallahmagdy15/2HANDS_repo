@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommentActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="?android:attr/windowBackground">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/like_count"
+            android:text="10 Likes"
+            android:textColor="@color/colorPrimary"
+            android:padding="15sp"/>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/add_comment"
+        android:layout_below="@+id/toolbar"
+        android:background="#8DE7E7E7"/>
+    <EditText
+        android:id="@+id/add_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Write Your Comment...."
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10sp"
+        android:padding="10sp"
+        android:background="@android:color/transparent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post"
+        android:id="@+id/post"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10sp"
+        android:layout_alignBaseline="@+id/add_comment"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+</RelativeLayout>

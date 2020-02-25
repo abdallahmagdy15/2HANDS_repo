@@ -105,8 +105,8 @@
 
     <ImageView
         android:id="@+id/postImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="150sp"
         android:maxHeight="600dp"
         android:minHeight="150dp"
         android:visibility="gone" />

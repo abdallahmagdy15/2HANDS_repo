@@ -50,6 +50,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //library to slider configuration
+    implementation 'com.r0adkll:slidableactivity:2.1.0'
     //    country picker with its code
     implementation 'com.hbb20:ccp:2.3.7'
 
