@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -85,6 +86,9 @@ public class Comments extends AppCompatActivity {
         hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
         reference.push().setValue(hashMap);
         add_comment.setText("");
+        //update comments count
+        FirebaseFirestore.getInstance().collection("/posts").document(postid)
+                .update("comments_count", FieldValue.increment(1));
     }
 
     //get Likes Count
