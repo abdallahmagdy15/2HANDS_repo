@@ -2,28 +2,33 @@ package com.example.a2hands.homePackage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.ContactsContract;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.Callback;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
 import com.example.a2hands.Post;
 import com.example.a2hands.ProfileActivity;
+import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
@@ -36,18 +41,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder> {
+public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
+{
 
     private final List<Post> postsList;
     private final OnListFragmentInteractionListener mListener;
@@ -65,7 +70,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         context = parent.getContext();
         return new ViewHolder(view);
     }
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public final View mView;
         public final TextView postOwner;
         public final TextView postContent;
@@ -80,6 +85,13 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final ImageView ratingsBtn;
         public final ImageView likeBtn;
         public final String uid = FirebaseAuth.getInstance().getUid();
+        public final TextView postLikesCommentsCount;
+        public final TextView postRatingsSharesCount;
+        public final ImageView shareBtn;
+        public final TextView postUserSharedPost;
+        public final LinearLayout sharingContainer;
+        public final LinearLayout postCounter;
+
 
 
         public ViewHolder(View view) {
@@ -97,36 +109,89 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postImage = view.findViewById(R.id.postImage);
             postVideo = view.findViewById(R.id.postVideo);
             likeBtn = view.findViewById(R.id.likeBtn);
+            postLikesCommentsCount = view.findViewById(R.id.postLikesCommentsCount);
+            postRatingsSharesCount = view.findViewById(R.id.postRatingsSharesCount);
+            shareBtn = view.findViewById(R.id.shareBtn);
+            postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
+            sharingContainer = view.findViewById(R.id.sharingContainer);
+            postCounter=view.findViewById(R.id.postCounter);
         }
 
+    }
+
+    //Start onBindViewHolder --------------------
+    @Override
+    public void onBindViewHolder(final ViewHolder holder,final int pos) {
+        //check if this post is sharing another post
+        if(postsList.get(pos).shared_id != null){
+            FirebaseFirestore.getInstance().collection("/posts")
+                    .document(postsList.get(pos).shared_id).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            final Post curr_post = task.getResult().toObject(Post.class);
+                            setupPostData(holder,curr_post);
+                            //enable who sharing label
+                            holder.postUserSharedPost.setText(postsList.get(pos).postOwner);
+                            holder.sharingContainer.setVisibility(View.VISIBLE);
+                        }
+                    });
+        }else{
+            final Post curr_post = postsList.get(pos);
+            setupPostData(holder,curr_post);
+        }
 
     }
-    @Override
-    public void onBindViewHolder(final ViewHolder holder,final int position) {
-        holder.postContent.setText(postsList.get(position).content_text);
+
+// end onBindViewHolder------------------------
+
+
+//start setup post data ---------------------
+
+    public void setupPostData(final ViewHolder holder, final Post curr_post){
+        //setup post data
+
+        //check if there are mentions in the post
+        String postText ="";
+        String [] words = curr_post.content_text.split(" ");
+        int i=0;
+        for (String word:words) {
+            if(word.startsWith("@")){
+                postText += "<a href=\"https://www.fb.com/\"><b>"+curr_post.mentions.get(i)+"</b></a>"+" ";
+                i++;
+            }
+            else
+                postText+=word+" ";
+        }
+        holder.postContent .setText(Html.fromHtml(postText));
+        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
+
+
         PrettyTime p = new PrettyTime();
-        holder.time.setText(p.format(postsList.get(position).date));
-        holder.location.setText(postsList.get(position).location);
-        String cat = postsList.get(position).category;
+        holder.time.setText(p.format(curr_post.date));
+        holder.location.setText(curr_post.location);
+        String cat = curr_post.category;
         holder.category.setText((!cat.equals("General"))?cat:"");
 
-        if(!postsList.get(position).visibility){
+
+        //check visibility
+        if(!curr_post.visibility){
             holder.postOwner.setText("Anonymous");
             holder.postOwnerPic.setImageResource(R.drawable.anon);
         }
         else {
-            holder.postOwner.setText(postsList.get(position).postOwner);
+            holder.postOwner.setText(curr_post.postOwner);
             holder.postOwnerPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(v.getContext(), ProfileActivity.class);
-                    i.putExtra("uid", postsList.get(position).user_id);
+                    i.putExtra("uid", curr_post.user_id);
                     v.getContext().startActivity(i);
                 }
             });
             FirebaseStorage.getInstance().getReference()
-                    .child("Profile_Pics/" +postsList.get(position).user_id+ "/"
-                            + postsList.get(position).profile_pic)
+                    .child("Profile_Pics/" +curr_post.user_id+ "/"
+                            + curr_post.profile_pic)
                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -136,24 +201,25 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         }
 
         ////check if there is any media attached with the post
-        if(postsList.get(position).images != null){
+        if(curr_post.images != null){
             holder.postImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(Uri.parse(postsList.get(position).images.get(0))).into(holder.postImage);
+            Picasso.get().load(Uri.parse(curr_post.images.get(0))).into(holder.postImage);
         }
-        else if(postsList.get(position).videos != null){
+        else if(curr_post.videos != null){
             holder.videoContainer.setVisibility(View.VISIBLE);
-            holder.postVideo.setVideoURI(Uri.parse(postsList.get(position).videos.get(0)));
+            holder.postVideo.setVideoURI(Uri.parse(curr_post.videos.get(0)));
             holder.postVideo.requestFocus();
             MediaController mediaController = new MediaController(context);
-            mediaController.setAnchorView(holder.postVideo);
             holder.postVideo.setMediaController(mediaController);
+            mediaController.setAnchorView(holder.postVideo);
         }
 
+        //rating btn listener
         holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context,RatingsActivity.class);
-                i.putExtra("postId",postsList.get(position).post_id);
+                i.putExtra("postId",curr_post.post_id);
                 context.startActivity(i);
             }
         });
@@ -164,18 +230,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onClick(View v) {
                 //check if post owner clicks on help button
-                if (holder.uid.equals(postsList.get(position).user_id))
+                if (holder.uid.equals(curr_post.user_id))
                     Toast.makeText(context, "Can't send help request to yourself!", Toast.LENGTH_LONG).show();
                 else {
                     //fill object of help request with data
                     final HelpRequest helpReq = new HelpRequest();
-                    helpReq.post_id = postsList.get(position).post_id;
+                    helpReq.post_id = curr_post.post_id;
                     helpReq.publisher_id = holder.uid;
-                    helpReq.subscriber_id = postsList.get(position).user_id;
+                    helpReq.subscriber_id = curr_post.user_id;
                     //show confirmation dialog if u want to send help request
                     new AlertDialog.Builder(context)
                             .setTitle("Send Help Request to " +
-                                    ((postsList.get(position).visibility) ? postsList.get(position).postOwner : "Anonymous") + "?")
+                                    ((curr_post.visibility) ? curr_post.postOwner : "Anonymous") + "?")
                             .setPositiveButton("Send", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -204,7 +270,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                                                     notifi.publisher_pic = user.profile_pic;
                                                     notifi.type = "HELP_REQUEST";
                                                     notifi.help_request_id = helpReqTask.getResult().getId();
-                                                    notifi.post_id = postsList.get(position).post_id;
+                                                    notifi.post_id = curr_post.post_id;
                                                     /////save notifi obj to realtime
                                                     //push empty record and get its key
                                                     DatabaseReference ref = FirebaseDatabase.getInstance()
@@ -227,7 +293,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         ////////////likes
         //check if post is liked by current user or not
         try {
-            isliked(postsList.get(position).post_id,holder.uid, holder.likeBtn);
+            isliked(curr_post.post_id,holder.uid, holder.likeBtn);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -235,20 +301,53 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onClick(View view) {
                 if(holder.likeBtn.getTag().equals("like")){
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postsList.get(position).post_id)
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
                             .child(holder.uid).setValue(true);
-                    updatePostLikes(postsList.get(position).post_id);
+                    updatePostLikes(curr_post.post_id);
 
                 }
                 else {
                     FirebaseDatabase.getInstance().getReference().child("likes")
-                            .child(postsList.get(position).post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-
+                            .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                    updatePostLikes(curr_post.post_id);
                 }
             }
         });
+
+        //set counters for likes , comments , ratings , shares
+        int[] count = new int[4];
+
+        count[0]=curr_post.likes_count;
+        count[1]=curr_post.comments_count;
+        count[2]=curr_post.ratings_count;
+        count[3]=curr_post.shares_count;
+
+        //check if there is any likes or comm....
+        if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
+            holder.postCounter.setVisibility(View.VISIBLE);
+        }
+        holder.postLikesCommentsCount.setText ((count[0]==0)?"":count[0]+" likes"+(
+                (count[1]==0)?"":" • "+count[1]+" comments"));
+
+        holder.postRatingsSharesCount.setText ((count[2]==0)?"": count[2]+" ratings"+(
+                (count[3]==0)?"":" • "+count[3]+" shares"));
+
+
+        //set listener for share post button\
+        holder.shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharingOptions sharing_option = new SharingOptions();
+                Bundle b = new Bundle();
+                b.putString("post_id",curr_post.post_id);
+                sharing_option.setArguments(b);
+                sharing_option.show(((homeActivity)context).getSupportFragmentManager(),"");
+            }
+        });
+
     }
-//------------------------
+
+// end setupPostData --------------------------
 
     @Override
     public int getItemCount() {
@@ -293,5 +392,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
     }
+
 
 }

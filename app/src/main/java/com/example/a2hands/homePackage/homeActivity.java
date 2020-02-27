@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
@@ -29,6 +30,7 @@ import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.SavedActivity;
 import com.example.a2hands.SearchFragment;
+import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
 import com.example.a2hands.settingsPackage.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +48,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,7 +56,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class homeActivity extends AppCompatActivity implements
         SearchFragment.OnFragmentInteractionListener,
         PostFragment.OnListFragmentInteractionListener,
-        NotificationFragment.OnListFragmentInteractionListener {
+        NotificationFragment.OnListFragmentInteractionListener{
 
 
     //drawer
@@ -65,11 +68,12 @@ public class homeActivity extends AppCompatActivity implements
     private int navItemId;
     private BadgeDrawable badge;
 
-    Spinner catsSpinner;
+    MaterialSpinner catsSpinner;
     String[] catsStrings;
     CircleImageView profile_image ;
     SearchView searchView;
     TextView notificationsTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -92,6 +96,7 @@ public class homeActivity extends AppCompatActivity implements
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.profile_image);
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        catsSpinner.setItems(getResources().getStringArray(R.array.categories));
 
 
         //drawer header data
@@ -244,7 +249,13 @@ public class homeActivity extends AppCompatActivity implements
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
 
-        catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                loadPosts(position);
+            }
+        });
+        /*catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 loadPosts(position);
@@ -252,7 +263,7 @@ public class homeActivity extends AppCompatActivity implements
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        });*/
 
         navigateHome();
 
@@ -273,6 +284,7 @@ public class homeActivity extends AppCompatActivity implements
     }
     public void navigateHome(){
         catsSpinner.setVisibility(View.VISIBLE);
+        catsSpinner.setTextSize(15);
         searchView.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
         loadPosts(0);
@@ -294,6 +306,7 @@ public class homeActivity extends AppCompatActivity implements
     }
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
+        notificationsTitle.setTextColor(getResources().getColor(R.color.colorWhiteGray));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 
@@ -320,4 +333,9 @@ public class homeActivity extends AppCompatActivity implements
     public void onListFragmentInteraction(int x) {
 
     }
+
+    /*//@Override
+    public void onOptionClicked(int index) {
+
+    }*/
 }

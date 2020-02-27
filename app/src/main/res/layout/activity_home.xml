@@ -55,7 +55,7 @@
                     android:visibility="gone"
                     app:layout_collapseMode="parallax" />
 
-                <Spinner
+                <com.jaredrummler.materialspinner.MaterialSpinner
                     android:id="@+id/catsSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

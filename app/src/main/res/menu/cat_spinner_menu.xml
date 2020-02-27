@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="General" />
+    <item android:title="Social" />
+    <item android:title="Financial" />
+    <item android:title="Medicine" />
+    <item android:title="Psychology" />
+    <item android:title="Family" />
+    <item android:title="Technical" />
+</menu>

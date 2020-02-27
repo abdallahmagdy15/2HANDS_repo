@@ -25,7 +25,12 @@
         <item>Block</item>
         <item>Report</item>
     </string-array>
-
+    <string-array name="postShareOptions">
+        <item>Share now</item>
+        <item>Share with comment</item>
+        <item>Share to someone</item>
+        <item>Copy link</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

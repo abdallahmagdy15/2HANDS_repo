@@ -27,6 +27,7 @@ public class Post {
     public int ratings_count = 0;
     public int shares_count = 0;
     public List<String> images;
+    public List<String> mentions;
     public boolean state;
     public boolean visibility;
     public String location;
@@ -34,6 +35,7 @@ public class Post {
     public String user_id;
     public String profile_pic;
     public String post_id;
+    public String shared_id;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -42,8 +44,8 @@ public class Post {
     public Post(String category, String check_in, String content_text,
                 Date date, List<String> videos, int likes_count, String post_id,
                 List<String> images, boolean state, String profile_pic ,
-                boolean visibility , String location , String user_id,
-                int comments_count, int ratings_count , int shares_count
+                boolean visibility , String location , String user_id,List<String> mentions ,
+                int comments_count, int ratings_count , int shares_count,String shared_id
     ) {
         this.category = category;
         this.check_in = check_in;
@@ -61,6 +63,7 @@ public class Post {
         this.comments_count = comments_count ;
         this.ratings_count = ratings_count ;
         this.shares_count = shares_count;
-
+        this.shared_id = shared_id;
+        this.mentions = mentions;
     }
 }

@@ -11,7 +11,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +39,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -53,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import id.zelory.compressor.Compressor;
 
 public class CreatePost extends AppCompatActivity {
 
@@ -72,7 +72,7 @@ public class CreatePost extends AppCompatActivity {
     StorageTask uploadTask;
     StorageReference storageReference;
     private static final int PICK_IMAGE_REQUEST = 1;
-
+    Bitmap bitmap;
     ImageView selectedImage;
     ImageView add_image;
 
@@ -334,6 +334,7 @@ public class CreatePost extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
     private String getFileExtension(Uri uri) {
@@ -357,16 +358,30 @@ public class CreatePost extends AppCompatActivity {
             //Toast.makeText(PostActivity.this, videoName, Toast.LENGTH_LONG).show();
         }
         else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
-            File f = new File(currentPhotoPath);
-            imageUri = Uri.fromFile(f);
-            selectedImage.setImageURI(imageUri);
+            File imageFile = new File(currentPhotoPath);
+            try {
+                bitmap = new Compressor(this).compressToBitmap(imageFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            selectedImage.setImageBitmap(bitmap);
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
 
         }
         else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
+
             imageUri = data.getData();
-            selectedImage.setImageURI(imageUri);
+            try {
+                bitmap  = new Compressor(this).compressToBitmap(new File(FilePath.getPath(this, imageUri)));
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            selectedImage.setImageBitmap(bitmap);
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
         }

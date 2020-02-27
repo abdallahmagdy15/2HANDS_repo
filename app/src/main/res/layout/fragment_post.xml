@@ -11,6 +11,43 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/sharingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/postUserSharedPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="0dp"
+            android:text="Ahmed Kamal"
+            android:textColor="@color/colorDark"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="0dp"
+            android:text="Shared"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view10"
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@color/colorDisabled" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
@@ -98,9 +135,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:autoLink="all"
+        android:clickable="true"
+        android:focusable="auto"
+        android:linksClickable="true"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:text="post is here post is herepost is herepost is herepost is herepost is here4"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="#1B1B1B"
         android:textSize="15sp" />
@@ -109,7 +149,10 @@
         android:id="@+id/postImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="500dp"
+        android:adjustViewBounds="true"
+        android:background="@color/colorDark"
+        android:maxHeight="384dp"
+        android:scaleType="centerCrop"
         android:visibility="gone" />
 
     <FrameLayout
@@ -127,11 +170,13 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/postCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/postLikesCommentsCount"
