@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.a2hands.Callback;
+import com.example.a2hands.Comments;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
 import com.example.a2hands.Post;
@@ -88,6 +89,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView postLikesCommentsCount;
         public final TextView postRatingsSharesCount;
         public final ImageView shareBtn;
+        public final ImageView commentBtn;
         public final TextView postUserSharedPost;
         public final LinearLayout sharingContainer;
         public final LinearLayout postCounter;
@@ -115,6 +117,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
             postCounter=view.findViewById(R.id.postCounter);
+            commentBtn = view.findViewById(R.id.commentBtn);
         }
 
     }
@@ -326,11 +329,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
             holder.postCounter.setVisibility(View.VISIBLE);
         }
-        holder.postLikesCommentsCount.setText ((count[0]==0)?"":count[0]+" likes"+(
-                (count[1]==0)?"":" • "+count[1]+" comments"));
-
-        holder.postRatingsSharesCount.setText ((count[2]==0)?"": count[2]+" ratings"+(
-                (count[3]==0)?"":" • "+count[3]+" shares"));
+        holder.postLikesCommentsCount.setText (
+                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
+                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
+        );
+        holder.postRatingsSharesCount.setText (
+                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
+                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
+        );
 
 
         //set listener for share post button\
@@ -345,6 +351,16 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
 
+        //set comment btn listener
+        holder.commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Comments.class);
+                intent.putExtra("postid", curr_post.post_id);
+                intent.putExtra("publisherid", curr_post.user_id);
+                context.startActivity(intent);
+            }
+        });
     }
 
 // end setupPostData --------------------------
