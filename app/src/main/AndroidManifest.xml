@@ -19,8 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SavedActivity"></activity>
-        <activity android:name=".homePackage.RatingsActivity"
-            android:parentActivityName=".homePackage.RatingsActivity" />
+        <activity android:name=".homePackage.RatingPackage.RatingsActivity"
+            android:parentActivityName=".homePackage.RatingPackage.RatingsActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity
             android:name=".ProfileActivity"
@@ -33,7 +33,7 @@
         <activity android:name=".signupPackage.signupPickPictureActivity" />
         <activity android:name=".signupPackage.signupSetLocationActivity" />
         <activity android:name=".signupPackage.signUpPhoneVerificationActivity" />
-        <activity android:name=".CommentsActivity" />
+        <activity android:name=".homePackage.CommentsPackage.CommentsActivity" />
         <activity android:name=".settingsPackage.SettingsActivity" />
         <activity android:name=".settingsPackage.AboutAppActivity" />
         <activity android:name=".settingsPackage.BlockedAccsActivity" />

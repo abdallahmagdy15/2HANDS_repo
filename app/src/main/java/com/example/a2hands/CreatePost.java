@@ -28,7 +28,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.homePackage.PostFragment;
+import com.example.a2hands.homePackage.PostsPackage.Post;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -373,15 +374,7 @@ public class CreatePost extends AppCompatActivity {
         else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
 
             imageUri = data.getData();
-            try {
-                bitmap  = new Compressor(this).compressToBitmap(new File(FilePath.getPath(this, imageUri)));
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            selectedImage.setImageBitmap(bitmap);
+            selectedImage.setImageURI(imageUri);
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
         }

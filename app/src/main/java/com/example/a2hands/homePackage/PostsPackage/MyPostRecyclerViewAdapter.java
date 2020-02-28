@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands.homePackage.PostsPackage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,15 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.CommentsActivity;
+import com.example.a2hands.homePackage.CommentsPackage.CommentsActivity;
 import com.example.a2hands.HelpRequest;
-import com.example.a2hands.Notification;
-import com.example.a2hands.Post;
+import com.example.a2hands.NotificationsPackage.Notification;
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
-import com.example.a2hands.homePackage.PostFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
+import com.example.a2hands.homePackage.RatingPackage.RatingsActivity;
+import com.example.a2hands.homePackage.homeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -217,7 +218,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,RatingsActivity.class);
+                Intent i = new Intent(context, RatingsActivity.class);
                 i.putExtra("postId",curr_post.post_id);
                 context.startActivity(i);
             }

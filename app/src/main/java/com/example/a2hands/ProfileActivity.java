@@ -20,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.a2hands.homePackage.PostFragment;
-import com.example.a2hands.homePackage.RatingFragment;
-import com.example.a2hands.homePackage.RatingsActivity;
-import com.example.a2hands.homePackage.dummy.DummyContent;
+import com.example.a2hands.homePackage.PostsPackage.Post;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment;
+import com.example.a2hands.homePackage.RatingPackage.Rating;
+import com.example.a2hands.homePackage.RatingPackage.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -164,7 +164,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Rating item) {
 
     }
 

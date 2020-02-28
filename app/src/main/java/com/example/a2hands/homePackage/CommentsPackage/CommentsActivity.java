@@ -1,4 +1,4 @@
-package com.example.a2hands;
+package com.example.a2hands.homePackage.CommentsPackage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.homePackage.PostFragment;
+import com.example.a2hands.Callback;
+import com.example.a2hands.R;
+import com.example.a2hands.User;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FieldValue;

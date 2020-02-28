@@ -9,19 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.example.a2hands.homePackage.PostFragment;
+import com.example.a2hands.homePackage.PostsPackage.Post;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.lang.reflect.Field;
 
 
 public class SharingOptions extends BottomSheetDialogFragment implements View.OnClickListener {

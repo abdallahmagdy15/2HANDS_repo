@@ -1,11 +1,10 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands.homePackage.RatingPackage;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,19 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a2hands.R;
-import com.example.a2hands.Rating;
-import com.example.a2hands.homePackage.dummy.DummyContent;
-import com.example.a2hands.homePackage.dummy.DummyContent.DummyItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +119,6 @@ public class RatingFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Rating item);
     }
 }

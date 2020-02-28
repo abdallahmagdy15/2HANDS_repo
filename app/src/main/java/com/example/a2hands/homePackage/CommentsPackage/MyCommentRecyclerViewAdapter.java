@@ -1,4 +1,4 @@
-package com.example.a2hands;
+package com.example.a2hands.homePackage.CommentsPackage;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.a2hands.CommentsFragment.OnListFragmentInteractionListener;
-import com.example.a2hands.dummy.DummyContent.DummyItem;
+import com.example.a2hands.R;
+import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;

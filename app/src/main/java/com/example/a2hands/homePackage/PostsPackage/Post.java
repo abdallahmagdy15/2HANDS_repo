@@ -1,4 +1,4 @@
-package com.example.a2hands;
+package com.example.a2hands.homePackage.PostsPackage;
 
 import android.os.Parcel;
 import android.os.Parcelable;

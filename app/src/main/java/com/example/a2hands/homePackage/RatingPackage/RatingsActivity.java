@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands.homePackage.RatingPackage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,11 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.example.a2hands.R;
-import com.example.a2hands.homePackage.dummy.DummyContent;
 
 public class RatingsActivity extends AppCompatActivity implements RatingFragment.OnListFragmentInteractionListener {
 
@@ -37,12 +34,12 @@ public class RatingsActivity extends AppCompatActivity implements RatingFragment
 
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.ratingsContainer,frg).addToBackStack("");
+        ft.replace(R.id.ratingsContainer,frg);
         ft.commit();
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Rating item) {
 
     }
 }

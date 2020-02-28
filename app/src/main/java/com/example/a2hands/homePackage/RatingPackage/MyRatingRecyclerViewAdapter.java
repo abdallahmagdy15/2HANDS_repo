@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands.homePackage.RatingPackage;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
-import com.example.a2hands.Rating;
 import com.example.a2hands.User;
-import com.example.a2hands.homePackage.RatingFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.homePackage.RatingPackage.RatingFragment.OnListFragmentInteractionListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,7 +59,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
         public final TextView reviewText;
         public final CircleImageView ratingsPic;
         public final LinearLayout postReviewContainer;
-        public final ImageButton postReview;
+        public final ImageView postReview;
 
         public ViewHolder(View view) {
             super(view);

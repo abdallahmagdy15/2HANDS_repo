@@ -1,4 +1,4 @@
-package com.example.a2hands;
+package com.example.a2hands.NotificationsPackage;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a2hands.NotificationsPackage.MyNotificationRecyclerViewAdapter;
+import com.example.a2hands.NotificationsPackage.Notification;
+import com.example.a2hands.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

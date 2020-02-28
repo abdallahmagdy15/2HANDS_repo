@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage;
+package com.example.a2hands.homePackage.PostsPackage;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.a2hands.Callback;
-import com.example.a2hands.Post;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,10 +23,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -1,4 +1,4 @@
-package com.example.a2hands;
+package com.example.a2hands.NotificationsPackage;
 
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,12 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.NotificationFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.NotificationsPackage.NotificationFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.R;
+import com.example.a2hands.homePackage.RatingPackage.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
