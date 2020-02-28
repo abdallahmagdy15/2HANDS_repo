@@ -2,7 +2,6 @@ package com.example.a2hands.homePackage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.Callback;
-import com.example.a2hands.Comments;
+import com.example.a2hands.CommentsActivity;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.Notification;
 import com.example.a2hands.Post;
@@ -42,7 +39,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -355,9 +351,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Comments.class);
+                Intent intent = new Intent(context, CommentsActivity.class);
                 intent.putExtra("postid", curr_post.post_id);
                 intent.putExtra("publisherid", curr_post.user_id);
+                intent.putExtra("likes_count",curr_post.likes_count);
+                intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);
             }
         });

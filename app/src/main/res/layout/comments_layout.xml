@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Comments">
+    tools:context=".CommentsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -12,13 +12,21 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="50dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/like_filled" />
         <TextView
             android:id="@+id/like_count"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/colorAccent"
             android:textSize="15sp" />
+
     </androidx.appcompat.widget.Toolbar>
+
+
 
     <FrameLayout
         android:id="@+id/commentsContainer"
@@ -33,18 +41,19 @@
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="58dp"
         android:background="@color/colorDisabled" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="58dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
 
         <EditText
             android:id="@+id/add_comment"

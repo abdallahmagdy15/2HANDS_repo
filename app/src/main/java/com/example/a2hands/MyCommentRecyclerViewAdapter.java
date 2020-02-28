@@ -1,25 +1,35 @@
 package com.example.a2hands;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.a2hands.CommentFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.CommentsFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.dummy.DummyContent.DummyItem;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyCommentRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Comment> commentsList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyCommentRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyCommentRecyclerViewAdapter(List<Comment> items, OnListFragmentInteractionListener listener) {
+        commentsList = items;
         mListener = listener;
     }
 
@@ -29,46 +39,52 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
                 .inflate(R.layout.fragment_comment, parent, false);
         return new ViewHolder(view);
     }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public final TextView commentOwner;
+        public final TextView commentLikeBtn;
+        public final TextView commentContent;
+        public final CircleImageView commentOwnerPic;
+        public final TextView commentReplyBtn;
+        public final TextView commentTime;
+
+
+        public ViewHolder(View view) {
+            super(view);
+            commentOwner = view.findViewById(R.id.commentOwner);
+            commentLikeBtn = view.findViewById(R.id.commentLikeBtn);
+            commentContent = view.findViewById(R.id.commentContent);
+            commentOwnerPic = view.findViewById(R.id.commentOwnerPic);
+            commentReplyBtn = view.findViewById(R.id.commentReplyBtn);
+            commentTime = view.findViewById(R.id.commentTime);
+
+
+        }
+
+    }
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        final Comment curr_comment=commentsList.get(position);
+        holder.commentContent.setText(curr_comment.comment_content);
+        holder.commentOwner.setText(curr_comment.name);
+        PrettyTime p = new PrettyTime();
+        holder.commentTime.setText(p.format(curr_comment.date));
+        FirebaseStorage.getInstance().getReference("Profile_Pics")
+                .child(curr_comment.publisher_id+"/"+curr_comment.publisher_pic).getDownloadUrl()
+                .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        Picasso.get().load( task.getResult()).into(holder.commentOwnerPic);
+                    }
+                });
+        holder.commentContent.setText(curr_comment.comment_content);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return commentsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
-    }
 }

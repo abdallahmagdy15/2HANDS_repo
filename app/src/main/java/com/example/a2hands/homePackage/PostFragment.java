@@ -119,43 +119,9 @@ public class PostFragment extends Fragment {
                 );
     }
 
-        /*db.collection("/users").document(uid)
-                .get() .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    User user = doc.toObject(User.class);
-                    callback.callbackUser(user);
-                }
-                else {
-                    Log.w("", "Error getting documents.", task.getException());
-                }
-            }
-        });
-    */
 
     public void getPostsForHome(final List<String> location,final String category,final View view ){
         final List<Post> posts = new ArrayList<>();
-        /*Query q = db.child("posts").orderByChild("location").startAt(location.get(0)).endAt(location.get(1));
-        if(!category.equals("General")){
-            q = q.orderByChild("category").equalTo(category);
-        }
-        q.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    final Post p = postSnapshot.getValue(Post.class);
-                    posts.add(p);
-                }
-                updateHomeWithPosts(posts,view);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 
         // Read from the database
         Query query = FirebaseFirestore.getInstance().collection("/posts")
@@ -208,35 +174,6 @@ public class PostFragment extends Fragment {
                     }
                 });
     }
-    /*db.child("posts").orderByChild("user_id").equalTo(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                            final Post p = postSnapshot.getValue(Post.class);
-                            posts.add(p);
-                        }
-                        updateHomeWithPosts(posts,view);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
-
-/*
-    public void autoSigningin(final Callback callback){
-        mAuth.signInWithEmailAndPassword("test@test.com", "123456789#A")
-                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        callback.callbackUserID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    }
-                });
-    }
-*/
 
     public void updateHomeWithPosts(List<Post> posts , View view ){
         // Set the adapter
