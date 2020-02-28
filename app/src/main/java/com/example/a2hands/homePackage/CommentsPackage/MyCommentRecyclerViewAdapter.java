@@ -1,14 +1,18 @@
 package com.example.a2hands.homePackage.CommentsPackage;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,10 +51,11 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         public final CircleImageView commentOwnerPic;
         public final TextView commentReplyBtn;
         public final TextView commentTime;
-
+        public final Context context;
 
         public ViewHolder(View view) {
             super(view);
+            context = view.getContext();
             commentOwner = view.findViewById(R.id.commentOwner);
             commentLikeBtn = view.findViewById(R.id.commentLikeBtn);
             commentContent = view.findViewById(R.id.commentContent);
@@ -78,7 +83,14 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
                     }
                 });
         holder.commentContent.setText(curr_comment.comment_content);
-
+        holder.commentOwnerPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(holder.context, ProfileActivity.class);
+                i.putExtra("uid",curr_comment.publisher_id);
+                holder.context.startActivity(i);
+            }
+        });
 
     }
 

@@ -133,6 +133,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                             setupPostData(holder,curr_post);
                             //enable who sharing label
                             holder.postUserSharedPost.setText(postsList.get(pos).postOwner);
+                            // set listener for user sharing the post to go to his profile
+                            holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent i = new Intent(context,ProfileActivity.class);
+                                    i.putExtra("uid",postsList.get(pos).user_id);
+                                    context.startActivity(i);
+                                }
+                            });
                             holder.sharingContainer.setVisibility(View.VISIBLE);
                         }
                     });
