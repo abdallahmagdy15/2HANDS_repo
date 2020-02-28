@@ -352,8 +352,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentsActivity.class);
-                intent.putExtra("postid", curr_post.post_id);
-                intent.putExtra("publisherid", curr_post.user_id);
+                intent.putExtra("post_id", curr_post.post_id);
                 intent.putExtra("likes_count",curr_post.likes_count);
                 intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);

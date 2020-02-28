@@ -23,6 +23,8 @@ import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
 import com.r0adkll.slidr.model.SlidrPosition;
 
+import java.util.Date;
+
 public class CommentsActivity extends AppCompatActivity implements CommentsFragment.OnListFragmentInteractionListener {
 
     private SlidrInterface slidr;
@@ -58,8 +60,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         like_count = findViewById(R.id.like_count);
         Intent intent = getIntent();
         likesCount = intent.getIntExtra("likes_count",0);
-        postid = intent.getStringExtra("postid");
-        publisherid = intent.getStringExtra("publisherid");
+        postid = intent.getStringExtra("post_id");
         curr_uid = intent.getStringExtra("curr_uid");
         postCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +88,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         bundle.putString("postId", postId);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.commentsContainer,frg).addToBackStack("");
+        ft.replace(R.id.commentsContainer,frg);
         ft.commit();
 
     }
@@ -97,7 +98,8 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         final Comment comment = new Comment();
         comment.comment_content = add_comment.getText().toString();
         comment.post_id=postid;
-        comment.publisher_id=publisherid;
+        comment.publisher_id=curr_uid;
+        comment.date = new Date();
         PostFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User user) {
