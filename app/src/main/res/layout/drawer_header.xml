@@ -13,7 +13,7 @@
         android:id="@+id/drawer_profileImage"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="4dp"
         android:src="@drawable/male"
         app:layout_constraintBottom_toTopOf="@+id/drawer_fAndLName"
@@ -23,8 +23,7 @@
         android:id="@+id/drawer_fAndLName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="your name"
+        android:layout_marginStart="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toTopOf="@+id/drawer_userEmail"
         app:layout_constraintStart_toStartOf="parent" />
@@ -33,9 +32,8 @@
         android:id="@+id/drawer_userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
-        android:text="example@supplier.com"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

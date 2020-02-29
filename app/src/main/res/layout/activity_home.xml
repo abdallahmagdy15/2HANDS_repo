@@ -18,7 +18,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPureWhite">
+            android:background="@color/colorAccent">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -63,8 +63,10 @@
                     android:layout_marginStart="90dp"
                     android:entries="@array/categories"
                     android:spinnerMode="dialog"
+                    android:textColor="@color/colorPureWhite"
                     android:visibility="gone"
-                    app:layout_collapseMode="parallax" />
+                    app:layout_collapseMode="parallax"
+                    app:ms_background_color="@color/colorAccent" />
 
                 <SearchView
                     android:id="@+id/searchView"
