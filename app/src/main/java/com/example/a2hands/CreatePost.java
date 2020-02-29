@@ -17,12 +17,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -41,7 +47,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -52,6 +61,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 
 import id.zelory.compressor.Compressor;
 
@@ -65,7 +75,8 @@ public class CreatePost extends AppCompatActivity {
     DatabaseReference db;
     ImageView ownerPic;
     final Post post = new Post();
-
+    ListView mentionSuggestionsList;
+    final ArrayList<String> mentionsIds = new ArrayList<>() ;
 
     //creating images and camera
     Uri imageUri;
@@ -108,9 +119,11 @@ public class CreatePost extends AppCompatActivity {
         createdPostIsAnon = findViewById(R.id.createdPostIsAnon);
         db = FirebaseDatabase.getInstance().getReference();
         ownerPic = findViewById(R.id.postOwnerPic);
+        mentionSuggestionsList= findViewById(R.id.mentionSuggestionsList);
 
         final String uid = getIntent().getStringExtra("uid");
 
+        //get my profile pic
         FirebaseFirestore.getInstance().collection("users/").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -131,7 +144,116 @@ public class CreatePost extends AppCompatActivity {
         });
 
 
-        ////camera and video upload - waleed
+        //////-----set listener for mentions
+        createdPostText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                final String postText = createdPostText.getText().toString();
+                //get the last word
+                //and check if "@...."
+                String lastWord = postText.substring(postText.lastIndexOf(" ")+1);
+                if(lastWord.startsWith("@")){
+                    //show listView
+                    mentionSuggestionsList.setVisibility(View.VISIBLE);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    int marginTop = (createdPostText.getLineCount()*72)+45;
+                    params.setMargins(0, marginTop, 0, 0);
+                    mentionSuggestionsList.setLayoutParams(params);
+                    //get mention text after @
+                    final String mentioned = (lastWord.length()>1)? lastWord.substring(1):"";
+                    //if @ only we will show random suggestions
+                    if(mentioned.equals("")){
+                        FirebaseFirestore.getInstance().collection("/users")
+                                .limit(10)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                final ArrayList<String> usersSuggNames = new ArrayList<>();
+                                final ArrayList<User> usersSugg = new ArrayList<>();
+                                if(task.isSuccessful())
+                                    for (QueryDocumentSnapshot doc :task.getResult()) {
+                                        User user = doc.toObject(User.class);
+                                        usersSugg.add(user);
+                                        usersSuggNames.add(user.first_name+" "+user.last_name);
+                                    }
+                                ////update mention suggestions list
+                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
+                                        R.layout.mention_suggestions_layout,R.id.suggName,usersSuggNames);
+                                mentionSuggestionsList.setAdapter(userNames);
+                                ///set listener for items in suggestion list
+                                mentionSuggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        //add the selected user id to the array
+                                        mentionsIds.add(usersSugg.get(position).user_id);
+                                        //replace @text with @firstName_lastName
+                                        String oldtxt = createdPostText.getText().toString();
+                                        String userName = "@"+ usersSugg.get(position).first_name+ "_"+usersSugg.get(position).last_name;
+                                        int lastOccurOfAt =  oldtxt.lastIndexOf("@");
+                                        createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    else{
+                        //show suggestion who his first or last name starts with that word
+                        FirebaseFirestore.getInstance().collection("/users")
+                                .whereGreaterThanOrEqualTo("first_name",mentioned)
+                                .limit(15)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                ArrayList<String> usersSuggNames = new ArrayList<>();
+                                final ArrayList<User> usersSugg = new ArrayList<>();
+                                if(task.isSuccessful())
+                                    for (QueryDocumentSnapshot doc :task.getResult()) {
+                                        User user = doc.toObject(User.class);
+                                        usersSugg.add(user);
+                                        usersSuggNames.add(user.first_name+" "+user.last_name);
+                                    }
+                                ////update mention suggestions list
+                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
+                                        R.layout.mention_suggestions_layout,R.id.suggName,usersSuggNames);
+                                mentionSuggestionsList.setAdapter(userNames);
+                                ///set listener for items in suggestion list
+                                mentionSuggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        //add the selected user id to the array
+                                        mentionsIds.add(usersSugg.get(position).user_id);
+                                        //replace @text with @firstName_lastName
+                                        String oldtxt = createdPostText.getText().toString();
+                                        String userName = "@"+ usersSugg.get(position).first_name+ "_"+usersSugg.get(position).last_name;
+                                        int lastOccurOfAt =  oldtxt.lastIndexOf("@");
+                                        createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    mentionSuggestionsList.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        ////---camera and video upload - waleed
         camerabtn = findViewById(R.id.createPostWithImageCamera);
         camerabtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +318,7 @@ public class CreatePost extends AppCompatActivity {
         post.location = "Egypt";
         post.visibility = !createdPostIsAnon.isChecked();
         post.state = true;
-
+        post.mentions = mentionsIds;
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
@@ -320,7 +442,6 @@ public class CreatePost extends AppCompatActivity {
             finish();
         }
     }
-
 
     ///////////--- methods for media upload - waleed
     private void openVideoChooser() {

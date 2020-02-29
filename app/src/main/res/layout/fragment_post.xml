@@ -78,7 +78,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="start|center_vertical"
-                android:text="Ahmed Kamal"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="#1B1B1B"
                 android:textSize="14sp"
@@ -103,7 +102,6 @@
                     android:id="@+id/postTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
                     android:textColor="#2B2B2B"
                     android:textSize="12sp" />
 
@@ -112,7 +110,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="TextView"
                     android:textColor="#2B2B2B"
                     android:textSize="12sp" />
 

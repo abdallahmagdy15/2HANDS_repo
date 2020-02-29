@@ -166,7 +166,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         int i=0;
         for (String word:words) {
             if(word.startsWith("@")){
-                postText += "<a href=\"https://www.fb.com/\"><b>"+curr_post.mentions.get(i)+"</b></a>"+" ";
+                //del @ and seperate the name by white space
+                String[] fullName = word.split("_");
+                word = fullName[0].substring(1)+" "+fullName[1];
+                postText += "<a href=\"#\"><b>"+word+"</b></a>";
                 i++;
             }
             else

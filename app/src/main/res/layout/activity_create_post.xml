@@ -106,21 +106,36 @@
 
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/createdPostText"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="Let's get some help!"
-                android:inputType="textMultiLine"
-                android:paddingTop="5dp"
-                android:textColorHighlight="#CE432094"
-                android:textColorLink="#34079C" />
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/createdPostText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:hint="Let's get some help!"
+                    android:inputType="textMultiLine"
+                    android:lineSpacingExtra="8sp"
+                    android:paddingTop="5dp"
+                    android:textColorHighlight="@color/colorPrimary"
+                    android:textColorLink="@color/colorAccent"
+                    android:textSize="18sp" />
+
+                <ListView
+                    android:id="@+id/mentionSuggestionsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:background="@color/colorPureWhite"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/selectedImage"

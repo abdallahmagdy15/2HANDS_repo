@@ -19,6 +19,7 @@ public class User {
     public String profile_cover;
     public String job_title;
     public int ratings_count;
+    public String user_id;
 
     public User(
                 String first_name,
@@ -34,7 +35,9 @@ public class User {
                 String profile_pic,
                 String profile_cover,
                 String job_title,
-                int ratings_count) {
+                int ratings_count,
+                String user_id
+    ) {
         this.country = country;
         this.region = region;
         this.first_name = first_name;
@@ -49,6 +52,7 @@ public class User {
         this.profile_cover = profile_cover;
         this.job_title = job_title;
         this.ratings_count = ratings_count;
+        this.user_id = user_id;
     }
 
     public User(){
