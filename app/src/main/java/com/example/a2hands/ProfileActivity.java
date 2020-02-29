@@ -123,12 +123,16 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     }
 
     void loadUserProfile(){
-        db.collection("users/").document(uid)
+        db.collection("/users").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                loadPhotos(profilePic,"Profile_Pics/"+uid+"/"+user.profile_pic );
+                try {
+                    loadPhotos(profilePic,"Profile_Pics/"+uid+"/"+user.profile_pic );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 loadPhotos(coverPhoto,"Profile_Covers/"+user.profile_cover);
                 profileName.setText(user.first_name+" "+user.last_name);
                 jobTitle.setText(user.job_title);

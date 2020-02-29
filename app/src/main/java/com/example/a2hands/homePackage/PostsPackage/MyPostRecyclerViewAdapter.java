@@ -6,10 +6,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +50,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -163,21 +170,45 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         //check if there are mentions in the post
         String postText ="";
         String [] words = curr_post.content_text.split(" ");
+        int[][] mentionsIndexes = new int[words.length][2];
         int i=0;
+        int curr_char_index = 0;
         for (String word:words) {
             if(word.startsWith("@")){
                 //del @ and seperate the name by white space
                 String[] fullName = word.split("_");
-                word = fullName[0].substring(1)+" "+fullName[1];
-                postText += "<a href=\"#\"><b>"+word+"</b></a>";
+                word = fullName[0].substring(1)+" "+fullName[1]+" ";
+                mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;//set start of the mentioned name
+                postText += word;
+                mentionsIndexes[i][1] = postText.length()-1;//set end of the mentioned name
                 i++;
             }
             else
                 postText+=word+" ";
         }
-        holder.postContent .setText(Html.fromHtml(postText));
-        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
+        SpannableString ss = new SpannableString(postText);
+        for(int j =0 ; j<mentionsIndexes.length ; j++){
+            final int x = j;
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    String uid=curr_post.mentions.get(x);
+                    intent.putExtra("uid",uid);
+                    context.startActivity(intent);
+                }
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
+        holder.postContent.setText(ss);
+        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.postContent.setHighlightColor(Color.TRANSPARENT);
 
         PrettyTime p = new PrettyTime();
         holder.time.setText(p.format(curr_post.date));
