@@ -1,6 +1,8 @@
 package com.example.a2hands.NotificationsPackage;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -17,8 +19,13 @@ import com.example.a2hands.NotificationsPackage.NotificationFragment.OnListFragm
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.RatingPackage.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
@@ -88,6 +95,24 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                     rating.date = new Date();
                     ref.child(rating_id).setValue(rating);
                     Toast.makeText(holder.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
+                    //update counter for ratings
+                    FirebaseDatabase.getInstance().getReference("counter").child(rating.post_id )
+                            .child("ratings_count").runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                            int curr_ = mutableData.getValue(Integer.class);
+                            mutableData.setValue(curr_ +1);
+                            return Transaction.success(mutableData);
+                        }
+
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                        }
+                    });
+                    //end update counter for ratings
+
                     //delete help request
                     FirebaseFirestore.getInstance().collection("help_requests")
                             .document(notifisList.get(pos).help_request_id).delete();

@@ -1,6 +1,7 @@
 package com.example.a2hands.homePackage.PostsPackage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
@@ -44,10 +45,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
@@ -344,39 +349,70 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onClick(View view) {
                 if(holder.likeBtn.getTag().equals("like")){
+                    //update likes with users
                     FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
                             .child(holder.uid).setValue(true);
-                    updatePostLikes(curr_post.post_id);
+                    //update counter for likes
+                    FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                    .child("likes_count").runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                            int curr_likes = mutableData.getValue(Integer.class);
+                            mutableData.setValue(curr_likes +1);
+                            return Transaction.success(mutableData);
+                        }
 
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                        }
+                    });
+                    //end update counter for likes
                 }
+
                 else {
                     FirebaseDatabase.getInstance().getReference().child("likes")
                             .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                    updatePostLikes(curr_post.post_id);
+                    //update counter for likes
+                    FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                            .child("likes_count").runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                            int curr_likes = mutableData.getValue(Integer.class);
+                            mutableData.setValue(curr_likes-1);
+                            return Transaction.success(mutableData);
+                        }
+
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                        }
+                    });
+                    //end update counter for likes
                 }
             }
         });
 
-        //set counters for likes , comments , ratings , shares
-        int[] count = new int[4];
+        //get counters for likes , comments , ratings , shares
+        final int[] count = new int[4];
+        DatabaseReference counterRef = FirebaseDatabase.getInstance().getReference().child("counter").child(curr_post.post_id);
+        counterRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                PostCounter postCounter = dataSnapshot.getValue(PostCounter.class);
+                count[0]=postCounter.likes_count;
+                count[1]=postCounter.comments_count;
+                count[2]=postCounter.ratings_count;
+                count[3]=postCounter.shares_count;
+                updatePostWithCounter(holder,count);
+            }
 
-        count[0]=curr_post.likes_count;
-        count[1]=curr_post.comments_count;
-        count[2]=curr_post.ratings_count;
-        count[3]=curr_post.shares_count;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
 
-        //check if there is any likes or comm....
-        if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
-            holder.postCounter.setVisibility(View.VISIBLE);
-        }
-        holder.postLikesCommentsCount.setText (
-                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
-                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
-        );
-        holder.postRatingsSharesCount.setText (
-                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
-                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
-        );
 
 
         //set listener for share post button\
@@ -397,7 +433,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentsActivity.class);
                 intent.putExtra("post_id", curr_post.post_id);
-                intent.putExtra("likes_count",curr_post.likes_count);
+                intent.putExtra("likes_count",count[0]);
                 intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);
             }
@@ -406,6 +442,20 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
 // end setupPostData --------------------------
 
+    void updatePostWithCounter(ViewHolder holder, int[] count){
+        //check if there is any likes or comm....
+        if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
+            holder.postCounter.setVisibility(View.VISIBLE);
+        }
+        holder.postLikesCommentsCount.setText (
+                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
+                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
+        );
+        holder.postRatingsSharesCount.setText (
+                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
+                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
+        );
+    }
     @Override
     public int getItemCount() {
         return postsList.size();
@@ -432,23 +482,5 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
     }
-    private void updatePostLikes(final String postid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("likes")
-                .child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //update post with count likes
-                DocumentReference ref = FirebaseFirestore.getInstance().collection("posts").document(postid);
-                ref.update("likes_count", dataSnapshot.getChildrenCount());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
 }

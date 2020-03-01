@@ -1,5 +1,7 @@
 package com.example.a2hands.homePackage.CommentsPackage;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,8 +19,12 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.r0adkll.slidr.Slidr;
@@ -110,9 +116,23 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
                 comment.name=user.first_name+" "+user.last_name;
                 reference.push().setValue(comment);
                 add_comment.setText("");
-                //update comments count
-                FirebaseFirestore.getInstance().collection("/posts").document(postid)
-                        .update("comments_count", FieldValue.increment(1));
+                //update counter for comments
+                FirebaseDatabase.getInstance().getReference("counter").child(postid )
+                        .child("comments_count").runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        int curr_ = mutableData.getValue(Integer.class);
+                        mutableData.setValue(curr_ +1);
+                        return Transaction.success(mutableData);
+                    }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                    }
+                });
+                //end update counter for comments
             }
         },curr_uid);
 

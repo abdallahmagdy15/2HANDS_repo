@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.a2hands.homePackage.PostsPackage.Post;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
@@ -16,6 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -109,8 +115,22 @@ private Context context;
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "Post Shared successfully!", Toast.LENGTH_LONG).show();
                         //increment Shares on the post counter
-                        FirebaseFirestore.getInstance().collection("/posts")
-                                .document(shared_post_id).update("shares_count",FieldValue.increment(1));
+                        FirebaseDatabase.getInstance().getReference("counter").child(shared_post_id )
+                                .child("shares_count").runTransaction(new Transaction.Handler() {
+                            @NonNull
+                            @Override
+                            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                                int curr_ = mutableData.getValue(Integer.class);
+                                mutableData.setValue(curr_ +1);
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                            }
+                        });
+                        //end update counter for shares
                     }
                 });
             }

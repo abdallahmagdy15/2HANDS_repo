@@ -35,6 +35,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.a2hands.homePackage.PostsPackage.Post;
+import com.example.a2hands.homePackage.PostsPackage.PostCounter;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 
 import com.google.android.gms.tasks.Continuation;
@@ -321,7 +322,6 @@ public class CreatePost extends AppCompatActivity {
         post.mentions = mentionsIds;
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
         // Add a new document with a generated ID
         PostFragment.getUser(new Callback() {
             @Override
@@ -362,6 +362,9 @@ public class CreatePost extends AppCompatActivity {
                         CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
                         String postid = ref.document().getId();
                         post.post_id = postid;
+                        //set empty post counter
+                        PostCounter postCounter = new PostCounter();
+                        FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
                         ref.document(postid)
                                 .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -403,6 +406,11 @@ public class CreatePost extends AppCompatActivity {
                         CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
                         String postid = ref.document().getId();
                         post.post_id = postid;
+                        //set empty post counter
+                        PostCounter postCounter = new PostCounter();
+                        FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
+
+                        ////////// finally submit the post
                         ref.document(postid)
                                 .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -430,6 +438,9 @@ public class CreatePost extends AppCompatActivity {
             CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
             String postid = ref.document().getId();
             post.post_id = postid;
+            //set empty post counter
+            PostCounter postCounter = new PostCounter();
+            FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
             ref.document(postid)
                     .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
