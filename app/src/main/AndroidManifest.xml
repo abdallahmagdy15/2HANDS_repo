@@ -27,7 +27,9 @@
             android:parentActivityName=".ProfileActivity" />
         <activity android:name=".CreatePost" />
         <activity android:name=".signupPackage.signupActivity" />
-        <activity android:name=".homePackage.homeActivity" />
+        <activity android:name=".homePackage.homeActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
         <activity android:name=".signupPackage.signupSetBioActivity" />
         <activity android:name=".signupPackage.signupPickPictureActivity" />

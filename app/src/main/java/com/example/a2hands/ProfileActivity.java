@@ -136,7 +136,8 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                 loadPhotos(coverPhoto,"Profile_Covers/"+user.profile_cover);
                 profileName.setText(user.first_name+" "+user.last_name);
                 jobTitle.setText(user.job_title);
-                country_region.setText(user.country+", "+user.region);
+                String location = user.country+((user.region.equals(""))?"":", "+user.region);
+                country_region.setText(location);
                 profileBio.setText(user.bio);
                 DecimalFormat df = new DecimalFormat("##.##");
                 profileRate.setText(df.format(user.rate));

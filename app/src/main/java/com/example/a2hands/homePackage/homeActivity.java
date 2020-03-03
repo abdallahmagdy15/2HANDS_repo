@@ -19,11 +19,12 @@ import android.widget.Toast;
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.NotificationsPackage.NotificationFragment;
+import com.example.a2hands.SearchPackage.searchItemFragment;
 import com.example.a2hands.homePackage.PostsPackage.Post;
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.SavedActivity;
-import com.example.a2hands.SearchFragment;
+import com.example.a2hands.SearchPackage.SearchFragment;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 import com.example.a2hands.settingsPackage.SettingsActivity;
@@ -50,7 +51,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class homeActivity extends AppCompatActivity implements
         SearchFragment.OnFragmentInteractionListener,
         PostFragment.OnListFragmentInteractionListener,
-        NotificationFragment.OnListFragmentInteractionListener{
+        NotificationFragment.OnListFragmentInteractionListener
+, searchItemFragment.OnListFragmentInteractionListener
+{
 
 
     //drawer
@@ -287,12 +290,29 @@ public class homeActivity extends AppCompatActivity implements
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
+        startFragmentSearch("A");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                startFragmentSearch(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+    void startFragmentSearch(String query){
+        Fragment frg = new SearchFragment();
+        Bundle b= new Bundle();
+        b.putString("search_query",query);
+        frg.setArguments(b);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,new SearchFragment()).addToBackStack(null);
+        ft.replace(R.id.homeFrag,frg).addToBackStack(null);
         ft.commit();
     }
-
     public void navigateCreatePost(){
         Intent intent = new Intent(this, CreatePost.class);
         intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -328,8 +348,8 @@ public class homeActivity extends AppCompatActivity implements
 
     }
 
-    /*//@Override
-    public void onOptionClicked(int index) {
+    @Override
+    public void onListFragmentInteraction(User item) {
 
-    }*/
+    }
 }

@@ -93,6 +93,9 @@
             android:layout_height="match_parent"
 
 
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -131,7 +134,6 @@
             app:itemIconSize="24sp"
             app:itemTextColor="@color/bottom_nav_colors"
             app:labelVisibilityMode="selected"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation" />
