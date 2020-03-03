@@ -176,6 +176,7 @@ public class PostFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts, mListener));
 
         }

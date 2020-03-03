@@ -18,6 +18,9 @@ import com.example.a2hands.SearchPackage.searchItemFragment.OnListFragmentIntera
 import com.example.a2hands.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
@@ -100,6 +103,9 @@ public class MysearchItemRecyclerViewAdapter extends RecyclerView.Adapter<Mysear
                     Intent intent = new Intent(holder.mView.getContext(),ProfileActivity.class);
                     intent.putExtra("uid",user.user_id);
                     holder.mView.getContext().startActivity(intent);
+                    // add to recent searches to the database
+                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("recent_users");
+                    ref.child(FirebaseAuth.getInstance().getUid()).child(user.user_id).setValue(true);
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(user);

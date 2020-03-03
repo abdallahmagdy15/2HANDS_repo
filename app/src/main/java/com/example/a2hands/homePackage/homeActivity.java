@@ -290,7 +290,8 @@ public class homeActivity extends AppCompatActivity implements
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
-        startFragmentSearch("A");
+
+        startFragmentSearch("");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

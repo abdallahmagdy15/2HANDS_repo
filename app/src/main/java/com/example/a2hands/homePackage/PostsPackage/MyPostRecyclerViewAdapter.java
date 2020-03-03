@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -183,9 +184,13 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 //del @ and seperate the name by white space
                 String[] fullName = word.split("_");
                 word = fullName[0].substring(1)+" "+fullName[1]+" ";
-                mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;//set start of the mentioned name
-                postText += word;
-                mentionsIndexes[i][1] = postText.length()-1;//set end of the mentioned name
+                try {
+                    mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;//set start of the mentioned name
+                    postText += word;
+                    mentionsIndexes[i][1] = postText.length()-1;//set end of the mentioned name
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 i++;
             }
             else
@@ -206,6 +211,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 public void updateDrawState(TextPaint ds) {
                     super.updateDrawState(ds);
                     ds.setUnderlineText(false);
+                    ds.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 }
             };
             ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -345,55 +351,59 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.likeBtn.getTag().equals("like")){
-                    //update likes with users
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
-                            .child(holder.uid).setValue(true);
-                    //update counter for likes
-                    FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
-                    .child("likes_count").runTransaction(new Transaction.Handler() {
-                        @NonNull
-                        @Override
-                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                            int curr_likes = mutableData.getValue(Integer.class);
-                            mutableData.setValue(curr_likes +1);
-                            return Transaction.success(mutableData);
-                        }
+        try {
+            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(holder.likeBtn.getTag().equals("like")){
+                        //update likes with users
+                        FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
+                                .child(holder.uid).setValue(true);
+                        //update counter for likes
+                        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                        .child("likes_count").runTransaction(new Transaction.Handler() {
+                            @NonNull
+                            @Override
+                            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                                int curr_likes = mutableData.getValue(Integer.class);
+                                mutableData.setValue(curr_likes +1);
+                                return Transaction.success(mutableData);
+                            }
 
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
 
-                        }
-                    });
-                    //end update counter for likes
+                            }
+                        });
+                        //end update counter for likes
+                    }
+
+                    else {
+                        FirebaseDatabase.getInstance().getReference().child("likes")
+                                .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                        //update counter for likes
+                        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                                .child("likes_count").runTransaction(new Transaction.Handler() {
+                            @NonNull
+                            @Override
+                            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                                int curr_likes = mutableData.getValue(Integer.class);
+                                mutableData.setValue(curr_likes-1);
+                                return Transaction.success(mutableData);
+                            }
+
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                            }
+                        });
+                        //end update counter for likes
+                    }
                 }
-
-                else {
-                    FirebaseDatabase.getInstance().getReference().child("likes")
-                            .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                    //update counter for likes
-                    FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
-                            .child("likes_count").runTransaction(new Transaction.Handler() {
-                        @NonNull
-                        @Override
-                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                            int curr_likes = mutableData.getValue(Integer.class);
-                            mutableData.setValue(curr_likes-1);
-                            return Transaction.success(mutableData);
-                        }
-
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
-                        }
-                    });
-                    //end update counter for likes
-                }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //get counters for likes , comments , ratings , shares
         final int[] count = new int[4];

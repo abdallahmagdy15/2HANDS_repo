@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SearchFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout recentTitleContainer;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -50,6 +52,14 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         String query = getArguments().getString("search_query");
+
+        recentTitleContainer = view.findViewById(R.id.recentTitleContainer);
+        if(query.equals(""))
+            recentTitleContainer.setVisibility(View.VISIBLE);
+        else
+            recentTitleContainer.setVisibility(View.GONE);
+
+
         //start the searchResultsFragment
         Fragment frg = new searchItemFragment();
         Bundle b = new Bundle();
