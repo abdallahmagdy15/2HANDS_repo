@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage.RatingPackage;
+package com.example.a2hands.RatingPackage;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
@@ -19,7 +19,7 @@ public class Rating {
 
     public Rating (){}
     public Rating(String publisher_id, Date date, String subscriber_id,String review_text,
-           String rating_id, int rate, String subscriber_pic, String subscriber_name, String post_id) {
+           String rating_id, int rate, String subscriber_pic, String subscriber_name, String post_id ) {
         this.publisher_id = publisher_id;
         this.date = date;
         this.subscriber_id = subscriber_id;

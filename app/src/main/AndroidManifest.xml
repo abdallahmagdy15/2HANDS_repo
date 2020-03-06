@@ -19,8 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SavedActivity"></activity>
-        <activity android:name=".homePackage.RatingPackage.RatingsActivity"
-            android:parentActivityName=".homePackage.RatingPackage.RatingsActivity" />
+        <activity android:name=".RatingPackage.RatingsActivity"
+            android:parentActivityName=".RatingPackage.RatingsActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity
             android:name=".ProfileActivity"

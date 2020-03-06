@@ -6,6 +6,7 @@
     android:name="com.example.a2hands.homePackage.RatingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPureWhite"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".homePackage.RatingPackage.RatingFragment"
+    tools:context=".RatingPackage.RatingFragment"
     tools:listitem="@layout/fragment_rating" />

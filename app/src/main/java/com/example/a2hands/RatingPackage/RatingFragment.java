@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage.RatingPackage;
+package com.example.a2hands.RatingPackage;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -26,24 +26,23 @@ import java.util.List;
 public class RatingFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    private String activity;
 
     public RatingFragment() {
     }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_rating_list, container, false);
+
+        activity = getArguments().getString("for");
         //check fragment is called for home post or profile reviews tab
-        if(getArguments().getString("for").equals("home")){
+        if(activity.equals("home")){
             String post_id = getArguments().getString("postId");
 
             FirebaseDatabase.getInstance().getReference("ratings")
@@ -108,7 +107,7 @@ public class RatingFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener , uid));
+            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener , uid , activity));
         }
     }
 

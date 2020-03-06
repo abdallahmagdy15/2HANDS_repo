@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -36,7 +35,7 @@ import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
-import com.example.a2hands.homePackage.RatingPackage.RatingsActivity;
+import com.example.a2hands.RatingPackage.RatingsActivity;
 import com.example.a2hands.homePackage.homeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,13 +50,10 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -411,12 +407,16 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         counterRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                PostCounter postCounter = dataSnapshot.getValue(PostCounter.class);
-                count[0]=postCounter.likes_count;
-                count[1]=postCounter.comments_count;
-                count[2]=postCounter.ratings_count;
-                count[3]=postCounter.shares_count;
-                updatePostWithCounter(holder,count);
+                try {
+                    PostCounter postCounter = dataSnapshot.getValue(PostCounter.class);
+                    count[0]=postCounter.likes_count;
+                    count[1]=postCounter.comments_count;
+                    count[2]=postCounter.ratings_count;
+                    count[3]=postCounter.shares_count;
+                    updatePostWithCounter(holder,count);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

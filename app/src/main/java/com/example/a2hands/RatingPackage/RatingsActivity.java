@@ -1,4 +1,4 @@
-package com.example.a2hands.homePackage.RatingPackage;
+package com.example.a2hands.RatingPackage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

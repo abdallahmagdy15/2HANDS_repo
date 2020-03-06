@@ -1,8 +1,11 @@
 package com.example.a2hands;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -10,25 +13,32 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a2hands.homePackage.PostsPackage.Post;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
-import com.example.a2hands.homePackage.RatingPackage.Rating;
-import com.example.a2hands.homePackage.RatingPackage.RatingFragment;
+import com.example.a2hands.RatingPackage.Rating;
+import com.example.a2hands.RatingPackage.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     private PagerAdapter pagerAdapter;
     ImageView coverPhoto;
     ImageView profilePic;
-    Button profileFollowBtn;
+    CardView profileFollowBtn;
     Button profileEditBtn;
     ImageView profileMessaging;
     private StorageReference mStorageRef;
@@ -61,6 +71,11 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
     TextView profileRate;
     RatingBar ratingBar;
     TextView ratings_count;
+    String curr_uid;
+    TextView profileFollowingsCount;
+    TextView profileFollowersCount;
+    TextView profileFollowBtnTxt;
+    String UserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +105,10 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         ratings_count = findViewById(R.id.ratings_count);
         profileEditBtn = findViewById(R.id.profileEditBtn);
         profileMessaging = findViewById(R.id.profileMessaging);
+        curr_uid = FirebaseAuth.getInstance().getUid();
+        profileFollowingsCount = findViewById(R.id.profileFollowingsCount);
+        profileFollowersCount = findViewById(R.id.profileFollowersCount);
+        profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
 
         // setup
         setSupportActionBar(toolbar);
@@ -102,11 +121,68 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
         if(uid != null){
             profileFollowBtn.setVisibility(View.VISIBLE);
             profileMessaging.setVisibility(View.VISIBLE);
+            //check if follow or un follow
+            FirebaseDatabase.getInstance().getReference("followers").child(curr_uid).child(uid)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //if curr_uid following uid
+                            if(dataSnapshot.exists()){
+                                //change style of follow btn
+                                profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPureWhite));
+                                profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                profileFollowBtnTxt.setText("Following");
+
+                                profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //confirm unfollow
+                                        new AlertDialog.Builder(ProfileActivity.this)
+                                                .setTitle("Are you sure you want to unfollow ?")
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                                        //// delete following and follower
+                                                        // followings > following > follower
+                                                        FirebaseDatabase.getInstance().getReference("followings").child(uid)
+                                                                .child(curr_uid).setValue(null);
+                                                        // followers > follower > following
+                                                        FirebaseDatabase.getInstance().getReference("followers").child(curr_uid)
+                                                                .child(uid).setValue(null);
+                                                    }})
+                                                .setNegativeButton(android.R.string.no, null).show();
+                                    }
+                                });
+                            }
+                            else {
+                                //change style of follow btn
+                                profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                                profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
+                                profileFollowBtnTxt.setText("Follow");
+
+                                profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // set new following and follower
+                                        // followings > following > follower
+                                        FirebaseDatabase.getInstance().getReference("followings").child(uid)
+                                                .child(curr_uid).setValue(true);
+                                        // followers > follower > following
+                                        FirebaseDatabase.getInstance().getReference("followers").child(curr_uid)
+                                                .child(uid).setValue(true);
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
+
         }
         else {
             uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
             profileEditBtn.setVisibility(View.VISIBLE);
         }
+
         loadUserProfile();
 
     }
@@ -134,7 +210,8 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                     e.printStackTrace();
                 }
                 loadPhotos(coverPhoto,"Profile_Covers/"+user.profile_cover);
-                profileName.setText(user.first_name+" "+user.last_name);
+                UserName = user.first_name+" "+user.last_name;
+                profileName.setText(UserName );
                 jobTitle.setText(user.job_title);
                 String location = user.country+((user.region.equals(""))?"":", "+user.region);
                 country_region.setText(location);
@@ -148,6 +225,31 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
 
             }
         });
+        //get followings count
+        FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String count = Long.toString(dataSnapshot.getChildrenCount());
+                        count = "<b>"+count+"</b> Followings";
+                        profileFollowingsCount.setText(Html.fromHtml(count));
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+        //get followers count
+        FirebaseDatabase.getInstance().getReference("followers")
+                .child(curr_uid)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String count = Long.toString(dataSnapshot.getChildrenCount());
+                        count = "<b>"+count+"</b> Followers";
+                        profileFollowersCount.setText(Html.fromHtml(count));
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
     }
     void loadPhotos(final ImageView imgV , String path){
 

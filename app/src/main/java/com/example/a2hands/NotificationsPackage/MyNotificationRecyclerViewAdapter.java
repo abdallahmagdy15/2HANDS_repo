@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.a2hands.NotificationsPackage.NotificationFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
-import com.example.a2hands.homePackage.RatingPackage.Rating;
+import com.example.a2hands.RatingPackage.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;

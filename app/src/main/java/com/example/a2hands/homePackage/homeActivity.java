@@ -298,7 +298,6 @@ public class homeActivity extends AppCompatActivity implements
                 startFragmentSearch(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;

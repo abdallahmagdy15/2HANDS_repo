@@ -6,6 +6,10 @@
     android:background="#00FFFFFF"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="#AFAFAF" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,8 +24,7 @@
             android:id="@+id/ratingsPic"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_launcher_round" />
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -37,14 +40,15 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/ratingToText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="To"
-                    android:textColor="#3C3C3C"
+                    android:textColor="@color/colorDark"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/ratingSubscriber"
+                    android:id="@+id/ratingUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -93,19 +97,20 @@
                 android:id="@+id/postReviewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/ratingWriteReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:gravity="start|top"
                     android:hint="Express your gratitude"
                     android:inputType="textMultiLine"
-                    android:textColor="#141414"
+                    android:textColor="@color/colorDark"
                     android:textSize="15sp"
                     android:visibility="visible" />
 
@@ -117,6 +122,32 @@
                     app:srcCompat="@drawable/comment" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ratingConfirmSubmitContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/ratingWriteReviewBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Write Review"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ratingFinishSubmitBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Finished"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+            </LinearLayout>
             <TextView
                 android:id="@+id/reviewText"
                 android:layout_width="match_parent"
