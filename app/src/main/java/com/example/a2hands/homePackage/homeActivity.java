@@ -241,6 +241,9 @@ public class homeActivity extends AppCompatActivity implements
                             badge.setVisible(true);
                             badge.setNumber(( (int)dataSnapshot.getChildrenCount()));
                         }
+                        else {
+                            badge.setVisible(false);
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }

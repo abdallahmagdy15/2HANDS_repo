@@ -33,8 +33,11 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNotificationRecyclerViewAdapter.ViewHolder> {
@@ -49,36 +52,36 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public LinearLayout notifiHelpReqContainer;
-        public TextView notificationContent;
-        public TextView  notificationDate;
-        public CircleImageView notificationPic;
-        public Button acceptReq;
-        public Button refuseReq;
+        public TextView notifiDesc;
+        public TextView  notifiTime;
+        public CircleImageView notifiPic;
+        public CircleImageView notifiTypePic;
+        public Button acceptReqBtn;
+        public Button refuseReqBtn;
+        public LinearLayout notifiContainer;
+
 
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            notifiHelpReqContainer = view.findViewById(R.id.notifiHelpReqContainer);
-            notificationContent = view.findViewById(R.id.notificationContent);
-            notificationDate = view.findViewById(R.id.notificationDate);
-            notificationPic = view.findViewById(R.id.notificationPic);
-            acceptReq = view.findViewById(R.id.acceptReq);
-            refuseReq = view.findViewById(R.id.refuseReq);
-
+            notifiContainer = (LinearLayout) view;
         }
 
     }
     @Override
-    public void onBindViewHolder(final ViewHolder holder,final int pos) {
+    public void onBindViewHolder(final ViewHolder holder, final int pos) {
+    final ViewHolder vh ;
         //check type of notifi
         if(notifisList.get(pos).type.equals("HELP_REQUEST")) {
-            holder.notifiHelpReqContainer.setVisibility(View.VISIBLE);
-            holder.acceptReq.setOnClickListener(new View.OnClickListener() {
+            vh = setLayoutViews(holder,notifisList.get(pos).type);
+            vh.notifiTypePic.setImageResource(R.drawable.help_filled);
+
+            //set listener for acc btn
+            vh.acceptReqBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteNotifiAndhelpReq(pos,holder);
+                    deleteNotifiAndhelpReq(pos,vh);
                     /////add user to ratings
                     Rating rating = new Rating();
                     //rating subscriber is who will be rated by publisher
@@ -93,7 +96,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                     rating.review_text="";
                     rating.date = new Date();
                     ref.child(rating_id).setValue(rating);
-                    Toast.makeText(holder.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(vh.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
                     //update counter for ratings
                     FirebaseDatabase.getInstance().getReference("counter").child(rating.post_id )
                             .child("ratings_count").runTransaction(new Transaction.Handler() {
@@ -118,11 +121,11 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
 
                 }
             });
-            holder.refuseReq.setOnClickListener(new View.OnClickListener() {
+            holder.refuseReqBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteNotifiAndhelpReq(pos,holder);
-                    Toast.makeText(holder.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT).show();
+                    deleteNotifiAndhelpReq(pos,vh);
+                    Toast.makeText(vh.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT).show();
                     //delete help request
                     FirebaseFirestore.getInstance().collection("help_requests")
                             .document(notifisList.get(pos).help_request_id).delete();
@@ -131,19 +134,23 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         }
 
         else{
+            vh = setLayoutViews(holder,notifisList.get(pos).type);
+            setLayoutViews(holder,notifisList.get(pos).type);
+            vh.notifiTypePic.setImageResource(R.drawable.like_filled);
 
         }
-        holder.notificationContent.setText(notifisList.get(pos).content);
+        //set notification info
+        vh.notifiDesc.setText(notifisList.get(pos).content);
         PrettyTime p = new PrettyTime();
-        holder.notificationDate.setText(p.format(notifisList.get(pos).date));
-//load pic of notifi publisher and put into the image view
+        holder.notifiTime.setText(p.format(notifisList.get(pos).date));
+        //load pic of notifi publisher and put into the image view
         FirebaseStorage.getInstance().getReference()
                 .child("Profile_Pics/" +notifisList.get(pos).publisher_id+ "/"
                         + notifisList.get(pos).publisher_pic)
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri.toString()).into(holder.notificationPic);
+                Picasso.get().load(uri.toString()).into(vh.notifiPic);
             }
         });
 
@@ -165,6 +172,33 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         return new ViewHolder(view);
     }
 
+    ViewHolder setLayoutViews(ViewHolder holder , String type){
+        LayoutInflater inflater = (LayoutInflater)holder.mView.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout;
+        //check notifi type
+        if(type.equals("HELP_REQUEST")){
+            //setting the inner layout
+            layout = inflater.inflate(R.layout.notification_request, null);
+            holder.notifiContainer.addView(layout);
+
+            holder.notifiTypePic = holder.notifiContainer.findViewById(R.id.notifiTypePic);
+            holder.acceptReqBtn = holder.notifiContainer.findViewById(R.id.acceptReqBtn);
+            holder.refuseReqBtn = holder.notifiContainer.findViewById(R.id.refuseReqBtn);
+        }
+        else {
+            //setting the inner layout
+            layout = inflater.inflate(R.layout.notification_react, null);
+            holder.notifiContainer.addView(layout);
+
+            holder.notifiTypePic = holder.notifiContainer.findViewById(R.id.notifiTypePic);
+        }
+
+        //set the views
+        holder.notifiDesc = holder.notifiContainer.findViewById(R.id.notifiDesc);
+        holder.notifiTime = holder.notifiContainer.findViewById(R.id.notifiTime);
+        holder.notifiPic = holder.notifiContainer.findViewById(R.id.notifiPic);
+        return holder;
+    }
     @Override
     public int getItemCount() {
         return notifisList.size();

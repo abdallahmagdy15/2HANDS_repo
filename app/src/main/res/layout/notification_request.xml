@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notifiPic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/male"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notifiTypePic"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_notifications_black_24dp"
+        app:civ_circle_background_color="@color/colorWhite"
+        app:layout_constraintStart_toStartOf="@id/notifiPic"
+        app:layout_constraintTop_toTopOf="@id/notifiPic" />
+
+    <TextView
+        android:id="@+id/notifiDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:singleLine="false"
+        android:text="Ahmed Ibra sent you a help request"
+        android:textColor="@color/colorDark"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/notifiPic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/acceptReqBtn"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Accept"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/notifiPic"
+        app:layout_constraintTop_toBottomOf="@id/notifiDesc" />
+
+    <Button
+        android:id="@+id/refuseReqBtn"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Refuse"
+        android:textColor="@color/colorDark"
+        app:backgroundTint="@color/colorWhiteGray"
+        app:layout_constraintStart_toEndOf="@+id/acceptReqBtn"
+        app:layout_constraintTop_toBottomOf="@id/notifiDesc" />
+
+    <TextView
+        android:id="@+id/notifiTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="5 minutes ago"
+        android:textColor="@color/colorDisabled"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/notifiPic"
+        app:layout_constraintTop_toBottomOf="@id/acceptReqBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
