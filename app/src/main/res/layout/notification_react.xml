@@ -20,12 +20,14 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/notifiTypePic"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:src="@drawable/ic_notifications_black_24dp"
-        app:civ_circle_background_color="@color/colorWhite"
+        app:civ_border_color="@color/colorPureWhite"
+        app:civ_border_width="5dp"
+        app:civ_circle_background_color="@color/colorPrimaryDark"
         app:layout_constraintStart_toStartOf="@id/notifiPic"
         app:layout_constraintTop_toTopOf="@id/notifiPic" />
 

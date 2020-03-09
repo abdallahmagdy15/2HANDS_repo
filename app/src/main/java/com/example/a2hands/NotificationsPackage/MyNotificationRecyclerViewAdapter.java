@@ -75,7 +75,6 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         //check type of notifi
         if(notifisList.get(pos).type.equals("HELP_REQUEST")) {
             vh = setLayoutViews(holder,notifisList.get(pos).type);
-            vh.notifiTypePic.setImageResource(R.drawable.help_filled);
 
             //set listener for acc btn
             vh.acceptReqBtn.setOnClickListener(new View.OnClickListener() {
