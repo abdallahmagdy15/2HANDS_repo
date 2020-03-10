@@ -8,8 +8,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SavedActivity"></activity>
-        <activity android:name=".RatingPackage.RatingsActivity"
+        <activity android:name=".LocationSearch.SearchLocation"></activity>
+        <activity android:name=".SavedActivity" />
+        <activity
+            android:name=".RatingPackage.RatingsActivity"
             android:parentActivityName=".RatingPackage.RatingsActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity
@@ -27,9 +29,9 @@
             android:parentActivityName=".ProfileActivity" />
         <activity android:name=".CreatePost" />
         <activity android:name=".signupPackage.signupActivity" />
-        <activity android:name=".homePackage.homeActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+        <activity
+            android:name=".homePackage.homeActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
         <activity android:name=".signupPackage.signupSetBioActivity" />
         <activity android:name=".signupPackage.signupPickPictureActivity" />

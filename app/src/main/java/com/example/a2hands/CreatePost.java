@@ -34,6 +34,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.LocationSearch.SearchLocation;
 import com.example.a2hands.homePackage.PostsPackage.Post;
 import com.example.a2hands.homePackage.PostsPackage.PostCounter;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
@@ -106,6 +107,10 @@ public class CreatePost extends AppCompatActivity {
     MediaController mc;
     String videoName;
 
+    //Search Location button
+    Button postLocation;
+    public static final int LOCATION_REQUEST_CODE = 5;
+    String gover;
 
 
     @Override
@@ -123,6 +128,16 @@ public class CreatePost extends AppCompatActivity {
         mentionSuggestionsList= findViewById(R.id.mentionSuggestionsList);
 
         final String uid = getIntent().getStringExtra("uid");
+
+
+        //Search Location
+        postLocation = findViewById(R.id.createdPostLocation);
+        postLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(CreatePost.this, SearchLocation.class), LOCATION_REQUEST_CODE);
+            }
+        });
 
         //get my profile pic
         FirebaseFirestore.getInstance().collection("users/").document(uid)
@@ -316,7 +331,11 @@ public class CreatePost extends AppCompatActivity {
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
         post.category = catSpinner.getSelectedItem().toString();
         post.content_text = createdPostText.getText().toString();
-        post.location = "Egypt";
+        //check if location not empty
+        if(gover != null)
+            post.location = gover;
+        else
+            post.location = "Egypt";
         post.visibility = !createdPostIsAnon.isChecked();
         post.state = true;
         post.mentions = mentionsIds;
@@ -479,7 +498,11 @@ public class CreatePost extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK && data != null){
+        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
+            gover = data.getStringExtra("governate");
+            postLocation.setText(gover);
+        }
+        else if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK && data != null){
             videoUri = data.getData();
             selectedVideo.setVideoURI(videoUri);
             selectedVideo.setVisibility(View.VISIBLE);
