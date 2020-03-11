@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.PostOptionsDialog;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsActivity;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.NotificationsPackage.Notification;
@@ -99,7 +100,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final TextView postUserSharedPost;
         public final LinearLayout sharingContainer;
         public final LinearLayout postCounter;
-
+        public final ImageView postOptions;
 
 
         public ViewHolder(View view) {
@@ -124,6 +125,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             sharingContainer = view.findViewById(R.id.sharingContainer);
             postCounter=view.findViewById(R.id.postCounter);
             commentBtn = view.findViewById(R.id.commentBtn);
+            postOptions = view.findViewById(R.id.postOptions);
         }
 
     }
@@ -446,6 +448,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 intent.putExtra("likes_count",count[0]);
                 intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);
+            }
+        });
+        //set post more options listener
+        holder.postOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostOptionsDialog postOptionsDialog = new PostOptionsDialog();
+                Bundle b = new Bundle();
+                b.putString("post_id",curr_post.post_id);
+                b.putString("post_user_id",curr_post.user_id);
+                postOptionsDialog.setArguments(b);
+                postOptionsDialog.show(((homeActivity)context).getSupportFragmentManager(),"");
             }
         });
     }

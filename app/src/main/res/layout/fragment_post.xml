@@ -79,15 +79,13 @@
         app:layout_constraintStart_toEndOf="@id/postOwnerPic"
         app:layout_constraintTop_toBottomOf="@id/view10" />
 
-    <Spinner
+    <ImageView
         android:id="@+id/postOptions"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/more"
-        android:backgroundTint="#1D1D1D"
-        android:entries="@array/postOptions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view10" />
 
