@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
+import com.example.a2hands.homePackage.RepliesPackage.RepliesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -131,6 +132,17 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         }
 
 
+        //reply
+        holder.commentReplyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent replyInent = new Intent(holder.context, RepliesActivity.class);
+                replyInent.putExtra("post_id", curr_comment.post_id);
+                replyInent.putExtra("comment_id", curr_comment.comment_id);
+                replyInent.putExtra("publisher_id", holder.uid);
+                holder.context.startActivity(replyInent);
+            }
+        });
     }
 
 
