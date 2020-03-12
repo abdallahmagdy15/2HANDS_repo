@@ -51,7 +51,9 @@ import java.text.NumberFormat;
 import static java.lang.StrictMath.round;
 
 
-public class ProfileActivity extends AppCompatActivity  implements PostFragment.OnListFragmentInteractionListener , RatingFragment.OnListFragmentInteractionListener {
+public class ProfileActivity extends AppCompatActivity  implements PostFragment.OnListFragmentInteractionListener ,
+        RatingFragment.OnListFragmentInteractionListener
+{
 
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
@@ -118,71 +120,74 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
 
         mPager.setAdapter(pagerAdapter);
 
-        if(uid != null){
-            profileFollowBtn.setVisibility(View.VISIBLE);
-            profileMessaging.setVisibility(View.VISIBLE);
-            //check if follow or un follow
-            FirebaseDatabase.getInstance().getReference("followers").child(curr_uid).child(uid)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            //if curr_uid following uid
-                            if(dataSnapshot.exists()){
-                                //change style of follow btn
-                                profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPureWhite));
-                                profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
-                                profileFollowBtnTxt.setText("Following");
+        if(uid != null){//if redirected to this profile by uid
+            if(uid.equals(curr_uid)){
+                profileEditBtn.setVisibility(View.VISIBLE);
+            }
+            else {
+                profileFollowBtn.setVisibility(View.VISIBLE);
+                profileMessaging.setVisibility(View.VISIBLE);
+                //check if follow or un follow
+                FirebaseDatabase.getInstance().getReference("followings").child(curr_uid).child(uid)
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                //if curr_uid following uid
+                                if (dataSnapshot.exists()) {
+                                    //change style of follow btn
+                                    profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPureWhite));
+                                    profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                    profileFollowBtnTxt.setText("Following");
 
-                                profileFollowBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //confirm unfollow
-                                        new AlertDialog.Builder(ProfileActivity.this)
-                                                .setTitle("Are you sure you want to unfollow ?")
-                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                                        //// delete following and follower
-                                                        // followings > following > follower
-                                                        FirebaseDatabase.getInstance().getReference("followings").child(uid)
-                                                                .child(curr_uid).setValue(null);
-                                                        // followers > follower > following
-                                                        FirebaseDatabase.getInstance().getReference("followers").child(curr_uid)
-                                                                .child(uid).setValue(null);
-                                                    }})
-                                                .setNegativeButton(android.R.string.no, null).show();
-                                    }
-                                });
+                                    profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //confirm unfollow
+                                            new AlertDialog.Builder(ProfileActivity.this)
+                                                    .setTitle("Are you sure you want to unfollow ?")
+                                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                                            //// delete following and follower
+                                                            // followings > following > follower
+                                                            FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
+                                                                    .child(uid).setValue(null);
+                                                            // followers > follower > following
+                                                            FirebaseDatabase.getInstance().getReference("followers").child(uid)
+                                                                    .child(curr_uid).setValue(null);
+                                                        }
+                                                    })
+                                                    .setNegativeButton(android.R.string.no, null).show();
+                                        }
+                                    });
+                                } else {
+                                    //change style of follow btn
+                                    profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                                    profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
+                                    profileFollowBtnTxt.setText("Follow");
+
+                                    profileFollowBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // set new following and follower
+                                            FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
+                                                    .child(uid).setValue(true);
+                                            FirebaseDatabase.getInstance().getReference("followers").child(uid)
+                                                    .child(curr_uid).setValue(true);
+                                        }
+                                    });
+                                }
                             }
-                            else {
-                                //change style of follow btn
-                                profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                                profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
-                                profileFollowBtnTxt.setText("Follow");
 
-                                profileFollowBtn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // set new following and follower
-                                        // followings > following > follower
-                                        FirebaseDatabase.getInstance().getReference("followings").child(uid)
-                                                .child(curr_uid).setValue(true);
-                                        // followers > follower > following
-                                        FirebaseDatabase.getInstance().getReference("followers").child(curr_uid)
-                                                .child(uid).setValue(true);
-                                    }
-                                });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) { }
-                    });
-
+                        });
+            }
         }
-        else {
-            uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        else {//if not by uid then its by curr uid
+            uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
         }
-
         loadUserProfile();
 
     }
@@ -226,7 +231,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
             }
         });
         //get followings count
-        FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
+        FirebaseDatabase.getInstance().getReference("followings").child(uid)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -239,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity  implements PostFragment.
                 });
         //get followers count
         FirebaseDatabase.getInstance().getReference("followers")
-                .child(curr_uid)
+                .child(uid)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

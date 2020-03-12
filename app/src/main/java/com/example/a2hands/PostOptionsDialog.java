@@ -82,7 +82,6 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
         return view;
     }
 
-
     @Override
     public void onClick(View v) {
         if (v.getId() == saveBtn.getId()){

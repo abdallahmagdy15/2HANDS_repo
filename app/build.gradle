@@ -65,6 +65,10 @@ dependencies {
     //slider lib
     implementation 'com.r0adkll:slidableactivity:2.1.0'
 
+    //cardview lib
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    //readMore textView lib
+    implementation 'com.borjabravo:readmoretextview:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
