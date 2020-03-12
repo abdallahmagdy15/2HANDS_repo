@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -106,6 +107,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
         final Comment comment = new Comment();
         comment.comment_content = add_comment.getText().toString();
+
         comment.post_id=postid;
         comment.publisher_id=curr_uid;
         comment.date = new Date();
@@ -114,7 +116,10 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
             public void callbackUser(User user) {
                 comment.publisher_pic=user.profile_pic;
                 comment.name=user.first_name+" "+user.last_name;
+                //store Comment to use it in Like Comment
+                comment.comment_id = reference.push().getKey();
                 reference.push().setValue(comment);
+
                 add_comment.setText("");
                 //update counter for comments
                 FirebaseDatabase.getInstance().getReference("counter").child(postid )

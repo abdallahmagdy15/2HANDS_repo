@@ -11,6 +11,7 @@ public class Comment {
     public String comment_content;
     public @ServerTimestamp
     Date date;
+    public String comment_id;
     public String post_id;
     public String publisher_id;
     public List<String> mentions;
@@ -19,12 +20,13 @@ public class Comment {
     public String video;
     public String name;
 
-    public Comment(String comment_content, Date date,
-                   String post_id,String name,
+    public Comment(String comment_content, Date date, String comment_id,
+                   String post_id, String name,
                    String publisher_id, List<String> mentions,
                    String publisher_pic, String image, String video) {
         this.comment_content = comment_content;
         this.date = date;
+        this.comment_id = comment_id;
         this.post_id = post_id;
         this.publisher_id = publisher_id;
         this.mentions = mentions;
