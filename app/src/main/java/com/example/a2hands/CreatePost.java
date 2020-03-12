@@ -79,6 +79,8 @@ public class CreatePost extends AppCompatActivity {
     final Post post = new Post();
     ListView mentionSuggestionsList;
     final ArrayList<String> mentionsIds = new ArrayList<>() ;
+    View postSharedPreview;
+    String curr_uid;
 
     //creating images and camera
     Uri imageUri;
@@ -126,11 +128,44 @@ public class CreatePost extends AppCompatActivity {
         db = FirebaseDatabase.getInstance().getReference();
         ownerPic = findViewById(R.id.postOwnerPic);
         mentionSuggestionsList= findViewById(R.id.mentionSuggestionsList);
+        curr_uid = FirebaseAuth.getInstance().getUid();
 
-        final String uid = getIntent().getStringExtra("uid");
+        //check if sharing a post
+        final String shared_post_id = getIntent().getStringExtra("shared_post_id");
+        if(shared_post_id != null){
+            postSharedPreview = findViewById(R.id.postSharedPreview);
+            postSharedPreview.findViewById(R.id.postOptions).setVisibility(View.GONE);
+            postSharedPreview.findViewById(R.id.postReactContainer).setVisibility(View.GONE);
+        }
 
 
-        //Search Location
+        setLocationSelector();
+        loadProfilePic();
+        setMediaAttachListener();
+        setMentionUserListener();
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        submitPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitPost();
+            }
+        });
+    }
+
+
+
+
+
+
+
+    void setLocationSelector(){
         postLocation = findViewById(R.id.createdPostLocation);
         postLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +173,18 @@ public class CreatePost extends AppCompatActivity {
                 startActivityForResult(new Intent(CreatePost.this, SearchLocation.class), LOCATION_REQUEST_CODE);
             }
         });
+    }
 
-        //get my profile pic
-        FirebaseFirestore.getInstance().collection("users/").document(uid)
+
+
+
+    void loadProfilePic(){
+        FirebaseFirestore.getInstance().collection("users/").document(curr_uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+uid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+curr_uid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri.toString()).into(ownerPic);
@@ -158,8 +197,64 @@ public class CreatePost extends AppCompatActivity {
                 });
             }
         });
+    }
 
 
+
+
+
+
+    void setMediaAttachListener(){
+        ////---camera and video upload - waleed
+        camerabtn = findViewById(R.id.createPostWithImageCamera);
+        camerabtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                askCameraPermissions();
+            }
+        });
+
+        //uploadVideo
+        videobtn = findViewById(R.id.createPostWithVideo);
+        selectedVideo = findViewById(R.id.selectedVideo);
+
+        selectedVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mc = new MediaController(CreatePost.this);
+                selectedVideo.setMediaController(mc);
+                mc.setAnchorView(selectedVideo);
+            }
+        });
+
+
+        videobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openVideoChooser();
+            }
+        });
+        //camerabtn
+        //addimage decleartion
+        storageReference = FirebaseStorage.getInstance().getReference("posts");
+        selectedImage = findViewById(R.id.selectedImage);
+        add_image = findViewById(R.id.createPostWithImage);
+        add_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFileChooser();
+            }
+        });
+
+        ///--------end
+
+    }
+
+
+
+
+
+    void setMentionUserListener(){
         //////-----set listener for mentions
         createdPostText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -267,64 +362,15 @@ public class CreatePost extends AppCompatActivity {
 
             }
         });
-
-
-        ////---camera and video upload - waleed
-        camerabtn = findViewById(R.id.createPostWithImageCamera);
-        camerabtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askCameraPermissions();
-            }
-        });
-
-        //uploadVideo
-        videobtn = findViewById(R.id.createPostWithVideo);
-        selectedVideo = findViewById(R.id.selectedVideo);
-
-        selectedVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mc = new MediaController(CreatePost.this);
-                selectedVideo.setMediaController(mc);
-                mc.setAnchorView(selectedVideo);
-            }
-        });
-
-
-        videobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openVideoChooser();
-            }
-        });
-        //camerabtn
-        //addimage decleartion
-        storageReference = FirebaseStorage.getInstance().getReference("posts");
-        selectedImage = findViewById(R.id.selectedImage);
-        add_image = findViewById(R.id.createPostWithImage);
-        add_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFileChooser();
-            }
-        });
-
-        ///--------end waleed task
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        submitPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitPost();
-            }
-        });
     }
+
+
+
+
+
+
+
+
 
     public void submitPost() {
         submitPost.setEnabled(false);
@@ -351,8 +397,6 @@ public class CreatePost extends AppCompatActivity {
                 uploadPost();
             }
         },uid);
-
-
 
 
     }
@@ -494,6 +538,7 @@ public class CreatePost extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

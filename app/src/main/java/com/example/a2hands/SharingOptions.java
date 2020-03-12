@@ -1,6 +1,7 @@
 package com.example.a2hands;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,8 +136,10 @@ private Context context;
             }
         },current_uid);
     }
-    private void shareWithComment(){
-
+    private void shareWithComment(final String shared_post_id){
+        Intent i = new Intent(context , CreatePost.class);
+        i.putExtra("shared_post_id",shared_post_id);
+        context.startActivity(i);
     }
     private void shareInMessage(){
 

@@ -137,6 +137,12 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
+            <include
+                android:id="@+id/postSharedPreview"
+                layout="@layout/fragment_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"></include>
             <ImageView
                 android:id="@+id/selectedImage"
                 android:layout_width="wrap_content"
@@ -144,6 +150,7 @@
                 android:layout_marginStart="15dp"
                 android:scaleType="centerInside"
                 android:visibility="gone" />
+
             <VideoView
                 android:id="@+id/selectedVideo"
                 android:layout_width="150dp"
