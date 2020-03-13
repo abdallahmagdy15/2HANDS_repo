@@ -2,6 +2,8 @@ package com.example.a2hands.homePackage.RepliesPackage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,13 +17,14 @@ import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.CommentsPackage.Comment;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsActivity;
+import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
 
-public class RepliesActivity extends AppCompatActivity {
+public class RepliesActivity extends AppCompatActivity implements RepliesFragment.OnListFragmentInteractionListener {
 
     Toolbar toolbar;
     EditText add_reply;
@@ -35,6 +38,12 @@ public class RepliesActivity extends AppCompatActivity {
         add_reply = findViewById(R.id.add_reply);
         commentReplyBtn = findViewById(R.id.commentReplyBtn);
         toolbar = findViewById(R.id.toolbar);
+
+        //getIntent Data
+        postid = getIntent().getStringExtra("post_id");
+        commentid = getIntent().getStringExtra("comment_id");
+        curr_uid = getIntent().getStringExtra("publisher_id");
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,12 +60,27 @@ public class RepliesActivity extends AppCompatActivity {
                     addReply();
             }
         });
+
+        //load Replies
+        loadReplies(postid, commentid);
+    }
+
+
+    //load comments
+    void loadReplies(String postId, String commentId) {
+
+        Fragment frg = new RepliesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("postId", postId);
+        bundle.putString("commentId", commentId);
+        frg.setArguments(bundle);
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.repliesContainer, frg);
+        ft.commit();
+
     }
 
     private void addReply() {
-        postid = getIntent().getStringExtra("post_id");
-        commentid = getIntent().getStringExtra("comment_id");
-        curr_uid = getIntent().getStringExtra("publisher_id");
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Replies").child(postid).child(commentid);
         final Reply reply = new Reply();
         reply.reply_content = add_reply.getText().toString();
@@ -75,5 +99,10 @@ public class RepliesActivity extends AppCompatActivity {
                 add_reply.setText("");
             }
         }, curr_uid);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Reply item) {
+
     }
 }

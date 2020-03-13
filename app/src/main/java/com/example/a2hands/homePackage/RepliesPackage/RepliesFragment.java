@@ -1,10 +1,11 @@
-package com.example.a2hands.homePackage.CommentsPackage;
+package com.example.a2hands.homePackage.RepliesPackage;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a2hands.R;
-import com.example.a2hands.homePackage.RepliesPackage.RepliesFragment;
-import com.example.a2hands.homePackage.RepliesPackage.Reply;
+import com.example.a2hands.homePackage.CommentsPackage.Comment;
+import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment;
+import com.example.a2hands.homePackage.CommentsPackage.MyCommentRecyclerViewAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,37 +25,35 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class CommentsFragment extends Fragment {
+public class RepliesFragment extends Fragment implements CommentsFragment.OnListFragmentInteractionListener {
 
     private OnListFragmentInteractionListener mListener;
 
-
-    public CommentsFragment() {
+    public RepliesFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_comment_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_replies_list, container, false);
 
         String postId = getArguments().getString("postId");
-        FirebaseDatabase.getInstance().getReference("comments").child(postId)
+        String commentId = getArguments().getString("commentId");
+        FirebaseDatabase.getInstance().getReference("Replies").child(postId).child(commentId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Comment> comments  = new ArrayList<>();
+                        List<Reply> replies = new ArrayList<>();
 
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            comments.add(snapshot.getValue(Comment.class));
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            replies.add(snapshot.getValue(Reply.class));
                         }
-                        updateCommentsContainerWithComments(comments,view);
+                        updateRepliesContainer(replies, view);
                     }
 
                     @Override
@@ -61,9 +61,6 @@ public class CommentsFragment extends Fragment {
 
                     }
                 });
-
-
-
         return view;
     }
 
@@ -85,18 +82,23 @@ public class CommentsFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateCommentsContainerWithComments(List<Comment> comments , View view ){
+    public void updateRepliesContainer(List<Reply> replies, View view) {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyCommentRecyclerViewAdapter(comments, mListener));
+            recyclerView.setAdapter(new MyRepliesRecyclerViewAdapter(replies, mListener));
 
         }
     }
 
+    @Override
+    public void onListFragmentInteraction(Comment item) {
+
+    }
+
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Comment item);
+        void onListFragmentInteraction(Reply item);
     }
 }

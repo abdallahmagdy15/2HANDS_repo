@@ -2,6 +2,8 @@ package com.example.a2hands.homePackage.CommentsPackage;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.homePackage.RepliesPackage.RepliesActivity;
+import com.example.a2hands.homePackage.RepliesPackage.RepliesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +58,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
                 .inflate(R.layout.fragment_comment, parent, false);
         return new ViewHolder(view);
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView commentOwner;

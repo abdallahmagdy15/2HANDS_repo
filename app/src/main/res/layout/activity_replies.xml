@@ -23,7 +23,6 @@
             android:textColor="#000" />
     </androidx.appcompat.widget.Toolbar>
 
-
     <FrameLayout
         android:id="@+id/repliesContainer"
         android:layout_width="match_parent"
