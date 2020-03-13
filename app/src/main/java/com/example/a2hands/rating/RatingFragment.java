@@ -25,7 +25,6 @@ import java.util.List;
 
 public class RatingFragment extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
     private String activity;
 
     public RatingFragment() {
@@ -93,12 +92,7 @@ public class RatingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+
     }
 
     void updatePostRatingsUI(List<Rating> ratings, View view ,String uid){
@@ -107,17 +101,13 @@ public class RatingFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, mListener , uid , activity));
+            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, uid , activity));
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Rating item);
-    }
 }

@@ -36,7 +36,6 @@ import com.example.a2hands.notifications.Notification;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
 import com.example.a2hands.rating.RatingsActivity;
 import com.example.a2hands.home.homeActivity;
@@ -65,12 +64,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 {
 
     private final List<Post> postsList;
-    private final OnListFragmentInteractionListener mListener;
     private  Context context;
 
-    public MyPostRecyclerViewAdapter(List<Post> posts, OnListFragmentInteractionListener listener) {
+    public MyPostRecyclerViewAdapter(List<Post> posts) {
         postsList = posts;
-        mListener = listener;
     }
 
     @Override

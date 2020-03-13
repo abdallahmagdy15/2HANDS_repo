@@ -32,7 +32,7 @@ import com.r0adkll.slidr.model.SlidrPosition;
 
 import java.util.Date;
 
-public class CommentsActivity extends AppCompatActivity implements CommentsFragment.OnListFragmentInteractionListener {
+public class CommentsActivity extends AppCompatActivity  {
 
     private SlidrInterface slidr;
     EditText add_comment;
@@ -143,8 +143,5 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_up);
     }
 
-    @Override
-    public void onListFragmentInteraction(Comment item) {
 
-    }
 }

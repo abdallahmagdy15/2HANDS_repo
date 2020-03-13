@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
-import com.example.a2hands.home.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,11 +28,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyCommentRecyclerViewAdapter.ViewHolder> {
 
     private final List<Comment> commentsList;
-    private final OnListFragmentInteractionListener mListener;
 
-    public MyCommentRecyclerViewAdapter(List<Comment> items, OnListFragmentInteractionListener listener) {
+    public MyCommentRecyclerViewAdapter(List<Comment> items) {
         commentsList = items;
-        mListener = listener;
     }
 
     @Override

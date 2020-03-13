@@ -26,9 +26,6 @@ import java.util.List;
 public class NotificationFragment extends Fragment {
 
 
-    private OnListFragmentInteractionListener mListener;
-
-
     public NotificationFragment() {
     }
 
@@ -65,7 +62,7 @@ public class NotificationFragment extends Fragment {
                             for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                 notifis.add(snapshot.getValue(Notification.class));
                             }
-                            recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(notifis, mListener));
+                            recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(notifis));
                         }
 
                         @Override
@@ -80,24 +77,12 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(int x);
-    }
 
 }

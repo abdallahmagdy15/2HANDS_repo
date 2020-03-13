@@ -48,11 +48,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class homeActivity extends AppCompatActivity implements
-        SearchFragment.OnFragmentInteractionListener,
-        PostFragment.OnListFragmentInteractionListener,
-        NotificationFragment.OnListFragmentInteractionListener
-, searchItemFragment.OnListFragmentInteractionListener
+public class homeActivity extends AppCompatActivity
 {
 
 
@@ -335,24 +331,4 @@ public class homeActivity extends AppCompatActivity implements
 
     }
 
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(Post item) {
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(int x) {
-
-    }
-
-    /*@Override
-    public void onListFragmentInteraction(User item) {
-
-    }*/
 }

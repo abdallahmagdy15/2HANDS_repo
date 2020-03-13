@@ -28,8 +28,6 @@ import java.util.List;
 
 public class userFragment extends Fragment  {
 
-
-    private OnListFragmentInteractionListener mListener;
     View view;
     String uid;
 
@@ -91,21 +89,11 @@ void getUsers(String type ){
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(int i);
-    }
 }

@@ -40,7 +40,6 @@ public class PostFragment extends Fragment {
     String selectedCat;
     String uid;
 
-    private OnListFragmentInteractionListener mListener;
 
     public PostFragment() {
     }
@@ -86,18 +85,12 @@ public class PostFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     public static void getUser(final Callback callback,String uid) {
@@ -177,13 +170,9 @@ public class PostFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts, mListener));
+            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts));
 
         }
     }
 
-public interface OnListFragmentInteractionListener {
-    // TODO: Update argument type and name
-    void onListFragmentInteraction(Post item);
-}
 }

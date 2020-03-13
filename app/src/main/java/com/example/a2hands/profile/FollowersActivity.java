@@ -14,7 +14,7 @@ import android.view.View;
 
 import com.example.a2hands.R;
 
-public class FollowersActivity extends AppCompatActivity implements userFragment.OnListFragmentInteractionListener {
+public class FollowersActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,6 @@ public class FollowersActivity extends AppCompatActivity implements userFragment
                 .replace(R.id.followersContainer,frg,null).addToBackStack(null);
         tr.commit();
     }
-    @Override
-    public void onListFragmentInteraction(int i) {
 
-    }
 
 }

@@ -17,7 +17,6 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.rating.RatingFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.home.PostsPackage.PostFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,12 +36,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRecyclerViewAdapter.ViewHolder> {
 
     private final List<Rating> ratingsList;
-    private final OnListFragmentInteractionListener mListener;
     private final String uid;
     private final String activity;
-    public MyRatingRecyclerViewAdapter(List<Rating> ratings, OnListFragmentInteractionListener listener , String uid , String activity) {
+    public MyRatingRecyclerViewAdapter(List<Rating> ratings,  String uid , String activity) {
         ratingsList = ratings;
-        mListener = listener;
         this.uid = uid;
         this.activity =activity;
     }

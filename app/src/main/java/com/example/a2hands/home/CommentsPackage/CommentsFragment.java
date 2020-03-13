@@ -24,7 +24,6 @@ import java.util.List;
 
 public class CommentsFragment extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
 
 
     public CommentsFragment() {
@@ -69,18 +68,13 @@ public class CommentsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
     public void updateCommentsContainerWithComments(List<Comment> comments , View view ){
@@ -89,11 +83,9 @@ public class CommentsFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyCommentRecyclerViewAdapter(comments, mListener));
+            recyclerView.setAdapter(new MyCommentRecyclerViewAdapter(comments));
 
         }
     }
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Comment item);
-    }
+
 }

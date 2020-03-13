@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.notifications.NotificationFragment.OnListFragmentInteractionListener;
 import com.example.a2hands.R;
 import com.example.a2hands.rating.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,11 +41,9 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNotificationRecyclerViewAdapter.ViewHolder> {
 
     private final List<Notification> notifisList;
-    private final OnListFragmentInteractionListener mListener;
 
-    public MyNotificationRecyclerViewAdapter(List<Notification> items, OnListFragmentInteractionListener listener) {
+    public MyNotificationRecyclerViewAdapter(List<Notification> items) {
         notifisList = items;
-        mListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

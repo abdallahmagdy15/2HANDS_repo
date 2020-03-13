@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.example.a2hands.R;
 
-public class RatingsActivity extends AppCompatActivity implements RatingFragment.OnListFragmentInteractionListener {
+public class RatingsActivity extends AppCompatActivity  {
 
 
     @Override
@@ -38,8 +38,5 @@ public class RatingsActivity extends AppCompatActivity implements RatingFragment
         ft.commit();
     }
 
-    @Override
-    public void onListFragmentInteraction(Rating item) {
 
-    }
 }
