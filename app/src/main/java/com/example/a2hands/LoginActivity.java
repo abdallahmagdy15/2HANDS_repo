@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.homePackage.homeActivity;
-import com.example.a2hands.signupPackage.signupActivity;
+import com.example.a2hands.home.homeActivity;
+import com.example.a2hands.signup.signupActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

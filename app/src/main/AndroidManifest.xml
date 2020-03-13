@@ -18,37 +18,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationSearch.SearchLocation"></activity>
+        <activity
+            android:name=".profile.FollowingsActivity"
+            android:parentActivityName=".profile.FollowingsActivity"
+            android:label="@string/title_activity_followings"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".profile.FollowersActivity"
+            android:parentActivityName=".profile.FollowersActivity"
+            android:label="@string/title_activity_followers"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".locationsearch.SearchLocation" />
         <activity android:name=".SavedActivity" />
         <activity
-            android:name=".RatingPackage.RatingsActivity"
-            android:parentActivityName=".RatingPackage.RatingsActivity" />
+            android:name=".rating.RatingsActivity"
+            android:parentActivityName=".rating.RatingsActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".ProfileActivity" />
+            android:name=".profile.ProfileActivity"
+            android:parentActivityName=".profile.ProfileActivity" />
         <activity android:name=".CreatePost" />
-        <activity android:name=".signupPackage.signupActivity" />
+        <activity android:name=".signup.signupActivity" />
         <activity
-            android:name=".homePackage.homeActivity"
+            android:name=".home.homeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".signupPackage.signUpSetFavTopicsActivity" />
-        <activity android:name=".signupPackage.signupSetBioActivity" />
-        <activity android:name=".signupPackage.signupPickPictureActivity" />
-        <activity android:name=".signupPackage.signupSetLocationActivity" />
-        <activity android:name=".signupPackage.signUpPhoneVerificationActivity" />
-        <activity android:name=".homePackage.CommentsPackage.CommentsActivity" />
-        <activity android:name=".settingsPackage.SettingsActivity" />
-        <activity android:name=".settingsPackage.AboutAppActivity" />
-        <activity android:name=".settingsPackage.BlockedAccsActivity" />
-        <activity android:name=".settingsPackage.DeleteAccActivity" />
-        <activity android:name=".settingsPackage.EditCountryActivity" />
-        <activity android:name=".settingsPackage.EditEmailActivity" />
-        <activity android:name=".settingsPackage.EditNameActivity" />
-        <activity android:name=".settingsPackage.EditPassActivity" />
-        <activity android:name=".settingsPackage.EditPhoneActivity" />
-        <activity android:name=".settingsPackage.LanguageActivity" />
-        <activity android:name=".settingsPackage.NotificationActivity" />
+        <activity android:name=".signup.signUpSetFavTopicsActivity" />
+        <activity android:name=".signup.signupSetBioActivity" />
+        <activity android:name=".signup.signupPickPictureActivity" />
+        <activity android:name=".signup.signupSetLocationActivity" />
+        <activity android:name=".signup.signUpPhoneVerificationActivity" />
+        <activity android:name=".home.CommentsPackage.CommentsActivity" />
+        <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".settings.AboutAppActivity" />
+        <activity android:name=".settings.BlockedAccsActivity" />
+        <activity android:name=".settings.DeleteAccActivity" />
+        <activity android:name=".settings.EditCountryActivity" />
+        <activity android:name=".settings.EditEmailActivity" />
+        <activity android:name=".settings.EditNameActivity" />
+        <activity android:name=".settings.EditPassActivity" />
+        <activity android:name=".settings.EditPhoneActivity" />
+        <activity android:name=".settings.LanguageActivity" />
+        <activity android:name=".settings.NotificationActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

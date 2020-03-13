@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.a2hands.homePackage.PostsPackage.Post;
-import com.example.a2hands.homePackage.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.Post;
+import com.example.a2hands.home.PostsPackage.PostFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

@@ -34,10 +34,10 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.LocationSearch.SearchLocation;
-import com.example.a2hands.homePackage.PostsPackage.Post;
-import com.example.a2hands.homePackage.PostsPackage.PostCounter;
-import com.example.a2hands.homePackage.PostsPackage.PostFragment;
+import com.example.a2hands.locationsearch.SearchLocation;
+import com.example.a2hands.home.PostsPackage.Post;
+import com.example.a2hands.home.PostsPackage.PostCounter;
+import com.example.a2hands.home.PostsPackage.PostFragment;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,7 +49,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;

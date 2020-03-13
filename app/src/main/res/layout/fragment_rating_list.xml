@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     android:background="@color/colorPureWhite"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".RatingPackage.RatingFragment"
+    tools:context=".rating.RatingFragment"
     tools:listitem="@layout/fragment_rating" />

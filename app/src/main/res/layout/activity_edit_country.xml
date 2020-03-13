@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".settingsPackage.EditCountryActivity">
+    tools:context=".settings.EditCountryActivity">
 
     <com.hbb20.CountryCodePicker
         android:id="@+id/ccpCountry_editCountry"

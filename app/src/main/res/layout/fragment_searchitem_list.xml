@@ -10,5 +10,5 @@
     android:layout_marginRight="16dp"
     android:background="@color/colorPureWhite"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".SearchPackage.searchItemFragment"
-    tools:listitem="@layout/fragment_searchitem" />
+    tools:context=".search.searchItemFragment"
+    tools:listitem="@layout/fragment_user" />
