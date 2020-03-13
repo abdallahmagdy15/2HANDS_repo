@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepliesFragment extends Fragment implements CommentsFragment.OnListFragmentInteractionListener {
+public class RepliesFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
 
@@ -91,11 +91,6 @@ public class RepliesFragment extends Fragment implements CommentsFragment.OnList
             recyclerView.setAdapter(new MyRepliesRecyclerViewAdapter(replies, mListener));
 
         }
-    }
-
-    @Override
-    public void onListFragmentInteraction(Comment item) {
-
     }
 
     public interface OnListFragmentInteractionListener {
