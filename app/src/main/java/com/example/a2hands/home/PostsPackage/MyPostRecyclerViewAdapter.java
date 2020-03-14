@@ -61,6 +61,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
+
 {
 
     private final List<Post> postsList;
@@ -134,27 +135,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     public void onBindViewHolder(final ViewHolder holder,final int pos) {
         //check if this post is sharing another post
         if(postsList.get(pos).shared_id != null){
-            FirebaseFirestore.getInstance().collection("/posts")
-                    .document(postsList.get(pos).shared_id).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            final Post curr_post = task.getResult().toObject(Post.class);
-                            setupPostData(holder,curr_post);
-                            //enable who sharing label
-                            holder.postUserSharedPost.setText(postsList.get(pos).postOwner);
-                            // set listener for user sharing the post to go to his profile
-                            holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent i = new Intent(context,ProfileActivity.class);
-                                    i.putExtra("uid",postsList.get(pos).user_id);
-                                    context.startActivity(i);
-                                }
-                            });
-                            holder.sharingContainer.setVisibility(View.VISIBLE);
-                        }
-                    });
+            getSharedPost(holder,pos);
         }else{
             final Post curr_post = postsList.get(pos);
             setupPostData(holder,curr_post);
@@ -164,12 +145,114 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
 // end onBindViewHolder------------------------
 
+    private void getSharedPost(final ViewHolder holder,final int pos){
+        FirebaseFirestore.getInstance().collection("/posts")
+                .document(postsList.get(pos).shared_id).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        final Post curr_post = task.getResult().toObject(Post.class);
+                        setupPostData(holder,curr_post);
+                        //enable who sharing label
+                        holder.postUserSharedPost.setText(postsList.get(pos).postOwner);
+                        // set listener for user sharing the post to go to his profile
+                        holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(context,ProfileActivity.class);
+                                i.putExtra("uid",postsList.get(pos).user_id);
+                                context.startActivity(i);
+                            }
+                        });
+                        holder.sharingContainer.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
 
-//start setup post data ---------------------
-
-    public void setupPostData(final ViewHolder holder, final Post curr_post){
+    private void setupPostData(final ViewHolder holder, final Post curr_post){
         //setup post data
+        SpannableString ss = null;
+        try {
+            ss = getPostTextWithMentions(curr_post);
+        } catch (Exception e) { e.printStackTrace(); }
+        holder.postContent.setText(ss);
+        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.postContent.setHighlightColor(Color.TRANSPARENT);
 
+        PrettyTime p = new PrettyTime();
+        holder.time.setText(p.format(curr_post.date));
+        holder.location.setText(curr_post.location);
+        String cat = curr_post.category;
+        holder.category.setText((!cat.equals("General"))?cat:"");
+
+
+        checkPostOwnerVisibility(holder,curr_post);
+
+        checkPostMedia(holder,curr_post);
+
+        setRatingBtnListener(holder,curr_post);
+
+        setHelpBtnListener(holder,curr_post);
+
+        ////////////likes
+        //check if post is liked by current user or not
+        try {
+            isliked(curr_post.post_id,holder.uid, holder.likeBtn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setLikeBtnListner(holder,curr_post);
+
+        setPostMoreOptionsListener(holder,curr_post);
+        //get counters for likes , comments , ratings , shares
+        final int[] count =
+                setAndGetCounterForPost(holder , curr_post);
+
+        setShareBtnListener(holder,curr_post);
+
+        setCommentBtnListener(holder,curr_post,count[0]);
+
+    }
+
+    private void updatePostWithCounter(ViewHolder holder, int[] count){
+        //check if there is any likes or comm....
+        if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
+            holder.postCounter.setVisibility(View.VISIBLE);
+        }
+        holder.postLikesCommentsCount.setText (
+                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
+                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
+        );
+        holder.postRatingsSharesCount.setText (
+                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
+                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
+        );
+    }
+
+    private void isliked(String postid ,final String uid, final ImageView imageView){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes").child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(uid).exists()){
+                    imageView.setImageResource(R.drawable.like_filled);
+                    imageView.setTag("liked");
+                }
+                else {
+                    imageView.setImageResource(R.drawable.like);
+                    imageView.setTag("like");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private SpannableString getPostTextWithMentions(final Post curr_post){
         //check if there are mentions in the post
         String postText ="";
         String [] words = curr_post.content_text.split(" ");
@@ -213,18 +296,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             };
             ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        return ss;
+    }
 
-        holder.postContent.setText(ss);
-        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.postContent.setHighlightColor(Color.TRANSPARENT);
-
-        PrettyTime p = new PrettyTime();
-        holder.time.setText(p.format(curr_post.date));
-        holder.location.setText(curr_post.location);
-        String cat = curr_post.category;
-        holder.category.setText((!cat.equals("General"))?cat:"");
-
-
+    private void checkPostOwnerVisibility(final ViewHolder holder , final Post curr_post){
         //check visibility
         if(!curr_post.visibility){
             holder.postOwner.setText("Anonymous");
@@ -250,7 +325,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             });
         }
+    }
 
+    private void checkPostMedia(final ViewHolder holder , final Post curr_post){
         ////check if there is any media attached with the post
         if(curr_post.images != null){
             holder.postImage.setVisibility(View.VISIBLE);
@@ -265,17 +342,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             mediaController.setAnchorView(holder.postVideo);
         }
 
-        //rating btn listener
-        holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, RatingsActivity.class);
-                i.putExtra("postId",curr_post.post_id);
-                context.startActivity(i);
-            }
-        });
+    }
 
-
+    private void setHelpBtnListener(final ViewHolder holder , final Post curr_post ){
         //set listener for help button in any post
         holder.helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,114 +365,125 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                             .setPositiveButton("Send", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    //save help request to firestore
-                                    FirebaseFirestore.getInstance()
-                                            .collection("help_requests")
-                                            .add(helpReq).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull final Task<DocumentReference> helpReqTask) {
-                                            Toast.makeText(context, "Help Request Sent !", Toast.LENGTH_SHORT).show();
-                                            //get name of current logged in user
-                                            FirebaseFirestore.getInstance()
-                                                    .collection("users").document(helpReq.publisher_id)
-                                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    ///////send notification to the subscriber(who notifi is sent to)
-                                                    //fill notification obj with data from helpReq obj
-                                                    final Notification notifi = new Notification();
-                                                    User user = task.getResult().toObject(User.class);
-                                                    String userName = user.first_name + " " + user.last_name;
-                                                    notifi.publisher_name = userName;
-                                                    notifi.content = userName + " sent you a help request";
-                                                    notifi.subscriber_id = helpReq.subscriber_id;
-                                                    notifi.publisher_id = helpReq.publisher_id;
-                                                    notifi.publisher_pic = user.profile_pic;
-                                                    notifi.type = "HELP_REQUEST";
-                                                    notifi.help_request_id = helpReqTask.getResult().getId();
-                                                    notifi.post_id = curr_post.post_id;
-                                                    /////save notifi obj to realtime
-                                                    //push empty record and get its key
-                                                    DatabaseReference ref = FirebaseDatabase.getInstance()
-                                                            .getReference("notifications");
-                                                    notifi.notification_id = ref.push().getKey();
-                                                    //push the notifi obj to this id
-                                                    ref.child(notifi.notification_id).setValue(notifi);
-
-                                                }
-                                            });
-
-                                        }
-                                    });
+                                    saveHelpReq(helpReq,curr_post);
                                 }
                             })
                             .setNegativeButton("Cancel", null).show();
                 }
             }
         });
-        ////////////likes
-        //check if post is liked by current user or not
-        try {
-            isliked(curr_post.post_id,holder.uid, holder.likeBtn);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(holder.likeBtn.getTag().equals("like")){
-                        //update likes with users
-                        FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
-                                .child(holder.uid).setValue(true);
-                        //update counter for likes
-                        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
-                                .child("likes_count").runTransaction(new Transaction.Handler() {
-                            @NonNull
-                            @Override
-                            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                                int curr_likes = mutableData.getValue(Integer.class);
-                                mutableData.setValue(curr_likes +1);
-                                return Transaction.success(mutableData);
-                            }
+    }
 
-                            @Override
-                            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+    private void saveHelpReq(final HelpRequest helpReq , final Post curr_post){
+        //save help request to firestore
+        FirebaseFirestore.getInstance()
+                .collection("help_requests")
+                .add(helpReq).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull final Task<DocumentReference> helpReqTask) {
+                Toast.makeText(context, "Help Request Sent !", Toast.LENGTH_SHORT).show();
+                //get name of current logged in user
+                FirebaseFirestore.getInstance()
+                        .collection("users").document(helpReq.publisher_id)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = task.getResult().toObject(User.class);
+                        String help_request_id = helpReqTask.getResult().getId();
+                        sendNotification(user , curr_post ,helpReq, help_request_id );
 
-                            }
-                        });
-                        //end update counter for likes
                     }
+                });
 
-                    else {
-                        FirebaseDatabase.getInstance().getReference().child("likes")
-                                .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
-                        //update counter for likes
-                        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
-                                .child("likes_count").runTransaction(new Transaction.Handler() {
-                            @NonNull
-                            @Override
-                            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                                int curr_likes = mutableData.getValue(Integer.class);
-                                mutableData.setValue(curr_likes-1);
-                                return Transaction.success(mutableData);
-                            }
+            }
+        });
 
-                            @Override
-                            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+    }
 
-                            }
-                        });
-                        //end update counter for likes
-                    }
+    private void sendNotification(User user , Post curr_post, HelpRequest helpReq , String help_request_id){
+        ///////send notification to the subscriber(who notifi is sent to)
+        //fill notification obj with data from helpReq obj
+        final Notification notifi = new Notification();
+
+        String userName = user.first_name + " " + user.last_name;
+        notifi.publisher_name = userName;
+        notifi.content = userName + " sent you a help request";
+        notifi.subscriber_id = helpReq.subscriber_id;
+        notifi.publisher_id = helpReq.publisher_id;
+        notifi.publisher_pic = user.profile_pic;
+        notifi.type = "HELP_REQUEST";
+        notifi.help_request_id = help_request_id;
+        notifi.post_id = curr_post.post_id;
+        /////save notifi obj to realtime
+        //push empty record and get its key
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("notifications");
+        notifi.notification_id = ref.push().getKey();
+        //push the notifi obj to this id
+        ref.child(notifi.notification_id).setValue(notifi);
+    }
+
+    private void setLikeBtnListner(final ViewHolder holder , final Post curr_post){
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.likeBtn.getTag().equals("like")){
+                    likePost(holder,curr_post);
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                else {
+                    unlikePost(holder,curr_post);
+                }
+            }
+        });
+    }
 
-        //get counters for likes , comments , ratings , shares
-        final int[] count = new int[4];
+    private void likePost(final ViewHolder holder , final Post curr_post){
+        //update likes with users
+        FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
+                .child(holder.uid).setValue(true);
+        //update counter for likes
+        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                .child("likes_count").runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                int curr_likes = mutableData.getValue(Integer.class);
+                mutableData.setValue(curr_likes +1);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+        //end update counter for likes
+    }
+
+    private void unlikePost(final ViewHolder holder , final Post curr_post){
+        FirebaseDatabase.getInstance().getReference().child("likes")
+                .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+        //update counter for likes
+        FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
+                .child("likes_count").runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                int curr_likes = mutableData.getValue(Integer.class);
+                mutableData.setValue(curr_likes-1);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+        //end update counter for likes
+    }
+
+    private int[] setAndGetCounterForPost(final ViewHolder holder , final Post curr_post){
+        final int count[] = new int[4];
         DatabaseReference counterRef = FirebaseDatabase.getInstance().getReference().child("counter").child(curr_post.post_id);
         counterRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -423,10 +503,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+        return count;
+    }
 
-
-
-        //set listener for share post button\
+    private void setShareBtnListener(final ViewHolder holder , final Post curr_post){
+        //set listener for share post button
         holder.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,18 +518,35 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 sharing_option.show(((homeActivity)context).getSupportFragmentManager(),"");
             }
         });
+    }
 
+    private void setCommentBtnListener(final ViewHolder holder , final Post curr_post , final int likesCount){
         //set comment btn listener
         holder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentsActivity.class);
                 intent.putExtra("post_id", curr_post.post_id);
-                intent.putExtra("likes_count",count[0]);
+                intent.putExtra("likes_count",likesCount);
                 intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);
             }
         });
+    }
+
+    private void setRatingBtnListener(final ViewHolder holder,final Post curr_post){
+        //rating btn listener
+        holder.ratingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, RatingsActivity.class);
+                i.putExtra("postId",curr_post.post_id);
+                context.startActivity(i);
+            }
+        });
+    }
+
+    private void setPostMoreOptionsListener(final ViewHolder holder, final Post curr_post){
         //set post more options listener
         holder.postOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -461,49 +559,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 postOptionsDialog.show( ((AppCompatActivity)context).getSupportFragmentManager(),"");
             }
         });
+
     }
 
-// end setupPostData --------------------------
-
-    void updatePostWithCounter(ViewHolder holder, int[] count){
-        //check if there is any likes or comm....
-        if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
-            holder.postCounter.setVisibility(View.VISIBLE);
-        }
-        holder.postLikesCommentsCount.setText (
-                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
-                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
-        );
-        holder.postRatingsSharesCount.setText (
-                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
-                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
-        );
-    }
     @Override
     public int getItemCount() {
         return postsList.size();
     }
-
-    private void isliked(String postid ,final String uid, final ImageView imageView){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes").child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child(uid).exists()){
-                    imageView.setImageResource(R.drawable.like_filled);
-                    imageView.setTag("liked");
-                }
-                else {
-                    imageView.setImageResource(R.drawable.like);
-                    imageView.setTag("like");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 }

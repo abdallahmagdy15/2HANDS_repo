@@ -7,12 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/sharingContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
@@ -25,6 +27,7 @@
             android:id="@+id/postUserSharedPost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:paddingStart="16dp"
             android:paddingEnd="0dp"
             android:text="Ahmed Kamal"
@@ -36,6 +39,7 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:paddingStart="5dp"
             android:paddingEnd="0dp"
             android:text="Shared"
@@ -47,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:background="@color/colorWhiteGray"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toTopOf="@id/postOwnerPic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +63,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
         android:src="@drawable/male"
         app:civ_border_overlay="false"
         app:civ_border_width="0dp"
@@ -70,6 +76,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
         android:gravity="start|center_vertical"
         android:text="@string/app_name"
         android:textAppearance="?attr/textAppearanceListItem"
@@ -86,6 +93,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/more"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view10" />
 
@@ -94,6 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:focusableInTouchMode="true"
         android:text="5 min ago"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
@@ -105,6 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:focusableInTouchMode="true"
         android:text="Egypt"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
@@ -116,6 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:focusableInTouchMode="true"
         android:text="General"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
@@ -129,6 +140,7 @@
         android:layout_marginTop="8dp"
         android:autoLink="all"
         android:focusable="auto"
+        android:focusableInTouchMode="true"
         android:linksClickable="true"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -137,11 +149,10 @@
         android:textColor="#1B1B1B"
         android:textColorLink="@color/colorPrimaryDark"
         android:textSize="15sp"
+        app:colorClickableText="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postOwnerPic"
-        app:colorClickableText="@color/colorPrimary"
-        />
+        app:layout_constraintTop_toBottomOf="@id/postOwnerPic" />
 
     <ImageView
         android:id="@+id/postImage"
@@ -150,6 +161,7 @@
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:background="@color/colorDark"
+        android:focusableInTouchMode="true"
         android:maxHeight="384dp"
         android:scaleType="centerCrop"
         android:visibility="gone"
@@ -163,6 +175,7 @@
         android:layout_height="192dp"
         android:layout_marginTop="8dp"
         android:background="#00FFFDFD"
+        android:focusableInTouchMode="true"
         android:minHeight="192dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +185,8 @@
         <VideoView
             android:id="@+id/postVideo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true" />
     </FrameLayout>
 
     <LinearLayout
@@ -180,6 +194,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -193,6 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusableInTouchMode="true"
             android:textColor="@color/colorDisabled" />
 
         <TextView
@@ -200,6 +216,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusableInTouchMode="true"
             android:gravity="end"
             android:textColor="@color/colorDisabled" />
     </LinearLayout>
@@ -208,6 +225,7 @@
         android:id="@+id/postReactContainer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:focusableInTouchMode="true"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -220,6 +238,7 @@
             android:layout_weight="1"
             android:background="#005E5E5E"
             android:backgroundTint="#003C3C3C"
+            android:focusableInTouchMode="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
             app:srcCompat="@drawable/like" />
@@ -230,6 +249,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
+            android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
@@ -241,6 +261,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
+            android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
@@ -252,6 +273,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
+            android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
@@ -263,6 +285,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#003C3C3C"
+            android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
