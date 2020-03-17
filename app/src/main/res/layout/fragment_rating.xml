@@ -6,10 +6,6 @@
     android:background="#00FFFFFF"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height=".5dp"
-        android:background="#AFAFAF" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +20,8 @@
             android:id="@+id/ratingsPic"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:civ_circle_background_color="@color/colorWhite" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -158,10 +155,5 @@
                 android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height=".5dp"
-        android:background="#AFAFAF" />
 
 </LinearLayout>

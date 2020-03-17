@@ -73,6 +73,7 @@ private Context context;
             dismiss();
         }
         else if(v.getId() == quoteBtn.getId()){
+            shareWithComment(shared_post_id);
             dismiss();
         }
 

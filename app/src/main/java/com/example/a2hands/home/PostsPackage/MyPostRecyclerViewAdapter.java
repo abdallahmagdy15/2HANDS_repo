@@ -63,7 +63,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
 
 {
-
     private final List<Post> postsList;
     private  Context context;
 
@@ -112,20 +111,34 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postContent =  view.findViewById(R.id.content);
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
-            ratingsBtn = view.findViewById(R.id.ratingBtn);
-            helpBtn = view.findViewById(R.id.helpBtn);
             videoContainer = view.findViewById(R.id.videoContainer);
             postImage = view.findViewById(R.id.postImage);
             postVideo = view.findViewById(R.id.postVideo);
-            likeBtn = view.findViewById(R.id.likeBtn);
-            postLikesCommentsCount = view.findViewById(R.id.postLikesCommentsCount);
-            postRatingsSharesCount = view.findViewById(R.id.postRatingsSharesCount);
-            shareBtn = view.findViewById(R.id.shareBtn);
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
-            postCounter=view.findViewById(R.id.postCounter);
-            commentBtn = view.findViewById(R.id.commentBtn);
-            postOptions = view.findViewById(R.id.postOptions);
+
+            if (view.getId() != R.id.sharedPostContainer){
+                postRatingsSharesCount = view.findViewById(R.id.postRatingsSharesCount);
+                postLikesCommentsCount = view.findViewById(R.id.postLikesCommentsCount);
+                postOptions = view.findViewById(R.id.postOptions);
+                ratingsBtn = view.findViewById(R.id.ratingBtn);
+                helpBtn = view.findViewById(R.id.helpBtn);
+                shareBtn = view.findViewById(R.id.shareBtn);
+                likeBtn = view.findViewById(R.id.likeBtn);
+                commentBtn = view.findViewById(R.id.commentBtn);
+                postCounter=view.findViewById(R.id.postCounter);
+            }
+            else {
+                postRatingsSharesCount = null;
+                postLikesCommentsCount = null;
+                postOptions = null;
+                ratingsBtn = null;
+                helpBtn = null;
+                shareBtn = null;
+                likeBtn = null;
+                commentBtn = null;
+                postCounter= null;
+            }
         }
 
     }
@@ -138,7 +151,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             getSharedPost(holder,pos);
         }else{
             final Post curr_post = postsList.get(pos);
-            setupPostData(holder,curr_post);
+            setupPostData(holder,curr_post,false);
         }
 
     }
@@ -146,30 +159,47 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 // end onBindViewHolder------------------------
 
     private void getSharedPost(final ViewHolder holder,final int pos){
+        final Post currPost = postsList.get(pos);
         FirebaseFirestore.getInstance().collection("/posts")
                 .document(postsList.get(pos).shared_id).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        final Post curr_post = task.getResult().toObject(Post.class);
-                        setupPostData(holder,curr_post);
-                        //enable who sharing label
-                        holder.postUserSharedPost.setText(postsList.get(pos).postOwner);
-                        // set listener for user sharing the post to go to his profile
-                        holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(context,ProfileActivity.class);
-                                i.putExtra("uid",postsList.get(pos).user_id);
-                                context.startActivity(i);
-                            }
-                        });
-                        holder.sharingContainer.setVisibility(View.VISIBLE);
+                        final Post sharedPost = task.getResult().toObject(Post.class);
+                        setupSharedPostLayout(holder,currPost , sharedPost);
                     }
                 });
     }
 
-    private void setupPostData(final ViewHolder holder, final Post curr_post){
+    private void setupSharedPostLayout(final ViewHolder holder, final Post currPost , final Post sharedPost){
+        //check if main post has content
+        if (currPost.content_text != null) //yes
+        {
+            final View sharedPostContainer = holder.mView.findViewById(R.id.sharedPostContainer);
+            sharedPostContainer.setVisibility(View.VISIBLE);
+            MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
+            MyPostRecyclerViewAdapter.ViewHolder vh = myPostRecyclerViewAdapter.new ViewHolder(sharedPostContainer);
+            setupPostData(holder,currPost,false);
+            setupPostData(vh , sharedPost,true);
+        }
+        else {
+            //enable who sharing label
+            holder.postUserSharedPost.setText(currPost.postOwner);
+            // set listener for user sharing the post to go to his profile
+            holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context,ProfileActivity.class);
+                    i.putExtra("uid",currPost.user_id);
+                    context.startActivity(i);
+                }
+            });
+            holder.sharingContainer.setVisibility(View.VISIBLE);
+            setupPostData(holder,sharedPost,true);
+        }
+    }
+
+    public void setupPostData(final ViewHolder holder, final Post curr_post,boolean isSharedPost){
         //setup post data
         SpannableString ss = null;
         try {
@@ -185,33 +215,59 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         String cat = curr_post.category;
         holder.category.setText((!cat.equals("General"))?cat:"");
 
-
         checkPostOwnerVisibility(holder,curr_post);
 
         checkPostMedia(holder,curr_post);
 
-        setRatingBtnListener(holder,curr_post);
+        if(!isSharedPost) {
 
-        setHelpBtnListener(holder,curr_post);
+            try {
+                setRatingBtnListener(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                setHelpBtnListener(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ////////////likes
+            //check if post is liked by current user or not
+            try {
+                isliked(curr_post.post_id, holder.uid, holder.likeBtn);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                setLikeBtnListner(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                setPostMoreOptionsListener(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        ////////////likes
-        //check if post is liked by current user or not
-        try {
-            isliked(curr_post.post_id,holder.uid, holder.likeBtn);
-        } catch (Exception e) {
-            e.printStackTrace();
+            //get counters for likes , comments , ratings , shares
+            int[] count = null;
+            try {
+                count = setAndGetCounterForPost(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                setShareBtnListener(holder, curr_post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                setCommentBtnListener(holder, curr_post, count[0]);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-        setLikeBtnListner(holder,curr_post);
-
-        setPostMoreOptionsListener(holder,curr_post);
-        //get counters for likes , comments , ratings , shares
-        final int[] count =
-                setAndGetCounterForPost(holder , curr_post);
-
-        setShareBtnListener(holder,curr_post);
-
-        setCommentBtnListener(holder,curr_post,count[0]);
 
     }
 
@@ -457,6 +513,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
             }
         });
+        holder.likeBtn.setTag("liked");
         //end update counter for likes
     }
 
@@ -479,6 +536,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
             }
         });
+        holder.likeBtn.setTag("like");
         //end update counter for likes
     }
 
@@ -490,11 +548,13 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     PostCounter postCounter = dataSnapshot.getValue(PostCounter.class);
-                    count[0]=postCounter.likes_count;
-                    count[1]=postCounter.comments_count;
-                    count[2]=postCounter.ratings_count;
-                    count[3]=postCounter.shares_count;
-                    updatePostWithCounter(holder,count);
+                    if(postCounter != null){
+                        count[0]=postCounter.likes_count;
+                        count[1]=postCounter.comments_count;
+                        count[2]=postCounter.ratings_count;
+                        count[3]=postCounter.shares_count;
+                        updatePostWithCounter(holder,count);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

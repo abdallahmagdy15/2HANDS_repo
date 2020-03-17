@@ -94,6 +94,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/more"
         android:focusableInTouchMode="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view10" />
 
@@ -150,29 +151,9 @@
         android:textColorLink="@color/colorPrimaryDark"
         android:textSize="15sp"
         app:colorClickableText="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/sharedPostContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postOwnerPic" />
-
-    <include
-        android:id="@+id/sharedPostContainer"
-        layout="@layout/fragment_shared_post"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorWhiteGray"
-        android:paddingStart="2dp"
-        android:paddingTop="2dp"
-        android:paddingEnd="2dp"
-        android:paddingBottom="2dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/postImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
 
     <ImageView
         android:id="@+id/postImage"
@@ -185,7 +166,6 @@
         android:maxHeight="384dp"
         android:scaleType="centerCrop"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/videoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content" />
@@ -199,7 +179,6 @@
         android:focusableInTouchMode="true"
         android:minHeight="192dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/postCounter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postImage">
@@ -210,109 +189,5 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true" />
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/postCounter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/postReactContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/videoContainer">
-
-        <TextView
-            android:id="@+id/postLikesCommentsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusableInTouchMode="true"
-            android:textColor="@color/colorDisabled" />
-
-        <TextView
-            android:id="@+id/postRatingsSharesCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:focusableInTouchMode="true"
-            android:gravity="end"
-            android:textColor="@color/colorDisabled" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/postReactContainer"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postCounter">
-
-        <ImageView
-            android:id="@+id/likeBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#005E5E5E"
-            android:backgroundTint="#003C3C3C"
-            android:focusableInTouchMode="true"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            app:srcCompat="@drawable/like" />
-
-        <ImageView
-            android:id="@+id/commentBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:focusableInTouchMode="true"
-            android:hapticFeedbackEnabled="true"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            app:srcCompat="@drawable/comment" />
-
-        <ImageView
-            android:id="@+id/helpBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:focusableInTouchMode="true"
-            android:hapticFeedbackEnabled="true"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            app:srcCompat="@drawable/help" />
-
-        <ImageView
-            android:id="@+id/ratingBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:focusableInTouchMode="true"
-            android:hapticFeedbackEnabled="true"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            app:srcCompat="@drawable/star" />
-
-        <ImageView
-            android:id="@+id/shareBtn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
-            android:focusableInTouchMode="true"
-            android:hapticFeedbackEnabled="true"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            app:srcCompat="@drawable/share" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

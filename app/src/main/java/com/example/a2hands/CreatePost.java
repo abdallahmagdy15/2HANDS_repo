@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.home.PostsPackage.MyPostRecyclerViewAdapter;
 import com.example.a2hands.locationsearch.SearchLocation;
 import com.example.a2hands.home.PostsPackage.Post;
 import com.example.a2hands.home.PostsPackage.PostCounter;
@@ -80,6 +82,8 @@ public class CreatePost extends AppCompatActivity {
     final ArrayList<String> mentionsIds = new ArrayList<>() ;
     View postSharedPreview;
     String curr_uid;
+    String shared_post_id;
+    LinearLayout createPostAttachContainer;
 
     //creating images and camera
     Uri imageUri;
@@ -128,16 +132,9 @@ public class CreatePost extends AppCompatActivity {
         ownerPic = findViewById(R.id.postOwnerPic);
         mentionSuggestionsList= findViewById(R.id.mentionSuggestionsList);
         curr_uid = FirebaseAuth.getInstance().getUid();
+        createPostAttachContainer = findViewById(R.id.createPostAttachContainer);
 
-        //check if sharing a post
-        final String shared_post_id = getIntent().getStringExtra("shared_post_id");
-        if(shared_post_id != null){
-            postSharedPreview = findViewById(R.id.postSharedPreview);
-            postSharedPreview.findViewById(R.id.postOptions).setVisibility(View.GONE);
-            postSharedPreview.findViewById(R.id.postReactContainer).setVisibility(View.GONE);
-        }
-
-
+        checkSharedPostExits();
         setLocationSelector();
         loadProfilePic();
         setMediaAttachListener();
@@ -158,12 +155,37 @@ public class CreatePost extends AppCompatActivity {
         });
     }
 
+    private void checkSharedPostExits(){
+        //check if sharing a post
+        shared_post_id = getIntent().getStringExtra("shared_post_id");
+        if(shared_post_id != null){
+            createPostAttachContainer.setVisibility(View.GONE);
+            postSharedPreview = findViewById(R.id.postSharedPreview);
+            postSharedPreview.setVisibility(View.VISIBLE);
+            postSharedPreview.findViewById(R.id.postOptions).setVisibility(View.GONE);
+            postSharedPreview.findViewById(R.id.postReactContainer).setVisibility(View.GONE);
+            MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
+            MyPostRecyclerViewAdapter.ViewHolder vh = myPostRecyclerViewAdapter.new ViewHolder(postSharedPreview);
+            getSharedPost(shared_post_id,myPostRecyclerViewAdapter,vh);
 
+        }
+    }
 
-
-
-
-
+    private void getSharedPost(
+            final String shared_post_id ,
+            final MyPostRecyclerViewAdapter myPostRecyclerViewAdapter,
+            final MyPostRecyclerViewAdapter.ViewHolder vh
+    ){
+        FirebaseFirestore.getInstance().collection("posts").document(shared_post_id)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    myPostRecyclerViewAdapter.setupPostData(vh,task.getResult().toObject(Post.class),true);
+                }
+            }
+        });
+    }
     void setLocationSelector(){
         postLocation = findViewById(R.id.createdPostLocation);
         postLocation.setOnClickListener(new View.OnClickListener() {
@@ -173,9 +195,6 @@ public class CreatePost extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     void loadProfilePic(){
         FirebaseFirestore.getInstance().collection("users/").document(curr_uid)
@@ -197,11 +216,6 @@ public class CreatePost extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
     void setMediaAttachListener(){
         ////---camera and video upload - waleed
@@ -248,10 +262,6 @@ public class CreatePost extends AppCompatActivity {
         ///--------end
 
     }
-
-
-
-
 
     void setMentionUserListener(){
         //////-----set listener for mentions
@@ -363,19 +373,12 @@ public class CreatePost extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
-
     public void submitPost() {
         submitPost.setEnabled(false);
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
         post.category = catSpinner.getSelectedItem().toString();
         post.content_text = createdPostText.getText().toString();
+        if(shared_post_id != null) post.shared_id = shared_post_id;
         //check if location not empty
         if(gover != null)
             post.location = gover;
@@ -532,6 +535,7 @@ public class CreatePost extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
+
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -585,9 +589,7 @@ public class CreatePost extends AppCompatActivity {
         }
     }
 
-
     //methods to convert bitmap to uriImage to upload it
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -605,7 +607,6 @@ public class CreatePost extends AppCompatActivity {
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -628,7 +629,6 @@ public class CreatePost extends AppCompatActivity {
             }
         }
     }
-
 
     //camera methods
     private void askCameraPermissions() {

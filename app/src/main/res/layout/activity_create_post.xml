@@ -141,7 +141,12 @@
                 android:id="@+id/postSharedPreview"
                 layout="@layout/fragment_post"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhiteGray"
+                android:padding="2dp"
                 android:visibility="gone"></include>
             <ImageView
                 android:id="@+id/selectedImage"
@@ -172,6 +177,7 @@
                 android:background="#ADADAD" />
 
             <LinearLayout
+                android:id="@+id/createPostAttachContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
