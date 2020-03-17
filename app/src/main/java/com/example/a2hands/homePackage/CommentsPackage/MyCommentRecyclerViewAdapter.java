@@ -1,9 +1,7 @@
 package com.example.a2hands.homePackage.CommentsPackage;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -15,13 +13,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment.OnListFragmentInteractionListener;
-import com.example.a2hands.homePackage.RepliesPackage.RepliesActivity;
 import com.example.a2hands.homePackage.RepliesPackage.RepliesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,6 +60,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+
         public final TextView commentOwner;
         public final TextView commentLikeBtn;
         public final TextView commentContent;
@@ -69,6 +69,10 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         public final TextView commentTime;
         public final Context context;
         public final String uid = FirebaseAuth.getInstance().getUid();
+        LinearLayout add_comment_layout;
+        LinearLayout add_reply_layout;
+        Toolbar toolbar, toolbar2;
+        CommentsActivity activity;
 
         public ViewHolder(View view) {
             super(view);
@@ -79,8 +83,11 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
             commentOwnerPic = view.findViewById(R.id.commentOwnerPic);
             commentReplyBtn = view.findViewById(R.id.commentReplyBtn);
             commentTime = view.findViewById(R.id.commentTime);
-
-
+            activity = (CommentsActivity) view.getContext();
+            add_comment_layout = activity.findViewById(R.id.add_comment_layout);
+            add_reply_layout = activity.findViewById(R.id.add_reply_layout);
+            toolbar = activity.findViewById(R.id.toolbar);
+            toolbar2 = activity.findViewById(R.id.toolbar2);
         }
 
     }
@@ -99,6 +106,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
                         Picasso.get().load( task.getResult()).into(holder.commentOwnerPic);
                     }
                 });
+
         holder.commentContent.setText(curr_comment.comment_content);
         holder.commentOwnerPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,11 +149,28 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         holder.commentReplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent replyInent = new Intent(holder.context, RepliesActivity.class);
+                /*Intent replyInent = new Intent(holder.context, RepliesActivity.class);
                 replyInent.putExtra("post_id", curr_comment.post_id);
                 replyInent.putExtra("comment_id", curr_comment.comment_id);
                 replyInent.putExtra("publisher_id", holder.uid);
-                holder.context.startActivity(replyInent);
+                holder.context.startActivity(replyInent);*/
+                Bundle b = new Bundle();
+                b.putString("postId", curr_comment.post_id);
+                b.putString("commentId", curr_comment.comment_id);
+                b.putString("publisher_id", curr_comment.publisher_id);
+                Fragment fragment = new RepliesFragment();
+                fragment.setArguments(b);
+
+                holder.activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.commentsContainer, fragment, "reply")
+                        .addToBackStack(null)
+                        .commit();
+                holder.add_comment_layout.setVisibility(View.GONE);
+                holder.add_reply_layout.setVisibility(View.VISIBLE);
+                holder.toolbar.setEnabled(false);
+                holder.toolbar2.setVisibility(View.VISIBLE);
+                holder.activity.getCommentData(curr_comment.comment_id);
+
             }
         });
     }

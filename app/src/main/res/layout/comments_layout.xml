@@ -23,10 +23,31 @@
             android:layout_height="match_parent"
             android:textColor="@color/colorAccent"
             android:textSize="15sp" />
-
     </androidx.appcompat.widget.Toolbar>
 
+    <!---
+    This toolbar for Replies
+    -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_chevron_left_black_24dp"
+        android:background="?android:attr/windowBackground">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Replies"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#000" />
+    </androidx.appcompat.widget.Toolbar>
+    <!---
+    This End of toolbar for Replies
+    -->
 
     <FrameLayout
         android:id="@+id/commentsContainer"
@@ -46,6 +67,7 @@
 
 
     <LinearLayout
+        android:id="@+id/add_comment_layout"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_alignParentBottom="true"
@@ -66,6 +88,35 @@
 
         <ImageView
             android:id="@+id/postCommentBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/send_private_message" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_reply_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <EditText
+            android:id="@+id/add_reply"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Write a Reply..."
+            android:padding="10sp" />
+
+        <ImageView
+            android:id="@+id/ReplyBtnAction"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:srcCompat="@drawable/send_private_message" />

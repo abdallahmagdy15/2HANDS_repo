@@ -1,6 +1,7 @@
 package com.example.a2hands.homePackage.RepliesPackage;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -9,7 +10,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a2hands.ProfileActivity;
 import com.example.a2hands.R;
@@ -87,6 +91,8 @@ public class MyRepliesRecyclerViewAdapter extends RecyclerView.Adapter<MyReplies
         public final Context context;
         public final String uid = FirebaseAuth.getInstance().getUid();
 
+        ImageView commentReplyBtn;
+
         public ViewHolder(View view) {
             super(view);
             replyOwner = view.findViewById(R.id.replyOwner);
@@ -96,6 +102,9 @@ public class MyRepliesRecyclerViewAdapter extends RecyclerView.Adapter<MyReplies
             mentionReplyBtn = view.findViewById(R.id.mentionReplyBtn);
             replyTime = view.findViewById(R.id.replyTime);
             context = view.getContext();
+
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            commentReplyBtn = activity.findViewById(R.id.commentReplyBtn);
         }
     }
 }

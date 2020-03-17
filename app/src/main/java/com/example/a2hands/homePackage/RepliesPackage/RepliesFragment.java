@@ -12,17 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.a2hands.Callback;
 import com.example.a2hands.R;
+import com.example.a2hands.User;
 import com.example.a2hands.homePackage.CommentsPackage.Comment;
 import com.example.a2hands.homePackage.CommentsPackage.CommentsFragment;
 import com.example.a2hands.homePackage.CommentsPackage.MyCommentRecyclerViewAdapter;
+import com.example.a2hands.homePackage.PostsPackage.PostFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RepliesFragment extends Fragment {
@@ -32,6 +40,7 @@ public class RepliesFragment extends Fragment {
     public RepliesFragment() {
     }
 
+    String postId, commentId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +51,9 @@ public class RepliesFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_replies_list, container, false);
 
-        String postId = getArguments().getString("postId");
-        String commentId = getArguments().getString("commentId");
+        postId = getArguments().getString("postId");
+        commentId = getArguments().getString("commentId");
+        //curr_uid = getArguments().getString("publisher_id");
         FirebaseDatabase.getInstance().getReference("Replies").child(postId).child(commentId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override

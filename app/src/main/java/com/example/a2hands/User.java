@@ -22,21 +22,21 @@ public class User {
     public String user_id;
 
     public User(
-                String first_name,
-                String last_name,
-                boolean gender,
-                Date birth_date,
+            String first_name,
+            String last_name,
+            boolean gender,
+            Date birth_date,
             String country,
-                String phone,
-                String region,
-                String user_name,
-                double rate,
-                String bio,
-                String profile_pic,
-                String profile_cover,
-                String job_title,
-                int ratings_count,
-                String user_id
+            String phone,
+            String region,
+            String user_name,
+            double rate,
+            String bio,
+            String profile_pic,
+            String profile_cover,
+            String job_title,
+            int ratings_count,
+            String user_id
     ) {
         this.country = country;
         this.region = region;

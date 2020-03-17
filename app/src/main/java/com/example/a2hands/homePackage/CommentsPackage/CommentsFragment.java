@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.a2hands.R;
 import com.example.a2hands.homePackage.RepliesPackage.RepliesFragment;
@@ -43,6 +46,15 @@ public class CommentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_comment_list, container, false);
 
+        /*
+        add_comment = getActivity().findViewById(R.id.add_comment);
+        replybtn = view.findViewById(R.id.commentReplyBtn);
+        replybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_comment.setHint("Write Your Reply...");
+            }
+        });*/
         String postId = getArguments().getString("postId");
         FirebaseDatabase.getInstance().getReference("comments").child(postId)
                 .addValueEventListener(new ValueEventListener() {

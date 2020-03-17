@@ -3,6 +3,7 @@ package com.example.a2hands.homePackage.CommentsPackage;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -11,8 +12,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.homePackage.PostsPackage.PostFragment;
+import com.example.a2hands.homePackage.RepliesPackage.RepliesFragment;
+import com.example.a2hands.homePackage.RepliesPackage.Reply;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,14 +40,17 @@ import com.r0adkll.slidr.model.SlidrPosition;
 
 import java.util.Date;
 
-public class CommentsActivity extends AppCompatActivity implements CommentsFragment.OnListFragmentInteractionListener {
+public class CommentsActivity extends AppCompatActivity implements CommentsFragment.OnListFragmentInteractionListener, RepliesFragment.OnListFragmentInteractionListener {
 
     private SlidrInterface slidr;
-    EditText add_comment;
-    ImageView postCommentBtn;
+    EditText add_comment, add_reply;
+    ImageView postCommentBtn, ReplyBtnAction;
     TextView like_count;
     int likesCount;
-    String postid, publisherid , curr_uid;
+    String postid, curr_uid, commentid;
+
+    LinearLayout add_comment_layout, add_reply_layout;
+    Toolbar toolbar, toolbar2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,30 +72,77 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_bottom);
 
 
+        toolbar = findViewById(R.id.toolbar);
+        toolbar2 = findViewById(R.id.toolbar2);
+        add_comment_layout = findViewById(R.id.add_comment_layout);
+        add_reply_layout = findViewById(R.id.add_reply_layout);
         //starting Coding to comment to firebase
         add_comment = findViewById(R.id.add_comment);
+        add_reply = findViewById(R.id.add_reply);
         postCommentBtn = findViewById(R.id.postCommentBtn);
+        ReplyBtnAction = findViewById(R.id.ReplyBtnAction);
         like_count = findViewById(R.id.like_count);
         Intent intent = getIntent();
         likesCount = intent.getIntExtra("likes_count",0);
         postid = intent.getStringExtra("post_id");
         curr_uid = intent.getStringExtra("curr_uid");
+
+        toolbar2.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentsActivity.super.onBackPressed();
+                add_reply_layout.setVisibility(View.GONE);
+                add_comment_layout.setVisibility(View.VISIBLE);
+                toolbar.setEnabled(true);
+                toolbar2.setVisibility(View.GONE);
+            }
+        });
+        ReplyBtnAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (add_reply.getText().toString().equals("")) {
+                    Toast.makeText(CommentsActivity.this, "You Can’t add Empty Reply", Toast.LENGTH_SHORT).show();
+                }
+                addReply();
+            }
+        });
         postCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(add_comment.getText().toString().equals("")){
                     Toast.makeText(CommentsActivity.this, "You Can’t Send Empty Comment", Toast.LENGTH_SHORT).show();
-                }
-                else
+                } else
                     addComment();
             }
         });
         //set likes counter
         if(likesCount!=0)
-        like_count.setText(likesCount+" Likes");
+            like_count.setText(likesCount+" Likes");
 
         //load comments
         loadComments(postid);
+
+    }
+
+    private void addReply() {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Replies").child(postid).child(commentid);
+        final Reply reply = new Reply();
+        reply.reply_content = add_reply.getText().toString();
+        reply.post_id = postid;
+        reply.comment_id = commentid;
+        reply.publisher_id = curr_uid;
+        reply.date = new Date();
+        PostFragment.getUser(new Callback() {
+            @Override
+            public void callbackUser(User user) {
+                reply.publisher_pic = user.profile_pic;
+                reply.name = user.first_name + " " + user.last_name;
+                reply.reply_id = reference.push().getKey();
+                reference.push().setValue(reply);
+
+                add_reply.setText("");
+            }
+        }, curr_uid);
     }
 
     //load comments
@@ -98,7 +153,7 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
         bundle.putString("postId", postId);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.commentsContainer,frg);
+        ft.replace(R.id.commentsContainer, frg, "comment");
         ft.commit();
 
     }
@@ -153,5 +208,33 @@ public class CommentsActivity extends AppCompatActivity implements CommentsFragm
     @Override
     public void onListFragmentInteraction(Comment item) {
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(Reply item) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        add_reply_layout.setVisibility(View.GONE);
+        add_comment_layout.setVisibility(View.VISIBLE);
+        toolbar.setEnabled(true);
+        toolbar2.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        add_reply_layout.setVisibility(View.GONE);
+        add_comment_layout.setVisibility(View.VISIBLE);
+        toolbar.setEnabled(true);
+        toolbar2.setVisibility(View.GONE);
+    }
+
+    public void getCommentData(String comment_id) {
+        commentid = comment_id;
     }
 }
