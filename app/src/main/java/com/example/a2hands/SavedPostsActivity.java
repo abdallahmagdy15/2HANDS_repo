@@ -1,36 +1,36 @@
-package com.example.a2hands.settings;
-
-import android.os.Bundle;
+package com.example.a2hands;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.a2hands.R;
-import com.example.a2hands.Users.UsersFragment;
-import com.google.firebase.auth.FirebaseAuth;
+import android.os.Bundle;
 
-public class BlockedUsersActivity extends AppCompatActivity {
+import com.example.a2hands.Users.UsersFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+public class SavedPostsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blocked_users);
+        setContentView(R.layout.activity_saved);
         Toolbar toolbar = findViewById(R.id.savedPostsToolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Blocked Users");
+        getSupportActionBar().setTitle("Saved Posts");
 
-        Fragment frg = new UsersFragment();
+        Fragment frg = new PostsFragment();
         Bundle b = new Bundle();
-        b.putString("FOR","BLOCKED_USERS");
-        b.putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        b.putString("FOR","SAVED_POSTS");
         frg.setArguments(b);
         FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.blockedUsersContainer,frg,null).addToBackStack(null);
+                .replace(R.id.savedPostsContainer,frg,null).addToBackStack(null);
         tr.commit();
     }
 
@@ -38,5 +38,4 @@ public class BlockedUsersActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
 }

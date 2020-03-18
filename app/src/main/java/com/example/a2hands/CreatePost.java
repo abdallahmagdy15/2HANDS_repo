@@ -39,7 +39,7 @@ import com.example.a2hands.home.PostsPackage.MyPostRecyclerViewAdapter;
 import com.example.a2hands.locationsearch.SearchLocation;
 import com.example.a2hands.home.PostsPackage.Post;
 import com.example.a2hands.home.PostsPackage.PostCounter;
-import com.example.a2hands.home.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -390,7 +390,7 @@ public class CreatePost extends AppCompatActivity {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Add a new document with a generated ID
-        PostFragment.getUser(new Callback() {
+        PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User u) {
                 post.postOwner = u.first_name+" "+u.last_name;

@@ -8,7 +8,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -22,16 +21,13 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.a2hands.FollowingHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.Post;
-import com.example.a2hands.home.PostsPackage.PostFragment;
-import com.example.a2hands.rating.Rating;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 import com.example.a2hands.rating.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -295,17 +291,17 @@ public class ProfileActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             if(position == 0){
                 if(uid != null){
-                    Fragment frg = new PostFragment();
+                    Fragment frg = new PostsFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("uid", uid);
-                    bundle.putString("for", "profile");
+                    bundle.putString("UID", uid);
+                    bundle.putString("FOR", "PROFILE");
                     frg.setArguments(bundle);
                     return frg;
                 }else{
-                    Fragment frg = new PostFragment();
+                    Fragment frg = new PostsFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    bundle.putString("for", "profile");
+                    bundle.putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    bundle.putString("FOR", "PROFILE");
                     frg.setArguments(bundle);
                     return frg;
                 }

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.a2hands.home.PostsPackage.Post;
-import com.example.a2hands.home.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -106,7 +106,7 @@ private Context context;
         post.user_id = current_uid;
         post.shared_id = shared_post_id;
         post.location="Egypt";
-        PostFragment.getUser(new Callback() {
+        PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User user) {
                 post.postOwner = user.first_name+" "+user.last_name;

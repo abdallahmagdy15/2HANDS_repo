@@ -29,7 +29,7 @@
             android:label="@string/title_activity_followers"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".locationsearch.SearchLocation" />
-        <activity android:name=".SavedActivity" />
+        <activity android:name=".SavedPostsActivity" android:parentActivityName=".SavedPostsActivity" />
         <activity
             android:name=".rating.RatingsActivity"
             android:parentActivityName=".rating.RatingsActivity" />
@@ -50,7 +50,7 @@
         <activity android:name=".home.CommentsPackage.CommentsActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.AboutAppActivity" />
-        <activity android:name=".settings.BlockedUsersActivity" />
+        <activity android:name=".settings.BlockedUsersActivity" android:parentActivityName=".settings.BlockedUsersActivity" />
         <activity android:name=".settings.DeleteAccActivity" />
         <activity android:name=".settings.EditCountryActivity" />
         <activity android:name=".settings.EditEmailActivity" />

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,7 +107,7 @@ public class CommentsActivity extends AppCompatActivity  {
         comment.post_id=postid;
         comment.publisher_id=curr_uid;
         comment.date = new Date();
-        PostFragment.getUser(new Callback() {
+        PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User user) {
                 comment.publisher_pic=user.profile_pic;

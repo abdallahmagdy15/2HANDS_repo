@@ -1,4 +1,4 @@
-package com.example.a2hands.profile;
+package com.example.a2hands.Users;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 
+import com.example.a2hands.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -105,7 +106,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(holder.mView.getContext(),ProfileActivity.class);
+                    Intent intent = new Intent(holder.mView.getContext(), ProfileActivity.class);
                     intent.putExtra("uid",user.user_id);
                     holder.mView.getContext().startActivity(intent);
                     // add to recent searches to the database

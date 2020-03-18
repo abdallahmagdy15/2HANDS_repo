@@ -2,46 +2,38 @@ package com.example.a2hands.home.PostsPackage;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 
-public class PostFragment extends Fragment {
+public class PostsFragment extends Fragment {
 
     FirebaseAuth mAuth;
     String selectedCat;
@@ -53,7 +45,7 @@ public class PostFragment extends Fragment {
     final List<String> blockedUsersId = new ArrayList<>();
     final List<Post> posts = new ArrayList<>();
 
-    public PostFragment() {
+    public PostsFragment() {
     }
 
     @Override
@@ -70,9 +62,10 @@ public class PostFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.view = view;
+        String activityName = bundle.getString("FOR");
 
-        if (bundle.getString("for").equals("home") ) {
-            selectedCat = bundle.getString("category", "General");
+        if (activityName.equals("HOME") ) {
+            selectedCat = bundle.getString("CAT", "General");
             getUser(new Callback() {
                 @Override
                 public void callbackUser(User user) {
@@ -83,12 +76,15 @@ public class PostFragment extends Fragment {
                 }
             },uid);
         }
-        else
+        else if (activityName.equals("PROFILE"))
         {
-            profile_user_id = bundle.getString("uid");
+            profile_user_id = bundle.getString("UID");
             getBlockedUsersId();
         }
-
+        else if (activityName.equals("SAVED_POSTS"))
+        {
+            getSavedPostsId();
+        }
         return view;
     }
 
@@ -158,7 +154,7 @@ public class PostFragment extends Fragment {
                                 final Post p = doc2.toObject(Post.class);
                                 posts.add(p);
                             }
-                            updateHomeWithPosts(posts);
+                            updateUiWithPosts(posts);
                         } else {
                             Log.w("", "Error getting documents.", task2.getException());
 
@@ -174,7 +170,7 @@ public class PostFragment extends Fragment {
             if(hiddenPostsIds.contains(p.post_id) || mutedUsersId.contains(p.user_id) || blockedUsersId.contains(p.user_id))
                 i.remove();
         }
-        updateHomeWithPosts(posts);
+        updateUiWithPosts(posts);
     }
 
     private void getHiddenPostsId(){
@@ -193,6 +189,37 @@ public class PostFragment extends Fragment {
         });
     }
 
+    private void getSavedPostsId(){
+        FirebaseDatabase.getInstance().getReference("saved_posts").child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<String> savedPostsId = new ArrayList<>();
+                        if(dataSnapshot.getChildrenCount() != 0 ){
+                            for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                savedPostsId.add(ds.getKey());
+                            }
+                            getSavedPosts(savedPostsId);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+    }
+    private void getSavedPosts(List<String> savedPostsId){
+        FirebaseFirestore.getInstance().collection("posts").whereIn("post_id",savedPostsId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(!task.getResult().isEmpty()){
+                    for( DocumentSnapshot ds : task.getResult()){
+                        posts.add(ds.toObject(Post.class));
+                    }
+                }
+                updateUiWithPosts(posts);
+            }
+        });
+    }
     private void getMutedUsersId(){
         FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -210,7 +237,7 @@ public class PostFragment extends Fragment {
     }
 
     private void getBlockedUsersId(){
-        FirebaseDatabase.getInstance().getReference("blocked_posts").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() != 0){
@@ -232,7 +259,7 @@ public class PostFragment extends Fragment {
         });
     }
 
-    private void updateHomeWithPosts(List<Post> posts){
+    private void updateUiWithPosts(List<Post> posts){
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

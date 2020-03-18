@@ -17,7 +17,7 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -91,7 +91,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
 
         ////check the activity to change the layout
         if(activity.equals("profile")){
-            PostFragment.getUser(new Callback() {
+            PostsFragment.getUser(new Callback() {
                 @Override
                 public void callbackUser(final User user) {
                     //load publisher pic

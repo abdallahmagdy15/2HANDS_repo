@@ -19,14 +19,12 @@ import android.widget.Toast;
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.notifications.NotificationFragment;
-import com.example.a2hands.search.searchItemFragment;
-import com.example.a2hands.home.PostsPackage.Post;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
-import com.example.a2hands.SavedActivity;
+import com.example.a2hands.SavedPostsActivity;
 import com.example.a2hands.search.SearchFragment;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostFragment;
+import com.example.a2hands.home.PostsPackage.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -139,7 +137,7 @@ public class homeActivity extends AppCompatActivity
                         startActivity(new Intent(homeActivity.this , ProfileActivity.class));
                         break;
                     case R.id.nav_saved:
-                        startActivity(new Intent(homeActivity.this , SavedActivity.class));
+                        startActivity(new Intent(homeActivity.this , SavedPostsActivity.class));
                         break;
                     case R.id.nav_settings:
                         startActivity(new Intent(homeActivity.this , SettingsActivity.class));
@@ -269,10 +267,10 @@ public class homeActivity extends AppCompatActivity
 
 
     void loadPosts(int pos){
-        Fragment frg = new PostFragment();
+        Fragment frg = new PostsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("category", catsStrings[pos]);
-        bundle.putString("for","home");
+        bundle.putString("CAT", catsStrings[pos]);
+        bundle.putString("FOR","HOME");
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,frg).addToBackStack("");

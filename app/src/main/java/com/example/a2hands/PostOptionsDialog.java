@@ -170,7 +170,7 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
     }
     public void blockUser      (){
         //add to blocked users
-        FirebaseDatabase.getInstance().getReference("blocked_posts").child(current_uid).child(post_user_id).setValue(true)
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(current_uid).child(post_user_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
