@@ -17,7 +17,7 @@ public class BlockedUsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocked_users);
-        Toolbar toolbar = findViewById(R.id.savedPostsToolbar);
+        Toolbar toolbar = findViewById(R.id.blockedUsersToolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
