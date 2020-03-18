@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.a2hands.FollowingHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.PostsPackage.Post;
@@ -189,14 +190,8 @@ public class ProfileActivity extends AppCompatActivity
                                             .setTitle("Are you sure you want to unfollow ?")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                                    //// delete following and follower
-                                                    // followings > following > follower
-                                                    FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
-                                                            .child(uid).setValue(null);
-                                                    // followers > follower > following
-                                                    FirebaseDatabase.getInstance().getReference("followers").child(uid)
-                                                            .child(curr_uid).setValue(null);
-                                                }
+                                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid);
+                                                    fh.unfollow();                                                }
                                             })
                                             .setNegativeButton(android.R.string.no, null).show();
                                 }
@@ -210,11 +205,8 @@ public class ProfileActivity extends AppCompatActivity
                             profileFollowBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // set new following and follower
-                                    FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
-                                            .child(uid).setValue(true);
-                                    FirebaseDatabase.getInstance().getReference("followers").child(uid)
-                                            .child(curr_uid).setValue(true);
+                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid);
+                                    fh.follow();
                                 }
                             });
                         }
@@ -278,6 +270,7 @@ public class ProfileActivity extends AppCompatActivity
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
     }
+
     void loadPhotos(final ImageView imgV , String path){
 
         mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

@@ -168,7 +168,8 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
                     }
                 });
     }
-    private void blockUser      (){
+    public void blockUser      (){
+        //add to blocked users
         FirebaseDatabase.getInstance().getReference("blocked_posts").child(current_uid).child(post_user_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -176,6 +177,8 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
                         Toast.makeText(context,"User is blocked successfully!",Toast.LENGTH_LONG).show();
                     }
                 });
+        FollowingHelper fh = new FollowingHelper(current_uid,post_user_id);
+        fh.unfollow();
     }
     private void reportPost     (){
 

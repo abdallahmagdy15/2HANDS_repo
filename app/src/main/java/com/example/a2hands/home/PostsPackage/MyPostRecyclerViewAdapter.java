@@ -112,8 +112,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             videoContainer = view.findViewById(R.id.videoContainer);
-            postImage = view.findViewById(R.id.postImage);
-            postVideo = view.findViewById(R.id.postVideo);
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
 
@@ -127,8 +125,12 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 likeBtn = view.findViewById(R.id.likeBtn);
                 commentBtn = view.findViewById(R.id.commentBtn);
                 postCounter=view.findViewById(R.id.postCounter);
+                postImage = view.findViewById(R.id.postImage);
+                postVideo = view.findViewById(R.id.postVideo);
             }
             else {
+                postImage = view.findViewById(R.id.sharedPostImage);
+                postVideo = view.findViewById(R.id.sharedPostVideo);
                 postRatingsSharesCount = null;
                 postLikesCommentsCount = null;
                 postOptions = null;
@@ -195,7 +197,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             });
             holder.sharingContainer.setVisibility(View.VISIBLE);
-            setupPostData(holder,sharedPost,true);
+            setupPostData(holder,sharedPost,false);
         }
     }
 

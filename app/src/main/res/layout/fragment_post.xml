@@ -184,7 +184,7 @@
         android:focusableInTouchMode="true"
         android:maxHeight="384dp"
         android:scaleType="centerCrop"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/videoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
