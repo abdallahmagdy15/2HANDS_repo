@@ -46,9 +46,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class homeActivity extends AppCompatActivity
-{
-
+public class homeActivity extends AppCompatActivity {
 
     //drawer
     private DrawerLayout drawer;
