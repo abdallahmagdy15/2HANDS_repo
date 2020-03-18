@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.a2hands.R;
 
-public class BlockedAccsActivity extends AppCompatActivity {
+public class BlockedUsersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -50,7 +50,7 @@
         <activity android:name=".home.CommentsPackage.CommentsActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.AboutAppActivity" />
-        <activity android:name=".settings.BlockedAccsActivity" />
+        <activity android:name=".settings.BlockedUsersActivity" />
         <activity android:name=".settings.DeleteAccActivity" />
         <activity android:name=".settings.EditCountryActivity" />
         <activity android:name=".settings.EditEmailActivity" />

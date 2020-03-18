@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         startActivity(new Intent(SettingsActivity.this , NotificationActivity.class));
                         break;
                     case "Blocked Accounts":
-                        startActivity(new Intent(SettingsActivity.this , BlockedAccsActivity.class));
+                        startActivity(new Intent(SettingsActivity.this , BlockedUsersActivity.class));
                         break;
                     case "Night Mode":
 
