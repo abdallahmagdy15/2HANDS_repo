@@ -334,7 +334,6 @@ public class homeActivity extends AppCompatActivity {
 
 
     private void updateOnlineStatus(String status) {
-        db.collection("users/").document(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("onlineStatus", status);
         db.collection("users/").document(myUid).update(hashMap);
