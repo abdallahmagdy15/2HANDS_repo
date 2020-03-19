@@ -35,7 +35,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     private LinearLayout copyPostLinkBtn;
     private String current_uid;
     private String shared_post_id;
-private Context context;
+    private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -21,12 +21,15 @@ public class User {
     public int ratings_count;
     public String user_id;
 
+    public String onlineStatus;
+    public String typingTo;
+
     public User(
                 String first_name,
                 String last_name,
                 boolean gender,
                 Date birth_date,
-            String country,
+                String country,
                 String phone,
                 String region,
                 String user_name,
@@ -36,7 +39,10 @@ public class User {
                 String profile_cover,
                 String job_title,
                 int ratings_count,
-                String user_id
+                String user_id,
+
+                String onlineStatus,
+                String typingTo
     ) {
         this.country = country;
         this.region = region;
@@ -53,6 +59,9 @@ public class User {
         this.job_title = job_title;
         this.ratings_count = ratings_count;
         this.user_id = user_id;
+
+        this.onlineStatus = onlineStatus;
+        this.typingTo = typingTo;
     }
 
     public User(){

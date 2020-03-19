@@ -44,6 +44,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class homeActivity extends AppCompatActivity {
@@ -63,11 +68,20 @@ public class homeActivity extends AppCompatActivity {
     SearchView searchView;
     TextView notificationsTitle;
 
+    private FirebaseFirestore db;
+    String myUid;
+
+    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        db = FirebaseFirestore.getInstance();
+        myUid=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //drawer
         drawer = findViewById(R.id.drawer_layout);
@@ -142,6 +156,8 @@ public class homeActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_signOut:
                         FirebaseAuth.getInstance().signOut();
+                        String dateTime =simpleDateFormat.format(cal.getTime());
+                        updateOnlineStatus(dateTime);
                         startActivity(new Intent(homeActivity.this , LoginActivity.class));
                         break;
                     case R.id.nav_share:
@@ -178,14 +194,13 @@ public class homeActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0: navigateHome();
                         break;
-                    case 1:navigateSearch() ;
+                    case 1: navigateSearch() ;
                         break;
-                    case 2:navigateCreatePost() ;
+                    case 2: navigateCreatePost() ;
                         break;
                     case 3: navigateNotification();
                         break;
-                    case 4:
-
+                    case 4: navigateChatList();
                         break;
                 }
                 return true;
@@ -264,6 +279,40 @@ public class homeActivity extends AppCompatActivity {
 
 
 
+    @Override
+    protected void onStart() {
+        updateOnlineStatus("online");
+        super.onStart();
+    }
+
+
+    @Override
+    protected void onResume() {
+        updateOnlineStatus("online");
+        super.onResume();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        String dateTime =simpleDateFormat.format(cal.getTime());
+        updateOnlineStatus(dateTime);
+        Intent intent=new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void updateOnlineStatus(String status) {
+        db.collection("users/").document(myUid);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("onlineStatus", status);
+        db.collection("users/").document(myUid).update(hashMap);
+    }
+
+
+
+
     void loadPosts(int pos){
         Fragment frg = new PostsFragment();
         Bundle bundle = new Bundle();
@@ -324,6 +373,12 @@ public class homeActivity extends AppCompatActivity {
         ft.commit();
         badge.clearNumber();
         badge.setVisible(false);
+    }
+
+    public void navigateChatList(){
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.homeFrag,new com.example.a2hands.chat.ChatList.ChatListFragment()).addToBackStack(null);
+        ft.commit();
 
     }
 

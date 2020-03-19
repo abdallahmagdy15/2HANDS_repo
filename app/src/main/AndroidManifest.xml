@@ -59,6 +59,7 @@
         <activity android:name=".settings.EditPhoneActivity" />
         <activity android:name=".settings.LanguageActivity" />
         <activity android:name=".settings.NotificationActivity" />
+        <activity android:name=".chat.ChatActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

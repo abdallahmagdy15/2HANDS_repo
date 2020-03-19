@@ -319,7 +319,9 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 "",
                 "",
                 0,
-                userID
+                userID,
+                "online",
+                "noOne"
                 );
 
         Map<String,Object> registerDate = new HashMap<>();

@@ -114,6 +114,16 @@ public class ProfileActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //Chat Activity
+        profileMessaging.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, com.example.a2hands.chat.ChatActivity.class);
+                intent.putExtra("hisUid", uid);
+                startActivity(intent);
+            }
+        });
+
         mPager.setAdapter(pagerAdapter);
 
         if(uid != null){//if redirected to this profile by uid
