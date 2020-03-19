@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
@@ -285,23 +286,52 @@ public class homeActivity extends AppCompatActivity {
         super.onStart();
     }
 
-
     @Override
     protected void onResume() {
         updateOnlineStatus("online");
         super.onResume();
     }
 
+    ///////////////////////////////////////////////////////////////
+    ///////////////////press back again to exit////////////////////
+    ///////////////////////////////////////////////////////////////
+    private boolean doubleBackToExitPressedOnce = false;
+    private Handler mHandler = new Handler();
+
+    private final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce = false;
+        }
+    };
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
+    }
 
     @Override
     public void onBackPressed() {
-        String dateTime =simpleDateFormat.format(cal.getTime());
-        updateOnlineStatus(dateTime);
-        Intent intent=new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        } else if (doubleBackToExitPressedOnce) {
+            String dateTime =simpleDateFormat.format(cal.getTime());
+            updateOnlineStatus(dateTime);
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+        mHandler.postDelayed(mRunnable, 2000);
     }
+
+
 
     private void updateOnlineStatus(String status) {
         db.collection("users/").document(myUid);
