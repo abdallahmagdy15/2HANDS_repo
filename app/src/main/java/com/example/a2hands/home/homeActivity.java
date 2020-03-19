@@ -157,9 +157,9 @@ public class homeActivity extends AppCompatActivity {
                         startActivity(new Intent(homeActivity.this , SettingsActivity.class));
                         break;
                     case R.id.nav_signOut:
-                        FirebaseAuth.getInstance().signOut();
                         String dateTime =simpleDateFormat.format(cal.getTime());
                         updateOnlineStatus(dateTime);
+                        FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(homeActivity.this , LoginActivity.class));
                         break;
                     case R.id.nav_share:
