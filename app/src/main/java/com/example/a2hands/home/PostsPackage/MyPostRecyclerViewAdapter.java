@@ -108,7 +108,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             time=view.findViewById(R.id.postTime);
             location =view.findViewById(R.id.postLocation);
             postOwner = view.findViewById(R.id.postOwner);
-            postContent =  view.findViewById(R.id.content);
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             videoContainer = view.findViewById(R.id.videoContainer);
@@ -116,6 +115,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             sharingContainer = view.findViewById(R.id.sharingContainer);
 
             if (view.getId() != R.id.sharedPostContainer){
+                postContent =  view.findViewById(R.id.content);
                 postRatingsSharesCount = view.findViewById(R.id.postRatingsSharesCount);
                 postLikesCommentsCount = view.findViewById(R.id.postLikesCommentsCount);
                 postOptions = view.findViewById(R.id.postOptions);
@@ -129,6 +129,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 postVideo = view.findViewById(R.id.postVideo);
             }
             else {
+                postContent =  view.findViewById(R.id.sharedContent);
                 postImage = view.findViewById(R.id.sharedPostImage);
                 postVideo = view.findViewById(R.id.sharedPostVideo);
                 postRatingsSharesCount = null;

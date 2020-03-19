@@ -123,7 +123,7 @@
         app:layout_constraintTop_toBottomOf="@id/postOwner" />
 
     <com.borjabravo.readmoretextview.ReadMoreTextView
-        android:id="@+id/content"
+        android:id="@+id/sharedContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -133,7 +133,9 @@
         android:linksClickable="true"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:text="Some texttttttttttttttttttttttttt"
+        app:trimMode="trimModeLine"
+        app:trimLines="4"
+        app:trimLength="5"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="#1B1B1B"
         android:textColorLink="@color/colorPrimaryDark"
@@ -156,7 +158,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/sharedContent" />
 
     <FrameLayout
         android:id="@+id/videoContainer"
