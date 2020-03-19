@@ -11,8 +11,7 @@
 
     <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigation.Overline</item>
-        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigation.Overline
-        </item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigation.Overline</item>
         <item name="textAllCaps">true</item>
         <item name="paddingStart">32dp</item>
         <item name="paddingEnd">32dp</item>

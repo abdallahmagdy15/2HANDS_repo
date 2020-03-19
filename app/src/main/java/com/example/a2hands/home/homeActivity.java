@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
+import com.example.a2hands.chat.ChatList.ChatListFragment;
 import com.example.a2hands.notifications.NotificationFragment;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
@@ -195,9 +196,9 @@ public class homeActivity extends AppCompatActivity {
                 switch (pos) {
                     case 0: navigateHome();
                         break;
-                    case 1: navigateSearch() ;
+                    case 1: navigateSearch();
                         break;
-                    case 2: navigateCreatePost() ;
+                    case 2: navigateCreatePost();
                         break;
                     case 3: navigateNotification();
                         break;
@@ -314,20 +315,32 @@ public class homeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.homeFrag);
+
         if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
             return;
+        } else if(f instanceof ChatListFragment ||
+                f instanceof SearchFragment ||
+                f instanceof NotificationFragment) {
+
+            nav.setSelectedItemId(nav.getMenu().getItem(0).getItemId());
+            navigateHome();
+            return;
         } else if (doubleBackToExitPressedOnce) {
             String dateTime =simpleDateFormat.format(cal.getTime());
+
             updateOnlineStatus(dateTime);
+
             Intent a = new Intent(Intent.ACTION_MAIN);
             a.addCategory(Intent.CATEGORY_HOME);
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(a);
             return;
         }
+
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
         mHandler.postDelayed(mRunnable, 2000);
     }
 
@@ -408,7 +421,6 @@ public class homeActivity extends AppCompatActivity {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new com.example.a2hands.chat.ChatList.ChatListFragment()).addToBackStack(null);
         ft.commit();
-
     }
 
 }
