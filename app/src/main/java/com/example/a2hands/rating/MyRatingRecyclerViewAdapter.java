@@ -103,7 +103,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                                     Picasso.get().load(uri).into(holder.ratingsPic);
                                 }
                             });
-                    String fullname = user.first_name + " "+ user.last_name;
+                    String fullname = user.full_name;
                     holder.ratingUserName.setText(fullname);
                     //publisher pic on click
                     holder.ratingsPic.setOnClickListener(new View.OnClickListener() {

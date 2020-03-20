@@ -85,7 +85,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
         final User user = usersList.get(position);
         holder.resultRatingBar.setRating((float)user.rate);
         holder.resultUserJob.setText(user.job_title);
-        holder.resultUserName.setText(user.first_name+" "+user.last_name);
+        holder.resultUserName.setText(user.full_name);
         DecimalFormat df = new DecimalFormat("##.##");
         holder.resultUserRating.setText(df.format(user.rate));
         String location = user.country+((user.region.equals(""))?"":", "+user.region);

@@ -79,7 +79,7 @@ public class searchItemFragment extends Fragment {
         else {
             try {
                 FirebaseFirestore.getInstance().collection("users")
-                        .orderBy("first_name")
+                        .orderBy("full_name")
                         .startAt(query)
                         .endAt(query + "\uf8ff")
                         .get()

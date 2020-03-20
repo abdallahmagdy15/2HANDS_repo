@@ -23,8 +23,7 @@ import java.util.Map;
 
 public class EditNameActivity extends AppCompatActivity {
 
-    EditText fName;
-    EditText lName;
+    EditText fullName;
 
     //firebase
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -35,8 +34,7 @@ public class EditNameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_name);
 
-        fName = findViewById(R.id.editTxt_changeFName);
-        lName = findViewById(R.id.editTxt_changeLName);
+        fullName = findViewById(R.id.editTxt_changeFullName);
         Button saveName = findViewById(R.id.saveNewName_btn);
 
 
@@ -45,14 +43,11 @@ public class EditNameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> newName = new HashMap<>();
-                newName.put("first_name", fName.getText().toString().trim());
-                newName.put("last_name", lName.getText().toString().trim());
+                newName.put("full_name", fullName.getText().toString().trim());
 
-                if(TextUtils.isEmpty(fName.getText().toString().trim())){
-                    fName.setError("Enter your First Name");
-                } else if(TextUtils.isEmpty(lName.getText().toString().trim())){
-                    lName.setError("Enter your Last Name");
-                } else {
+                if(TextUtils.isEmpty(fullName.getText().toString().trim())) {
+                    fullName.setError("Enter your First Name");
+                }else {
                     db.collection("users").document(user.getUid()).update(newName)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

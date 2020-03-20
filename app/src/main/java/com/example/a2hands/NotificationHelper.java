@@ -21,7 +21,7 @@ public class NotificationHelper {
         //fill notification obj with data from helpReq obj
         final Notification notifi = new Notification();
 
-        String userName = user.first_name + " " + user.last_name;
+        String userName = user.full_name;
         notifi.publisher_name = userName;
         notifi.content = userName + " sent you a help request";
         notifi.subscriber_id = helpReq.subscriber_id;
@@ -46,7 +46,7 @@ public class NotificationHelper {
         //fill notification obj with data from helpReq obj
         final Notification notifi = new Notification();
 
-        String userName = publisheUser.first_name + " " + publisheUser.last_name;
+        String userName = publisheUser.full_name;
         notifi.publisher_name = userName;
         notifi.content = userName + content;
         notifi.subscriber_id = curr_post.user_id;
@@ -82,7 +82,7 @@ public class NotificationHelper {
         ///////send notification to the subscriber(who notifi is sent to)
         //fill notification obj with data from helpReq obj
         final Notification notifi = new Notification();
-        String userName = publisherUser.first_name + " " + publisherUser.last_name;
+        String userName = publisherUser.full_name;
         notifi.publisher_name = userName;
         notifi.content = userName + " followed you";
         notifi.subscriber_id = subscriberId;

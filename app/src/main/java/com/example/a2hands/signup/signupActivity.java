@@ -22,7 +22,10 @@ import android.widget.ViewFlipper;
 //gitHub country code picker
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hbb20.CountryCodePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,8 +45,8 @@ import java.util.regex.Pattern;
 
 public class signupActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private EditText fName;
-    private EditText lName;
+    private EditText fullName;
+    private EditText userName;
     //    private Spinner countrySelect;
     private RadioGroup genderGroup;
     //    private EditText phone;
@@ -63,8 +66,9 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     private static final int DEFAULT_DAY = 1;
     private static final int DEFAULT_MONTH = 0;
     private static final int DEFAULT_YEAR = 1990;
-    //    private static final String VALID_PHONE = "^[+]?[0-9]{8,20}$";
+
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+    private static final String USERNAME_PATTERN = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
 
     //firebase
     private FirebaseAuth auth;
@@ -78,8 +82,8 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
 
         Button signUp;
 
-        fName = findViewById(R.id.signUpFirstName);
-        lName = findViewById(R.id.signUpLastName);
+        fullName = findViewById(R.id.signUpFullName);
+        userName = findViewById(R.id.signUpUsername);
         genderGroup = findViewById(R.id.radioGroup);
         birthDate = findViewById(R.id.show_dialog);
         //country selection
@@ -180,7 +184,6 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 btnNext.setVisibility(View.VISIBLE);
                 if (viewFlipper.getDisplayedChild()==1){
                     v.setVisibility(View.INVISIBLE);
-
                 }
                 if (viewFlipper.getDisplayedChild()==0) {
                     viewFlipper.stopFlipping();
@@ -201,17 +204,16 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 viewFlipper.setOutAnimation(signupActivity.this, R.anim.slide_out_left);
 
                 if(viewFlipper.getDisplayedChild()==0){
-                    if(TextUtils.isEmpty(fName.getText().toString().trim())){
-                        fName.setError("Enter your First Name");
-                    } else if(TextUtils.isEmpty(lName.getText().toString().trim())){
-                        lName.setError("Enter your Last Name");
+                    if(TextUtils.isEmpty(fullName.getText().toString().trim())){
+                        fullName.setError("Enter your Full Name");
+                    } else if(TextUtils.isEmpty(userName.getText().toString().trim())){
+                        userName.setError("Enter your Username");
                     } else if (birthDate.getText().toString().equals("Select Your Date Of Birth")){
                         Toast.makeText(signupActivity.this, "Select your date of birth", Toast.LENGTH_SHORT).show();
                     } else if (genderGroup.getCheckedRadioButtonId() == -1){
                         Toast.makeText(signupActivity.this, "Select Your Gender", Toast.LENGTH_SHORT).show();
                     }else {
-                        btnBack.setVisibility(View.VISIBLE);
-                        viewFlipper.showNext();
+                        checkIfValidUsername(userName.getText().toString().trim());
                     }
                 } else if (viewFlipper.getDisplayedChild()==1){
                     if(TextUtils.isEmpty(editTextCarrierNumber.getText().toString().trim())){
@@ -233,8 +235,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
 
 
     //password validation
-    public static boolean isValidPassword(final String password) {
-
+    public boolean isValidPassword(String password) {
         Pattern pattern;
         Matcher matcher;
         pattern = Pattern.compile(PASSWORD_PATTERN);
@@ -242,6 +243,42 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
 
         return matcher.matches();
     }
+
+    //username validation
+    public void checkIfValidUsername(final String username){
+
+        final Query usernameQuery = FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("user_name", username);
+
+        Pattern usernamePattern;
+        Matcher usernameMatcher;
+        usernamePattern = Pattern.compile(USERNAME_PATTERN);
+        usernameMatcher = usernamePattern.matcher(username);
+
+        if(usernameMatcher.matches()){
+            usernameQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+                        for (DocumentSnapshot ds: task.getResult()){
+                            String userNames = ds.getString("user_name");
+                            if (username.equals(userNames)) {
+                                userName.setError("Username is already used");
+                            }
+                        }
+                    }
+
+                    if (task.getResult().size() == 0){
+                        viewFlipper.showNext();
+                        btnBack.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        } else {
+            userName.setError("Username is not valid");
+        }
+
+    }// end of checkIfValidUsername
 
 
 
@@ -305,24 +342,23 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         int genderID = genderGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(genderID);
 
-        User userData = new User(fName.getText().toString().trim(),
-                lName.getText().toString().trim(),
+        User userData = new User(
+                userID,
+                fullName.getText().toString().trim(),
+                "@"+userName.getText().toString().trim(),
                 selectedRadioButton.isChecked(),
                 new Date(),
                 ccpCountry.getSelectedCountryName(),
+                "",
                 ccpCode.getFullNumber(),
-                "",
-                "",
                 0,
                 "",
                 "",
                 "",
                 "",
                 0,
-                userID,
                 "online",
-                "noOne"
-                );
+                "noOne");
 
         Map<String,Object> registerDate = new HashMap<>();
         registerDate.put("register_date", FieldValue.serverTimestamp());

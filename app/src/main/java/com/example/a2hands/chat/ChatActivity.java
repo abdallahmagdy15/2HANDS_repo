@@ -274,7 +274,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
                 loadPhotos(profileimage,"Profile_Pics/"+hisUid+"/"+user.profile_pic );
-                hisname.setText(user.first_name+" "+user.last_name);
+                hisname.setText(user.full_name);
             }
         });
     }

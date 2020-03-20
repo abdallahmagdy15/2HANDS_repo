@@ -129,7 +129,7 @@ public class homeActivity extends AppCompatActivity {
                     }
                 });
 
-                header_fAndLName.setText(user.first_name+" "+user.last_name);
+                header_fAndLName.setText(user.full_name);
                 header_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
         });

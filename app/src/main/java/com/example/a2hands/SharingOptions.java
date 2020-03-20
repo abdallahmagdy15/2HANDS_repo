@@ -110,7 +110,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
         PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(final User user) {
-                post.postOwner = user.first_name+" "+user.last_name;
+                post.postOwner = user.full_name;
                 ref.document(postid)
                         .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

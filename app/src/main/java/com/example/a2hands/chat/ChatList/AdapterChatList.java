@@ -66,7 +66,7 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
             User user = task.getResult().toObject(User.class);
             loadPhotos(holder.profileIv,"Profile_Pics/"+Uid+"/"+user.profile_pic );
-            holder.nameTv.setText(user.first_name+" "+user.last_name);
+            holder.nameTv.setText(user.full_name);
             }
         });
 

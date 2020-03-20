@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
 
-                editNameTxt.setText(user.first_name+" "+user.last_name);
+                editNameTxt.setText(user.full_name);
                 editCountryTxt.setText(user.country);
                 editPhoneTxt.setText(user.phone);
                 editEmailTxt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());

@@ -235,8 +235,8 @@ public class ProfileActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 loadPhotos(coverPhoto,"Profile_Covers/"+user.profile_cover);
-                UserName = user.first_name+" "+user.last_name;
-                profileName.setText(UserName );
+                UserName = user.full_name;
+                profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
                 String location = user.country+((user.region.equals(""))?"":", "+user.region);
                 country_region.setText(location);

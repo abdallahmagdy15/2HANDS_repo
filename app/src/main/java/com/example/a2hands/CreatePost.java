@@ -301,7 +301,7 @@ public class CreatePost extends AppCompatActivity {
                                     for (QueryDocumentSnapshot doc :task.getResult()) {
                                         User user = doc.toObject(User.class);
                                         usersSugg.add(user);
-                                        usersSuggNames.add(user.first_name+" "+user.last_name);
+                                        usersSuggNames.add(user.full_name);
                                     }
                                 ////update mention suggestions list
                                 ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
@@ -315,7 +315,7 @@ public class CreatePost extends AppCompatActivity {
                                         mentionsIds.add(usersSugg.get(position).user_id);
                                         //replace @text with @firstName_lastName
                                         String oldtxt = createdPostText.getText().toString();
-                                        String userName = "@"+ usersSugg.get(position).first_name+ "_"+usersSugg.get(position).last_name;
+                                        String userName = "@"+ usersSugg.get(position).full_name;
                                         int lastOccurOfAt =  oldtxt.lastIndexOf("@");
                                         createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
                                     }
@@ -337,7 +337,7 @@ public class CreatePost extends AppCompatActivity {
                                     for (QueryDocumentSnapshot doc :task.getResult()) {
                                         User user = doc.toObject(User.class);
                                         usersSugg.add(user);
-                                        usersSuggNames.add(user.first_name+" "+user.last_name);
+                                        usersSuggNames.add(user.full_name);
                                     }
                                 ////update mention suggestions list
                                 ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
@@ -351,7 +351,7 @@ public class CreatePost extends AppCompatActivity {
                                         mentionsIds.add(usersSugg.get(position).user_id);
                                         //replace @text with @firstName_lastName
                                         String oldtxt = createdPostText.getText().toString();
-                                        String userName = "@"+ usersSugg.get(position).first_name+ "_"+usersSugg.get(position).last_name;
+                                        String userName = "@"+ usersSugg.get(position).full_name;
                                         int lastOccurOfAt =  oldtxt.lastIndexOf("@");
                                         createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
                                     }
@@ -393,7 +393,7 @@ public class CreatePost extends AppCompatActivity {
         PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User u) {
-                post.postOwner = u.first_name+" "+u.last_name;
+                post.postOwner = u.full_name;
                 post.user_id = uid;
                 post.profile_pic = u.profile_pic;
                 uploadPost();

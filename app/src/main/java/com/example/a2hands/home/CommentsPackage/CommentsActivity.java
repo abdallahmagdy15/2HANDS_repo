@@ -117,7 +117,7 @@ public class CommentsActivity extends AppCompatActivity  {
             @Override
             public void callbackUser(final User user) {
                 comment.publisher_pic=user.profile_pic;
-                comment.name=user.first_name+" "+user.last_name;
+                comment.name=user.full_name;
                 reference.push().setValue(comment)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
