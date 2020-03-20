@@ -174,8 +174,8 @@ public class CreatePost extends AppCompatActivity {
     private void getSharedPost(
             final String shared_post_id ,
             final MyPostRecyclerViewAdapter myPostRecyclerViewAdapter,
-            final MyPostRecyclerViewAdapter.ViewHolder vh
-    ){
+            final MyPostRecyclerViewAdapter.ViewHolder vh)
+    {
         FirebaseFirestore.getInstance().collection("posts").document(shared_post_id)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -511,6 +511,16 @@ public class CreatePost extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                    //check if shared post to send notifi
+                    if(shared_post_id != null){
+                        final NotificationHelper nh = new NotificationHelper();
+                        PostsFragment.getUser(new Callback() {
+                            @Override
+                            public void callbackUser(User user) {
+                                nh.sendSharingNotifi(user,shared_post_id);
+                            }
+                        },curr_uid);
+                    }
                     finish();
                 }
             });

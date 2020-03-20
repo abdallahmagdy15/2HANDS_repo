@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.Callback;
+import com.example.a2hands.NotificationHelper;
 import com.example.a2hands.PostOptionsDialog;
 import com.example.a2hands.home.CommentsPackage.CommentsActivity;
 import com.example.a2hands.HelpRequest;
@@ -449,37 +451,16 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = task.getResult().toObject(User.class);
                         String help_request_id = helpReqTask.getResult().getId();
-                        sendNotification(user , curr_post ,helpReq, help_request_id );
 
+                        //send notification
+                        NotificationHelper nh = new NotificationHelper();
+                        nh.sendNotificationForHelpReq(user , curr_post ,helpReq, help_request_id );
                     }
                 });
 
             }
         });
 
-    }
-
-    private void sendNotification(User user , Post curr_post, HelpRequest helpReq , String help_request_id){
-        ///////send notification to the subscriber(who notifi is sent to)
-        //fill notification obj with data from helpReq obj
-        final Notification notifi = new Notification();
-
-        String userName = user.first_name + " " + user.last_name;
-        notifi.publisher_name = userName;
-        notifi.content = userName + " sent you a help request";
-        notifi.subscriber_id = helpReq.subscriber_id;
-        notifi.publisher_id = helpReq.publisher_id;
-        notifi.publisher_pic = user.profile_pic;
-        notifi.type = "HELP_REQUEST";
-        notifi.help_request_id = help_request_id;
-        notifi.post_id = curr_post.post_id;
-        /////save notifi obj to realtime
-        //push empty record and get its key
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference("notifications");
-        notifi.notification_id = ref.push().getKey();
-        //push the notifi obj to this id
-        ref.child(notifi.notification_id).setValue(notifi);
     }
 
     private void setLikeBtnListner(final ViewHolder holder , final Post curr_post){
@@ -499,7 +480,22 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     private void likePost(final ViewHolder holder , final Post curr_post){
         //update likes with users
         FirebaseDatabase.getInstance().getReference().child("likes").child(curr_post.post_id)
-                .child(holder.uid).setValue(true);
+                .child(holder.uid).setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //get curr user and send notifi
+                        PostsFragment.getUser(new Callback() {
+                            @Override
+                            public void callbackUser(User user) {
+                                //send notifications
+                                NotificationHelper nh = new NotificationHelper();
+                                nh.sendReactOnPostNotification(user,"LIKE_POST",curr_post
+                                        ," liked your post \""+curr_post.content_text+"\"");
+                            }
+                        },holder.uid);
+                    }
+                });
         //update counter for likes
         FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
                 .child("likes_count").runTransaction(new Transaction.Handler() {

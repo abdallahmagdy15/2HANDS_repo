@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.net.Uri;
+import android.text.Html;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +54,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         public TextView notifiDesc;
         public TextView  notifiTime;
         public CircleImageView notifiPic;
-        public CircleImageView notifiTypePic;
+        public ImageView notifiTypePic;
         public Button acceptReqBtn;
         public Button refuseReqBtn;
         public LinearLayout notifiContainer;
@@ -77,42 +80,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                 @Override
                 public void onClick(View v) {
                     deleteNotifiAndhelpReq(pos,vh);
-                    /////add user to ratings
-                    Rating rating = new Rating();
-                    //rating subscriber is who will be rated by publisher
-                    rating.subscriber_id = notifisList.get(pos).publisher_id;
-                    rating.publisher_id = notifisList.get(pos).subscriber_id;
-                    rating.post_id = notifisList.get(pos).post_id;
-                    rating.subscriber_pic = notifisList.get(pos).publisher_pic;
-                    rating.subscriber_name = notifisList.get(pos).publisher_name;
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ratings");
-                    String rating_id = ref.push().getKey();
-                    rating.rating_id = rating_id;
-                    rating.review_text="";
-                    rating.date = new Date();
-                    ref.child(rating_id).setValue(rating);
-                    Toast.makeText(vh.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
-                    //update counter for ratings
-                    FirebaseDatabase.getInstance().getReference("counter").child(rating.post_id )
-                            .child("ratings_count").runTransaction(new Transaction.Handler() {
-                        @NonNull
-                        @Override
-                        public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                            int curr_ = mutableData.getValue(Integer.class);
-                            mutableData.setValue(curr_ +1);
-                            return Transaction.success(mutableData);
-                        }
-
-                        @Override
-                        public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
-                        }
-                    });
-                    //end update counter for ratings
-
-                    //delete help request
-                    FirebaseFirestore.getInstance().collection("help_requests")
-                            .document(notifisList.get(pos).help_request_id).delete();
+                    addRating(vh,pos);
 
                 }
             });
@@ -131,11 +99,13 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         else{
             vh = setLayoutViews(holder,notifisList.get(pos).type);
             setLayoutViews(holder,notifisList.get(pos).type);
-            vh.notifiTypePic.setImageResource(R.drawable.like_filled);
-
         }
-        //set notification info
-        vh.notifiDesc.setText(notifisList.get(pos).content);
+
+        /////set notification info
+
+        String notifiDesc = getotifiDescWithBoldedName(notifisList.get(pos).content);
+        vh.notifiDesc.setText(Html.fromHtml(notifiDesc));
+
         PrettyTime p = new PrettyTime();
         holder.notifiTime.setText(p.format(notifisList.get(pos).date));
         //load pic of notifi publisher and put into the image view
@@ -151,6 +121,61 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
 
 
     }
+    private String getotifiDescWithBoldedName(String content){
+        //get Name to be bold
+        String [] words = content.split(" ");
+        String publisherName="";
+        String notifiDesc= content;
+        int i=0;
+        for (String word:words) {
+            if(i==0)
+                publisherName += word + " ";
+            else if(i==1)
+                publisherName += word;
+            i++;
+        }
+        return notifiDesc = notifiDesc.replace(publisherName,"<b>"+publisherName+"</b>");
+    }
+
+    void addRating(final ViewHolder vh , int pos){
+        /////add user to ratings
+        Rating rating = new Rating();
+        //rating subscriber is who will be rated by publisher
+        rating.subscriber_id = notifisList.get(pos).publisher_id;
+        rating.publisher_id = notifisList.get(pos).subscriber_id;
+        rating.post_id = notifisList.get(pos).post_id;
+        rating.subscriber_pic = notifisList.get(pos).publisher_pic;
+        rating.subscriber_name = notifisList.get(pos).publisher_name;
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("ratings");
+        String rating_id = ref.push().getKey();
+        rating.rating_id = rating_id;
+        rating.review_text="";
+        rating.date = new Date();
+        ref.child(rating_id).setValue(rating);
+        Toast.makeText(vh.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
+        //update counter for ratings
+        FirebaseDatabase.getInstance().getReference("counter").child(rating.post_id )
+                .child("ratings_count").runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                int curr_ = mutableData.getValue(Integer.class);
+                mutableData.setValue(curr_ +1);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+            }
+        });
+        //end update counter for ratings
+
+        //delete help request
+        FirebaseFirestore.getInstance().collection("help_requests")
+                .document(notifisList.get(pos).help_request_id).delete();
+    }
+
     void deleteNotifiAndhelpReq(final int pos,final ViewHolder holder){
         //delete help request record from firestore db
         FirebaseFirestore.getInstance().collection("help_requests")
@@ -174,6 +199,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         if(type.equals("HELP_REQUEST")){
             //setting the inner layout
             layout = inflater.inflate(R.layout.notification_request, null);
+            holder.notifiContainer.removeAllViews();
             holder.notifiContainer.addView(layout);
 
             holder.notifiTypePic = holder.notifiContainer.findViewById(R.id.notifiTypePic);
@@ -183,9 +209,21 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         else {
             //setting the inner layout
             layout = inflater.inflate(R.layout.notification_react, null);
+            holder.notifiContainer.removeAllViews();
             holder.notifiContainer.addView(layout);
-
             holder.notifiTypePic = holder.notifiContainer.findViewById(R.id.notifiTypePic);
+            if(type.equals("LIKE_POST")){
+                holder.notifiTypePic.setImageResource(R.drawable.like_filled);
+            }
+            else if(type.equals("COMMENT_POST")){
+                holder.notifiTypePic.setImageResource(R.drawable.comment_filled);
+            }
+            else if(type.equals("SHARE_POST")){
+                holder.notifiTypePic.setImageResource(R.drawable.share_filled);
+            }
+            else if(type.equals("FOLLOWED")){
+                holder.notifiTypePic.setImageResource(R.drawable.followed_user);
+            }
         }
 
         //set the views

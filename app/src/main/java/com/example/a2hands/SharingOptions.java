@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -98,7 +99,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     }
 
     // sharing options methods
-    private void shareNow(final String shared_post_id, String current_uid){
+    private void shareNow(final String shared_post_id, final String current_uid){
         final CollectionReference ref = FirebaseFirestore.getInstance().collection("/posts");
         final String postid = ref.document().getId();
         final Post post= new Post();
@@ -108,7 +109,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
         post.location="Egypt";
         PostsFragment.getUser(new Callback() {
             @Override
-            public void callbackUser(User user) {
+            public void callbackUser(final User user) {
                 post.postOwner = user.first_name+" "+user.last_name;
                 ref.document(postid)
                         .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -132,6 +133,8 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
                             }
                         });
                         //end update counter for shares
+                        NotificationHelper nh = new NotificationHelper();
+                        nh.sendSharingNotifi(user,shared_post_id);
                     }
                 });
             }

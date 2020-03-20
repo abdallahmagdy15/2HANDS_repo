@@ -1,5 +1,10 @@
 package com.example.a2hands;
 
+import androidx.annotation.NonNull;
+
+import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FollowingHelper {
@@ -25,6 +30,17 @@ public class FollowingHelper {
         FirebaseDatabase.getInstance().getReference("followings").child(curr_uid)
                 .child(uid).setValue(true);
         FirebaseDatabase.getInstance().getReference("followers").child(uid)
-                .child(curr_uid).setValue(true);
+                .child(curr_uid).setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                final NotificationHelper  nh = new NotificationHelper();
+                PostsFragment.getUser(new Callback() {
+                    @Override
+                    public void callbackUser(User user) {
+                        nh.sendFollowedNotification(user,uid);
+                    }
+                },curr_uid);
+            }
+        });
     }
 }

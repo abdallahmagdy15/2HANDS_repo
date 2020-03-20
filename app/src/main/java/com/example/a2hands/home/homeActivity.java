@@ -406,7 +406,6 @@ public class homeActivity extends AppCompatActivity {
     }
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
-        notificationsTitle.setTextColor(getResources().getColor(R.color.colorWhiteGray));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 

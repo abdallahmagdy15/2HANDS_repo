@@ -14,22 +14,21 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/male"
+        app:civ_border_color="@color/colorWhiteGray"
+        app:civ_border_width="1dp"
+        app:civ_circle_background_color="@color/colorWhite"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/notifiTypePic"
-        android:layout_width="37dp"
-        android:layout_height="37dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/help_filled"
-        app:civ_border_color="@color/colorPureWhite"
-        app:civ_border_width="4dp"
-        app:civ_circle_background_color="@color/colorWhite"
         app:layout_constraintStart_toStartOf="@id/notifiPic"
-        app:layout_constraintTop_toTopOf="@id/notifiPic" />
+        app:layout_constraintTop_toTopOf="@id/notifiPic"
+        app:srcCompat="@drawable/help_filled" />
 
     <TextView
         android:id="@+id/notifiDesc"
@@ -39,9 +38,8 @@
         android:ellipsize="end"
         android:maxLines="3"
         android:singleLine="false"
-        android:text="Ahmed Ibra sent you a help request"
         android:textColor="@color/colorDark"
-        android:textSize="15sp"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/notifiPic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,9 +49,10 @@
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Accept"
         android:textColor="@color/colorPureWhite"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintStart_toEndOf="@id/notifiPic"
         app:layout_constraintTop_toBottomOf="@id/notifiDesc" />
 
@@ -62,9 +61,10 @@
         android:layout_width="102dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Refuse"
         android:textColor="@color/colorDark"
-        app:backgroundTint="@color/colorWhiteGray"
+        app:backgroundTint="@color/colorWhite"
         app:layout_constraintStart_toEndOf="@+id/acceptReqBtn"
         app:layout_constraintTop_toBottomOf="@id/notifiDesc" />
 
@@ -73,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="5 minutes ago"
         android:textColor="@color/colorDisabled"
         android:textSize="14sp"

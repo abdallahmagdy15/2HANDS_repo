@@ -16,15 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.Callback;
+import com.example.a2hands.NotificationHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.home.PostsPackage.Post;
 import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
@@ -109,10 +115,28 @@ public class CommentsActivity extends AppCompatActivity  {
         comment.date = new Date();
         PostsFragment.getUser(new Callback() {
             @Override
-            public void callbackUser(User user) {
+            public void callbackUser(final User user) {
                 comment.publisher_pic=user.profile_pic;
                 comment.name=user.first_name+" "+user.last_name;
-                reference.push().setValue(comment);
+                reference.push().setValue(comment)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                //send notification
+                                final NotificationHelper nh = new NotificationHelper();
+                                FirebaseFirestore.getInstance().collection("posts").document(postid)
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.getResult() != null){
+                                            Post post = task.getResult().toObject(Post.class);
+                                            nh.sendReactOnPostNotification(user,"COMMENT_POST",post,
+                                                    " commented on your post \""+post.content_text+"\"");
+                                        }
+                                    }
+                                });
+                            }
+                        });
                 add_comment.setText("");
                 //update counter for comments
                 FirebaseDatabase.getInstance().getReference("counter").child(postid )
