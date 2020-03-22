@@ -110,7 +110,7 @@ public class CreatePost extends AppCompatActivity {
     ImageView camerabtn;
     String currentPhotoPath;
 
-    //uploadVideo
+    //upload Video
     public static final int VIDEO_REQUEST_CODE = 3;
     VideoView selectedVideo ;
     ImageView videobtn;
@@ -234,7 +234,7 @@ public class CreatePost extends AppCompatActivity {
             }
         });
 
-        //uploadVideo
+        //upload Video
         videobtn = findViewById(R.id.createPostWithVideo);
         selectedVideo = findViewById(R.id.selectedVideo);
 

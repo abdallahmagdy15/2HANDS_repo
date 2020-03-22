@@ -42,11 +42,8 @@
         <activity
             android:name=".home.homeActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".signup.signUpSetFavTopicsActivity" />
         <activity android:name=".signup.signupSetBioActivity" />
         <activity android:name=".signup.signupPickPictureActivity" />
-        <activity android:name=".signup.signupSetLocationActivity" />
-        <activity android:name=".signup.signUpPhoneVerificationActivity" />
         <activity android:name=".home.CommentsPackage.CommentsActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.AboutAppActivity" />
