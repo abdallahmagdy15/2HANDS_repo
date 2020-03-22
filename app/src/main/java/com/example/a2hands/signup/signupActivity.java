@@ -10,11 +10,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,6 +38,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +57,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     private EditText fullName;
     private EditText userName;
     //    private Spinner countrySelect;
+    private Spinner stateSelect;
     private RadioGroup genderGroup;
     //    private EditText phone;
     private EditText email;
@@ -94,6 +104,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         editTextCarrierNumber = findViewById(R.id.editText_carrierNumber);
         ccpCode.registerCarrierNumberEditText(editTextCarrierNumber);
 //        countrySelect = findViewById(R.id.countrySpinner);
+        stateSelect = findViewById(R.id.statesSpinner);
 //        phone = findViewById(R.id.phone);
         email = findViewById(R.id.signUpEmail);
         password = findViewById(R.id.signUpPassword);
@@ -104,19 +115,19 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         btnBack = findViewById(R.id.btnBack);
         btnNext = findViewById(R.id.btnNext);
 
+        auth = FirebaseAuth.getInstance();
 
-        //changes the phone code when country changes
+
+        //changes the phone code and update states spinner when country changes
+        setUpStatesSpinner(ccpCountry.getSelectedCountryCode());
         ccpCountry.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
                 ccpCode.setCountryForNameCode(ccpCountry.getSelectedCountryNameCode());
+                //load spinners items
+                setUpStatesSpinner(ccpCountry.getSelectedCountryCode());
             }
         });
-
-
-
-        auth = FirebaseAuth.getInstance();
-
 
         birthDate.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -231,7 +242,58 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
+
+
+
     }//end of onCreate
+
+
+
+    public void setUpStatesSpinner(String selectedCountry){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+            ArrayList<String> countries = new ArrayList<>();
+            Map<String,ArrayList<String>> countries_states = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String phone_code = jo_inside.getString("phone_code");
+                JSONArray json_states = jo_inside.getJSONArray("states");
+
+                ArrayList<String> states = new ArrayList<>();
+                for(int j = 0; j < json_states.length(); j++)
+                    states.add(json_states.getString(j));
+
+                countries_states.put(phone_code, states);
+                countries.add(phone_code);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, countries_states.get(selectedCountry));
+            stateSelect.setAdapter(adapter);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
 
     //password validation
@@ -267,7 +329,6 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                             }
                         }
                     }
-
                     if (task.getResult().size() == 0){
                         viewFlipper.showNext();
                         btnBack.setVisibility(View.VISIBLE);
@@ -345,13 +406,13 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         User userData = new User(
                 userID,
                 fullName.getText().toString().trim(),
-                "@"+userName.getText().toString().trim(),
+                userName.getText().toString().trim(),
                 selectedRadioButton.isChecked(),
                 new Date(),
-                ccpCountry.getSelectedCountryName(),
-                "",
+                ccpCountry.getSelectedCountryCode(),
+                stateSelect.getSelectedItem().toString(),
                 ccpCode.getFullNumber(),
-                0,
+                0.0,
                 "",
                 "",
                 "",

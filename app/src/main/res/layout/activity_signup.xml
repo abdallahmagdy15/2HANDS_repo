@@ -148,6 +148,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -156,16 +157,16 @@
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ccpCountry">
+                app:layout_constraintTop_toBottomOf="@+id/statesSpinner">
 
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccpCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:ccp_countryPreference="eg"
                     app:ccp_autoDetectCountry="true"
-                    app:ccp_showFlag="false"
-                    app:ccp_hintExampleNumber="true"/>
+                    app:ccp_countryPreference="eg"
+                    app:ccp_hintExampleNumber="true"
+                    app:ccp_showFlag="false" />
 
                 <EditText
                     android:id="@+id/editText_carrierNumber"
@@ -176,6 +177,17 @@
                     android:inputType="phone"
                     android:singleLine="true" />
             </LinearLayout>
+
+            <Spinner
+                android:id="@+id/statesSpinner"
+                android:layout_width="376dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ccpCountry" />
 
             <!--<EditText-->
             <!--android:id="@+id/phone"-->
