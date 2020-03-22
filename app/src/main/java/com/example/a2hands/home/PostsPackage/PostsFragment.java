@@ -28,9 +28,17 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 public class PostsFragment extends Fragment {
@@ -70,9 +78,9 @@ public class PostsFragment extends Fragment {
                 @Override
                 public void callbackUser(User user) {
                     List<String> location =new ArrayList<>();
-                    location.add(user.country);
+                    location.add(loadCountryUsingItsCode(user.country));
                     location.add(user.region);
-                    getPostsForHome(location,selectedCat );
+                    getPostsForHome(location, selectedCat);
                 }
             },uid);
         }
@@ -111,6 +119,46 @@ public class PostsFragment extends Fragment {
                             }
                         }
                 );
+    }
+
+
+    //loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = getActivity().getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadCountryUsingItsCode(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String,String> countries_code_name = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String phone_code = jo_inside.getString("phone_code");
+                String country_name = jo_inside.getString("name");
+
+                countries_code_name.put(phone_code,country_name);
+            }
+            return countries_code_name.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void getPostsForHome(final List<String> location,final String category ){
