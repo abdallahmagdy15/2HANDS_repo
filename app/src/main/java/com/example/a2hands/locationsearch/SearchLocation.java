@@ -1,5 +1,6 @@
 package com.example.a2hands.locationsearch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -12,8 +13,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.a2hands.R;
+import com.example.a2hands.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class SearchLocation extends AppCompatActivity {
 
@@ -30,13 +46,28 @@ public class SearchLocation extends AppCompatActivity {
         //search Location
         search = findViewById(R.id.search);
         list = findViewById(R.id.list);
-        //check local language for device
-        if (Locale.getDefault().getDisplayLanguage().equals("العربية"))
-            adapter = new ArrayAdapter<>(this,  android.R.layout.simple_expandable_list_item_1, getResources().getStringArray(R.array.Governorates_ar));
-        else
-            adapter = new ArrayAdapter<>(this,android.R.layout.simple_expandable_list_item_1, getResources().getStringArray(R.array.Governorates_en));
 
-        list.setAdapter(adapter);
+        FirebaseFirestore.getInstance().collection("/users")
+                .document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                User user = task.getResult().toObject(User.class);
+                                ArrayList<String> statesArray = loadStatesUsingCountryCode(user.country);
+                                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, statesArray);
+                                list.setAdapter(adapter);
+                            }
+                        }
+                );
+
+        //check local language for device
+//        if (Locale.getDefault().getDisplayLanguage().equals("العربية"))
+//            adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, getResources().getStringArray(R.array.Governorates_ar));
+//        else
+//            adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, getResources().getStringArray(R.array.Governorates_en));
+
+//        list.setAdapter(adapter);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -62,4 +93,52 @@ public class SearchLocation extends AppCompatActivity {
             }
         });
     }
+
+
+
+    // loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public ArrayList<String> loadStatesUsingCountryCode(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String, ArrayList<String>> countries_states = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                JSONArray json_states = jo_inside.getJSONArray("states");
+                String phone_code = jo_inside.getString("phone_code");
+
+                //load states
+                ArrayList<String> states = new ArrayList<>();
+                for(int j = 0; j < json_states.length(); j++)
+                    states.add(json_states.getString(j));
+
+                countries_states.put(phone_code,states);
+            }
+
+            return countries_states.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

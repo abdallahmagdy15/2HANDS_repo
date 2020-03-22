@@ -59,11 +59,18 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import id.zelory.compressor.Compressor;
@@ -373,6 +380,47 @@ public class CreatePost extends AppCompatActivity {
         });
     }
 
+
+    // loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadUserCountryUsingCountryCode(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String,String> countries_name_code = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String phone_code = jo_inside.getString("phone_code");
+                String country_name = jo_inside.getString("name");
+                countries_name_code.put(phone_code,country_name);
+            }
+            return countries_name_code.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     public void submitPost() {
         submitPost.setEnabled(false);
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
@@ -382,8 +430,20 @@ public class CreatePost extends AppCompatActivity {
         //check if location not empty
         if(gover != null)
             post.location = gover;
-        else
-            post.location = "Egypt";
+        else{
+            FirebaseFirestore.getInstance().collection("/users")
+                    .document(curr_uid).get()
+                    .addOnCompleteListener(
+                            new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    User user = task.getResult().toObject(User.class);
+                                    post.location = loadUserCountryUsingCountryCode(user.country);
+                                }
+                            }
+                    );
+        }
+
         post.visibility = !createdPostIsAnon.isChecked();
         post.state = true;
         post.mentions = mentionsIds;
