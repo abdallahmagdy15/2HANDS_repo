@@ -44,8 +44,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ProfileActivity extends AppCompatActivity
@@ -141,7 +149,51 @@ public class ProfileActivity extends AppCompatActivity
         loadUserProfile();
         setLoadingFollowersListener();
         setLoadingFollowingsListener();
+
+
+    }// end of onCreate method
+
+
+    //loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
+
+    public String loadCountryUsingItsCode(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String,String> countries_code_name = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String phone_code = jo_inside.getString("phone_code");
+                String country_name = jo_inside.getString("name");
+
+                countries_code_name.put(phone_code,country_name);
+            }
+            return countries_code_name.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -238,7 +290,7 @@ public class ProfileActivity extends AppCompatActivity
                 UserName = user.full_name;
                 profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
-                String location = user.country+((user.region.equals(""))?"":", "+user.region);
+                String location = loadCountryUsingItsCode(user.country)+((user.region.equals(""))?"":", "+user.region);
                 country_region.setText(location);
                 profileBio.setText(user.bio);
                 DecimalFormat df = new DecimalFormat("##.##");

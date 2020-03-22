@@ -20,6 +20,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -90,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 User user = task.getResult().toObject(User.class);
 
                 editNameTxt.setText(user.full_name);
-                editCountryTxt.setText(user.country);
+                editCountryTxt.setText(loadCountryUsingItsCode(user.country));
                 editPhoneTxt.setText(user.phone);
                 editEmailTxt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
@@ -124,6 +134,46 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.textView_deleteAcc:
                 startActivity(new Intent(SettingsActivity.this , DeleteAccActivity.class));
                 break;
+        }
+    }
+
+
+    // loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadCountryUsingItsCode(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String,String> countries_code_name = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String phone_code = jo_inside.getString("phone_code");
+                String country_name = jo_inside.getString("name");
+
+                countries_code_name.put(phone_code,country_name);
+            }
+            return countries_code_name.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
