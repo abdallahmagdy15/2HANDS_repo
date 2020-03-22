@@ -54,7 +54,7 @@ public class SearchLocation extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 User user = task.getResult().toObject(User.class);
-                                ArrayList<String> statesArray = loadStatesUsingCountryCode(user.country);
+                                ArrayList<String> statesArray = loadStatesUsingCountryISO(user.country);
                                 adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, statesArray);
                                 list.setAdapter(adapter);
                             }
@@ -113,7 +113,7 @@ public class SearchLocation extends AppCompatActivity {
         return json;
     }
 
-    public ArrayList<String> loadStatesUsingCountryCode(String countryCode){
+    public ArrayList<String> loadStatesUsingCountryISO(String countryCode){
         try {
             JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
             JSONArray countries_arr = obj.getJSONArray("countries");
@@ -123,14 +123,14 @@ public class SearchLocation extends AppCompatActivity {
             for (int i = 0; i < countries_arr.length(); i++) {
                 JSONObject jo_inside = countries_arr.getJSONObject(i);
                 JSONArray json_states = jo_inside.getJSONArray("states");
-                String phone_code = jo_inside.getString("phone_code");
+                String iso2 = jo_inside.getString("iso2");
 
                 //load states
                 ArrayList<String> states = new ArrayList<>();
                 for(int j = 0; j < json_states.length(); j++)
                     states.add(json_states.getString(j));
 
-                countries_states.put(phone_code,states);
+                countries_states.put(iso2,states);
             }
 
             return countries_states.get(countryCode);

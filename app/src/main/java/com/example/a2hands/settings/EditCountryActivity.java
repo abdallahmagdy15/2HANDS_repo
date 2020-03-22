@@ -51,12 +51,12 @@ public class EditCountryActivity extends AppCompatActivity {
 
 
         //changes the phone code and update states spinner when country changes
-        setUpStatesSpinner(ccpCountry.getSelectedCountryCode());
+        setUpStatesSpinner(ccpCountry.getSelectedCountryNameCode());
         ccpCountry.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
                 //load spinners items
-                setUpStatesSpinner(ccpCountry.getSelectedCountryCode());
+                setUpStatesSpinner(ccpCountry.getSelectedCountryNameCode());
             }
         });
 
@@ -71,7 +71,7 @@ public class EditCountryActivity extends AppCompatActivity {
 
     private void updateCountryAndRegion() {
         Map<String, Object> newCountry = new HashMap<>();
-        newCountry.put("country", ccpCountry.getSelectedCountryCode());
+        newCountry.put("country", ccpCountry.getSelectedCountryNameCode());
 
         db.collection("users").document(user.getUid()).update(newCountry)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -123,15 +123,15 @@ public class EditCountryActivity extends AppCompatActivity {
 
             for (int i = 0; i < countries_arr.length(); i++) {
                 JSONObject jo_inside = countries_arr.getJSONObject(i);
-                String phone_code = jo_inside.getString("phone_code");
+                String iso2 = jo_inside.getString("iso2");
                 JSONArray json_states = jo_inside.getJSONArray("states");
 
                 ArrayList<String> states = new ArrayList<>();
                 for(int j = 0; j < json_states.length(); j++)
                     states.add(json_states.getString(j));
 
-                countries_states.put(phone_code, states);
-                countries.add(phone_code);
+                countries_states.put(iso2, states);
+                countries.add(iso2);
             }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, countries_states.get(selectedCountry));

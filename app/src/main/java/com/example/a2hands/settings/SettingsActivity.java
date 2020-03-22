@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 User user = task.getResult().toObject(User.class);
 
                 editNameTxt.setText(user.full_name);
-                editCountryTxt.setText(loadCountryUsingItsCode(user.country));
+                editCountryTxt.setText(loadCountryUsingItsISO(user.country));
                 editPhoneTxt.setText(user.phone);
                 editEmailTxt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
@@ -155,7 +155,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         return json;
     }
 
-    public String loadCountryUsingItsCode(String countryCode){
+    public String loadCountryUsingItsISO(String countryCode){
         try {
             JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
             JSONArray countries_arr = obj.getJSONArray("countries");
@@ -164,10 +164,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
             for (int i = 0; i < countries_arr.length(); i++) {
                 JSONObject jo_inside = countries_arr.getJSONObject(i);
-                String phone_code = jo_inside.getString("phone_code");
+                String iso2 = jo_inside.getString("iso2");
                 String country_name = jo_inside.getString("name");
 
-                countries_code_name.put(phone_code,country_name);
+                countries_code_name.put(iso2,country_name);
             }
             return countries_code_name.get(countryCode);
 

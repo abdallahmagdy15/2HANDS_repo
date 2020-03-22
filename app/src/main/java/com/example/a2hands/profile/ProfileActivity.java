@@ -171,7 +171,7 @@ public class ProfileActivity extends AppCompatActivity
         return json;
     }
 
-    public String loadCountryUsingItsCode(String countryCode){
+    public String loadCountryUsingItsISO(String countryCode){
         try {
             JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
             JSONArray countries_arr = obj.getJSONArray("countries");
@@ -180,10 +180,10 @@ public class ProfileActivity extends AppCompatActivity
 
             for (int i = 0; i < countries_arr.length(); i++) {
                 JSONObject jo_inside = countries_arr.getJSONObject(i);
-                String phone_code = jo_inside.getString("phone_code");
+                String iso2 = jo_inside.getString("iso2");
                 String country_name = jo_inside.getString("name");
 
-                countries_code_name.put(phone_code,country_name);
+                countries_code_name.put(iso2,country_name);
             }
             return countries_code_name.get(countryCode);
 
@@ -290,7 +290,7 @@ public class ProfileActivity extends AppCompatActivity
                 UserName = user.full_name;
                 profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
-                String location = loadCountryUsingItsCode(user.country)+((user.region.equals(""))?"":", "+user.region);
+                String location = loadCountryUsingItsISO(user.country)+((user.region.equals(""))?"":", "+user.region);
                 country_region.setText(location);
                 profileBio.setText(user.bio);
                 DecimalFormat df = new DecimalFormat("##.##");

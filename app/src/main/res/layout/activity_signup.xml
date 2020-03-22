@@ -137,6 +137,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                app:ccp_arrowColor="@color/colorAccent"
+                app:ccp_arrowSize="26sp"
+                app:ccp_textSize="18sp"
                 app:ccp_showFullName="true"
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="false"
@@ -146,6 +149,17 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/statesSpinner"
+                android:layout_width="376dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ccpCountry" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -177,17 +191,6 @@
                     android:inputType="phone"
                     android:singleLine="true" />
             </LinearLayout>
-
-            <Spinner
-                android:id="@+id/statesSpinner"
-                android:layout_width="376dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ccpCountry" />
 
             <!--<EditText-->
             <!--android:id="@+id/phone"-->
