@@ -1,4 +1,4 @@
-package com.example.a2hands.home.PostsPackage;
+package com.example.a2hands.home.posts;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,9 +32,8 @@ import android.widget.VideoView;
 import com.example.a2hands.Callback;
 import com.example.a2hands.NotificationHelper;
 import com.example.a2hands.PostOptionsDialog;
-import com.example.a2hands.home.CommentsPackage.CommentsActivity;
+import com.example.a2hands.home.comments.CommentsActivity;
 import com.example.a2hands.HelpRequest;
-import com.example.a2hands.notifications.Notification;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
@@ -55,10 +54,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -315,29 +319,48 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     private SpannableString getPostTextWithMentions(final Post curr_post){
         //check if there are mentions in the post
-        String postText ="";
-        String [] words = curr_post.content_text.split(" ");
-        int[][] mentionsIndexes = new int[words.length][2];
-        int i=0;
-        int curr_char_index = 0;
+        final String [] words = curr_post.content_text.split(" ");
+        final int[][] mentionsIndexes = new int[words.length][2];
+        List<String> mentionedUsernames = new ArrayList<>();
+        final Map<String,User> mentionedUsers = new HashMap<>();
         for (String word:words) {
-            if(word.startsWith("@")){
-                //del @ and seperate the name by white space
-                String[] fullName = word.split("_");
-                word = fullName[0].substring(1)+" "+fullName[1]+" ";
-                try {
-                    mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;//set start of the mentioned name
-                    postText += word;
-                    mentionsIndexes[i][1] = postText.length()-1;//set end of the mentioned name
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                i++;
+            if(word.startsWith("@") && word.length() > 1) {
+                mentionedUsernames.add(word.substring(1));
             }
-            else
-                postText+=word+" ";
         }
-        SpannableString ss = new SpannableString(postText);
+        FirebaseFirestore.getInstance().collection("users").whereIn("username",mentionedUsernames)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.getResult() != null){
+                    User mentionedUser = new User();
+                    for(DocumentSnapshot ds : task.getResult()){
+                        mentionedUser = ds.toObject(User.class);
+                        mentionedUsers.put( mentionedUser.user_name , mentionedUser );
+                    }
+                    curr_post.mentions.clear();
+                    String postText ="";
+                    int i = 0;
+                    for (String word:words) {
+                        if(word.startsWith("@") && word.length() > 1) {
+                            //set start of the mentioned name
+                            mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;
+                            postText += mentionedUsers.get(word).full_name+" ";
+                            //set end of the mentioned name
+                            mentionsIndexes[i][1] = postText.length()-1;
+                            // add user id to mentions list
+                            curr_post.mentions.add(mentionedUsers.get(word).user_id);
+                            i++;
+                        }
+                        else
+                            postText += word + " ";
+                    }
+                    curr_post.content_text = postText;
+                }
+            }
+        });
+
+        SpannableString ss = new SpannableString(curr_post.content_text);
         for(int j =0 ; j<mentionsIndexes.length ; j++){
             final int x = j;
             ClickableSpan clickableSpan = new ClickableSpan() {

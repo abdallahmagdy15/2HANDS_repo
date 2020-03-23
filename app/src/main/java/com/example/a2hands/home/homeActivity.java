@@ -19,14 +19,14 @@ import android.widget.Toast;
 
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
-import com.example.a2hands.chat.ChatList.ChatListFragment;
+import com.example.a2hands.chat.chatlist.ChatListFragment;
 import com.example.a2hands.notifications.NotificationFragment;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.SavedPostsActivity;
 import com.example.a2hands.search.SearchFragment;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -418,7 +418,7 @@ public class homeActivity extends AppCompatActivity {
 
     public void navigateChatList(){
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,new com.example.a2hands.chat.ChatList.ChatListFragment()).addToBackStack(null);
+        ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);
         ft.commit();
     }
 

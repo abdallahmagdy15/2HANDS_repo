@@ -2,7 +2,7 @@ package com.example.a2hands;
 
 import androidx.annotation.NonNull;
 
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.PostsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;

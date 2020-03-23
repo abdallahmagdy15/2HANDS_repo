@@ -1,4 +1,4 @@
-package com.example.a2hands.home.CommentsPackage;
+package com.example.a2hands.home.comments;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

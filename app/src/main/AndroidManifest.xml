@@ -44,7 +44,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".signup.signupSetBioActivity" />
         <activity android:name=".signup.signupPickPictureActivity" />
-        <activity android:name=".home.CommentsPackage.CommentsActivity" />
+        <activity android:name=".home.comments.CommentsActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.AboutAppActivity" />
         <activity android:name=".settings.BlockedUsersActivity" android:parentActivityName=".settings.BlockedUsersActivity" />

@@ -1,4 +1,4 @@
-package com.example.a2hands.home.CommentsPackage;
+package com.example.a2hands.home.comments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +19,8 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.NotificationHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.Post;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.Post;
+import com.example.a2hands.home.posts.PostsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;

@@ -1,4 +1,4 @@
-package com.example.a2hands.Users;
+package com.example.a2hands.users;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

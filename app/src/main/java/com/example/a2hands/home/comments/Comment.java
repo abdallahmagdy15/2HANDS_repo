@@ -1,4 +1,4 @@
-package com.example.a2hands.home.CommentsPackage;
+package com.example.a2hands.home.comments;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;

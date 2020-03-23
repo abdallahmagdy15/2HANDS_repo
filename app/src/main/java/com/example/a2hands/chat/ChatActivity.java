@@ -68,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference userRefForseen;
 
     List<Chat> chatList;
-    com.example.a2hands.chat.adapterChat adapterChat;
+    ChatAdapter adapterChat;
 
     public String hisUid;
     String myUid;
@@ -182,7 +182,7 @@ public class ChatActivity extends AppCompatActivity {
                         chatList.add(chat);
                     }
 
-                    adapterChat =new adapterChat(ChatActivity.this,chatList,hisImage);
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerview
                     recyclerView.setAdapter(adapterChat);

@@ -9,6 +9,6 @@
     android:background="@color/colorWhiteGray"
     app:layoutManager="LinearLayoutManager"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".home.PostsPackage.PostsFragment"
+    tools:context=".home.posts.PostsFragment"
     tools:listitem="@layout/fragment_post" />
 

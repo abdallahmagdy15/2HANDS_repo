@@ -17,7 +17,7 @@ import com.example.a2hands.Callback;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.PostsFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;

@@ -2,7 +2,7 @@ package com.example.a2hands;
 
 import androidx.annotation.NonNull;
 
-import com.example.a2hands.home.PostsPackage.Post;
+import com.example.a2hands.home.posts.Post;
 import com.example.a2hands.notifications.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

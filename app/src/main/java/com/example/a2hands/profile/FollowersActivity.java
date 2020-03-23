@@ -2,7 +2,7 @@ package com.example.a2hands.profile;
 
 import android.os.Bundle;
 
-import com.example.a2hands.Users.UsersFragment;
+import com.example.a2hands.users.UsersFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

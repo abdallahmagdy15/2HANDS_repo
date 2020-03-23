@@ -1,4 +1,4 @@
-package com.example.a2hands.chat.ChatList;
+package com.example.a2hands.chat.chatlist;
 
 public class ChatList {
     String id;

@@ -29,17 +29,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.home.PostsPackage.MyPostRecyclerViewAdapter;
+import com.example.a2hands.home.posts.MyPostRecyclerViewAdapter;
 import com.example.a2hands.locationsearch.SearchLocation;
-import com.example.a2hands.home.PostsPackage.Post;
-import com.example.a2hands.home.PostsPackage.PostCounter;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.Post;
+import com.example.a2hands.home.posts.PostCounter;
+import com.example.a2hands.home.posts.PostsFragment;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -86,7 +85,6 @@ public class CreatePost extends AppCompatActivity {
     ImageView ownerPic;
     final Post post = new Post();
     ListView mentionSuggestionsList;
-    final ArrayList<String> mentionsIds = new ArrayList<>() ;
     View postSharedPreview;
     String curr_uid;
     String shared_post_id;
@@ -123,6 +121,10 @@ public class CreatePost extends AppCompatActivity {
     Button postLocation;
     public static final int LOCATION_REQUEST_CODE = 5;
     String gover;
+
+    //mention
+    final ArrayList<String> usersSuggNames = new ArrayList<>();
+    final ArrayList<User> usersSugg = new ArrayList<>();
 
 
     @Override
@@ -193,6 +195,8 @@ public class CreatePost extends AppCompatActivity {
             }
         });
     }
+
+
     void setLocationSelector(){
         postLocation = findViewById(R.id.createdPostLocation);
         postLocation.setOnClickListener(new View.OnClickListener() {
@@ -286,13 +290,6 @@ public class CreatePost extends AppCompatActivity {
                 if(lastWord.startsWith("@")){
                     //show listView
                     mentionSuggestionsList.setVisibility(View.VISIBLE);
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.MATCH_PARENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT
-                    );
-                    int marginTop = (createdPostText.getLineCount()*72)+45;
-                    params.setMargins(0, marginTop, 0, 0);
-                    mentionSuggestionsList.setLayoutParams(params);
                     //get mention text after @
                     final String mentioned = (lastWord.length()>1)? lastWord.substring(1):"";
                     //if @ only we will show random suggestions
@@ -302,8 +299,7 @@ public class CreatePost extends AppCompatActivity {
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                final ArrayList<String> usersSuggNames = new ArrayList<>();
-                                final ArrayList<User> usersSugg = new ArrayList<>();
+
                                 if(task.isSuccessful())
                                     for (QueryDocumentSnapshot doc :task.getResult()) {
                                         User user = doc.toObject(User.class);
@@ -318,11 +314,9 @@ public class CreatePost extends AppCompatActivity {
                                 mentionSuggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        //add the selected user id to the array
-                                        mentionsIds.add(usersSugg.get(position).user_id);
-                                        //replace @text with @firstName_lastName
+                                        //replace @text with @username
                                         String oldtxt = createdPostText.getText().toString();
-                                        String userName = "@"+ usersSugg.get(position).full_name;
+                                        String userName = "@"+ usersSugg.get(position).user_name;
                                         int lastOccurOfAt =  oldtxt.lastIndexOf("@");
                                         createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
                                     }
@@ -354,11 +348,9 @@ public class CreatePost extends AppCompatActivity {
                                 mentionSuggestionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        //add the selected user id to the array
-                                        mentionsIds.add(usersSugg.get(position).user_id);
                                         //replace @text with @firstName_lastName
                                         String oldtxt = createdPostText.getText().toString();
-                                        String userName = "@"+ usersSugg.get(position).full_name;
+                                        String userName = "@"+ usersSugg.get(position).user_name;
                                         int lastOccurOfAt =  oldtxt.lastIndexOf("@");
                                         createdPostText.setText(oldtxt.substring(0,lastOccurOfAt)+userName);
                                     }
@@ -439,6 +431,7 @@ public class CreatePost extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     User user = task.getResult().toObject(User.class);
                                     post.location = loadUserCountryUsingCountryCode(user.country);
+                                    Toast.makeText( CreatePost.this ,post.location +" is selected!",Toast.LENGTH_SHORT).show();
                                 }
                             }
                     );
@@ -446,7 +439,6 @@ public class CreatePost extends AppCompatActivity {
 
         post.visibility = !createdPostIsAnon.isChecked();
         post.state = true;
-        post.mentions = mentionsIds;
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Add a new document with a generated ID
@@ -456,14 +448,14 @@ public class CreatePost extends AppCompatActivity {
                 post.postOwner = u.full_name;
                 post.user_id = uid;
                 post.profile_pic = u.profile_pic;
-                uploadPost();
+                uploadMedia();
             }
         },uid);
 
 
     }
 
-    void uploadPost(){
+    void uploadMedia(){
         //////// add media to post by  --- waleed
         if (videoUri != null){
             final StorageReference fileReference = storageReference.child(videoName);
@@ -484,22 +476,7 @@ public class CreatePost extends AppCompatActivity {
                         videoUrl = downloadUri.toString();
                         post.videos = new ArrayList<>();
                         post.videos.add(videoUrl);
-                        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                        String postid = ref.document().getId();
-                        post.post_id = postid;
-                        //set empty post counter
-                        PostCounter postCounter = new PostCounter();
-                        FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
-                        ref.document(postid)
-                                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-                        startActivity(new Intent(CreatePost.this, LoginActivity.class));
-                        finish();
+                        savePost();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -528,24 +505,7 @@ public class CreatePost extends AppCompatActivity {
                         imageUrl = downloadUri.toString();
                         post.images = new ArrayList<>();
                         post.images.add(imageUrl);
-                        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-                        String postid = ref.document().getId();
-                        post.post_id = postid;
-                        //set empty post counter
-                        PostCounter postCounter = new PostCounter();
-                        FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
-
-                        ////////// finally submit the post
-                        ref.document(postid)
-                                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-                        startActivity(new Intent(CreatePost.this, LoginActivity.class));
-                        finish();
+                        savePost();
                     }
                     else {
                         Toast.makeText(CreatePost.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -560,34 +520,38 @@ public class CreatePost extends AppCompatActivity {
             });
         }
         else{
-            CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
-            String postid = ref.document().getId();
-            post.post_id = postid;
-            //set empty post counter
-            PostCounter postCounter = new PostCounter();
-            FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
-            ref.document(postid)
-                    .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
-                    //check if shared post to send notifi
-                    if(shared_post_id != null){
-                        final NotificationHelper nh = new NotificationHelper();
-                        PostsFragment.getUser(new Callback() {
-                            @Override
-                            public void callbackUser(User user) {
-                                nh.sendSharingNotifi(user,shared_post_id);
-                            }
-                        },curr_uid);
-                    }
-                    finish();
-                }
-            });
-            startActivity(new Intent(CreatePost.this, LoginActivity.class));
-            finish();
+            savePost();
         }
     }
+
+
+    void savePost(){
+        CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
+        String postid = ref.document().getId();
+        post.post_id = postid;
+        //set empty post counter
+        PostCounter postCounter = new PostCounter();
+        FirebaseDatabase.getInstance().getReference().child("counter").child(postid).setValue(postCounter);
+        ref.document(postid)
+                .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                //check if shared post to send notifi
+                if(shared_post_id != null){
+                    final NotificationHelper nh = new NotificationHelper();
+                    PostsFragment.getUser(new Callback() {
+                        @Override
+                        public void callbackUser(User user) {
+                            nh.sendSharingNotifi(user,shared_post_id);
+                        }
+                    },curr_uid);
+                }
+                finish();
+            }
+        });
+    }
+
 
     ///////////--- methods for media upload - waleed
     private void openVideoChooser() {

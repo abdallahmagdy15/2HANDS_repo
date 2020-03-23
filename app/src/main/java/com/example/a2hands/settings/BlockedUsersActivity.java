@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.a2hands.R;
-import com.example.a2hands.Users.UsersFragment;
+import com.example.a2hands.users.UsersFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class BlockedUsersActivity extends AppCompatActivity {

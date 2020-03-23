@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
 
-public class adapterChat extends RecyclerView.Adapter<adapterChat.MyHolder>{
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     private static final int MSG_TYPE_LEFT=0;
     private static final int MSG_TYPE_RIGHT=1;
@@ -40,7 +40,7 @@ public class adapterChat extends RecyclerView.Adapter<adapterChat.MyHolder>{
     FirebaseUser user;
 
 
-    public adapterChat(Context context, List<Chat> chatList, String imageURI) {
+    public ChatAdapter(Context context, List<Chat> chatList, String imageURI) {
         this.context = context;
         this.chatList = chatList;
         this.imageURI = imageURI;

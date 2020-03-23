@@ -7,10 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.example.a2hands.Users.UsersFragment;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.a2hands.home.posts.PostsFragment;
 
 public class SavedPostsActivity extends AppCompatActivity {
 

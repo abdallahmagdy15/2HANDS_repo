@@ -1,4 +1,4 @@
-package com.example.a2hands.home.PostsPackage;
+package com.example.a2hands.home.posts;
 
 public class PostCounter {
     public int likes_count=0;

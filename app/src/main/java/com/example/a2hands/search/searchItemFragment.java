@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.Users.MyuserRecyclerViewAdapter;
+import com.example.a2hands.users.MyuserRecyclerViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

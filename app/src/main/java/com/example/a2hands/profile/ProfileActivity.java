@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.example.a2hands.FollowingHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.PostsPackage.PostsFragment;
+import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.rating.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;

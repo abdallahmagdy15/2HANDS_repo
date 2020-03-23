@@ -1,4 +1,4 @@
-package com.example.a2hands.home.PostsPackage;
+package com.example.a2hands.home.posts;
 
 import android.content.Context;
 import android.os.Bundle;

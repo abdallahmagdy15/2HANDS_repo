@@ -1,4 +1,4 @@
-package com.example.a2hands.home.PostsPackage;
+package com.example.a2hands.home.posts;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
