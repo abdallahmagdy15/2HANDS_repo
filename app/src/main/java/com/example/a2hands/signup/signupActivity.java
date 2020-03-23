@@ -90,8 +90,11 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        Button signUp;
+        auth = FirebaseAuth.getInstance();
+        signingInAdmin();
 
+
+        Button signUp;
         fullName = findViewById(R.id.signUpFullName);
         userName = findViewById(R.id.signUpUsername);
         genderGroup = findViewById(R.id.radioGroup);
@@ -114,9 +117,6 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         viewFlipper = findViewById(R.id.view_flipper);
         btnBack = findViewById(R.id.btnBack);
         btnNext = findViewById(R.id.btnNext);
-
-        auth = FirebaseAuth.getInstance();
-
 
         //changes the phone code and update states spinner when country changes
         setUpStatesSpinner(ccpCountry.getSelectedCountryNameCode());
@@ -370,6 +370,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
 
     ///////Signing up
     private void signUpUser(String email, String password) {
+        signingOutAdmin();
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -454,8 +455,10 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 });
     }//end of saveUserData
 
-
-
-
-
+    private void signingInAdmin(){
+        auth.signInWithEmailAndPassword("admin@admin.com","123456");
+    }
+    private void signingOutAdmin(){
+        auth.signOut();
+    }
 }
