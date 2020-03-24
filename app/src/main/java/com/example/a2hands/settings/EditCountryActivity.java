@@ -92,7 +92,7 @@ public class EditCountryActivity extends AppCompatActivity {
                 });
 
         Map<String, Object> newRegion = new HashMap<>();
-        newCountry.put("region", stateSelect.getSelectedItem().toString());
+        newRegion.put("region", stateSelect.getSelectedItem().toString());
 
         db.collection("users").document(user.getUid()).update(newRegion)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

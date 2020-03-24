@@ -30,7 +30,7 @@ public class RatingsActivity extends AppCompatActivity  {
         Fragment frg = new RatingFragment();
         Bundle bundle = new Bundle();
         bundle.putString("postId",postId);
-        bundle.putString("for","home");
+        bundle.putString("FOR","HOME");
 
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

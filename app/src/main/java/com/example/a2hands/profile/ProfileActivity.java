@@ -210,7 +210,7 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ProfileActivity.this,FollowersActivity.class);
-                i.putExtra("uid",uid);
+                i.putExtra("UID",uid);
                 startActivity(i);
             }
         });
@@ -220,7 +220,7 @@ public class ProfileActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ProfileActivity.this,FollowingsActivity.class);
-                i.putExtra("uid",uid);
+                i.putExtra("UID",uid);
                 startActivity(i);
             }
         });
@@ -239,7 +239,6 @@ public class ProfileActivity extends AppCompatActivity
                             profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPureWhite));
                             profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
                             profileFollowBtnTxt.setText("Following");
-
                             profileFollowBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -373,8 +372,8 @@ public class ProfileActivity extends AppCompatActivity
 
                 Fragment frg = new RatingFragment();
                 Bundle b = new Bundle();
-                b.putString("uid",uid);
-                b.putString("for","profile");
+                b.putString("UID",uid);
+                b.putString("FOR","PROFILE");
                 frg.setArguments(b);
                 return frg;
             }

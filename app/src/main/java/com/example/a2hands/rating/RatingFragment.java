@@ -39,9 +39,9 @@ public class RatingFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_rating_list, container, false);
 
-        activity = getArguments().getString("for");
+        activity = getArguments().getString("FOR");
         //check fragment is called for home post or profile reviews tab
-        if(activity.equals("home")){
+        if(activity.equals("HOME")){
             String post_id = getArguments().getString("postId");
 
             FirebaseDatabase.getInstance().getReference("ratings")
@@ -64,7 +64,7 @@ public class RatingFragment extends Fragment {
                     });
         }
         else{
-            final String uid = getArguments().getString("uid");
+            final String uid = getArguments().getString("UID");
 
             FirebaseDatabase.getInstance().getReference("ratings")
                     .orderByChild("subscriber_id").equalTo(uid)
