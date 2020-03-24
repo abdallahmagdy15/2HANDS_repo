@@ -406,6 +406,7 @@ public class homeActivity extends AppCompatActivity {
     }
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
+        notificationsTitle.setText("Notifications");
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 
@@ -417,6 +418,11 @@ public class homeActivity extends AppCompatActivity {
     }
 
     public void navigateChatList(){
+        notificationsTitle.setVisibility(View.VISIBLE);
+        notificationsTitle.setText("Inbox");
+        catsSpinner.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
+
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);
         ft.commit();

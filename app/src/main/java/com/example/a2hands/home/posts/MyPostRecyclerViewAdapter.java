@@ -320,6 +320,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         List<String> mentionedUsernames = new ArrayList<>();
         final Map<String,User> mentionedUsers = new HashMap<>();
         for (String word:words) {
+
+            word = word.replaceAll("\n","");
             if(word.startsWith("@") && word.length() > 1) {
                 mentionedUsernames.add(word.substring(1));
             }
@@ -339,14 +341,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                         String postText = "";
                         int i = 0;
                         for (String word : words) {
-                            if (word.startsWith("@") && word.length() > 1) {
+                            String word_ = word.replaceAll("\n","");
+                            if (word_.startsWith("@") && word.length() > 1) {
+                                //get username
+                                String uname = word.replaceAll("\n","").substring(1);
+
                                 //set start of the mentioned name
                                 mentionsIndexes[i][0] = (postText.length() == 0) ? 0 : postText.length() - 1;
-                                postText += mentionedUsers.get(word.substring(1)).full_name + " ";
+                                postText += mentionedUsers.get(uname).full_name + ((word.indexOf("\n") == -1)?" ":"\n ");
                                 //set end of the mentioned name
                                 mentionsIndexes[i][1] = postText.length() - 1;
                                 // add user id to mentions list
-                                curr_post.mentions.add(mentionedUsers.get(word.substring(1)).user_id);
+                                curr_post.mentions.add(mentionedUsers.get(uname).user_id);
                                 i++;
                             } else
                                 postText += word + " ";
