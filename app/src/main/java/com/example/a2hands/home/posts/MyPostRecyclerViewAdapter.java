@@ -210,11 +210,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     public void setupPostData(final ViewHolder holder, final Post curr_post,boolean isSharedPost){
         //setup post data
-        SpannableString ss = null;
-        try {
-            ss = getPostTextWithMentions(curr_post);
-        } catch (Exception e) { e.printStackTrace(); }
-        holder.postContent.setText(ss);
+        setPostTextWithMentions(holder,curr_post);
         holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
         holder.postContent.setHighlightColor(Color.TRANSPARENT);
 
@@ -317,7 +313,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         });
     }
 
-    private SpannableString getPostTextWithMentions(final Post curr_post){
+    private void setPostTextWithMentions(final ViewHolder holder, final Post curr_post){
         //check if there are mentions in the post
         final String [] words = curr_post.content_text.split(" ");
         final int[][] mentionsIndexes = new int[words.length][2];
@@ -328,59 +324,63 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 mentionedUsernames.add(word.substring(1));
             }
         }
-        FirebaseFirestore.getInstance().collection("users").whereIn("username",mentionedUsernames)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.getResult() != null){
-                    User mentionedUser = new User();
-                    for(DocumentSnapshot ds : task.getResult()){
-                        mentionedUser = ds.toObject(User.class);
-                        mentionedUsers.put( mentionedUser.user_name , mentionedUser );
-                    }
-                    curr_post.mentions.clear();
-                    String postText ="";
-                    int i = 0;
-                    for (String word:words) {
-                        if(word.startsWith("@") && word.length() > 1) {
-                            //set start of the mentioned name
-                            mentionsIndexes[i][0] = (postText.length()==0)?0:postText.length()-1;
-                            postText += mentionedUsers.get(word).full_name+" ";
-                            //set end of the mentioned name
-                            mentionsIndexes[i][1] = postText.length()-1;
-                            // add user id to mentions list
-                            curr_post.mentions.add(mentionedUsers.get(word).user_id);
-                            i++;
+        if(!mentionedUsernames.isEmpty()) {
+            curr_post.mentions = new ArrayList<>();
+            FirebaseFirestore.getInstance().collection("users").whereIn("user_name", mentionedUsernames)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.getResult() != null) {
+                        User mentionedUser;
+                        for (DocumentSnapshot ds : task.getResult()) {
+                            mentionedUser = ds.toObject(User.class);
+                            mentionedUsers.put(mentionedUser.user_name, mentionedUser);
                         }
-                        else
-                            postText += word + " ";
-                    }
-                    curr_post.content_text = postText;
-                }
-            }
-        });
+                        String postText = "";
+                        int i = 0;
+                        for (String word : words) {
+                            if (word.startsWith("@") && word.length() > 1) {
+                                //set start of the mentioned name
+                                mentionsIndexes[i][0] = (postText.length() == 0) ? 0 : postText.length() - 1;
+                                postText += mentionedUsers.get(word.substring(1)).full_name + " ";
+                                //set end of the mentioned name
+                                mentionsIndexes[i][1] = postText.length() - 1;
+                                // add user id to mentions list
+                                curr_post.mentions.add(mentionedUsers.get(word.substring(1)).user_id);
+                                i++;
+                            } else
+                                postText += word + " ";
+                        }
+                        curr_post.content_text = postText;
+                        SpannableString ss = new SpannableString(curr_post.content_text);
+                        for (int j = 0; j < mentionsIndexes.length; j++) {
+                            final int x = j;
+                            ClickableSpan clickableSpan = new ClickableSpan() {
+                                @Override
+                                public void onClick(View textView) {
+                                    Intent intent = new Intent(context, ProfileActivity.class);
+                                    String uid = curr_post.mentions.get(x);
+                                    intent.putExtra("uid", uid);
+                                    context.startActivity(intent);
+                                }
 
-        SpannableString ss = new SpannableString(curr_post.content_text);
-        for(int j =0 ; j<mentionsIndexes.length ; j++){
-            final int x = j;
-            ClickableSpan clickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(View textView) {
-                    Intent intent = new Intent(context, ProfileActivity.class);
-                    String uid=curr_post.mentions.get(x);
-                    intent.putExtra("uid",uid);
-                    context.startActivity(intent);
+                                @Override
+                                public void updateDrawState(TextPaint ds) {
+                                    super.updateDrawState(ds);
+                                    ds.setUnderlineText(false);
+                                    ds.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                                }
+                            };
+                            ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            holder.postContent.setText(ss);
+                        }
+                    }
                 }
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                    ds.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                }
-            };
-            ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            });
         }
-        return ss;
+        else
+            holder.postContent.setText(curr_post.content_text);
+
     }
 
     private void checkPostOwnerVisibility(final ViewHolder holder , final Post curr_post){

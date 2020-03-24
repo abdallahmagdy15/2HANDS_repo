@@ -423,18 +423,7 @@ public class CreatePost extends AppCompatActivity {
         if(gover != null)
             post.location = gover;
         else{
-            FirebaseFirestore.getInstance().collection("/users")
-                    .document(curr_uid).get()
-                    .addOnCompleteListener(
-                            new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    User user = task.getResult().toObject(User.class);
-                                    post.location = loadUserCountryUsingCountryCode(user.country);
-                                    Toast.makeText( CreatePost.this ,post.location +" is selected!",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                    );
+            post.location="Egypt";
         }
 
         post.visibility = !createdPostIsAnon.isChecked();

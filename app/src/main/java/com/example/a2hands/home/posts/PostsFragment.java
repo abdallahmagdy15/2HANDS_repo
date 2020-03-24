@@ -224,7 +224,7 @@ public class PostsFragment extends Fragment {
     private void getHiddenPostsId(){
         FirebaseDatabase.getInstance().getReference("hidden_posts").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange( DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() != 0){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         hiddenPostsIds.add(ds.getKey());
@@ -254,6 +254,7 @@ public class PostsFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
     }
+
     private void getSavedPosts(List<String> savedPostsId){
         FirebaseFirestore.getInstance().collection("posts").whereIn("post_id",savedPostsId)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -268,10 +269,12 @@ public class PostsFragment extends Fragment {
             }
         });
     }
+
     private void getMutedUsersId(){
-        FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange( DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() != 0){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         mutedUsersId.add(ds.getKey());
@@ -285,9 +288,10 @@ public class PostsFragment extends Fragment {
     }
 
     private void getBlockedUsersId(){
-        FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange( DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() != 0){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         blockedUsersId.add(ds.getKey());
