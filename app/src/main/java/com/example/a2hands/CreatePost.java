@@ -644,4 +644,8 @@ public class CreatePost extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        navigateUpTo(new Intent(CreatePost.this, com.example.a2hands.home.homeActivity.class));
+    }
 }
