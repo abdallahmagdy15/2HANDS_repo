@@ -63,8 +63,10 @@
         android:id="@+id/chatrecycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/chatlayout"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/chatlayout" />
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
 
     <LinearLayout
         android:id="@+id/chatlayout"

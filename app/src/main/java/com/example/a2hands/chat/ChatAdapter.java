@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.R;
@@ -67,21 +68,27 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, final int position) {
+
         final String message = chatList.get(position).getMessage();
         String timestamp = chatList.get(position).getTimestamp();
         String messageImage = chatList.get(position).getMessageImage();
-        if(messageImage.equals("") || message.equals("This message was Deleted...")){
-            holder.message.setVisibility(View.VISIBLE);
+
+        if(messageImage.equals("")){
             holder.messageImage.setVisibility(View.GONE);
+            holder.message.setVisibility(View.VISIBLE);
+            holder.message.setPaddingRelative(12, 8, 8, 0);
             holder.message.setText(message);
-        }else if(message.equals("")){
+            holder.message.getLayoutParams().width = Constraints.LayoutParams.WRAP_CONTENT;
+
+        } else if(message.equals("")){
             holder.message.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.VISIBLE);
             loadPhotos(holder.messageImage,"Chat_Pics/"+messageImage);
-        }
-        else {
+        } else {
             holder.message.setVisibility(View.VISIBLE);
             holder.messageImage.setVisibility(View.VISIBLE);
+            holder.message.getLayoutParams().width = Constraints.LayoutParams.MATCH_CONSTRAINT;
+            holder.message.setPaddingRelative(8, 8, 8, 0);
             holder.message.setText(message);
             loadPhotos(holder.messageImage,"Chat_Pics/"+messageImage);
 
