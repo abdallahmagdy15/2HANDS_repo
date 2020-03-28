@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -103,6 +104,8 @@ public class ChatActivity extends AppCompatActivity {
     String currentPhotoPath;
     Bitmap bitmap;
 
+    ImageButton closeImageButton;
+
 
     LinearLayoutManager linearLayoutManager;
 
@@ -165,13 +168,24 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        closeImageButton = findViewById(R.id.imageButton_close);
+        closeImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                image_uri = null;
+                messageImage.setVisibility(View.GONE);
+                closeImageButton.setVisibility(View.GONE);
+            }
+        });
+
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Message=message.getText().toString().trim();
+                String Message = message.getText().toString().trim();
                 sendImageMessage(Message);
                 messageImage.setVisibility(View.GONE);
+                closeImageButton.setVisibility(View.GONE);
             }
         });
 
@@ -417,12 +431,14 @@ public class ChatActivity extends AppCompatActivity {
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                 image_uri = data.getData();
                 messageImage.setVisibility(View.VISIBLE);
-                Picasso.get().load(image_uri).into(messageImage);
+                closeImageButton.setVisibility(View.VISIBLE);
 
+                Picasso.get().load(image_uri).into(messageImage);
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE ) {
                 messageImage.setVisibility(View.VISIBLE);
                 messageImage.setImageURI(image_uri);
+                closeImageButton.setVisibility(View.VISIBLE);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
