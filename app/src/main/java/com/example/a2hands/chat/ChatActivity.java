@@ -203,7 +203,9 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void seenMassege() {
-        userRefForseen = FirebaseDatabase.getInstance().getReference("Chats");
+        userRefForseen = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(hisUid)
+                .child(myUid).child("Message");
         seenListner =userRefForseen.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -226,7 +228,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private void readmessage() {
         chatList =new ArrayList<>();
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chats");
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(myUid)
+                .child(hisUid).child("Message");
         dbref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -238,7 +242,7 @@ public class ChatActivity extends AppCompatActivity {
                         chatList.add(chat);
                     }
 
-                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage);
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerview
                     recyclerView.setAdapter(adapterChat);
@@ -259,7 +263,7 @@ public class ChatActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
         String dateTime =simpleDateFormat.format(cal.getTime());
         String MSG_ID =String.valueOf(System.currentTimeMillis());
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+
         HashMap<String,Object> MSG = new HashMap<>();
         MSG.put("MSGID",MSG_ID);
         MSG.put("Message",messagebody);
@@ -268,7 +272,7 @@ public class ChatActivity extends AppCompatActivity {
         MSG.put("Sender",myUid);
         MSG.put("Timestamp",dateTime);
         MSG.put("isSeen",false);
-        databaseReference.child("Chats").push().setValue(MSG);
+
 
         //reset edittext after sending message
         message.setText("");
@@ -277,37 +281,15 @@ public class ChatActivity extends AppCompatActivity {
         final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(myUid)
                 .child(hisUid);
-        chatRef1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    chatRef1.child("id").setValue(hisUid);
-                }
-            }
+        chatRef1.child("Message").push().setValue(MSG);
+        chatRef1.child("id").setValue(hisUid);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(hisUid)
                 .child(myUid);
-
-        chatRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    chatRef2.child("id").setValue(myUid);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        chatRef2.child("Message").push().setValue(MSG);
+        chatRef2.child("id").setValue(myUid);
     }
     //UPLOAD IMAGE
     private void showImagePickDialog(){
@@ -467,7 +449,12 @@ public class ChatActivity extends AppCompatActivity {
                             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
                             String dateTime =simpleDateFormat.format(cal.getTime());
                             String MSG_ID =String.valueOf(System.currentTimeMillis());
-                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(myUid)
+                                    .child(hisUid);
+                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(hisUid)
+                                    .child(myUid);
                             //setup required data
                             if (TextUtils.isEmpty(messagebody)) {
                                 HashMap<String, Object> MSG = new HashMap<>();
@@ -478,7 +465,10 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
-                                databaseReference.child("Chats").push().setValue(MSG);
+                                chatRef1.child("Message").push().setValue(MSG);
+                                chatRef1.child("id").setValue(hisUid);
+                                chatRef2.child("Message").push().setValue(MSG);
+                                chatRef2.child("id").setValue(myUid);
                             }else {
                                 HashMap<String, Object> MSG = new HashMap<>();
                                 MSG.put("MSGID", MSG_ID);
@@ -488,46 +478,14 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
-                                databaseReference.child("Chats").push().setValue(MSG);
+                                chatRef1.child("Message").push().setValue(MSG);
+                                chatRef1.child("id").setValue(hisUid);
+                                chatRef2.child("Message").push().setValue(MSG);
+                                chatRef2.child("id").setValue(myUid);
                                 //reset edittext after sending message
                                 message.setText("");
                             }
 
-                            //Chatlist
-                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
-                                    .child(myUid)
-                                    .child(hisUid);
-                            chatRef1.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()) {
-                                        chatRef1.child("id").setValue(hisUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
-                                    .child(hisUid)
-                                    .child(myUid);
-
-                            chatRef2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()) {
-                                        chatRef2.child("id").setValue(myUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -643,12 +601,6 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(ChatActivity.this, homeActivity.class));
             finish();
         }
-    }
-    //RecyclerView
-    private void attachRecyclerViewAdapter() {
-
-        // Scroll to bottom on new messages
-
     }
 
 

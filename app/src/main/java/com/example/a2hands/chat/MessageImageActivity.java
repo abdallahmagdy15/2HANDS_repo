@@ -28,6 +28,8 @@ public class MessageImageActivity extends AppCompatActivity {
 
     String messageImageID;
     String imageUri;
+    String myUid;
+    String hisUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,13 @@ public class MessageImageActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         messageImageID = intent.getStringExtra("MSGDI");
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chats");
-        dbref.addValueEventListener(new ValueEventListener() {
+        myUid = intent.getStringExtra("myUid");
+        hisUid = intent.getStringExtra("hisUid");
+        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(myUid)
+                .child(hisUid)
+                .child("Message");
+        chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds :dataSnapshot.getChildren()) {

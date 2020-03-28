@@ -50,6 +50,7 @@ public class ChatListFragment extends Fragment {
     FirebaseFirestore db;
     CollectionReference userReference ;
     AdapterChatList adapterChatList;
+    String myUid;
 
     public ChatListFragment() {
         // Required empty public constructor
@@ -65,6 +66,7 @@ public class ChatListFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         userReference = db.collection("users");
         currentUser =FirebaseAuth.getInstance().getCurrentUser();
+        myUid =FirebaseAuth.getInstance().getCurrentUser().getUid();
         recyclerView = view.findViewById(R.id.recyclerView);
         chatListList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUid());
@@ -127,8 +129,11 @@ public class ChatListFragment extends Fragment {
     }
 
     private void lastMessage(final String userId) {
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(userId)
+                .child(myUid)
+                .child("Message");
+        chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String thelastMessage =" ";
