@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.chat.Chat;
-import com.example.a2hands.chat.chatlist.AdapterChatList;
-import com.example.a2hands.chat.chatlist.ChatList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

@@ -102,10 +102,10 @@ public class ChatActivity extends AppCompatActivity {
     Uri image_uri =null;
     String currentPhotoPath;
     Bitmap bitmap;
-    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
-    String dateTime =simpleDateFormat.format(cal.getTime());
-    String MSG_ID =String.valueOf(System.currentTimeMillis());
+
+
+    LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +115,7 @@ public class ChatActivity extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.chatrecycleview);
         profileimage=findViewById(R.id.profile_Image);
+
         /////UPLOAD_IMAGE
         messageImage=findViewById(R.id.messageImage);
         uploadImage=findViewById(R.id.uploadimage);
@@ -135,13 +136,12 @@ public class ChatActivity extends AppCompatActivity {
         usersdbref =firebaseDatabase.getReference("users");
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager=new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         db = FirebaseFirestore.getInstance();
-        loadhisinfo();
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
@@ -182,14 +182,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
-        readmessage();
-        seenmassege();
+        loadHisInfoAndchat();
+        seenMassege();
         loadUserOnlineAndtypingStatus();
     }
 
 
-    private void seenmassege() {
+    private void seenMassege() {
         userRefForseen = FirebaseDatabase.getInstance().getReference("Chats");
         seenListner =userRefForseen.addValueEventListener(new ValueEventListener() {
             @Override
@@ -229,6 +228,8 @@ public class ChatActivity extends AppCompatActivity {
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerview
                     recyclerView.setAdapter(adapterChat);
+                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+
                 }
             }
 
@@ -240,6 +241,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(final String messagebody) {
+        Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+        String dateTime =simpleDateFormat.format(cal.getTime());
+        String MSG_ID =String.valueOf(System.currentTimeMillis());
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
         HashMap<String,Object> MSG = new HashMap<>();
         MSG.put("MSGID",MSG_ID);
@@ -442,6 +447,10 @@ public class ChatActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //image upload
                             progressDialog.dismiss();
+                            Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+                            String dateTime =simpleDateFormat.format(cal.getTime());
+                            String MSG_ID =String.valueOf(System.currentTimeMillis());
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                             //setup required data
                             if (TextUtils.isEmpty(messagebody)) {
@@ -504,7 +513,6 @@ public class ChatActivity extends AppCompatActivity {
                                 }
                             });
                         }
-//                        }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -552,13 +560,27 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     //get other user's information
-    private void loadhisinfo() {
+    private void loadHisInfoAndchat() {
         db.collection("users/").document(hisUid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                loadPhotos(profileimage,"Profile_Pics/"+hisUid+"/"+user.profile_pic );
+                String path = "Profile_Pics/"+hisUid+"/"+user.profile_pic;
+
+                mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        hisImage=uri.toString();
+                        Picasso.get().load(uri.toString()).into(profileimage);
+                        readmessage();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
                 hisname.setText(user.full_name);
             }
         });
@@ -597,23 +619,6 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    ///load other user's profileImage
-    void loadPhotos(final ImageView imgV , String path){
-
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                hisImage=uri.toString();
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
-
     private void checkUserStatus(){
         FirebaseUser user =firebaseAuth.getCurrentUser();
         if(user !=null){
@@ -623,5 +628,13 @@ public class ChatActivity extends AppCompatActivity {
             finish();
         }
     }
+    //RecyclerView
+    private void attachRecyclerViewAdapter() {
+
+        // Scroll to bottom on new messages
+
+    }
+
+
 
 }
