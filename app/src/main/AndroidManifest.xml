@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_2hands_2"
@@ -19,10 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".notifications.NotificationsService"
-            android:exported="false"></service>
-
+        <activity android:name=".chat.MessageImageActivity"></activity>
         <activity
             android:name=".profile.FollowingsActivity"
             android:label="@string/title_activity_followings"
@@ -65,7 +61,9 @@
         <activity android:name=".settings.EditPhoneActivity" />
         <activity android:name=".settings.LanguageActivity" />
         <activity android:name=".settings.NotificationActivity" />
-        <activity android:name=".chat.ChatActivity" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

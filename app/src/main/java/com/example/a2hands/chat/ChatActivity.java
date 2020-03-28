@@ -1,12 +1,22 @@
 package com.example.a2hands.chat;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +27,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +52,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -53,11 +68,11 @@ public class ChatActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     RecyclerView recyclerView;
-    ImageView profileimage;
+    ImageView profileimage,messageImage;
     TextView hisname;
     public TextView userstatus;
     EditText message;
-    ImageButton sendButton;
+    ImageButton sendButton,uploadImage;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -68,20 +83,48 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference userRefForseen;
 
     List<Chat> chatList;
-    ChatAdapter adapterChat;
+    com.example.a2hands.chat.ChatAdapter adapterChat;
 
     public String hisUid;
     String myUid;
     String hisImage;
 
+    //UPLOAD IMAGE
+    private static final int CAMERA_REQUEST_CODE=100;
+    private static final int STORAGE_REQUEST_CODE=200;
+
+    private static final int IMAGE_PICK_CAMERA_CODE=300;
+    private static final int IMAGE_PICK_GALLERY_CODE=400;
+
+
+    String[] cameraPermiisions;
+    String[] storagePermissions;
+
+    Uri image_uri =null;
+    String currentPhotoPath;
+    Bitmap bitmap;
+
+    ImageButton closeImageButton;
+
+
+    LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        getWindow().setBackgroundDrawableResource(R.drawable.chat_bg);
         toolbar=findViewById(R.id.toolbar);
 
         recyclerView=findViewById(R.id.chatrecycleview);
         profileimage=findViewById(R.id.profile_Image);
+
+        /////UPLOAD_IMAGE
+        messageImage=findViewById(R.id.messageImage);
+        uploadImage=findViewById(R.id.uploadimage);
+        cameraPermiisions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        ///////
         hisname=findViewById(R.id.HisName);
         userstatus=findViewById(R.id.userstatus);
         message=findViewById(R.id.messageEdit);
@@ -96,13 +139,12 @@ public class ChatActivity extends AppCompatActivity {
         usersdbref =firebaseDatabase.getReference("users");
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager=new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         db = FirebaseFirestore.getInstance();
-        loadhisinfo();
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
@@ -115,7 +157,6 @@ public class ChatActivity extends AppCompatActivity {
                 if (s.toString().trim().length() == 0){
                     updateTypingStatus("noOne");
                 }else {
-                    //String Message=message.getText().toString().trim();
                     updateTypingStatus(hisUid);
                 }
 
@@ -127,27 +168,44 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        closeImageButton = findViewById(R.id.imageButton_close);
+        closeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Message=message.getText().toString().trim();
-                if(TextUtils.isEmpty(Message)){
-                    Toast.makeText(ChatActivity.this, "Cannot send empty message...", Toast.LENGTH_SHORT).show();
-                }else {
-                    sendMessage(Message);
-                }
+                image_uri = null;
+                messageImage.setVisibility(View.GONE);
+                closeImageButton.setVisibility(View.GONE);
             }
         });
 
 
-        readmessage();
-        seenmassege();
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Message = message.getText().toString().trim();
+                sendImageMessage(Message);
+                messageImage.setVisibility(View.GONE);
+                closeImageButton.setVisibility(View.GONE);
+            }
+        });
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
+            }
+        });
+
+        loadHisInfoAndchat();
+        seenMassege();
         loadUserOnlineAndtypingStatus();
     }
 
-    private void seenmassege() {
-        userRefForseen = FirebaseDatabase.getInstance().getReference("Chats");
+
+    private void seenMassege() {
+        userRefForseen = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(hisUid)
+                .child(myUid).child("Message");
         seenListner =userRefForseen.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -170,7 +228,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private void readmessage() {
         chatList =new ArrayList<>();
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chats");
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(myUid)
+                .child(hisUid).child("Message");
         dbref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,10 +242,12 @@ public class ChatActivity extends AppCompatActivity {
                         chatList.add(chat);
                     }
 
-                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage);
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerview
                     recyclerView.setAdapter(adapterChat);
+                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+
                 }
             }
 
@@ -197,13 +259,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(final String messagebody) {
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
         Calendar cal =Calendar.getInstance(Locale.ENGLISH);
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
         String dateTime =simpleDateFormat.format(cal.getTime());
+        String MSG_ID =String.valueOf(System.currentTimeMillis());
 
-        Chat chat = new Chat(messagebody, hisUid, myUid, dateTime, false);
-        databaseReference.child("Chats").push().setValue(chat);
+        HashMap<String,Object> MSG = new HashMap<>();
+        MSG.put("MSGID",MSG_ID);
+        MSG.put("Message",messagebody);
+        MSG.put("MessageImage","");
+        MSG.put("Receiver",hisUid);
+        MSG.put("Sender",myUid);
+        MSG.put("Timestamp",dateTime);
+        MSG.put("isSeen",false);
+
 
         //reset edittext after sending message
         message.setText("");
@@ -212,37 +281,235 @@ public class ChatActivity extends AppCompatActivity {
         final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(myUid)
                 .child(hisUid);
-        chatRef1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    chatRef1.child("id").setValue(hisUid);
-                }
-            }
+        chatRef1.child("Message").push().setValue(MSG);
+        chatRef1.child("id").setValue(hisUid);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(hisUid)
                 .child(myUid);
-
-        chatRef2.addValueEventListener(new ValueEventListener() {
+        chatRef2.child("Message").push().setValue(MSG);
+        chatRef2.child("id").setValue(myUid);
+    }
+    //UPLOAD IMAGE
+    private void showImagePickDialog(){
+        //options {camera , Gallery} to show in dialog
+        String[] options = {"Camera","Gallery"};
+        //dialog
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Choose Image from");
+        //set options to dialog
+        builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    chatRef2.child("id").setValue(myUid);
+            public void onClick(DialogInterface dialog, int which) {
+                //item click handle
+                if (which == 0){
+                    //camera click
+                    if (!checkCameraPermission()){
+                        requestCameraPermission();
+                    }
+                    else {
+                        pickFromCamera();
+                    }
+                }
+                if (which == 1){
+                    //Gallery click
+                    if (!checkStoragePermission()){
+                        requestStoragePermission();
+                    }else {
+                        pickFromGallery();
+                    }
+
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
         });
+        //create and show dialog
+        builder.create().show();
+
+    }
+    private void pickFromGallery(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
+    }
+    private void pickFromCamera(){
+        //intent to pick image from camera
+        ContentValues cv = new ContentValues();
+        cv.put(MediaStore.Images.Media.TITLE,"Temp Pick");
+        cv.put(MediaStore.Images.Media.DESCRIPTION,"Temp Descr");
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cv);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
+        startActivityForResult(intent,IMAGE_PICK_CAMERA_CODE);
+    }
+
+    private boolean checkStoragePermission(){
+        //check if Gallery permission is enabled
+        //return true if enabled
+        //return false if not enabled
+        boolean result = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+    private void requestStoragePermission(){
+        //request runtime permission
+        ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
+    }
+    private boolean checkCameraPermission(){
+        //check if Camera permission is enabled
+        //return true if enabled
+        //return false if not enabled
+        boolean result = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) ==(PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
+        return result && result1;
+    }
+    private void requestCameraPermission(){
+        ActivityCompat.requestPermissions(this,cameraPermiisions,CAMERA_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case CAMERA_REQUEST_CODE:{
+                if (grantResults.length>0){
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted & storageAccepted){
+                        pickFromCamera();
+                    }else {
+                        Toast.makeText(this, "Camera & Storage both permissions are necessary...", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+
+                }
+            }
+            break;
+            case STORAGE_REQUEST_CODE:{
+                if (grantResults.length>0){
+                    boolean storageAccepted =grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (storageAccepted){
+                        pickFromGallery();
+                    }else {
+                        Toast.makeText(this, "Storage permissions necessary...", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else {
+
+                }
+            }
+            break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                image_uri = data.getData();
+                messageImage.setVisibility(View.VISIBLE);
+                closeImageButton.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(image_uri).into(messageImage);
+            }
+            if (requestCode == IMAGE_PICK_CAMERA_CODE ) {
+                messageImage.setVisibility(View.VISIBLE);
+                messageImage.setImageURI(image_uri);
+                closeImageButton.setVisibility(View.VISIBLE);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void sendImageMessage(final String messagebody) {
+        if (image_uri != null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Sending image...");
+            progressDialog.show();
+            final StorageReference ChatImageRef = FirebaseStorage.getInstance().getReference("Chat_Pics/" +
+                    System.currentTimeMillis() + "." + getFileExtension(image_uri).trim());
+            ChatImageRef.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //image upload
+                            progressDialog.dismiss();
+                            Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+                            String dateTime =simpleDateFormat.format(cal.getTime());
+                            String MSG_ID =String.valueOf(System.currentTimeMillis());
+                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(myUid)
+                                    .child(hisUid);
+                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(hisUid)
+                                    .child(myUid);
+                            //setup required data
+                            if (TextUtils.isEmpty(messagebody)) {
+                                HashMap<String, Object> MSG = new HashMap<>();
+                                MSG.put("MSGID", MSG_ID);
+                                MSG.put("Message", "");
+                                MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
+                                MSG.put("Receiver", hisUid);
+                                MSG.put("Sender", myUid);
+                                MSG.put("Timestamp", dateTime);
+                                MSG.put("isSeen", false);
+                                chatRef1.child("Message").push().setValue(MSG);
+                                chatRef1.child("id").setValue(hisUid);
+                                chatRef2.child("Message").push().setValue(MSG);
+                                chatRef2.child("id").setValue(myUid);
+                            }else {
+                                HashMap<String, Object> MSG = new HashMap<>();
+                                MSG.put("MSGID", MSG_ID);
+                                MSG.put("Message", messagebody);
+                                MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
+                                MSG.put("Receiver", hisUid);
+                                MSG.put("Sender", myUid);
+                                MSG.put("Timestamp", dateTime);
+                                MSG.put("isSeen", false);
+                                chatRef1.child("Message").push().setValue(MSG);
+                                chatRef1.child("id").setValue(hisUid);
+                                chatRef2.child("Message").push().setValue(MSG);
+                                chatRef2.child("id").setValue(myUid);
+                                //reset edittext after sending message
+                                message.setText("");
+                            }
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+
+                        }
+                    });
+            image_uri=null;
+        } else {
+            if(TextUtils.isEmpty(messagebody)){
+                Toast.makeText(this, "You can not send empty message...", Toast.LENGTH_SHORT).show();
+            }else {
+                sendMessage(messagebody);
+            }
+        }
     }
 
     @Override
@@ -267,13 +534,27 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     //get other user's information
-    private void loadhisinfo() {
+    private void loadHisInfoAndchat() {
         db.collection("users/").document(hisUid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                loadPhotos(profileimage,"Profile_Pics/"+hisUid+"/"+user.profile_pic );
+                String path = "Profile_Pics/"+hisUid+"/"+user.profile_pic;
+
+                mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        hisImage=uri.toString();
+                        Picasso.get().load(uri.toString()).into(profileimage);
+                        readmessage();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
                 hisname.setText(user.full_name);
             }
         });
@@ -312,23 +593,6 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    ///load other user's profileImage
-    void loadPhotos(final ImageView imgV , String path){
-
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                hisImage=uri.toString();
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
-
     private void checkUserStatus(){
         FirebaseUser user =firebaseAuth.getCurrentUser();
         if(user !=null){
@@ -339,16 +603,6 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    //@Override
-    //public boolean onCreateOptionsMenu(Menu menu) {
-    //  getMenuInflater().inflate(R.menu.bottom_navigation,menu);
-    //menu.findItem(R.id.searchNav);
 
-    //   return super.onCreateOptionsMenu(menu);
-    //}
 
-    //@Override
-    //public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    //  return super.onOptionsItemSelected(item);
-    //}
 }

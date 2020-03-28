@@ -1,19 +1,29 @@
 package com.example.a2hands.chat;
 
 public class Chat {
-    private String Message,Receiver,Sender,Timestamp;
+    private String MSGID,Message,MessageImage,Receiver,Sender,Timestamp;
     boolean isSeen;
 
     public Chat() {
 
     }
 
-    public Chat(String message, String receiver, String sender, String timestamp, boolean isSeen) {
-        this.Message = message;
-        this.Receiver = receiver;
-        this.Sender = sender;
-        this.Timestamp = timestamp;
+    public Chat(String MSGID, String message, String messageImage, String receiver, String sender, String timestamp, boolean isSeen) {
+        this.MSGID = MSGID;
+        Message = message;
+        MessageImage = messageImage;
+        Receiver = receiver;
+        Sender = sender;
+        Timestamp = timestamp;
         this.isSeen = isSeen;
+    }
+
+    public String getMSGID() {
+        return MSGID;
+    }
+
+    public void setMSGID(String MSGID) {
+        this.MSGID = MSGID;
     }
 
     public String getMessage() {
@@ -54,5 +64,13 @@ public class Chat {
 
     public void setIsSeen(boolean seen) {
         isSeen = seen;
+    }
+
+    public String getMessageImage() {
+        return MessageImage;
+    }
+
+    public void setMessageImage(String messageImage) {
+        MessageImage = messageImage;
     }
 }

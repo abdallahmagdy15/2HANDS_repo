@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 //gitHub country code picker
+import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -461,4 +462,18 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     private void signingOutAdmin(){
         auth.signOut();
     }
+
+    @Override
+    public void onBackPressed() {
+        if(viewFlipper.getDisplayedChild()==0){
+            startActivity(new Intent(signupActivity.this, LoginActivity.class));
+        }else if(viewFlipper.getDisplayedChild()==1){
+            btnBack.setVisibility(View.INVISIBLE);
+            viewFlipper.showPrevious();
+        }else if(viewFlipper.getDisplayedChild()==2){
+            btnNext.setVisibility(View.VISIBLE);
+            viewFlipper.showPrevious();
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ package com.example.a2hands.chat.chatlist;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.a2hands.chat.Chat;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.chat.Chat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +50,7 @@ public class ChatListFragment extends Fragment {
     FirebaseFirestore db;
     CollectionReference userReference ;
     AdapterChatList adapterChatList;
+    String myUid;
 
     public ChatListFragment() {
         // Required empty public constructor
@@ -64,6 +66,7 @@ public class ChatListFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         userReference = db.collection("users");
         currentUser =FirebaseAuth.getInstance().getCurrentUser();
+        myUid =FirebaseAuth.getInstance().getCurrentUser().getUid();
         recyclerView = view.findViewById(R.id.recyclerView);
         chatListList = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUid());
@@ -126,12 +129,15 @@ public class ChatListFragment extends Fragment {
     }
 
     private void lastMessage(final String userId) {
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(userId)
+                .child(myUid)
+                .child("Message");
+        chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               String thelastMessage =" ";
-               String seen =" ";
+                String thelastMessage =" ";
+                String seen =" ";
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
                     Chat chat=ds.getValue(Chat.class);
                     if (chat==null){
@@ -143,10 +149,15 @@ public class ChatListFragment extends Fragment {
                         continue;
                     }
                     if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId) ||
-                    chat.getReceiver().equals(userId) && chat.getSender().equals(currentUser.getUid())){
-                        thelastMessage = chat.getMessage();
+                            chat.getReceiver().equals(userId) && chat.getSender().equals(currentUser.getUid())){
+                        String messagImage=chat.getMessageImage();
+                        if (!TextUtils.isEmpty(messagImage) &&!chat.getMessage().equals("This message was Deleted...") && TextUtils.isEmpty(chat.getMessage())) {
+                            thelastMessage="sent a photo";
+                        }else {
+                            thelastMessage = chat.getMessage();
+                        }
                     }
-                   if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId)){
+                    if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId)){
                         if (chat.getIsSeen()){
                             seen="noNewMessage";
                         }else {
