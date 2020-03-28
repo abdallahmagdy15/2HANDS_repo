@@ -21,6 +21,7 @@ import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.chat.chatlist.ChatListFragment;
 import com.example.a2hands.notifications.NotificationFragment;
+import com.example.a2hands.notifications.NotificationsService;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.SavedPostsActivity;
@@ -283,6 +284,10 @@ public class homeActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        //start notifications service
+        Intent intent = new Intent(this, NotificationsService.class);
+        startService(intent);
+
         updateOnlineStatus("online");
         super.onStart();
     }

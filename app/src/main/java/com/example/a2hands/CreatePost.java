@@ -40,6 +40,7 @@ import com.example.a2hands.home.posts.Post;
 import com.example.a2hands.home.posts.PostCounter;
 import com.example.a2hands.home.posts.PostsFragment;
 
+import com.example.a2hands.notifications.NotificationHelper;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -528,7 +529,7 @@ public class CreatePost extends AppCompatActivity {
                 Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
                 //check if shared post to send notifi
                 if(shared_post_id != null){
-                    final NotificationHelper nh = new NotificationHelper();
+                    final NotificationHelper nh = new NotificationHelper(CreatePost.this);
                     PostsFragment.getUser(new Callback() {
                         @Override
                         public void callbackUser(User user) {

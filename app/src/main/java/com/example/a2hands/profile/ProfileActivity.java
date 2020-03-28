@@ -247,7 +247,7 @@ public class ProfileActivity extends AppCompatActivity
                                             .setTitle("Are you sure you want to unfollow ?")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid);
+                                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid,ProfileActivity.this);
                                                     fh.unfollow();                                                }
                                             })
                                             .setNegativeButton(android.R.string.no, null).show();
@@ -262,7 +262,7 @@ public class ProfileActivity extends AppCompatActivity
                             profileFollowBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid);
+                                    FollowingHelper fh = new FollowingHelper(curr_uid,uid,ProfileActivity.this);
                                     fh.follow();
                                 }
                             });

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">2HANDS</string>
+    <string name="app_name">2Hands</string>
     <string name="title_activity_signup">Create your account</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.Callback;
-import com.example.a2hands.NotificationHelper;
+import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.Post;
@@ -123,7 +123,7 @@ public class CommentsActivity extends AppCompatActivity  {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 //send notification
-                                final NotificationHelper nh = new NotificationHelper();
+                                final NotificationHelper nh = new NotificationHelper(CommentsActivity.this);
                                 FirebaseFirestore.getInstance().collection("posts").document(postid)
                                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override

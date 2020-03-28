@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.a2hands.home.posts.Post;
 import com.example.a2hands.home.posts.PostsFragment;
+import com.example.a2hands.notifications.NotificationHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -132,7 +133,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
                             }
                         });
                         //end update counter for shares
-                        NotificationHelper nh = new NotificationHelper();
+                        NotificationHelper nh = new NotificationHelper(context);
                         nh.sendSharingNotifi(user,shared_post_id);
                     }
                 });

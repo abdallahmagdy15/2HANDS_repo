@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.home.homeActivity;
+import com.example.a2hands.notifications.Notification;
+import com.example.a2hands.notifications.NotificationsService;
 import com.example.a2hands.signup.signupActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -131,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
         // Check if user is signed in (non-null)
         if (auth.getCurrentUser() != null && auth.getCurrentUser().isEmailVerified()){
             startActivity(new Intent(LoginActivity.this , homeActivity.class));

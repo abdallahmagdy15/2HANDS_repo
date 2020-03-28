@@ -30,7 +30,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.a2hands.Callback;
-import com.example.a2hands.NotificationHelper;
+import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.PostOptionsDialog;
 import com.example.a2hands.home.comments.CommentsActivity;
 import com.example.a2hands.HelpRequest;
@@ -482,7 +482,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                         String help_request_id = helpReqTask.getResult().getId();
 
                         //send notification
-                        NotificationHelper nh = new NotificationHelper();
+                        NotificationHelper nh = new NotificationHelper(context);
                         nh.sendNotificationForHelpReq(user , curr_post ,helpReq, help_request_id );
                     }
                 });
@@ -518,7 +518,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                             @Override
                             public void callbackUser(User user) {
                                 //send notifications
-                                NotificationHelper nh = new NotificationHelper();
+                                NotificationHelper nh = new NotificationHelper(context);
                                 nh.sendReactOnPostNotification(user,"LIKE_POST",curr_post
                                         ," liked your post \""+curr_post.content_text+"\"");
                             }
