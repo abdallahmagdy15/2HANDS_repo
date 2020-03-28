@@ -170,7 +170,7 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
                         Toast.makeText(context,"User is blocked successfully!",Toast.LENGTH_LONG).show();
                     }
                 });
-        FollowingHelper fh = new FollowingHelper(current_uid,post_user_id);
+        FollowingHelper fh = new FollowingHelper(current_uid,post_user_id,context);
         fh.unfollow();
     }
     private void reportPost     (){

@@ -71,7 +71,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <service android:name=".notifications.NotificationsService"
+            android:exported="false"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.a2hands.fileprovider"
