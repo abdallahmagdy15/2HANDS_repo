@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.homeActivity;
+import com.example.a2hands.home.posts.MyPostRecyclerViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,21 +68,21 @@ import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
+    Toolbar toolBar;
     RecyclerView recyclerView;
-    ImageView profileimage,messageImage;
-    TextView hisname;
-    public TextView userstatus;
+    ImageView profileImage,messageImage;
+    TextView hisName;
+    public TextView userStatus;
     EditText message;
     ImageButton sendButton,uploadImage;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference usersdbref;
+    DatabaseReference usersDbRef;
     private FirebaseFirestore db;
     private StorageReference mStorageRef;
-    ValueEventListener seenListner;
-    DatabaseReference userRefForseen;
+    ValueEventListener seenListener;
+    DatabaseReference userRefForSeen;
 
     List<Chat> chatList;
     com.example.a2hands.chat.ChatAdapter adapterChat;
@@ -97,7 +99,7 @@ public class ChatActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_GALLERY_CODE=400;
 
 
-    String[] cameraPermiisions;
+    String[] cameraPermissions;
     String[] storagePermissions;
 
     Uri image_uri =null;
@@ -114,19 +116,19 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getWindow().setBackgroundDrawableResource(R.drawable.chat_bg);
-        toolbar=findViewById(R.id.toolbar);
+        toolBar=findViewById(R.id.toolbar);
 
         recyclerView=findViewById(R.id.chatrecycleview);
-        profileimage=findViewById(R.id.profile_Image);
+        profileImage=findViewById(R.id.profile_Image);
 
         /////UPLOAD_IMAGE
         messageImage=findViewById(R.id.messageImage);
         uploadImage=findViewById(R.id.uploadimage);
-        cameraPermiisions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         ///////
-        hisname=findViewById(R.id.HisName);
-        userstatus=findViewById(R.id.userstatus);
+        hisName=findViewById(R.id.HisName);
+        userStatus=findViewById(R.id.userstatus);
         message=findViewById(R.id.messageEdit);
         sendButton=findViewById(R.id.sendbutton);
 
@@ -136,7 +138,7 @@ public class ChatActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         myUid=firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        usersdbref =firebaseDatabase.getReference("users");
+        usersDbRef =firebaseDatabase.getReference("users");
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         linearLayoutManager=new LinearLayoutManager(this);
@@ -197,24 +199,25 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         loadHisInfoAndchat();
-        seenMassege();
+        seenMessages();
         loadUserOnlineAndtypingStatus();
     }
 
 
-    private void seenMassege() {
-        userRefForseen = FirebaseDatabase.getInstance().getReference("Chatlist")
+    private void seenMessages() {
+        userRefForSeen = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(hisUid)
-                .child(myUid).child("Message");
-        seenListner =userRefForseen.addValueEventListener(new ValueEventListener() {
+                .child(myUid).child("messages");
+
+        seenListener = userRefForSeen.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     Chat chat= ds.getValue(Chat.class);
                     if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)){
-                        HashMap<String,Object> hasSeenHashmap=new HashMap<>();
-                        hasSeenHashmap.put("isSeen",true);
-                        ds.getRef().updateChildren(hasSeenHashmap);
+                        HashMap<String,Object> hasSeenHashMap=new HashMap<>();
+                        hasSeenHashMap.put("isSeen",true);
+                        ds.getRef().updateChildren(hasSeenHashMap);
                     }
                 }
             }
@@ -226,17 +229,21 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void readmessage() {
+    private void readMessages() {
         chatList =new ArrayList<>();
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Chatlist")
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(myUid)
-                .child(hisUid).child("Message");
-        dbref.addValueEventListener(new ValueEventListener() {
+                .child(hisUid).child("messages");
+
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
+
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     Chat chat=ds.getValue(Chat.class);
+
                     if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)||
                             chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
                         chatList.add(chat);
@@ -244,7 +251,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid);
                     adapterChat.notifyDataSetChanged();
-                    //set adapter to recyclerview
+                    //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);
                     recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
 
@@ -274,22 +281,52 @@ public class ChatActivity extends AppCompatActivity {
         MSG.put("isSeen",false);
 
 
-        //reset edittext after sending message
+        //reset editText after sending message
         message.setText("");
 
         //Chat list
-        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+        final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
+                .child(myUid).child("myUsersList").child(hisUid);
+        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(myUid)
                 .child(hisUid);
-        chatRef1.child("Message").push().setValue(MSG);
-        chatRef1.child("id").setValue(hisUid);
+
+        chatRef1.child("messages").push().setValue(MSG);
+        myUsersList1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    myUsersList1.child("id").setValue(hisUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
-        final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
+        final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
+                .child(hisUid).child("myUsersList").child(myUid);
+        final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(hisUid)
                 .child(myUid);
-        chatRef2.child("Message").push().setValue(MSG);
-        chatRef2.child("id").setValue(myUid);
+
+        chatRef2.child("messages").push().setValue(MSG);
+        myUsersList2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    myUsersList2.child("id").setValue(myUid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
     //UPLOAD IMAGE
     private void showImagePickDialog(){
@@ -367,7 +404,7 @@ public class ChatActivity extends AppCompatActivity {
         return result && result1;
     }
     private void requestCameraPermission(){
-        ActivityCompat.requestPermissions(this,cameraPermiisions,CAMERA_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
     }
 
     @Override
@@ -449,15 +486,19 @@ public class ChatActivity extends AppCompatActivity {
                             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
                             String dateTime =simpleDateFormat.format(cal.getTime());
                             String MSG_ID =String.valueOf(System.currentTimeMillis());
-                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                            final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(myUid).child("myUsersList").child(hisUid);
+                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                                     .child(myUid)
                                     .child(hisUid);
-                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("Chatlist")
+                            final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(hisUid).child("myUsersList").child(myUid);
+                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
                                     .child(hisUid)
                                     .child(myUid);
+                            HashMap<String, Object> MSG = new HashMap<>();
                             //setup required data
                             if (TextUtils.isEmpty(messagebody)) {
-                                HashMap<String, Object> MSG = new HashMap<>();
                                 MSG.put("MSGID", MSG_ID);
                                 MSG.put("Message", "");
                                 MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
@@ -465,12 +506,7 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
-                                chatRef1.child("Message").push().setValue(MSG);
-                                chatRef1.child("id").setValue(hisUid);
-                                chatRef2.child("Message").push().setValue(MSG);
-                                chatRef2.child("id").setValue(myUid);
                             }else {
-                                HashMap<String, Object> MSG = new HashMap<>();
                                 MSG.put("MSGID", MSG_ID);
                                 MSG.put("Message", messagebody);
                                 MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
@@ -478,13 +514,40 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
-                                chatRef1.child("Message").push().setValue(MSG);
-                                chatRef1.child("id").setValue(hisUid);
-                                chatRef2.child("Message").push().setValue(MSG);
-                                chatRef2.child("id").setValue(myUid);
+
                                 //reset edittext after sending message
                                 message.setText("");
                             }
+                            //Chat List
+                            chatRef1.child("messages").push().setValue(MSG);
+                            myUsersList1.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()){
+                                        myUsersList1.child("id").setValue(hisUid);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            chatRef2.child("messages").push().setValue(MSG);
+                            myUsersList2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()){
+                                        myUsersList2.child("id").setValue(myUid);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                         }
                     })
@@ -523,7 +586,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause() {
         loadUserOnlineAndtypingStatus();
         updateTypingStatus("noOne");
-        userRefForseen.removeEventListener(seenListner);
+        userRefForSeen.removeEventListener(seenListener);
         super.onPause();
     }
 
@@ -546,8 +609,8 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         hisImage=uri.toString();
-                        Picasso.get().load(uri.toString()).into(profileimage);
-                        readmessage();
+                        Picasso.get().load(uri.toString()).into(profileImage);
+                        readMessages();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -555,7 +618,7 @@ public class ChatActivity extends AppCompatActivity {
                         // Handle any errors
                     }
                 });
-                hisname.setText(user.full_name);
+                hisName.setText(user.full_name);
             }
         });
     }
@@ -571,12 +634,12 @@ public class ChatActivity extends AppCompatActivity {
                             String onlineStatus=documentSnapshot.getString("onlineStatus");
                             String typingStatus=documentSnapshot.getString("typingTo");
                             if (typingStatus.equals(myUid)){
-                                userstatus.setText("typing...");
+                                userStatus.setText("typing...");
                             }else {
                                 if (onlineStatus.equals("online")) {
-                                    userstatus.setText("online");
+                                    userStatus.setText("online");
                                 } else {
-                                    userstatus.setText("Last seen at: "+onlineStatus);
+                                    userStatus.setText("Last seen at: "+onlineStatus);
                                 }
                             }
                         }
@@ -602,5 +665,6 @@ public class ChatActivity extends AppCompatActivity {
             finish();
         }
     }
+
 
 }

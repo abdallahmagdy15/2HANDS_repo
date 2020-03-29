@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.chat.Chat;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,7 +72,8 @@ public class ChatListFragment extends Fragment {
         myUid =FirebaseAuth.getInstance().getCurrentUser().getUid();
         recyclerView = view.findViewById(R.id.recyclerView);
         chatListList = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUid());
+
+        reference = FirebaseDatabase.getInstance().getReference("chatList").child(currentUser.getUid()).child("MyUsersList");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -78,7 +82,7 @@ public class ChatListFragment extends Fragment {
                     ChatList chatList=ds.getValue(ChatList.class);
                     chatListList.add(chatList);
                 }
-                loadChat();
+                loadChatList();
             }
 
             @Override
@@ -103,36 +107,43 @@ public class ChatListFragment extends Fragment {
         super.onDetach();
     }
 
-    private void loadChat() {
+    private void loadChatList() {
         userList = new ArrayList<>();
-        db.collection("users/").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
-                    User user=documentSnapshot.toObject(User.class);
-                    user.user_id =documentSnapshot.getId();
-                    for (ChatList chatList: chatListList){
-                        if (user.user_id !=null && user.user_id.equals(chatList.getId())){
-                            userList.add(user);
-                            break;
+        db.collection("users/").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                User user = doc.toObject(User.class);
+                                user.user_id = doc.getId();
+                                for (ChatList chatList: chatListList){
+                                    if (user.user_id !=null && user.user_id.equals(chatList.getId())){
+                                        userList.add(user);
+                                        break;
+                                    }
+                                }
+                            }
+                            adapterChatList = new AdapterChatList(getContext(),userList);
+                            for (int i=0; i<userList.size();i++){
+                                getlastMessages(userList.get(i).user_id);
+                            }
+                            chatListList.clear();
+                            recyclerView.setAdapter(adapterChatList);
+                        } else {
+                            Log.w("DOCS", "Error getting documents.", task.getException());
+
                         }
                     }
-                }
-                adapterChatList = new AdapterChatList(getContext(),userList);
-                for (int i=0; i<userList.size();i++){
-                    lastMessage(userList.get(i).user_id);
-                }
-                chatListList.clear();
-                recyclerView.setAdapter(adapterChatList);
-            }
-        });
+                });
     }
 
-    private void lastMessage(final String userId) {
-        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+    private void getlastMessages(final String userId) {
+        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(userId)
                 .child(myUid)
                 .child("Message");
+
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

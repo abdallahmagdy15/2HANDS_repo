@@ -48,8 +48,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     FirebaseUser user;
 
-
-
     public ChatAdapter(Context context, List<Chat> chatList, String imageURI, String hisUid) {
         this.context = context;
         this.chatList = chatList;
@@ -178,12 +176,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     }
 
     private void deleteMassage(int position) {
+
         final String myUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         String MSG_ID =chatList.get(position).getMSGID();
+
         DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(myUid)
                 .child(hisUid)
                 .child("Message");
+
         Query query = chatRef1.orderByChild("MSGID").equalTo(MSG_ID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -236,7 +237,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
 
     class MyHolder extends RecyclerView.ViewHolder{
-
 
         ImageView otherProfileImage,messageImage;
         TextView message,Time,isSeen;
