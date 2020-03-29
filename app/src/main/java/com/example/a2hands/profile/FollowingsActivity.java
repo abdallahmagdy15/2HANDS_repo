@@ -28,7 +28,7 @@ public class FollowingsActivity extends AppCompatActivity {
         b.putString("UID",getIntent().getStringExtra("UID"));
         frg.setArguments(b);
         FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.followingsContainer,frg,null).addToBackStack(null);
+                .replace(R.id.followingsContainer,frg,null);
         tr.commit();
     }
 
