@@ -43,10 +43,10 @@ public class MessageImageActivity extends AppCompatActivity {
         messageImageID = intent.getStringExtra("MSGDI");
         myUid = intent.getStringExtra("myUid");
         hisUid = intent.getStringExtra("hisUid");
-        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(myUid)
                 .child(hisUid)
-                .child("Message");
+                .child("messages");
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

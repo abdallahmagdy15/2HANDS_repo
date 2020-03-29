@@ -178,15 +178,39 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private void deleteMassage(int position) {
 
         final String myUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String MSG_ID =chatList.get(position).getMSGID();
+        String MSG_ID = chatList.get(position).getMSGID();
 
-        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("Chatlist")
+        DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(myUid)
                 .child(hisUid)
-                .child("Message");
+                .child("messages");
 
-        Query query = chatRef1.orderByChild("MSGID").equalTo(MSG_ID);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
+                .child(hisUid)
+                .child(myUid)
+                .child("messages");
+
+        Query query1 = chatRef1.orderByChild("MSGID").equalTo(MSG_ID);
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    //ds.getRef().removeValue();
+                    HashMap<String,Object> hashMap=new HashMap<>();
+                    hashMap.put("Message","This message was Deleted...");
+                    ds.getRef().updateChildren(hashMap);
+                    Toast.makeText(context, "Massage deleted ...", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query2 = chatRef2.orderByChild("MSGID").equalTo(MSG_ID);
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
@@ -204,6 +228,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             }
         });
     }
+
     void loadPhotos(final ImageView imgV , String path){
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
