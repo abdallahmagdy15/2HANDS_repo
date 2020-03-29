@@ -73,7 +73,7 @@ public class ChatListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         chatListList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("chatList").child(currentUser.getUid()).child("MyUsersList");
+        reference = FirebaseDatabase.getInstance().getReference("chatList").child(currentUser.getUid()).child("myUsersList");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,7 +126,7 @@ public class ChatListFragment extends Fragment {
                             }
                             adapterChatList = new AdapterChatList(getContext(),userList);
                             for (int i=0; i<userList.size();i++){
-                                getlastMessages(userList.get(i).user_id);
+                                getLastMessages(userList.get(i).user_id);
                             }
                             chatListList.clear();
                             recyclerView.setAdapter(adapterChatList);
@@ -138,11 +138,11 @@ public class ChatListFragment extends Fragment {
                 });
     }
 
-    private void getlastMessages(final String userId) {
+    private void getLastMessages(final String userId) {
         DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
                 .child(userId)
                 .child(myUid)
-                .child("Message");
+                .child("messages");
 
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -155,14 +155,14 @@ public class ChatListFragment extends Fragment {
                         continue;
                     }
                     String sender =chat.getSender();
-                    String reciever =chat.getReceiver();
-                    if (sender == null || reciever == null){
+                    String receiver =chat.getReceiver();
+                    if (sender == null || receiver == null){
                         continue;
                     }
                     if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId) ||
                             chat.getReceiver().equals(userId) && chat.getSender().equals(currentUser.getUid())){
-                        String messagImage=chat.getMessageImage();
-                        if (!TextUtils.isEmpty(messagImage) &&!chat.getMessage().equals("This message was Deleted...") && TextUtils.isEmpty(chat.getMessage())) {
+                        String messageImage=chat.getMessageImage();
+                        if (!TextUtils.isEmpty(messageImage) &&!chat.getMessage().equals("This message was Deleted...") && TextUtils.isEmpty(chat.getMessage())) {
                             thelastMessage="sent a photo";
                         }else {
                             thelastMessage = chat.getMessage();
