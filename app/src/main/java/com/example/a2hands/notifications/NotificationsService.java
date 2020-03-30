@@ -31,8 +31,10 @@ public class NotificationsService extends IntentService {
                         int i=0;
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             Notification notification =snapshot.getValue(Notification.class);
-                            nh.buildNotification(notification,i);
-                            i++;
+                            if(!notification.is_seen){
+                                nh.buildNotification(notification,i);
+                                i++;
+                            }
                         }
                     }
                     @Override

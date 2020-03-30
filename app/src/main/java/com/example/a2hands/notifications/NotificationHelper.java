@@ -3,8 +3,11 @@ package com.example.a2hands.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -32,12 +35,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class NotificationHelper {
     Context context;
+    private Uri soundUri;
     private static String CHANNEL_ID="CHANNEL_1";
 
     public NotificationHelper(Context context) {
@@ -140,8 +148,14 @@ public class NotificationHelper {
                 .setContentText(notification.content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(uri);
+        //Vibration
+        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+
+        //LED
+        builder.setLights(Color.BLUE, 3000, 3000);
+
+        //Ton
+        builder.setSound(soundUri);
 
         // Creates the intent needed to show the notification
         Intent notificationIntent;
@@ -170,6 +184,19 @@ public class NotificationHelper {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
+
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+
+            soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ context.getPackageName() + "/" + R.raw.notifi_sound_cheerful);
+
+            channel.setSound(soundUri, audioAttributes);
+
+            channel.setLightColor(Color.BLUE);
+            channel.enableLights(true);
+
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
@@ -185,7 +212,6 @@ public class NotificationHelper {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Notification> notifis  = new ArrayList<>();
-
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             notifis.add(snapshot.getValue(Notification.class));
                         }

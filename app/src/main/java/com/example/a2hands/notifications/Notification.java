@@ -11,6 +11,7 @@ public class Notification {
     public String publisher_id;
     public String publisher_pic;
     public String subscriber_pic;
+    public boolean is_seen=false;
     public String content;
     public @ServerTimestamp Date date;
     public String type;
@@ -23,7 +24,7 @@ public class Notification {
     }
 
     public Notification(String subscriber_id, String publisher_id, String publisher_pic,String subscriber_name,
-                        String content, Date date, String type,String post_id ,String subscriber_pic,
+                        String content, Date date, String type,String post_id ,String subscriber_pic,boolean is_seen,
                         String help_request_id, String notification_id , String publisher_name) {
         this.subscriber_id = subscriber_id;
         this.publisher_id = publisher_id;
@@ -35,5 +36,8 @@ public class Notification {
         this.notification_id = notification_id;
         this.post_id = post_id;
         this.publisher_name = publisher_name;
+        this.subscriber_pic = subscriber_pic;
+        this.subscriber_name = subscriber_name;
+        this.is_seen = is_seen;
     }
 }

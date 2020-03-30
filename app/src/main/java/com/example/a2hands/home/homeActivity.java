@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.a2hands.CreatePost;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.chat.chatlist.ChatListFragment;
+import com.example.a2hands.notifications.Notification;
 import com.example.a2hands.notifications.NotificationFragment;
 import com.example.a2hands.notifications.NotificationsService;
 import com.example.a2hands.profile.ProfileActivity;
@@ -158,6 +159,10 @@ public class homeActivity extends AppCompatActivity {
                         startActivity(new Intent(homeActivity.this , SettingsActivity.class));
                         break;
                     case R.id.nav_signOut:
+                        //stop notifications service
+                        Intent intent = new Intent(homeActivity.this, NotificationsService.class);
+                        stopService(intent);
+
                         String dateTime =simpleDateFormat.format(cal.getTime());
                         updateOnlineStatus(dateTime);
                         FirebaseAuth.getInstance().signOut();
@@ -247,9 +252,13 @@ public class homeActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getChildrenCount() > 0){
+                        int count=0;
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            if(!ds.getValue(Notification.class).is_seen) count++;
+                        }
+                        if(count > 0){
                             badge.setVisible(true);
-                            badge.setNumber(( (int)dataSnapshot.getChildrenCount()));
+                            badge.setNumber(count);
                         }
                         else {
                             badge.setVisible(false);

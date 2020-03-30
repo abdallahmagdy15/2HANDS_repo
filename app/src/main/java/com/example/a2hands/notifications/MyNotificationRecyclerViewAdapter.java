@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -57,19 +58,26 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         public Button acceptReqBtn;
         public Button refuseReqBtn;
         public LinearLayout notifiContainer;
-
+        public Context context;
 
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             notifiContainer = (LinearLayout) view;
+            context = view.getContext();
         }
 
     }
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int pos) {
-    final ViewHolder vh ;
+        final ViewHolder vh ;
+
+        //check if notifi is seen
+        if(!notifisList.get(pos).is_seen){
+            holder.notifiContainer.setBackgroundColor(holder.context.getResources().getColor(R.color.colorPrimaryWhite));
+        }
+
         //check type of notifi
         if(notifisList.get(pos).type.equals("HELP_REQUEST")) {
             vh = setLayoutViews(holder,notifisList.get(pos).type);
