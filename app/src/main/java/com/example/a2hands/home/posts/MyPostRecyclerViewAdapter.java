@@ -257,18 +257,12 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             //get counters for likes , comments , ratings , shares
             int[] count = null;
             try {
-                count = setAndGetCounterForPost(holder, curr_post);
+                getCounterForPost(holder, curr_post);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
                 setShareBtnListener(holder, curr_post);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                setCommentBtnListener(holder, curr_post, count[0]);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -568,7 +562,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         //end update counter for likes
     }
 
-    private int[] setAndGetCounterForPost(final ViewHolder holder , final Post curr_post){
+    private void getCounterForPost(final ViewHolder holder , final Post curr_post){
         final int count[] = new int[4];
         DatabaseReference counterRef = FirebaseDatabase.getInstance().getReference().child("counter").child(curr_post.post_id);
         counterRef.addValueEventListener(new ValueEventListener() {
@@ -582,6 +576,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                         count[2]=postCounter.ratings_count;
                         count[3]=postCounter.shares_count;
                         updatePostWithCounter(holder,count);
+
+                        setCommentBtnListener(holder, curr_post, count[0]);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -591,7 +587,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-        return count;
     }
 
     private void setShareBtnListener(final ViewHolder holder , final Post curr_post){
@@ -609,6 +604,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     }
 
     private void setCommentBtnListener(final ViewHolder holder , final Post curr_post , final int likesCount){
+
         //set comment btn listener
         holder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -618,6 +614,13 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 intent.putExtra("likes_count",likesCount);
                 intent.putExtra("curr_uid",holder.uid);
                 context.startActivity(intent);
+            }
+        });
+
+        holder.postCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.commentBtn.callOnClick();
             }
         });
     }

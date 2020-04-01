@@ -14,8 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.Toolbar;
 import com.example.a2hands.Callback;
+import com.example.a2hands.home.LikesActivity;
 import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
@@ -45,11 +46,52 @@ public class CommentsActivity extends AppCompatActivity  {
     ImageView postCommentBtn;
     TextView like_count;
     int likesCount;
-    String postid, publisherid , curr_uid;
+    String postId, publisherid , curr_uid;
+    Toolbar commentsToolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.comments_layout);
+        setContentView(R.layout.activity_comments);
+
+        commentsToolbar = findViewById(R.id.commentsToolbar);
+
+        setCommentsSlider();
+
+
+
+        //starting Coding to comment to firebase
+        add_comment = findViewById(R.id.add_comment);
+        postCommentBtn = findViewById(R.id.postCommentBtn);
+        like_count = findViewById(R.id.like_count);
+
+        Intent intent = getIntent();
+        likesCount = intent.getIntExtra("likes_count",0);
+        postId = intent.getStringExtra("post_id");
+        curr_uid = intent.getStringExtra("curr_uid");
+
+        postCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(add_comment.getText().toString().equals("")){
+                    Toast.makeText(CommentsActivity.this, "You Can’t Send Empty Comment", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    addComment();
+            }
+        });
+
+
+        setLikesCounter();
+
+        setLikesListener();
+
+        //load comments
+        loadComments(postId);
+    }
+
+    void setCommentsSlider(){
         //Custom Animation To Activity
         SlidrConfig config = new SlidrConfig.Builder()
                 .position(SlidrPosition.TOP)
@@ -65,34 +107,22 @@ public class CommentsActivity extends AppCompatActivity  {
         slidr = Slidr.attach(this, config);
         //starting when Intent begins
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_bottom);
-
-
-        //starting Coding to comment to firebase
-        add_comment = findViewById(R.id.add_comment);
-        postCommentBtn = findViewById(R.id.postCommentBtn);
-        like_count = findViewById(R.id.like_count);
-        Intent intent = getIntent();
-        likesCount = intent.getIntExtra("likes_count",0);
-        postid = intent.getStringExtra("post_id");
-        curr_uid = intent.getStringExtra("curr_uid");
-        postCommentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(add_comment.getText().toString().equals("")){
-                    Toast.makeText(CommentsActivity.this, "You Can’t Send Empty Comment", Toast.LENGTH_SHORT).show();
-                }
-                else
-                    addComment();
-            }
-        });
-        //set likes counter
-        if(likesCount!=0)
-        like_count.setText(likesCount+" Likes");
-
-        //load comments
-        loadComments(postid);
     }
 
+    void setLikesCounter(){
+        if(likesCount!=0)
+            like_count.setText(likesCount+" Likes");
+    }
+    void setLikesListener(){
+        commentsToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CommentsActivity.this, LikesActivity.class);
+                i.putExtra("POST_ID", postId);
+                startActivity(i);
+            }
+        });
+    }
     //load comments
     void loadComments(String postId){
 
@@ -107,10 +137,10 @@ public class CommentsActivity extends AppCompatActivity  {
     }
     //method to add comments to firebase in realtime mode
     private void addComment() {
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postid);
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("comments").child(postId);
         final Comment comment = new Comment();
         comment.comment_content = add_comment.getText().toString();
-        comment.post_id=postid;
+        comment.post_id= postId;
         comment.publisher_id=curr_uid;
         comment.date = new Date();
         PostsFragment.getUser(new Callback() {
@@ -124,7 +154,7 @@ public class CommentsActivity extends AppCompatActivity  {
                             public void onComplete(@NonNull Task<Void> task) {
                                 //send notification
                                 final NotificationHelper nh = new NotificationHelper(CommentsActivity.this);
-                                FirebaseFirestore.getInstance().collection("posts").document(postid)
+                                FirebaseFirestore.getInstance().collection("posts").document(postId)
                                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -139,7 +169,7 @@ public class CommentsActivity extends AppCompatActivity  {
                         });
                 add_comment.setText("");
                 //update counter for comments
-                FirebaseDatabase.getInstance().getReference("counter").child(postid )
+                FirebaseDatabase.getInstance().getReference("counter").child(postId)
                         .child("comments_count").runTransaction(new Transaction.Handler() {
                     @NonNull
                     @Override

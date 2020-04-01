@@ -29,7 +29,7 @@ import java.util.List;
 public class UsersFragment extends Fragment  {
 
     View view;
-    String uid;
+    String id;
     final List<User> users = new ArrayList<>();
 
     public UsersFragment() {
@@ -46,21 +46,13 @@ public class UsersFragment extends Fragment  {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_list, container, false);
         Bundle b = this.getArguments();
-        uid = b.getString("UID");
+        id = b.getString("ID");
         final String activityName = b.getString("FOR");
-        if(activityName.equals("FOLLOWERS")){
-            getUsersId("followers" );
-        }
-        else if(activityName.equals("FOLLOWINGS")) {
-            getUsersId("followings" );
-        }
-        else if (activityName.equals("BLOCKED_USERS")){
-            getUsersId("blocked_users");
-        }
+        getUsersId(activityName.toLowerCase());
         return view;
     }
     void getUsersId(String type ){
-        FirebaseDatabase.getInstance().getReference(type).child(uid)
+        FirebaseDatabase.getInstance().getReference(type).child(id)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

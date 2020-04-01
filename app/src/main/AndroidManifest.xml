@@ -5,8 +5,8 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".chat.MessageImageActivity"></activity>
+        <activity android:name=".home.LikesActivity" android:parentActivityName=".home.LikesActivity"></activity>
+        <activity android:name=".chat.MessageImageActivity" />
         <activity
             android:name=".profile.FollowingsActivity"
             android:label="@string/title_activity_followings"
@@ -72,8 +73,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".notifications.NotificationsService"
-            android:exported="false"/>
+
+        <service
+            android:name=".notifications.NotificationsService"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.a2hands.fileprovider"

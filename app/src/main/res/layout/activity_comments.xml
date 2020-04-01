@@ -6,17 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".home.comments.CommentsActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.widget.Toolbar
+        android:id="@+id/commentsToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground">
+        android:background="@color/colorPureWhite">
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="50dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/like_filled" />
+
         <TextView
             android:id="@+id/like_count"
             android:layout_width="match_parent"
@@ -24,8 +25,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="15sp" />
 
-    </androidx.appcompat.widget.Toolbar>
-
+    </android.widget.Toolbar>
 
 
     <FrameLayout
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/view11"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@id/commentsToolbar"
         android:background="@color/colorWhiteGray" />
 
     <View
