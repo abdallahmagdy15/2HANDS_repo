@@ -144,7 +144,6 @@
         android:linksClickable="true"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:text="Some texttttttttttttttttttttttttt"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="#1B1B1B"
         android:textColorLink="@color/colorPrimaryDark"
@@ -192,23 +191,31 @@
 
     <FrameLayout
         android:id="@+id/videoContainer"
-        android:layout_width="match_parent"
-        android:layout_height="192dp"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
         android:layout_marginTop="8dp"
-        android:background="#00FFFDFD"
+        android:background="@color/colorDark"
         android:focusableInTouchMode="true"
-        android:minHeight="192dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/postCounter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postImage">
 
-        <VideoView
+        <com.universalvideoview.UniversalVideoView
             android:id="@+id/postVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="true" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:focusableInTouchMode="true"
+            app:uvv_autoRotation="true"
+            app:uvv_fitXY="false" />
+
+        <com.universalvideoview.UniversalMediaController
+            android:id="@+id/media_controller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:uvv_scalable="true" />
     </FrameLayout>
 
     <LinearLayout

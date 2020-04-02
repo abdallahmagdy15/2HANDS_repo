@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -18,6 +19,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
+import com.universalvideoview.UniversalMediaController;
+import com.universalvideoview.UniversalVideoView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +71,8 @@ import java.util.Map;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.firebase.ui.auth.AuthUI.TAG;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
 
@@ -95,7 +101,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final CircleImageView postOwnerPic;
         public final FrameLayout videoContainer;
         public final ImageView postImage;
-        public final VideoView postVideo;
+        public final UniversalVideoView postVideo;
+        public final UniversalMediaController mMediaController;
         public final ImageView helpBtn;
         public final ImageView ratingsBtn;
         public final ImageView likeBtn;
@@ -118,7 +125,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postOwner = view.findViewById(R.id.postOwner);
             category = view.findViewById(R.id.postCategory);
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
-            videoContainer = view.findViewById(R.id.videoContainer);
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
 
@@ -135,11 +141,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 postCounter=view.findViewById(R.id.postCounter);
                 postImage = view.findViewById(R.id.postImage);
                 postVideo = view.findViewById(R.id.postVideo);
+                mMediaController = view.findViewById(R.id.media_controller);
+                videoContainer = view.findViewById(R.id.videoContainer);
             }
             else {
                 postContent =  view.findViewById(R.id.sharedContent);
                 postImage = view.findViewById(R.id.sharedPostImage);
                 postVideo = view.findViewById(R.id.sharedPostVideo);
+                mMediaController = view.findViewById(R.id.media_controller);
+                videoContainer = view.findViewById(R.id.videoContainerSharedPost);
                 postRatingsSharesCount = null;
                 postLikesCommentsCount = null;
                 postOptions = null;
@@ -417,9 +427,11 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     }
 
     private void checkPostMedia(final ViewHolder holder , final Post curr_post){
-        ////check if there is any media attached with the post
+
+        //check if there is any media attached with the post
         if(curr_post.images != null){
             holder.postImage.setVisibility(View.VISIBLE);
+
             //load image
             String imagePath = curr_post.images.get(0);
             Picasso.get().load(Uri.parse(imagePath)).into(holder.postImage);
@@ -435,11 +447,49 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         }
         else if(curr_post.videos != null){
             holder.videoContainer.setVisibility(View.VISIBLE);
+
             holder.postVideo.setVideoURI(Uri.parse(curr_post.videos.get(0)));
-            holder.postVideo.requestFocus();
-            MediaController mediaController = new MediaController(context);
-            holder.postVideo.setMediaController(mediaController);
-            mediaController.setAnchorView(holder.postVideo);
+
+            holder.postVideo.setMediaController(holder.mMediaController);
+
+            holder.postVideo.setVideoViewCallback(new UniversalVideoView.VideoViewCallback() {
+                @Override
+                public void onScaleChange(boolean isFullscreen) {
+                    if (isFullscreen) {
+                        ViewGroup.LayoutParams layoutParams = holder.postVideo.getLayoutParams();
+                        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                        holder.postVideo.setLayoutParams(layoutParams);
+                        //GONE the unconcerned views to leave room for video and controller
+                        //mBottomLayout.setVisibility(View.GONE);
+                    } else {
+                        ViewGroup.LayoutParams layoutParams = holder.videoContainer.getLayoutParams();
+                        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        int width = holder.videoContainer.getWidth();
+                        int cachedHeight = (int) (width * 405f / 720f);
+                        layoutParams.height = cachedHeight;
+                        holder.postVideo.setLayoutParams(layoutParams);
+                        //mBottomLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPause(MediaPlayer mediaPlayer) { // Video pause
+                }
+
+                @Override
+                public void onStart(MediaPlayer mediaPlayer) { // Video start/resume to play
+                }
+
+                @Override
+                public void onBufferingStart(MediaPlayer mediaPlayer) {// steam start loading
+                }
+
+                @Override
+                public void onBufferingEnd(MediaPlayer mediaPlayer) {// steam end loading
+                }
+
+            });
         }
 
     }

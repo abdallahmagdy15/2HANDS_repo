@@ -75,5 +75,9 @@ dependencies {
     // image preview , zoom and save
     implementation 'com.github.chrisbanes:PhotoView:+'
 
+    //customized videoView ..  full screen , media controller..
+    implementation 'com.linsea:universalvideoview:1.1.0@aar'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

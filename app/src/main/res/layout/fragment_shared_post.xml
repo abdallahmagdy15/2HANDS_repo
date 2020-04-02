@@ -161,7 +161,7 @@
         app:layout_constraintTop_toBottomOf="@id/sharedContent" />
 
     <FrameLayout
-        android:id="@+id/videoContainer"
+        android:id="@+id/videoContainerSharedPost"
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:layout_marginTop="8dp"

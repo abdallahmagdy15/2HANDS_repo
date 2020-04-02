@@ -18,7 +18,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        >
         <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview"></activity>
         <activity
             android:name=".home.LikesActivity"
