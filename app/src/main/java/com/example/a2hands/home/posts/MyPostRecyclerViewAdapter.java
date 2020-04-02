@@ -30,6 +30,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.a2hands.Callback;
+import com.example.a2hands.ImagePreview;
 import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.PostOptionsDialog;
 import com.example.a2hands.home.comments.CommentsActivity;
@@ -40,6 +41,7 @@ import com.example.a2hands.User;
 import com.example.a2hands.R;
 import com.example.a2hands.rating.RatingsActivity;
 import com.example.a2hands.home.homeActivity;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -210,9 +212,12 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     public void setupPostData(final ViewHolder holder, final Post curr_post,boolean isSharedPost){
         //setup post data
-        setPostTextWithMentions(holder,curr_post);
-        holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.postContent.setHighlightColor(Color.TRANSPARENT);
+        if(!curr_post.content_text.equals("")){
+            holder.postContent.setVisibility(View.VISIBLE);
+            setPostTextWithMentions(holder,curr_post);
+            holder.postContent.setMovementMethod(LinkMovementMethod.getInstance());
+            holder.postContent.setHighlightColor(Color.TRANSPARENT);
+        }
 
         PrettyTime p = new PrettyTime();
         holder.time.setText(p.format(curr_post.date));
@@ -415,7 +420,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         ////check if there is any media attached with the post
         if(curr_post.images != null){
             holder.postImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(Uri.parse(curr_post.images.get(0))).into(holder.postImage);
+            //load image
+            String imagePath = curr_post.images.get(0);
+            Picasso.get().load(Uri.parse(imagePath)).into(holder.postImage);
+            //set on Photo Clicked listener
+            final Intent i = new Intent(context, ImagePreview.class);
+            i.putExtra("IMAGE_PATH",imagePath);
+            holder.postImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(i);
+                }
+            });
         }
         else if(curr_post.videos != null){
             holder.videoContainer.setVisibility(View.VISIBLE);

@@ -71,5 +71,9 @@ dependencies {
 
     //readMore textView lib
     implementation 'com.borjabravo:readmoretextview:2.1.0'
+
+    // image preview , zoom and save
+    implementation 'com.github.chrisbanes:PhotoView:+'
+
 }
 apply plugin: 'com.google.gms.google-services'

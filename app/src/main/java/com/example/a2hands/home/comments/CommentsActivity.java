@@ -46,7 +46,7 @@ public class CommentsActivity extends AppCompatActivity  {
     ImageView postCommentBtn;
     TextView like_count;
     int likesCount;
-    String postId, publisherid , curr_uid;
+    String postId , curr_uid;
     Toolbar commentsToolbar;
 
 
@@ -58,8 +58,6 @@ public class CommentsActivity extends AppCompatActivity  {
         commentsToolbar = findViewById(R.id.commentsToolbar);
 
         setCommentsSlider();
-
-
 
         //starting Coding to comment to firebase
         add_comment = findViewById(R.id.add_comment);
@@ -113,6 +111,7 @@ public class CommentsActivity extends AppCompatActivity  {
         if(likesCount!=0)
             like_count.setText(likesCount+" Likes");
     }
+
     void setLikesListener(){
         commentsToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +188,6 @@ public class CommentsActivity extends AppCompatActivity  {
         },curr_uid);
 
     }
-
     //when Click Finish or back Starting...
     @Override
     public void finish() {
