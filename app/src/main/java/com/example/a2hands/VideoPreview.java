@@ -68,7 +68,16 @@ public class VideoPreview extends AppCompatActivity {
                     int cachedHeight = (int) (width * 405f / 720f);
                     layoutParams.height = cachedHeight;
                     video.setLayoutParams(layoutParams);
-                    //mBottomLayout.setVisibility(View.VISIBLE);
+                    //show status bar
+                    if (Build.VERSION.SDK_INT < 16) {
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    }
+                    else {
+                        View decorView = getWindow().getDecorView();
+                        // Hide the status bar.
+                        int uiOptions = View.VISIBLE;
+                        decorView.setSystemUiVisibility(uiOptions);
+                    }
                 }
             }
             @Override
