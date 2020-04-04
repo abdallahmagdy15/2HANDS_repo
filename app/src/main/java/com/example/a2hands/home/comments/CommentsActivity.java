@@ -104,7 +104,7 @@ public class CommentsActivity extends AppCompatActivity  {
                 .build();
         slidr = Slidr.attach(this, config);
         //starting when Intent begins
-        overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_bottom);
+        overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
     }
 
     void setLikesCounter(){
@@ -192,7 +192,7 @@ public class CommentsActivity extends AppCompatActivity  {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_up);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
     }
 
 

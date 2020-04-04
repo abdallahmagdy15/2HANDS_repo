@@ -6,10 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.widget.ImageView;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
@@ -28,7 +26,7 @@ public class ImagePreview extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.imagePreviewToolbar);
         ImageView image = findViewById(R.id.imagePreview);
 
-        toolbar.inflateMenu(R.menu.photo_preview_options_menu);
+        toolbar.inflateMenu(R.menu.image_preview_options_menu);
 
         Uri imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_PATH"));
         Picasso.get().load(imageUri).into(image);
@@ -46,11 +44,13 @@ public class ImagePreview extends AppCompatActivity {
                 .edgeSize(0.18f) // The % of the screen that counts as the edge, default 18%
                 .build();
         slidr = Slidr.attach(this, config);
+        //starting when Intent begins
+        overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_up);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
     }
 }

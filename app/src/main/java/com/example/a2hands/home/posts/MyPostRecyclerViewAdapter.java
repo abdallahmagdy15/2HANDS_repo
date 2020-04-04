@@ -33,6 +33,7 @@ import android.widget.VideoView;
 
 import com.example.a2hands.Callback;
 import com.example.a2hands.ImagePreview;
+import com.example.a2hands.VideoPreview;
 import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.PostOptionsDialog;
 import com.example.a2hands.home.comments.CommentsActivity;
@@ -115,6 +116,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final LinearLayout sharingContainer;
         public final LinearLayout postCounter;
         public final ImageView postOptions;
+        public final View post_clickableVideo;
 
 
         public ViewHolder(View view) {
@@ -127,6 +129,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
+            post_clickableVideo=view.findViewById(R.id.post_clickableVideo);
 
             if (view.getId() != R.id.sharedPostContainer){
                 postContent =  view.findViewById(R.id.content);
@@ -449,46 +452,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             holder.videoContainer.setVisibility(View.VISIBLE);
 
             holder.postVideo.setVideoURI(Uri.parse(curr_post.videos.get(0)));
-
             holder.postVideo.setMediaController(holder.mMediaController);
 
-            holder.postVideo.setVideoViewCallback(new UniversalVideoView.VideoViewCallback() {
+            holder.post_clickableVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onScaleChange(boolean isFullscreen) {
-                    if (isFullscreen) {
-                        ViewGroup.LayoutParams layoutParams = holder.postVideo.getLayoutParams();
-                        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                        holder.postVideo.setLayoutParams(layoutParams);
-                        //GONE the unconcerned views to leave room for video and controller
-                        //mBottomLayout.setVisibility(View.GONE);
-                    } else {
-                        ViewGroup.LayoutParams layoutParams = holder.videoContainer.getLayoutParams();
-                        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                        int width = holder.videoContainer.getWidth();
-                        int cachedHeight = (int) (width * 405f / 720f);
-                        layoutParams.height = cachedHeight;
-                        holder.postVideo.setLayoutParams(layoutParams);
-                        //mBottomLayout.setVisibility(View.VISIBLE);
-                    }
+                public void onClick(View v) {
+                    Intent i = new Intent(context,VideoPreview.class);
+                    i.putExtra("VIDEO_PATH",curr_post.videos.get(0));
+                    context.startActivity(i);
                 }
-
-                @Override
-                public void onPause(MediaPlayer mediaPlayer) { // Video pause
-                }
-
-                @Override
-                public void onStart(MediaPlayer mediaPlayer) { // Video start/resume to play
-                }
-
-                @Override
-                public void onBufferingStart(MediaPlayer mediaPlayer) {// steam start loading
-                }
-
-                @Override
-                public void onBufferingEnd(MediaPlayer mediaPlayer) {// steam end loading
-                }
-
             });
         }
 

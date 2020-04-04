@@ -195,6 +195,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorDark"
+        android:clickable="true"
         android:focusableInTouchMode="true"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/postCounter"
@@ -216,6 +217,12 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             app:uvv_scalable="true" />
+
+        <View
+            android:id="@+id/post_clickableVideo"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
     </FrameLayout>
 
     <LinearLayout

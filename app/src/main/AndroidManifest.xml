@@ -18,10 +18,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:configChanges="orientation|keyboardHidden|screenSize"
-        >
-        <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".VideoPreview"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            ></activity>
+        <activity
+            android:name=".ImagePreview"
+            android:parentActivityName=".ImagePreview" />
         <activity
             android:name=".home.LikesActivity"
             android:parentActivityName=".home.LikesActivity" />
@@ -51,6 +54,7 @@
         <activity android:name=".signup.signupActivity" />
         <activity
             android:name=".home.homeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".signup.signupSetBioActivity" />
         <activity android:name=".signup.signupPickPictureActivity" />
