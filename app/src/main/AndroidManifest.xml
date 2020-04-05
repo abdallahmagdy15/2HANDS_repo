@@ -86,6 +86,24 @@
         <service
             android:name=".notifications.NotificationsService"
             android:exported="false" />
+        <service android:name=".chat.chat_notifications.FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE"/>
+            </intent-filter>
+        </service>
+        <service android:name=".chat.chat_notifications.FirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".notifications.NotificationsService"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -34,6 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.chat.chat_notifications.APIService;
+import com.example.a2hands.chat.chat_notifications.Client;
+import com.example.a2hands.chat.chat_notifications.Data;
+import com.example.a2hands.chat.chat_notifications.Response;
+import com.example.a2hands.chat.chat_notifications.Sender;
+import com.example.a2hands.chat.chat_notifications.Token;
 import com.example.a2hands.home.homeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,7 +51,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,6 +70,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -88,6 +99,9 @@ public class ChatActivity extends AppCompatActivity {
     String myUid;
     String hisImage;
 
+    APIService apiService;
+    boolean notify;
+
     //UPLOAD IMAGE
     private static final int CAMERA_REQUEST_CODE=100;
     private static final int STORAGE_REQUEST_CODE=200;
@@ -100,8 +114,6 @@ public class ChatActivity extends AppCompatActivity {
     String[] storagePermissions;
 
     Uri image_uri =null;
-    String currentPhotoPath;
-    Bitmap bitmap;
 
     ImageButton closeImageButton;
 
@@ -143,6 +155,9 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        //create API service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
+
         db = FirebaseFirestore.getInstance();
 
         message.addTextChangedListener(new TextWatcher() {
@@ -181,6 +196,7 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notify = true;
                 String Message = message.getText().toString().trim();
                 sendImageMessage(Message);
                 messageImage.setVisibility(View.GONE);
@@ -277,9 +293,18 @@ public class ChatActivity extends AppCompatActivity {
         MSG.put("Timestamp",dateTime);
         MSG.put("isSeen",false);
 
+        DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
+        firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user= task.getResult().toObject(User.class);
 
-        //reset editText after sending message
-        message.setText("");
+                if (notify){
+                    sendNotification(hisUid,user.full_name,messagebody);
+                }
+                notify=false;
+            }
+        });
 
         //Chat list
         final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
@@ -325,6 +350,40 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sendNotification(final String hisUid, final String full_name, final String messagebody) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Token token = ds.getValue(Token.class);
+                    Data data =new Data(myUid,full_name+":"+messagebody,"New Message",hisUid,R.drawable.twohands_logo);
+
+                    Sender sender = new Sender(data,token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+//                                    Toast.makeText(ChatActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     //UPLOAD IMAGE
     private void showImagePickDialog(){
         //options {camera , Gallery} to show in dialog
@@ -515,6 +574,19 @@ public class ChatActivity extends AppCompatActivity {
                                 //reset edittext after sending message
                                 message.setText("");
                             }
+                            //Notifications
+                            DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
+                            firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    User user= task.getResult().toObject(User.class);
+
+                                    if (notify){
+                                        sendNotification(hisUid,user.full_name,messagebody);
+                                    }
+                                    notify=false;
+                                }
+                            });
                             //Chat List
                             chatRef1.child("messages").push().setValue(MSG);
                             myUsersList1.addValueEventListener(new ValueEventListener() {
@@ -568,6 +640,8 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(this, "You can not send empty message...", Toast.LENGTH_SHORT).show();
             }else {
                 sendMessage(messagebody);
+                //reset editText after sending message
+                message.setText("");
             }
         }
     }
