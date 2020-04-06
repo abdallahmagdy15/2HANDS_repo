@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(SettingsActivity.this, com.example.a2hands.home.homeActivity.class));
+        startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
     }
 
 

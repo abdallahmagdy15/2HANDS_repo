@@ -1,6 +1,7 @@
 package com.example.a2hands.home;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -61,7 +63,8 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class homeActivity extends AppCompatActivity {
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+public class HomeActivity extends AppCompatActivity {
 
     //drawer
     private DrawerLayout drawer;
@@ -82,7 +85,7 @@ public class homeActivity extends AppCompatActivity {
     String myUid;
 
     Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a",Locale.ENGLISH);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +148,7 @@ public class homeActivity extends AppCompatActivity {
         header_profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(homeActivity.this, ProfileActivity.class));
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                 drawer.closeDrawer(GravityCompat.START);
             }
         });
@@ -156,29 +159,29 @@ public class homeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_profile:
-                        startActivity(new Intent(homeActivity.this , ProfileActivity.class));
+                        startActivity(new Intent(HomeActivity.this , ProfileActivity.class));
                         break;
                     case R.id.nav_saved:
-                        startActivity(new Intent(homeActivity.this , SavedPostsActivity.class));
+                        startActivity(new Intent(HomeActivity.this , SavedPostsActivity.class));
                         break;
                     case R.id.nav_settings:
-                        startActivity(new Intent(homeActivity.this , SettingsActivity.class));
+                        startActivity(new Intent(HomeActivity.this , SettingsActivity.class));
                         break;
                     case R.id.nav_signOut:
                         //stop notifications service
-                        Intent intent = new Intent(homeActivity.this, NotificationsService.class);
+                        Intent intent = new Intent(HomeActivity.this, NotificationsService.class);
                         stopService(intent);
 
                         String dateTime =simpleDateFormat.format(cal.getTime());
                         updateOnlineStatus(dateTime);
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(homeActivity.this , LoginActivity.class));
+                        startActivity(new Intent(HomeActivity.this , LoginActivity.class));
                         break;
                     case R.id.nav_share:
-                        Toast.makeText(homeActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Share", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_send:
-                        Toast.makeText(homeActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "Send", Toast.LENGTH_SHORT).show();
                         break;
                 }
 

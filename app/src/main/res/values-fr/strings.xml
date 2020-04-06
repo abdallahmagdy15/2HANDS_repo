@@ -131,6 +131,25 @@
     <string name="blockUser">Bloquer</string>
     <string name="reportPost">Rapport</string>
 
+    <!--ChatListFragment-->
+    <string name="thisMessageWasDeleted">Ce message a été supprimé…</string>
+    <string name="sentAPhoto">envoyé une photo…</string>
+
+    <!--ChatActivity-->
+    <string name="camera">Caméra</string>
+    <string name="gallery">Galerie</string>
+    <string name="chooseImageFrom">Choisissez une image</string>
+    <string name="sendingImage">Envoi de l\'image…</string>
+    <string name="youCanNotSendEmptyMessage">Vous ne pouvez pas envoyer de message vide…</string>
+    <string name="typing">il tape…</string>
+    <string name="online">en ligne</string>
+
+    <!--ChatAdapter-->
+    <string name="areYouSureToDeleteThisMessage">Voulez-vous vraiment supprimer ce message?</string>
+    <string name="no">Non</string>
+    <string name="seen">a été vu</string>
+    <string name="delivered">a été livré</string>
+
 
     <string-array name="generalSettings">
         <item>Langue</item>

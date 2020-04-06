@@ -67,6 +67,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         }
     }
 
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, final int position) {
@@ -75,7 +76,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         String timestamp = chatList.get(position).getTimestamp();
         final String messageImagee = chatList.get(position).getMessageImage();
 
-        if(messageImagee.equals("") || message.equals("This message was Deleted...")){
+        if(messageImagee.equals("") || message.equals(context.getResources().getString(R.string.thisMessageWasDeleted))){
             holder.messageImage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
             holder.message.setPaddingRelative(12, 8, 8, 0);
@@ -109,9 +110,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             public boolean onLongClick(View v) {
                 if(chatList.get(position).getSender().equals(user.getUid())) {
                     AlertDialog.Builder builder= new AlertDialog.Builder(context);
-                    builder.setTitle("Delete");
-                    builder.setMessage("Are you sure to delete this message?");
-                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    builder.setTitle(context.getResources().getString(R.string.delete));
+                    builder.setMessage(context.getResources().getString(R.string.areYouSureToDeleteThisMessage));
+                    builder.setPositiveButton(context.getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deleteMassage(position);
@@ -119,7 +120,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                             holder.message.setVisibility(View.VISIBLE);
                         }
                     });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -138,9 +139,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                     if(holder.isSeen.getVisibility() == View.GONE){
                         holder.isSeen.setVisibility(View.VISIBLE);
                         if (chatList.get(position).getIsSeen()){
-                            holder.isSeen.setText("seen");
+                            holder.isSeen.setText(context.getResources().getString(R.string.seen));
                         }else {
-                            holder.isSeen.setText("sent");
+                            holder.isSeen.setText(context.getResources().getString(R.string.delivered));
                         }
                     } else if(holder.isSeen.getVisibility() == View.VISIBLE
                                 && position != chatList.size()-1)
@@ -155,9 +156,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         if(position==chatList.size()-1 && chatList.get(position).getSender().equals(user.getUid())){
             holder.isSeen.setVisibility(View.VISIBLE);
             if (chatList.get(position).getIsSeen()){
-                holder.isSeen.setText("seen");
+                holder.isSeen.setText(context.getResources().getString(R.string.seen));
             }else {
-                holder.isSeen.setText("sent");
+                holder.isSeen.setText(context.getResources().getString(R.string.delivered));
             }
         }else {
             holder.isSeen.setVisibility(View.GONE);
@@ -197,9 +198,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
                     HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("Message","This message was Deleted...");
+                    hashMap.put("Message", context.getResources().getString(R.string.thisMessageWasDeleted));
                     ds.getRef().updateChildren(hashMap);
-                    Toast.makeText(context, "Massage deleted ...", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -216,9 +216,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
                     HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("Message","This message was Deleted...");
+                    hashMap.put("Message",context.getResources().getString(R.string.thisMessageWasDeleted));
                     ds.getRef().updateChildren(hashMap);
-                    Toast.makeText(context, "Massage deleted ...", Toast.LENGTH_SHORT).show();
                 }
             }
 

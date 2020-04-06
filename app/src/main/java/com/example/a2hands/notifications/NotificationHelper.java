@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 
@@ -19,10 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.HelpRequest;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.example.a2hands.home.homeActivity;
+import com.example.a2hands.home.HomeActivity;
 import com.example.a2hands.home.posts.Post;
-import com.example.a2hands.notifications.MyNotificationRecyclerViewAdapter;
-import com.example.a2hands.notifications.Notification;
 import com.example.a2hands.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,13 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class NotificationHelper {
     Context context;
@@ -164,7 +157,7 @@ public class NotificationHelper {
             notificationIntent.putExtra("UID",notification.subscriber_id);
         }
         else {
-            notificationIntent = new Intent(context, homeActivity.class);
+            notificationIntent = new Intent(context, HomeActivity.class);
         }
 
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,7 +42,7 @@ import com.example.a2hands.chat.chat_notifications.Data;
 import com.example.a2hands.chat.chat_notifications.Response;
 import com.example.a2hands.chat.chat_notifications.Sender;
 import com.example.a2hands.chat.chat_notifications.Token;
-import com.example.a2hands.home.homeActivity;
+import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -392,10 +391,10 @@ public class ChatActivity extends AppCompatActivity {
     //UPLOAD IMAGE
     private void showImagePickDialog(){
         //options {camera , Gallery} to show in dialog
-        String[] options = {"Camera","Gallery"};
+        String[] options = {getResources().getString(R.string.camera),getResources().getString(R.string.gallery)};
         //dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("Choose Image from");
+        builder.setTitle(getResources().getString(R.string.chooseImageFrom));
         //set options to dialog
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -533,7 +532,7 @@ public class ChatActivity extends AppCompatActivity {
     private void sendImageMessage(final String messagebody) {
         if (image_uri != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Sending image...");
+            progressDialog.setMessage(getResources().getString(R.string.sendingImage));
             progressDialog.show();
             final StorageReference ChatImageRef = FirebaseStorage.getInstance().getReference("Chat_Pics/" +
                     System.currentTimeMillis() + "." + getFileExtension(image_uri).trim());
@@ -642,7 +641,7 @@ public class ChatActivity extends AppCompatActivity {
             image_uri=null;
         } else {
             if(TextUtils.isEmpty(messagebody)){
-                Toast.makeText(this, "You can not send empty message...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.youCanNotSendEmptyMessage), Toast.LENGTH_SHORT).show();
             }else {
                 sendMessage(messagebody);
                 //reset editText after sending message
@@ -710,12 +709,12 @@ public class ChatActivity extends AppCompatActivity {
                             String onlineStatus=documentSnapshot.getString("onlineStatus");
                             String typingStatus=documentSnapshot.getString("typingTo");
                             if (typingStatus.equals(myUid)){
-                                userStatus.setText("typing...");
+                                userStatus.setText(getResources().getString(R.string.typing));
                             }else {
                                 if (onlineStatus.equals("online")) {
-                                    userStatus.setText("online");
+                                    userStatus.setText(getResources().getString(R.string.online));
                                 } else {
-                                    userStatus.setText("Last seen at: "+onlineStatus);
+                                    userStatus.setText(onlineStatus);
                                 }
                             }
                         }
@@ -737,7 +736,7 @@ public class ChatActivity extends AppCompatActivity {
         if(user !=null){
             myUid=user.getUid();
         }else {
-            startActivity(new Intent(ChatActivity.this, homeActivity.class));
+            startActivity(new Intent(ChatActivity.this, HomeActivity.class));
             finish();
         }
     }

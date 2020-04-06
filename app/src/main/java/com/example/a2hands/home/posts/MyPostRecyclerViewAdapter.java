@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -19,17 +18,14 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.example.a2hands.Callback;
 import com.example.a2hands.ImagePreview;
@@ -43,8 +39,7 @@ import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
 import com.example.a2hands.R;
 import com.example.a2hands.rating.RatingsActivity;
-import com.example.a2hands.home.homeActivity;
-import com.github.chrisbanes.photoview.PhotoView;
+import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -72,8 +67,6 @@ import java.util.Map;
 
 import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.firebase.ui.auth.AuthUI.TAG;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
 
@@ -636,7 +629,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 Bundle b = new Bundle();
                 b.putString("post_id",curr_post.post_id);
                 sharing_option.setArguments(b);
-                sharing_option.show(((homeActivity)context).getSupportFragmentManager(),"");
+                sharing_option.show(((HomeActivity)context).getSupportFragmentManager(),"");
             }
         });
     }

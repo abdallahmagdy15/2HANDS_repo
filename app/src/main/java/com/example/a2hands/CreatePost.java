@@ -37,6 +37,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.a2hands.home.HomeActivity;
 import com.example.a2hands.home.posts.MyPostRecyclerViewAdapter;
 import com.example.a2hands.locationsearch.SearchLocation;
 import com.example.a2hands.home.posts.Post;
@@ -645,7 +646,7 @@ public class CreatePost extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        navigateUpTo(new Intent(CreatePost.this, com.example.a2hands.home.homeActivity.class));
+        navigateUpTo(new Intent(CreatePost.this, HomeActivity.class));
     }
 
 

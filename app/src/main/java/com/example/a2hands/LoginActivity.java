@@ -16,9 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.home.homeActivity;
-import com.example.a2hands.notifications.Notification;
-import com.example.a2hands.notifications.NotificationsService;
+import com.example.a2hands.home.HomeActivity;
 import com.example.a2hands.signup.signupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -133,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if user is signed in (non-null)
         if (auth.getCurrentUser() != null && auth.getCurrentUser().isEmailVerified()){
-            startActivity(new Intent(LoginActivity.this , homeActivity.class));
+            startActivity(new Intent(LoginActivity.this , HomeActivity.class));
             finish();
         }
     }
@@ -203,7 +201,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if(auth.getCurrentUser().isEmailVerified()){
-                                startActivity(new Intent(LoginActivity.this , homeActivity.class));
+                                startActivity(new Intent(LoginActivity.this , HomeActivity.class));
                                 finish();
 
                             }else{

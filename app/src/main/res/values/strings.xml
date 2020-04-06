@@ -130,6 +130,26 @@
     <string name="blockUser">Block user</string>
     <string name="reportPost">Report post</string>
 
+    <!--ChatListFragment-->
+    <string name="thisMessageWasDeleted">This message was Deleted…</string>
+    <string name="sentAPhoto">sent a photo…</string>
+
+    <!--ChatActivity-->
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="chooseImageFrom">Choose Image from</string>
+    <string name="sendingImage">Sending image…</string>
+    <string name="youCanNotSendEmptyMessage">You can not send empty message…</string>
+    <string name="typing">typing…</string>
+    <string name="online">online</string>
+
+    <!--ChatAdapter-->
+    <string name="areYouSureToDeleteThisMessage">Are you sure to delete this message?</string>
+    <string name="no">No</string>
+    <string name="seen">seen</string>
+    <string name="delivered">delivered</string>
+
+
 
     <string-array name="generalSettings">
         <item>Language</item>

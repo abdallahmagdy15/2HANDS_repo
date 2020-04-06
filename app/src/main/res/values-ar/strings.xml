@@ -131,6 +131,25 @@
     <string name="blockUser">حظر المستخدم</string>
     <string name="reportPost">ابلاغ عن المنشور</string>
 
+    <!--ChatListFragment-->
+    <string name="thisMessageWasDeleted">لقد تم مسح هذه الرسالة…</string>
+    <string name="sentAPhoto">تم ارسال صورة…</string>
+
+    <!--ChatActivity-->
+    <string name="camera">الكاميرا</string>
+    <string name="gallery">المعرض</string>
+    <string name="chooseImageFrom">اختر صورة من</string>
+    <string name="sendingImage">جاري ارسال صورة…</string>
+    <string name="youCanNotSendEmptyMessage">لا يمكنك ارسال رسالة فارغة…</string>
+    <string name="typing">يكتب الان…</string>
+    <string name="online">متصل</string>
+
+    <!--ChatAdapter-->
+    <string name="areYouSureToDeleteThisMessage">هل انت متأكد من مسح الرسالة ؟</string>
+    <string name="no">لا</string>
+    <string name="seen">تمت رؤيتها</string>
+    <string name="delivered">وصلت</string>
+
 
     <string-array name="generalSettings">
         <item>اللغة</item>

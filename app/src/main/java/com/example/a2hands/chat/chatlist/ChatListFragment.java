@@ -147,7 +147,7 @@ public class ChatListFragment extends Fragment {
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String thelastMessage =" ";
+                String theLastMessage =" ";
                 String seen =" ";
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
                     Chat chat=ds.getValue(Chat.class);
@@ -162,10 +162,10 @@ public class ChatListFragment extends Fragment {
                     if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId) ||
                             chat.getReceiver().equals(userId) && chat.getSender().equals(currentUser.getUid())){
                         String messageImage=chat.getMessageImage();
-                        if (!TextUtils.isEmpty(messageImage) &&!chat.getMessage().equals("This message was Deleted...") && TextUtils.isEmpty(chat.getMessage())) {
-                            thelastMessage="sent a photo";
+                        if (!TextUtils.isEmpty(messageImage) &&!chat.getMessage().equals(getResources().getString(R.string.thisMessageWasDeleted)) && TextUtils.isEmpty(chat.getMessage())) {
+                            theLastMessage = getResources().getString(R.string.sentAPhoto);
                         }else {
-                            thelastMessage = chat.getMessage();
+                            theLastMessage = chat.getMessage();
                         }
                     }
                     if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userId)){
@@ -176,7 +176,7 @@ public class ChatListFragment extends Fragment {
                         }
                     }
                 }
-                adapterChatList.setLastMessageAndSeenMap(userId,thelastMessage,seen);
+                adapterChatList.setLastMessageAndSeenMap(userId, theLastMessage, seen);
                 adapterChatList.notifyDataSetChanged();
             }
 

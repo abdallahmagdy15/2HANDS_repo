@@ -53,7 +53,7 @@
         <activity android:name=".CreatePost" />
         <activity android:name=".signup.signupActivity" />
         <activity
-            android:name=".home.homeActivity"
+            android:name=".home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".signup.signupSetBioActivity" />
