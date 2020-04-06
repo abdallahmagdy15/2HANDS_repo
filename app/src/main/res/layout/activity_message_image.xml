@@ -14,7 +14,7 @@
         android:adjustViewBounds="true"
         android:focusableInTouchMode="true"
         android:maxHeight="384dp"
-        android:src="@drawable/ic_image_black_24dp"
+        app:srcCompat="@drawable/ic_image_black_24dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/Save"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +32,12 @@
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
-        android:text="Save Image"
+        android:text="@string/save"
         android:visibility="visible"
         android:backgroundTint="#757575"
         android:backgroundTintMode="src_over"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/MSGImage"
         app:layout_constraintStart_toStartOf="@+id/MSGImage" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
     android:id="@+id/messageLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingStart="0dp"
     android:paddingEnd="10dp"
     android:paddingBottom="4dp">
 
@@ -34,7 +35,7 @@
             android:maxHeight="384dp"
             android:paddingBottom="2dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_image_black_24dp"
+            app:srcCompat="@drawable/ic_image_black_24dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:paddingTop="4dp"
+            android:paddingStart="0dp"
             android:paddingEnd="8dp"
             android:text="His Message"
             android:textAlignment="viewStart"

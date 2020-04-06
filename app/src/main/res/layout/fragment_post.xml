@@ -42,7 +42,7 @@
             android:focusableInTouchMode="true"
             android:paddingStart="5dp"
             android:paddingEnd="0dp"
-            android:text="Shared"
+            android:text="@string/shared"
             android:textStyle="italic" />
     </LinearLayout>
 
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:focusableInTouchMode="true"
-        android:text="General"
+        android:text="@string/general"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/postLocation"
@@ -256,6 +256,7 @@
             android:focusableInTouchMode="true"
             android:gravity="end"
             android:textColor="@color/colorDisabled" />
+
     </LinearLayout>
 
     <LinearLayout

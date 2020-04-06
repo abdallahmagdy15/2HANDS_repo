@@ -33,7 +33,6 @@
                     android:id="@+id/profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="20dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
@@ -51,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="90dp"
                     android:gravity="center_vertical"
-                    android:text="Notifications"
+                    android:text="@string/notifications"
                     android:textColor="@color/colorDark"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -143,6 +142,7 @@
             app:menu="@menu/bottom_navigation" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -151,4 +151,5 @@
         android:scrollbars="vertical"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

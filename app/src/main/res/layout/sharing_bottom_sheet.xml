@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share Now"
+            android:text="@string/shareNow"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share with comment"
+            android:text="@string/shareWithComment"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share in private message"
+            android:text="@string/shareInPrivateMessage"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -108,7 +108,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Copy post link"
+            android:text="@string/copyPostLink"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -134,7 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Share external"
+            android:text="@string/shareExternal"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>

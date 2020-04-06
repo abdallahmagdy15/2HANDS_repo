@@ -7,9 +7,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".profile.FollowingsActivity"
     tools:showIn="@layout/activity_followings">
+
     <FrameLayout
         android:id="@+id/followingsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></FrameLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

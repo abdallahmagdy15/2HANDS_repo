@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Save post"
+            android:text="@string/savePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Disable react"
+            android:text="@string/disableReact"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete post"
+            android:text="@string/deletePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -108,7 +108,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hide post"
+            android:text="@string/hidePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -134,7 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mute user"
+            android:text="@string/muteUser"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
@@ -159,10 +159,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Block user"
+            android:text="@string/blockUser"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/postOptionReport"
         android:layout_width="match_parent"
@@ -184,7 +185,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Report post"
+            android:text="@string/reportPost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
     </LinearLayout>

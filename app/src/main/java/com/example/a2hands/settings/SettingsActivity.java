@@ -1,6 +1,9 @@
 package com.example.a2hands.settings;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,13 +30,17 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    String[] generalSettingsItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_settings);
 
         //account
@@ -52,35 +59,36 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         //general
         ListView generalListView = findViewById(R.id.listView_generalSettings);
-        final String[] generalSettingsItems = {"Language","Notifications", "Blocked Accounts","Night Mode", "About 2Hands"};
+
+        generalSettingsItems = getResources().getStringArray(R.array.generalSettings);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.simple_item_in_listview,generalSettingsItems);
         generalListView.setAdapter(adapter);
 
         generalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemSelected = generalSettingsItems[position];
+                //String itemSelected = generalSettingsItems[position];
 
-                switch (itemSelected){
-                    case "Language":
+                switch (position){
+                    case 0:
                         startActivity(new Intent(SettingsActivity.this , LanguageActivity.class));
                         break;
-                    case "Notifications":
+                    case 1:
                         startActivity(new Intent(SettingsActivity.this , NotificationActivity.class));
                         break;
-                    case "Blocked Accounts":
+                    case 2:
                         startActivity(new Intent(SettingsActivity.this , BlockedUsersActivity.class));
                         break;
-                    case "Night Mode":
+                    case 3:
 
                         break;
-                    case "About 2Hands":
+                    case 4:
                         startActivity(new Intent(SettingsActivity.this , AboutAppActivity.class));
                         break;
                 }
             }
         });
-
 
         editNamebtn.setOnClickListener(this);
         editEmailbtn.setOnClickListener(this);
@@ -89,7 +97,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         editCountrybtn.setOnClickListener(this);
         editPassTxt.setOnClickListener(this);
         deleteAccTxt.setOnClickListener(this);
-
 
         //drawer header data
         FirebaseFirestore.getInstance().collection("users/").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -136,6 +143,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SettingsActivity.this, com.example.a2hands.home.homeActivity.class));
+    }
+
 
     // loading JSON file of countries and states from assets folder
     public String loadCountryStateJSONFromAsset() {
@@ -176,9 +188,25 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+
+    //for changing app language
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //save the data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        editor.putString("My_Language", lang);
+        editor.apply();
+    }
+
+    public void loadLocale (){
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        setLocale(language);
     }
 
 }

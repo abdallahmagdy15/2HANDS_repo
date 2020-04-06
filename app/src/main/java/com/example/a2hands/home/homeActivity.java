@@ -7,8 +7,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,8 +86,8 @@ public class homeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_home);
 
         db = FirebaseFirestore.getInstance();
@@ -103,7 +105,7 @@ public class homeActivity extends AppCompatActivity {
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
         //category spinner declaration
-        catsStrings = getResources().getStringArray(R.array.categories);
+        catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.profile_image);
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -456,6 +458,51 @@ public class homeActivity extends AppCompatActivity {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);
         ft.commit();
+    }
+
+
+
+
+    /////////////////////////////////////////////////////////////
+    // changing the language only to get english Array strings //
+    // for categories to be able to load posts correctly.......//
+    /////////////////////////////////////////////////////////////
+    @NonNull
+    protected String[] getEnglishStringArray(int list) {
+        Configuration configuration = getEnglishConfiguration();
+
+        return this.createConfigurationContext(configuration).getResources().getStringArray(list);
+    }
+
+    @NonNull
+    private Configuration getEnglishConfiguration() {
+        Configuration configuration = new Configuration(this.getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        return configuration;
+    }////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////
+
+
+
+
+    //for changing app language
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //save the data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        editor.putString("My_Language", lang);
+        editor.apply();
+    }
+
+    public void loadLocale (){
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        setLocale(language);
     }
 
 }

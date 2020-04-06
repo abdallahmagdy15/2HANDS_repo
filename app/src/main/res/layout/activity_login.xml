@@ -14,7 +14,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
-        android:hint="Email"
+        android:textAlignment="viewStart"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:singleLine="true"
         android:soundEffectsEnabled="false"
@@ -31,14 +32,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:hint="Password"
-        android:password="true"
+        android:textAlignment="viewStart"
+        android:hint="@string/password"
+        android:inputType="textPassword"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginEmail" />
-
 
     <Button
         android:id="@+id/btnLogin"
@@ -48,7 +49,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +62,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
-        android:text="or sign in with"
+        android:text="@string/orSignInWith"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +88,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="40dp"
-        android:text="Forgot Password?"
+        android:text="@string/forgotYourPassword"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,12 +102,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="40dp"
-        android:text="Sign Up"
+        android:text="@string/signUp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="1.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

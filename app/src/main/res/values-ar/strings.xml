@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--sign up strings-->
+    <string name="fullName">الاسم كاملا</string>
+    <string name="userName">اسم المستخدم</string>
+    <string name="gender">الجنس</string>
+    <string name="male">ذكر</string>
+    <string name="female">انثى</string>
+    <string name="SelectYourDateOfBirth">حدد تاريخ ميلادك</string>
+    <string name="phone">الهاتف</string>
+    <string name="email">الايميل</string>
+    <string name="password">رقم المرور</string>
+    <string name="confirmPassword">تأكبد رقم المرور</string>
+    <string name="signUp">تسجيل</string>
+    <string name="back">السابق</string>
+    <string name="next">التالي</string>
+
+    <!--signup pic picture strings-->
+    <string name="pickAProfilePicture">اختر صورة الملف الشخصي</string>
+    <string name="skip">تخطي</string>
+
+    <!--signup set bio strings-->
+    <string name="talkAboutYourself">تحدث عن نفسك</string>
+    <string name="yourBio">نبذة عن نفسك</string>
+
+    <!--activity login-->
+    <string name="login">دخول</string>
+    <string name="orSignInWith">او سجل دخول باستخدام</string>
+
+    <!--activity forgot password-->
+    <string name="forgotYourPassword">هل نسيت رقم المرور؟</string>
+    <string name="submit">ارسال</string>
+
+    <!--home strings-->
+    <string name="notifications">الاشعارات</string>
+
+    <!--bottom navigation-->
+    <string name="home">الرئيسية</string>
+    <string name="search">بحث</string>
+    <string name="messages">الرسائل</string>
+
+    <!--fragment comment-->
+    <string name="like">اعجبني</string>
+    <string name="reply">رد</string>
+
+    <!--comment layout-->
+    <string name="writeAComment">اكتب تعليقاU+2026</string>
+
+    <!--fragment post-->
+    <string name="shared">شاركه</string>
+
+    <!--fragment rating-->
+    <string name="to">الى</string>
+    <string name="expressYourGratitude">عبر عن امتنانك</string>
+    <string name="writeAReview">اكتب تقييمك</string>
+    <string name="finised">انتهيت</string>
+
+    <!--fragment notification-->
+    <!--not complete-->
+    <string name="accept">قبول</string>
+    <string name="refuse">رفض</string>
+
+    <!--fragment search-->
+    <string name="recentSearches">عمليات البحث الاخيرة</string>
+    <string name="edit">تعديل</string>
+
+    <!--drawer menu-->
+    <string name="myProfile">الصفحة الشخصية</string>
+    <string name="saved">المحفوظات</string>
+    <string name="settings">الاعدادات</string>
+    <string name="signOut">تسجيل الخروج</string>
+    <string name="communicate">التواصل</string>
+    <string name="share">شارك</string>
+    <string name="send">أرسل الى</string>
+
+    <!--activity settings-->
+    <string name="account">الحساب</string>
+    <string name="name">الاسم</string>
+    <string name="country">الدولة</string>
+    <string name="changeYourPassword">تغيير كلمة المرور</string>
+    <string name="deleteAccount">مسح الحساب</string>
+    <string name="general">عام</string>
+
+    <!--activity_delete acc-->
+    <string name="currentPassword">كلمة المرور الحاليةd</string>
+    <string name="delete">مسح</string>
+
+    <!--activity edit country-->
+    <string name="save">حفظ</string>
+
+    <!--activity edit email-->
+    <string name="newEmail">البريد الجديد</string>
+
+    <!--activity edit pass-->
+    <string name="newPassword">كلمة المرور الجديدة</string>
+
+    <!--activity language-->
+    <string name="witchLanguageDoYouSpeak">أي من اللغات الاتية تتحدث بها؟</string>
+    <string name="arabic">العربية</string>
+    <string name="english">English</string>
+    <string name="french">Français</string>
+    <string name="done">انهاء</string>
+
+    <!--activity create post-->
+    <string name="post">نشر</string>
+    <string name="location">الموقع</string>
+    <string name="letsGetSomeHelp">لنحصل على بعض المساعدة!</string>
+    <string name="postAnonymously">انشر مجهولا؟</string>
+    <string name="addToYourPost">أضف الى منشورك</string>
+
+    <!--activity profile-->
+    <string name="follow">تابع</string>
+    <string name="reputation">السمعة</string>
+    <string name="posts">المنشورات</string>
+    <string name="reviews">التقييمات</string>
+
+    <!--sharing bottom sheet-->
+    <string name="shareNow">انشر الان</string>
+    <string name="shareWithComment">شارك مع تعليق</string>
+    <string name="shareInPrivateMessage">شارك في رسالة خاصة</string>
+    <string name="copyPostLink">نسخ رابط المنشور</string>
+    <string name="shareExternal">شارك خارج التطبيق</string>
+
+    <!--post options bottom sheet-->
+    <string name="disableReact">تعطيل التفاعل</string>
+    <string name="savePost">حفظ المنشور</string>
+    <string name="deletePost">مسح المنشور</string>
+    <string name="hidePost">اخفاء المنشور</string>
+    <string name="muteUser">ايقاف الاشعارات للناشر</string>
+    <string name="blockUser">حظر المستخدم</string>
+    <string name="reportPost">ابلاغ عن المنشور</string>
+
+
+    <string-array name="generalSettings">
+        <item>اللغة</item>
+        <item>الاشعارات</item>
+        <item>المستخدمون المحظورون</item>
+        <item>الوضع الليلي</item>
+        <item>عن 2Hands</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>عامة</item>
+        <item>طبية</item>
+        <item>نفسية</item>
+        <item>مالية</item>
+        <item>اجتماعية</item>
+        <item>عائلية</item>
+    </string-array>
+
+    <string-array name="postShareOptions">
+        <item>شارك الان</item>
+        <item>شاركه في تعليق</item>
+        <item>شارك لاحد ما</item>
+        <item>انسخ الرابط</item>
+    </string-array>
+
+
+
+
+
+    <string name="app_name">2HANDS</string>
+    <string name="title_activity_signup">أنشئ حسابك</string>
+    <string name="prompt_email">البريد</string>
+    <string name="prompt_password">رقم المرور</string>
+    <string name="action_sign_in">سجل الدخول او اضف حسابا</string>
+    <string name="action_sign_in_short">تسجيل الدخول</string>
+    <string name="welcome">"مرحبا !"</string>
+    <string name="invalid_username">اسم مستخدم غير صالح</string>
+    <string name="invalid_password">يجب ان تكون كلمة المرور اكبر من 5 حروف</string>
+    <string name="login_failed">"فشل تسجبل الدخول"</string>
+
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_followers">FollowersActivity</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+</resources>

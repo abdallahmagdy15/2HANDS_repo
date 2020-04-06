@@ -6,6 +6,8 @@ import androidx.appcompat.widget.SearchView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class SearchLocation extends AppCompatActivity {
@@ -40,6 +43,7 @@ public class SearchLocation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_search_location);
 
         //search Location
@@ -138,6 +142,27 @@ public class SearchLocation extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    //for changing app language
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //save the data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        editor.putString("My_Language", lang);
+        editor.apply();
+    }
+
+    public void loadLocale (){
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        setLocale(language);
     }
 
 }

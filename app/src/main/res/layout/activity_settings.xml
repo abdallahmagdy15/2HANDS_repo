@@ -12,8 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="2dp"
-        android:paddingRight="8dp">
+        android:paddingStart="2dp"
+        android:paddingEnd="8dp">
 
         <TextView
             android:id="@+id/textView15"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="Account"
+            android:text="@string/account"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Name:   "
+            android:text="@string/name"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -57,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textAlignment="viewStart"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
             app:layout_constraintEnd_toStartOf="@+id/btn_editName"
@@ -69,10 +70,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="8dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="8dp"
             android:textColor="#8BC34A"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtView_editName"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -98,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Email:    "
+            android:text="@string/email"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view5" />
@@ -109,13 +110,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textAlignment="viewStart"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
-
             app:layout_constraintEnd_toStartOf="@+id/btn_editEmail"
             app:layout_constraintHorizontal_bias="0.631"
             app:layout_constraintStart_toEndOf="@+id/textView7"
-            tools:layout_editor_absoluteY="113dp"
             tools:text="example@provider.com" />
 
         <TextView
@@ -123,10 +123,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="8dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="8dp"
             android:textColor="#8BC34A"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtView_editEmail"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Phone:   "
+            android:text="@string/phone"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view6" />
@@ -162,10 +162,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textAlignment="viewStart"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
             app:layout_constraintEnd_toStartOf="@+id/btn_editPhone"
-            app:layout_constraintHorizontal_bias="0.631"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             tools:text="your phone" />
 
@@ -174,10 +175,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="8dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="8dp"
             android:textColor="#8BC34A"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtView_editPhone"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -201,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Country:"
+            android:text="@string/country"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view7" />
@@ -212,6 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:textAlignment="viewStart"
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView9"
             app:layout_constraintEnd_toStartOf="@+id/btn_editCountry"
@@ -224,10 +226,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="8dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="8dp"
             android:textColor="#8BC34A"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtView_editCountry"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -252,7 +254,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Change your password"
+            android:text="@string/changeYourPassword"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/btn_editPass"
             app:layout_constraintStart_toStartOf="parent"
@@ -263,10 +265,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="2dp"
-            android:paddingRight="8dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="8dp"
             android:textColor="#8BC34A"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView_editPass"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -291,7 +293,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Delete Account"
+            android:text="@string/deleteAccount"
             android:textColor="#F44336"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -318,7 +320,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="20dp"
-            android:text="General"
+            android:text="@string/general"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view9" />

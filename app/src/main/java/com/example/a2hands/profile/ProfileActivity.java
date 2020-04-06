@@ -12,8 +12,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -53,6 +56,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -85,8 +89,8 @@ public class ProfileActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_profile);
 
         //declare
@@ -387,10 +391,31 @@ public class ProfileActivity extends AppCompatActivity
         @Override
         public CharSequence getPageTitle(int position) {
             if(position == 0)
-                return "Posts" ;
+                return getResources().getString(R.string.posts);
             else
-                return "Reviews";
+                return getResources().getString(R.string.reviews);
         }
+    }
+
+
+    //for changing app language
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        //save the data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        editor.putString("My_Language", lang);
+        editor.apply();
+    }
+
+    public void loadLocale (){
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        setLocale(language);
     }
 
 }

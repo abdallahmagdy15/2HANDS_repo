@@ -10,7 +10,7 @@
         android:id="@+id/profileIv"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/ic_face_black_24dp"
+        app:srcCompat="@drawable/ic_face_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

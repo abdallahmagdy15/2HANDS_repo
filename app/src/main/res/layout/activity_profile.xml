@@ -2,11 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -62,9 +59,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
+                    android:paddingStart="15dp"
                     android:paddingTop="20dp"
-                    android:paddingRight="0dp">
+                    android:paddingEnd="0dp">
 
                     <TextView
                         android:id="@+id/profileName"
@@ -127,7 +124,7 @@
                 <LinearLayout
                     android:layout_width="182dp"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="start"
                     android:orientation="vertical"
                     android:paddingStart="0dp"
                     android:paddingTop="10dp"
@@ -136,7 +133,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right|center_vertical"
+                        android:gravity="start|center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -175,7 +172,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:text="Follow"
+                                android:text="@string/follow"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="16sp" />
                         </androidx.cardview.widget.CardView>
@@ -186,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:backgroundTint="#E6E6E6"
-                            android:text="Edit"
+                            android:text="@string/edit"
                             android:textColor="#202020"
                             android:textSize="13sp"
                             android:visibility="gone" />
@@ -199,8 +196,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp"
-                        android:gravity="right"
-                        android:text="Reputation"
+                        android:gravity="start"
+                        android:text="@string/reputation"
                         android:textSize="16sp" />
 
                     <TextView
@@ -208,7 +205,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:gravity="right"
+                        android:gravity="start"
                         android:textSize="50sp"
                         android:textStyle="bold" />
 
@@ -237,8 +234,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
         android:fillViewport="true"
         android:fitsSystemWindows="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -267,12 +262,12 @@
                         android:id="@+id/tabPosts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Posts" />
+                        android:text="@string/posts" />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reviews" />
+                        android:text="@string/reviews" />
 
                 </com.google.android.material.tabs.TabLayout>
 

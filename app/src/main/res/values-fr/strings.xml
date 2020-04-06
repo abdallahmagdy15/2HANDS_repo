@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--sign up strings-->
+    <string name="fullName">Nom complet</string>
+    <string name="userName">Nom d\'utilisateur</string>
+    <string name="gender">Le sexe: </string>
+    <string name="male">Mâle</string>
+    <string name="female">Femelle</string>
+    <string name="SelectYourDateOfBirth">Choisissez votre date de naissance</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="confirmPassword">Confirmez le mot de passe</string>
+    <string name="signUp">S\'inscrire</string>
+    <string name="back">Retour</string>
+    <string name="next">Prochain</string>
+
+    <!--signup pic picture strings-->
+    <string name="pickAProfilePicture">Choisissez une photo de profil</string>
+    <string name="skip">Sauter</string>
+
+    <!--signup set bio strings-->
+    <string name="talkAboutYourself">Parler de soi</string>
+    <string name="yourBio">Votre bio</string>
+
+    <!--activity login-->
+    <string name="login">S\'identifier</string>
+    <string name="orSignInWith">ou connectez-vous avec</string>
+
+    <!--activity forgot password-->
+    <string name="forgotYourPassword">Mot de passe oublié?</string>
+    <string name="submit">Soumettre</string>
+
+    <!--home strings-->
+    <string name="notifications">Notifications</string>
+
+    <!--bottom navigation-->
+    <string name="home">Accueil</string>
+    <string name="search">Chercher</string>
+    <string name="messages">Messages</string>
+
+    <!--fragment comment-->
+    <string name="like">J\'aime</string>
+    <string name="reply">Répondre</string>
+
+    <!--comment layout-->
+    <string name="writeAComment">Écrire un commentaireU+2026</string>
+
+    <!--fragment post-->
+    <string name="shared">partagé</string>
+
+    <!--fragment rating-->
+    <string name="to">À</string>
+    <string name="expressYourGratitude">Exprimez votre gratitude</string>
+    <string name="writeAReview">Écrire une critique</string>
+    <string name="finised">Fini</string>
+
+    <!--fragment notification-->
+    <!--not complete-->
+    <string name="accept">J\'accepte</string>
+    <string name="refuse">je refuse</string>
+
+    <!--fragment search-->
+    <string name="recentSearches">recherches récentes</string>
+    <string name="edit">Éditer</string>
+
+    <!--drawer menu-->
+    <string name="myProfile">Mon profil</string>
+    <string name="saved">Enregistré</string>
+    <string name="settings">Réglages</string>
+    <string name="signOut">Déconnexion</string>
+    <string name="communicate">Communiquer</string>
+    <string name="share">Partager</string>
+    <string name="send">Envoyer</string>
+
+    <!--activity settings-->
+    <string name="account">Compte</string>
+    <string name="name">Nom</string>
+    <string name="country">Pays</string>
+    <string name="changeYourPassword">Changez votre mot de passe</string>
+    <string name="deleteAccount">Supprimer le compte</string>
+    <string name="general">Général</string>
+
+    <!--activity_delete acc-->
+    <string name="currentPassword">Mot de passe actuel</string>
+    <string name="delete">Supprime</string>
+
+    <!--activity edit country-->
+    <string name="save">Enregistre</string>
+
+    <!--activity edit email-->
+    <string name="newEmail">Nouveau courriel</string>
+
+    <!--activity edit pass-->
+    <string name="newPassword">Nouveau mot de passe</string>
+
+    <!--activity language-->
+    <string name="witchLanguageDoYouSpeak">Langue de sorcière parlez-vous?</string>
+    <string name="arabic">العربية</string>
+    <string name="english">English</string>
+    <string name="french">Français</string>
+    <string name="done">Fini</string>
+
+    <!--activity create post-->
+    <string name="post">Publier</string>
+    <string name="location">Emplacement</string>
+    <string name="letsGetSomeHelp">Allons chercher de l\'aide!</string>
+    <string name="postAnonymously">Publier de manière anonyme?</string>
+    <string name="addToYourPost">Ajouter à votre message</string>
+
+    <!--activity profile-->
+    <string name="follow">Suivre</string>
+    <string name="reputation">Réputation</string>
+    <string name="posts">Publications</string>
+    <string name="reviews">Commentaires</string>
+
+    <!--sharing bottom sheet-->
+    <string name="shareNow">Partage maintenant</string>
+    <string name="shareWithComment">Partager avec commentaire</string>
+    <string name="shareInPrivateMessage">Partager dans un message privé</string>
+    <string name="copyPostLink">Copier le lien de la publication</string>
+    <string name="shareExternal">Partager externe</string>
+
+    <!--post options bottom sheet-->
+    <string name="disableReact">Désactiver réagit</string>
+    <string name="savePost">Enregistrer le message</string>
+    <string name="deletePost">Supprimer le message</string>
+    <string name="hidePost">Masquer le message</string>
+    <string name="muteUser">Désactiver</string>
+    <string name="blockUser">Bloquer</string>
+    <string name="reportPost">Rapport</string>
+
+
+    <string-array name="generalSettings">
+        <item>Langue</item>
+        <item>Notifications</item>
+        <item>Utilisateurs bloqués</item>
+        <item>Mode Nuit</item>
+        <item>À propos de 2Hands</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Général</item>
+        <item>Médicament</item>
+        <item>Psychologie</item>
+        <item>Financier</item>
+        <item>Social</item>
+        <item>Famille</item>
+    </string-array>
+
+    <string-array name="postShareOptions">
+        <item>Partage maintenant</item>
+        <item>Partager avec commentaire</item>
+        <item>Partager avec quelqu\'un</item>
+        <item>Copier le lien</item>
+    </string-array>
+
+
+
+
+
+    <string name="app_name">2HANDS</string>
+    <string name="title_activity_signup">Créez votre compte</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Connexion ou Inscription</string>
+    <string name="action_sign_in_short">Connecte vous</string>
+    <string name="welcome">"Bienvenue !"</string>
+    <string name="invalid_username">Pas un nom d\'utilisateur valide</string>
+    <string name="invalid_password">Le mot de passe doit être > 5 caractères</string>
+    <string name="login_failed">"Échec de la connexion"</string>
+
+
+
+    <string name="hello_blank_fragment">Bonjour les fragmen vierges</string>
+    <string name="title_activity_followers">FollowersActivity</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+</resources>

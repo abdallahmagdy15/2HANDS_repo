@@ -1,6 +1,7 @@
 package com.example.a2hands.home.posts;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -73,7 +75,7 @@ public class PostsFragment extends Fragment {
         String activityName = bundle.getString("FOR");
 
         if (activityName.equals("HOME") ) {
-            selectedCat = bundle.getString("CAT", "General");
+            selectedCat = bundle.getString("CAT", getEnglishString(R.string.general));
             getUser(new Callback() {
                 @Override
                 public void callbackUser(User user) {
@@ -165,7 +167,7 @@ public class PostsFragment extends Fragment {
         // Read from the database
         Query query = FirebaseFirestore.getInstance().collection("/posts")
                 .whereIn("location", location);
-        if(!category.equals("General")){
+        if(!category.equals(getEnglishString(R.string.general))){
             query = query.whereEqualTo("category",category);
         }
         query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
@@ -322,5 +324,26 @@ public class PostsFragment extends Fragment {
 
         }
     }
+
+
+    ///////////////////////////////////////////////////////////
+    // changing the language only to get english strings for //
+    // categories to be able to load posts correctly ....... //
+    ///////////////////////////////////////////////////////////
+    @NonNull
+    protected String getEnglishString(int word) {
+        Configuration configuration = getEnglishConfiguration();
+
+        return getContext().createConfigurationContext(configuration).getResources().getString(word);
+    }
+
+    @NonNull
+    private Configuration getEnglishConfiguration() {
+        Configuration configuration = new Configuration(getContext().getResources().getConfiguration());
+        configuration.setLocale(new Locale("en"));
+        return configuration;
+    }////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////
+
 
 }
