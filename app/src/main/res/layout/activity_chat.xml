@@ -16,49 +16,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_Image"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:paddingStart="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_face_black_24dp"
-            app:civ_border_color="#FF000000"
-            app:civ_border_overlay="false"
-            app:civ_border_width="0dp"
-            app:civ_circle_background_color="@color/colorPrimaryDark" />
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_Image"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:scaleType="centerCrop"
+                app:civ_border_color="#FF000000"
+                app:civ_border_overlay="false"
+                app:civ_border_width="0dp"
+                app:civ_circle_background_color="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_face_black_24dp" />
 
             <TextView
                 android:id="@+id/HisName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:text="His Name"
                 android:textColor="@color/cardview_light_background"
                 android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/profile_Image"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/userstatus"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="2dp"
                 android:text="online"
                 android:textColor="@color/cardview_light_background"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_Image"
+                app:layout_constraintTop_toBottomOf="@+id/HisName" />
 
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -68,7 +74,6 @@
         android:layout_height="0dp"
         android:layout_above="@id/messagelayout"
         android:layout_below="@id/toolbar"
-        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/messagelayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +112,7 @@
                 android:focusableInTouchMode="true"
                 android:maxHeight="384dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_image_black_24dp"
+                app:srcCompat="@drawable/ic_image_black_24dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,7 +157,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="6dp"
             android:background="@null"
-            android:src="@drawable/ic_attach_file_black_24dp"
+            app:srcCompat="@drawable/ic_attach_file_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sendbutton"
             app:layout_constraintTop_toTopOf="parent"
@@ -165,7 +170,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="6dp"
             android:background="@null"
-            android:src="@drawable/ic_send_black_24dp"
+            app:srcCompat="@drawable/ic_send_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

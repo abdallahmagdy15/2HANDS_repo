@@ -142,6 +142,7 @@
     <string name="youCanNotSendEmptyMessage">You can not send empty message…</string>
     <string name="typing">typing…</string>
     <string name="online">online</string>
+    <string name="typeAMessage">Type a message…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Are you sure to delete this message?</string>

@@ -143,6 +143,7 @@
     <string name="youCanNotSendEmptyMessage">Vous ne pouvez pas envoyer de message vide…</string>
     <string name="typing">il tape…</string>
     <string name="online">en ligne</string>
+    <string name="typeAMessage">Tapez un message…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Voulez-vous vraiment supprimer ce message?</string>

@@ -143,6 +143,7 @@
     <string name="youCanNotSendEmptyMessage">لا يمكنك ارسال رسالة فارغة…</string>
     <string name="typing">يكتب الان…</string>
     <string name="online">متصل</string>
+    <string name="typeAMessage">اكتب رسالة…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">هل انت متأكد من مسح الرسالة ؟</string>

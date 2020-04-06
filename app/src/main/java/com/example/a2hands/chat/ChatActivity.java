@@ -11,6 +11,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -137,24 +144,36 @@ public class ChatActivity extends AppCompatActivity {
         /////UPLOAD_IMAGE
         messageImage=findViewById(R.id.messageImage);
         uploadImage=findViewById(R.id.uploadimage);
-        cameraPermissions=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         ///////
-        hisName=findViewById(R.id.HisName);
-        userStatus=findViewById(R.id.userstatus);
-        message=findViewById(R.id.messageEdit);
-        sendButton=findViewById(R.id.sendbutton);
+        hisName = findViewById(R.id.HisName);
+        userStatus = findViewById(R.id.userstatus);
+        message = findViewById(R.id.messageEdit);
+        sendButton = findViewById(R.id.sendbutton);
 
-        final Intent intent =getIntent();
-        hisUid=intent.getStringExtra("hisUid");
+//        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+//        String language = prefs.getString("My_Language", "");
+//        if(language.equals("ar")){
+//            sendButton.setImageBitmap
+//                (
+//                    makeImageMirror
+//                        (
+//                            BitmapFactory.decodeResource(getResources(), R.drawable.ic_send_black_24dp)
+//                        )
+//                );
+//        }
+
+        final Intent intent = getIntent();
+        hisUid = intent.getStringExtra("hisUid");
 
         firebaseAuth = FirebaseAuth.getInstance();
         myUid=firebaseAuth.getCurrentUser().getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        usersDbRef =firebaseDatabase.getReference("users");
+        usersDbRef = firebaseDatabase.getReference("users");
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -739,6 +758,35 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(ChatActivity.this, HomeActivity.class));
             finish();
         }
+    }
+
+    //flipping the source image of an ImageButton
+    private static Bitmap makeImageMirror(Bitmap bmp) {
+        final int width = bmp.getWidth();
+        final int height = bmp.getHeight();
+
+        // This will not scale but will flip on the X axis.
+        final Matrix mtx = new Matrix();
+        mtx.preScale(-1, 1);
+
+        // Create a Bitmap with the flip matrix applied to it.
+        final Bitmap reflection = Bitmap.createBitmap(bmp, 0, 0, width, height, mtx, false);
+
+        // Create a new Canvas with the bitmap.
+        final Canvas cnv = new Canvas(reflection);
+
+        // Draw the reflection Image.
+        cnv.drawBitmap(reflection, 0, 0, null);
+
+        //
+        final Paint pnt = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // Set the Transfer mode to be porter duff and destination in.
+        pnt.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+
+        // Draw a rectangle using the paint.
+        cnv.drawRect(0, 0, width, height, pnt);
+
+        return reflection;
     }
 
 
