@@ -31,8 +31,9 @@
     <string name="forgotYourPassword">Forgot Your Password?</string>
     <string name="submit">Submit</string>
 
-    <!--home strings-->
+    <!--activity home-->
     <string name="notifications">Notifications</string>
+    <string name="inbox">Inbox</string>
 
     <!--bottom navigation-->
     <string name="home">Home</string>
@@ -63,6 +64,7 @@
     <!--fragment search-->
     <string name="recentSearches">Recent Searches</string>
     <string name="edit">Edit</string>
+    <string name="searchHint">Search…</string>
 
     <!--drawer menu-->
     <string name="myProfile">My profile</string>

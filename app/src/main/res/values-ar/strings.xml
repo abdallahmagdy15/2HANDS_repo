@@ -32,8 +32,9 @@
     <string name="forgotYourPassword">هل نسيت رقم المرور؟</string>
     <string name="submit">ارسال</string>
 
-    <!--home strings-->
+    <!--activity home-->
     <string name="notifications">الاشعارات</string>
+    <string name="inbox">صندوق الوارد</string>
 
     <!--bottom navigation-->
     <string name="home">الرئيسية</string>
@@ -64,6 +65,7 @@
     <!--fragment search-->
     <string name="recentSearches">عمليات البحث الاخيرة</string>
     <string name="edit">تعديل</string>
+    <string name="searchHint">بحث…</string>
 
     <!--drawer menu-->
     <string name="myProfile">الصفحة الشخصية</string>

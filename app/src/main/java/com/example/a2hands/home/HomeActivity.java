@@ -110,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
         //category spinner declaration
         catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
-        profile_image = findViewById(R.id.profile_image);
+        profile_image = findViewById(R.id.home_profile_image);
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
 
@@ -403,14 +403,14 @@ public class HomeActivity extends AppCompatActivity {
     public void navigateHome(){
         catsSpinner.setVisibility(View.VISIBLE);
         catsSpinner.setTextSize(15);
-        searchView.setVisibility(View.GONE);
-        notificationsTitle.setVisibility(View.GONE);
+        searchView.setVisibility(View.INVISIBLE);
+        notificationsTitle.setVisibility(View.INVISIBLE);
         loadPosts(0);
     }
     public void navigateSearch(){
         searchView.setVisibility(View.VISIBLE);
-        catsSpinner.setVisibility(View.GONE);
-        notificationsTitle.setVisibility(View.GONE);
+        catsSpinner.setVisibility(View.INVISIBLE);
+        notificationsTitle.setVisibility(View.INVISIBLE);
 
         startFragmentSearch("");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -441,9 +441,9 @@ public class HomeActivity extends AppCompatActivity {
     }
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
-        notificationsTitle.setText("Notifications");
-        catsSpinner.setVisibility(View.GONE);
-        searchView.setVisibility(View.GONE);
+        notificationsTitle.setText(getResources().getString(R.string.notifications));
+        catsSpinner.setVisibility(View.INVISIBLE);
+        searchView.setVisibility(View.INVISIBLE);
 
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new NotificationFragment()).addToBackStack(null);
@@ -454,7 +454,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void navigateChatList(){
         notificationsTitle.setVisibility(View.VISIBLE);
-        notificationsTitle.setText("Inbox");
+        notificationsTitle.setText(getResources().getString(R.string.inbox));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 

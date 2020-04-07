@@ -1,6 +1,7 @@
 package com.example.a2hands.chat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -129,6 +130,7 @@ public class ChatActivity extends AppCompatActivity {
 
     LinearLayoutManager linearLayoutManager;
 
+    @SuppressLint("PrivateResource")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +138,14 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         getWindow().setBackgroundDrawableResource(R.drawable.chat_bg);
-        toolBar=findViewById(R.id.toolbar);
+
+        toolBar = findViewById(R.id.toolbar);
+        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         recyclerView=findViewById(R.id.chatrecycleview);
         profileImage=findViewById(R.id.profile_Image);
@@ -152,17 +161,12 @@ public class ChatActivity extends AppCompatActivity {
         message = findViewById(R.id.messageEdit);
         sendButton = findViewById(R.id.sendbutton);
 
-//        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-//        String language = prefs.getString("My_Language", "");
-//        if(language.equals("ar")){
-//            sendButton.setImageBitmap
-//                (
-//                    makeImageMirror
-//                        (
-//                            BitmapFactory.decodeResource(getResources(), R.drawable.ic_send_black_24dp)
-//                        )
-//                );
-//        }
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        if(language.equals("ar")){
+            sendButton.setScaleX(-1f);
+            uploadImage.setScaleX(-1f);
+        }
 
         final Intent intent = getIntent();
         hisUid = intent.getStringExtra("hisUid");
@@ -278,7 +282,7 @@ public class ChatActivity extends AppCompatActivity {
                 chatList.clear();
 
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    Chat chat=ds.getValue(Chat.class);
+                    Chat chat = ds.getValue(Chat.class);
 
                     if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)||
                             chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
@@ -302,10 +306,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(final String messagebody) {
-        Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
-        String dateTime =simpleDateFormat.format(cal.getTime());
-        String MSG_ID =String.valueOf(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        String dateTime = simpleDateFormat.format(cal.getTime());
+        String MSG_ID = String.valueOf(System.currentTimeMillis());
 
         HashMap<String,Object> MSG = new HashMap<>();
         MSG.put("MSGID",MSG_ID);
@@ -758,35 +762,6 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(ChatActivity.this, HomeActivity.class));
             finish();
         }
-    }
-
-    //flipping the source image of an ImageButton
-    private static Bitmap makeImageMirror(Bitmap bmp) {
-        final int width = bmp.getWidth();
-        final int height = bmp.getHeight();
-
-        // This will not scale but will flip on the X axis.
-        final Matrix mtx = new Matrix();
-        mtx.preScale(-1, 1);
-
-        // Create a Bitmap with the flip matrix applied to it.
-        final Bitmap reflection = Bitmap.createBitmap(bmp, 0, 0, width, height, mtx, false);
-
-        // Create a new Canvas with the bitmap.
-        final Canvas cnv = new Canvas(reflection);
-
-        // Draw the reflection Image.
-        cnv.drawBitmap(reflection, 0, 0, null);
-
-        //
-        final Paint pnt = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // Set the Transfer mode to be porter duff and destination in.
-        pnt.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-
-        // Draw a rectangle using the paint.
-        cnv.drawRect(0, 0, width, height, pnt);
-
-        return reflection;
     }
 
 

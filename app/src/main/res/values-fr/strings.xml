@@ -32,8 +32,9 @@
     <string name="forgotYourPassword">Mot de passe oublié?</string>
     <string name="submit">Soumettre</string>
 
-    <!--home strings-->
+    <!--activity home-->
     <string name="notifications">Notifications</string>
+    <string name="inbox">Boîte de réception</string>
 
     <!--bottom navigation-->
     <string name="home">Accueil</string>
@@ -64,6 +65,7 @@
     <!--fragment search-->
     <string name="recentSearches">recherches récentes</string>
     <string name="edit">Éditer</string>
+    <string name="searchHint">Chercher…</string>
 
     <!--drawer menu-->
     <string name="myProfile">Mon profil</string>
