@@ -85,6 +85,12 @@ public class CommentsActivity extends AppCompatActivity  {
             }
         });
 
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Language", "");
+        if(language.equals("ar")){
+            postCommentBtn.setScaleX(-1f);
+        }
+
 
         setLikesCounter();
 
@@ -114,7 +120,7 @@ public class CommentsActivity extends AppCompatActivity  {
 
     void setLikesCounter(){
         if(likesCount!=0)
-            like_count.setText(likesCount+" Likes");
+            like_count.setText(likesCount+" "+getResources().getString(R.string.likes));
     }
 
     void setLikesListener(){

@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
     String myUid;
 
     Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a",Locale.ENGLISH);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +178,10 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(new Intent(HomeActivity.this , LoginActivity.class));
                         break;
                     case R.id.nav_share:
-                        Toast.makeText(HomeActivity.this, "Share", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.share), Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_send:
-                        Toast.makeText(HomeActivity.this, "Send", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.send), Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -249,8 +249,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 drawer.openDrawer(GravityCompat.START);
-                /*Intent intent = new Intent(homeActivity.this, ProfileActivity.class);
-                startActivity(intent);*/
             }
         });
 
@@ -278,11 +276,11 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 loadPosts(position);
             }
         });
+
         /*catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -375,7 +373,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.pressBackAgainToExit), Toast.LENGTH_SHORT).show();
         mHandler.postDelayed(mRunnable, 2000);
     }
 

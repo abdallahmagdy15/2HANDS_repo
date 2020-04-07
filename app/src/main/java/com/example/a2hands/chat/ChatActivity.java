@@ -147,12 +147,12 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView=findViewById(R.id.chatrecycleview);
-        profileImage=findViewById(R.id.profile_Image);
+        recyclerView = findViewById(R.id.chatrecycleview);
+        profileImage = findViewById(R.id.profile_Image);
 
         /////UPLOAD_IMAGE
-        messageImage=findViewById(R.id.messageImage);
-        uploadImage=findViewById(R.id.uploadimage);
+        messageImage = findViewById(R.id.messageImage);
+        uploadImage = findViewById(R.id.uploadimage);
         cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         ///////
@@ -566,7 +566,7 @@ public class ChatActivity extends AppCompatActivity {
                             //image upload
                             progressDialog.dismiss();
                             Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
                             String dateTime =simpleDateFormat.format(cal.getTime());
                             String MSG_ID =String.valueOf(System.currentTimeMillis());
                             final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")

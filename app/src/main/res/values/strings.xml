@@ -31,6 +31,9 @@
     <string name="forgotYourPassword">Forgot Your Password?</string>
     <string name="submit">Submit</string>
 
+    <!--HomeActivity-->
+    <string name="pressBackAgainToExit">Press BACK again to exit</string>
+
     <!--activity home-->
     <string name="notifications">Notifications</string>
     <string name="inbox">Inbox</string>
@@ -40,12 +43,29 @@
     <string name="search">Search</string>
     <string name="messages">Messages</string>
 
+    <!--CommentsActivity-->
+    <string name="likes">Likes</string>
+
     <!--fragment comment-->
     <string name="like">Like</string>
     <string name="reply">Reply</string>
 
     <!--comment layout-->
-    <string name="writeAComment">Write a commentU+2026</string>
+    <string name="writeAComment">Write a comment…</string>
+
+    <!--activity likes-->
+    <string name="peopleLikedThisPost">People liked this post</string>
+
+    <!--MyPostRecyclerViewAdapter-->
+    <string name="anonymous">Anonymous</string>
+    <string name="canNotSendHelpRequestToYourself">Can\'t send help request to yourself!</string>
+    <string name="sendHelpRequestTo">Send Help Request to</string>
+    <string name="cancel">Cancel</string>
+    <string name="helpRequestIsSent">Help Request is Sent!</string>
+    <string name="likedYourPost">liked your post</string>
+    <string name="comments">comments</string>
+    <string name="ratings">ratings</string>
+    <string name="shares">shares</string>
 
     <!--fragment post-->
     <string name="shared">Shared</string>
@@ -54,7 +74,7 @@
     <string name="to">To</string>
     <string name="expressYourGratitude">Express your gratitude</string>
     <string name="writeAReview">Write a review</string>
-    <string name="finised">Finised</string>
+    <string name="finised">Finished</string>
 
     <!--fragment notification-->
     <!--not complete-->

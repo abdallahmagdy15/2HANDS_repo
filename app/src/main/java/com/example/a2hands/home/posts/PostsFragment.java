@@ -331,7 +331,7 @@ public class PostsFragment extends Fragment {
     // categories to be able to load posts correctly ....... //
     ///////////////////////////////////////////////////////////
     @NonNull
-    protected String getEnglishString(int word) {
+    private String getEnglishString(int word) {
         Configuration configuration = getEnglishConfiguration();
 
         return getContext().createConfigurationContext(configuration).getResources().getString(word);

@@ -225,13 +225,12 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/postCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:focusableInTouchMode="true"
-        android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:visibility="gone"
@@ -241,23 +240,59 @@
         app:layout_constraintTop_toBottomOf="@id/videoContainer">
 
         <TextView
-            android:id="@+id/postLikesCommentsCount"
+            android:id="@+id/postLikesCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:focusableInTouchMode="true"
-            android:textColor="@color/colorDisabled" />
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorDisabled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/postRatingsSharesCount"
+            android:id="@+id/postCommentsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:focusableInTouchMode="true"
-            android:gravity="end"
-            android:textColor="@color/colorDisabled" />
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:textAlignment="viewStart"
+            app:layout_constraintHorizontal_bias="0"
+            android:textColor="@color/colorDisabled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/postRatingsCount"
+            app:layout_constraintStart_toEndOf="@+id/postLikesCount"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/postRatingsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorDisabled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/postSharesCount"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/postSharesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:focusableInTouchMode="true"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorDisabled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/postReactContainer"

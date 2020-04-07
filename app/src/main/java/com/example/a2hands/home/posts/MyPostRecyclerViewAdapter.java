@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -69,7 +70,6 @@ import org.ocpsoft.prettytime.PrettyTime;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
-
 {
     private final List<Post> postsList;
     private  Context context;
@@ -101,13 +101,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public final ImageView ratingsBtn;
         public final ImageView likeBtn;
         public final String uid = FirebaseAuth.getInstance().getUid();
-        public final TextView postLikesCommentsCount;
-        public final TextView postRatingsSharesCount;
+        public final TextView postLikesCount;
+        public final TextView postCommentsCount;
+        public final TextView postRatingsCount;
+        public final TextView postSharesCount;
         public final ImageView shareBtn;
         public final ImageView commentBtn;
         public final TextView postUserSharedPost;
         public final LinearLayout sharingContainer;
-        public final LinearLayout postCounter;
+        public final ConstraintLayout postCounter;
         public final ImageView postOptions;
         public final View post_clickableVideo;
 
@@ -126,8 +128,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
             if (view.getId() != R.id.sharedPostContainer){
                 postContent =  view.findViewById(R.id.content);
-                postRatingsSharesCount = view.findViewById(R.id.postRatingsSharesCount);
-                postLikesCommentsCount = view.findViewById(R.id.postLikesCommentsCount);
+                postLikesCount = view.findViewById(R.id.postLikesCount);
+                postCommentsCount = view.findViewById(R.id.postCommentsCount);
+                postRatingsCount = view.findViewById(R.id.postRatingsCount);
+                postSharesCount = view.findViewById(R.id.postSharesCount);
                 postOptions = view.findViewById(R.id.postOptions);
                 ratingsBtn = view.findViewById(R.id.ratingBtn);
                 helpBtn = view.findViewById(R.id.helpBtn);
@@ -146,8 +150,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 postVideo = view.findViewById(R.id.sharedPostVideo);
                 mMediaController = view.findViewById(R.id.media_controller);
                 videoContainer = view.findViewById(R.id.videoContainerSharedPost);
-                postRatingsSharesCount = null;
-                postLikesCommentsCount = null;
+                postLikesCount = null;
+                postCommentsCount = null;
+                postRatingsCount = null;
+                postSharesCount = null;
                 postOptions = null;
                 ratingsBtn = null;
                 helpBtn = null;
@@ -206,8 +212,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context,ProfileActivity.class);
-                    i.putExtra("uid",currPost.user_id);
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("uid", currPost.user_id);
                     context.startActivity(i);
                 }
             });
@@ -229,7 +235,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.time.setText(p.format(curr_post.date));
         holder.location.setText(curr_post.location);
         String cat = curr_post.category;
-        holder.category.setText((!cat.equals("General"))?cat:"");
+        holder.category.setText((!cat.equals(context.getResources().getString(R.string.general)))? cat : "");
 
         checkPostOwnerVisibility(holder,curr_post);
 
@@ -286,13 +292,17 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         if(count[0] != 0 || count[1] != 0 || count[2] != 0 || count[3] != 0){
             holder.postCounter.setVisibility(View.VISIBLE);
         }
-        holder.postLikesCommentsCount.setText (
-                (count[0]==0)? "" +((count[1]==0)?"":count[1]+" comments")
-                        : count[0]+" likes"+((count[1]==0)?"":" • "+count[1]+" comments")
+        holder.postLikesCount.setText (
+                (count[0]==0)? "" : count[0] + " " + context.getResources().getString(R.string.likes)
         );
-        holder.postRatingsSharesCount.setText (
-                (count[2]==0)? "" +((count[3]==0)?"":count[3]+" shares")
-                        : count[2]+" ratings"+((count[3]==0)?"":" • "+count[3]+" shares")
+        holder.postCommentsCount.setText (
+                (count[1]==0)? "" : count[1] + " " + context.getResources().getString(R.string.comments)
+        );
+        holder.postRatingsCount.setText (
+                (count[2]==0)? "" : count[2] + " " + context.getResources().getString(R.string.ratings)
+        );
+        holder.postSharesCount.setText (
+                (count[3]==0)? "" : count[3] + " " + context.getResources().getString(R.string.shares)
         );
     }
 
@@ -397,7 +407,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     private void checkPostOwnerVisibility(final ViewHolder holder , final Post curr_post){
         //check visibility
         if(!curr_post.visibility){
-            holder.postOwner.setText("Anonymous");
+            holder.postOwner.setText(context.getResources().getString(R.string.anonymous));
             holder.postOwnerPic.setImageResource(R.drawable.anon);
         }
         else {
@@ -466,7 +476,8 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             public void onClick(View v) {
                 //check if post owner clicks on help button
                 if (holder.uid.equals(curr_post.user_id))
-                    Toast.makeText(context, "Can't send help request to yourself!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getResources().getString(R.string.canNotSendHelpRequestToYourself),
+                            Toast.LENGTH_LONG).show();
                 else {
                     //fill object of help request with data
                     final HelpRequest helpReq = new HelpRequest();
@@ -475,15 +486,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     helpReq.subscriber_id = curr_post.user_id;
                     //show confirmation dialog if u want to send help request
                     new AlertDialog.Builder(context)
-                            .setTitle("Send Help Request to " +
-                                    ((curr_post.visibility) ? curr_post.postOwner : "Anonymous") + "?")
-                            .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                            .setTitle(context.getResources().getString(R.string.sendHelpRequestTo)+ " " +
+                                    ((curr_post.visibility) ? curr_post.postOwner : context.getResources().getString(R.string.anonymous)) + "?")
+                            .setPositiveButton(context.getResources().getString(R.string.send), new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     saveHelpReq(helpReq,curr_post);
                                 }
                             })
-                            .setNegativeButton("Cancel", null).show();
+                            .setNegativeButton(context.getResources().getString(R.string.cancel), null).show();
                 }
             }
         });
@@ -496,7 +507,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 .add(helpReq).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull final Task<DocumentReference> helpReqTask) {
-                Toast.makeText(context, "Help Request Sent !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getResources().getString(R.string.helpRequestIsSent), Toast.LENGTH_SHORT).show();
                 //get name of current logged in user
                 FirebaseFirestore.getInstance()
                         .collection("users").document(helpReq.publisher_id)
@@ -538,14 +549,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        //get curr user and send notifi
+                        //get curr user and send notification
                         PostsFragment.getUser(new Callback() {
                             @Override
                             public void callbackUser(User user) {
                                 //send notifications
                                 NotificationHelper nh = new NotificationHelper(context);
                                 nh.sendReactOnPostNotification(user,"LIKE_POST",curr_post
-                                        ," liked your post \""+curr_post.content_text+"\"");
+                                        ," "+context.getResources().getString(R.string.likedYourPost)+ " \""+curr_post.content_text+"\"");
                             }
                         },holder.uid);
                     }
@@ -602,10 +613,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 try {
                     PostCounter postCounter = dataSnapshot.getValue(PostCounter.class);
                     if(postCounter != null){
-                        count[0]=postCounter.likes_count;
-                        count[1]=postCounter.comments_count;
-                        count[2]=postCounter.ratings_count;
-                        count[3]=postCounter.shares_count;
+                        count[0] = postCounter.likes_count;
+                        count[1] = postCounter.comments_count;
+                        count[2] = postCounter.ratings_count;
+                        count[3] = postCounter.shares_count;
                         updatePostWithCounter(holder,count);
 
                         setCommentBtnListener(holder, curr_post, count[0]);
