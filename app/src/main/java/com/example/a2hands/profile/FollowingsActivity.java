@@ -32,7 +32,7 @@ public class FollowingsActivity extends AppCompatActivity {
         Fragment frg = new UsersFragment();
         Bundle b = new Bundle();
         b.putString("FOR","FOLLOWINGS");
-        b.putString("UID",getIntent().getStringExtra("UID"));
+        b.putString("ID",getIntent().getStringExtra("UID"));
         frg.setArguments(b);
         FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.followingsContainer,frg,null);

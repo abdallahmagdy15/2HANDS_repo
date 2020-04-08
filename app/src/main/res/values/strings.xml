@@ -132,6 +132,7 @@
 
     <!--activity profile-->
     <string name="follow">Follow</string>
+    <string name="Edit">Edit</string>
     <string name="reputation">Reputation</string>
     <string name="posts">Posts</string>
     <string name="reviews">Reviews</string>
@@ -198,7 +199,6 @@
         <item>Share to someone</item>
         <item>Copy link</item>
     </string-array>
-
 
 
     <string name="app_name">2HANDS</string>

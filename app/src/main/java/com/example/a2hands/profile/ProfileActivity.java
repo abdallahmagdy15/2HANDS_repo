@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.text.Html;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -69,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity
     ImageView coverPhoto;
     ImageView profilePic;
     CardView profileFollowBtn;
-    Button profileEditBtn;
+    CardView profileEditBtn;
     ImageView profileMessaging;
     private StorageReference mStorageRef;
     private FirebaseFirestore db;
@@ -120,11 +121,13 @@ public class ProfileActivity extends AppCompatActivity
         profileFollowersCount = findViewById(R.id.profileFollowersCount);
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
 
+
         // setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         //Chat Activity
         profileMessaging.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +160,11 @@ public class ProfileActivity extends AppCompatActivity
 
     }// end of onCreate method
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.profile_options_menu, menu);
+        return true;
+    }
 
     //loading JSON file of countries and states from assets folder
     public String loadCountryStateJSONFromAsset() {

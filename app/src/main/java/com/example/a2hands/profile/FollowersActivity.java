@@ -32,7 +32,7 @@ public class FollowersActivity extends AppCompatActivity  {
         Fragment frg = new UsersFragment();
         Bundle b = new Bundle();
         b.putString("FOR","FOLLOWERS");
-        b.putString("UID",getIntent().getStringExtra("UID"));
+        b.putString("ID",getIntent().getStringExtra("UID"));
         frg.setArguments(b);
         FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.followersContainer,frg,null);

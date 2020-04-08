@@ -133,6 +133,7 @@
 
     <!--activity profile-->
     <string name="follow">تابع</string>
+    <string name="Edit">تعديل</string>
     <string name="reputation">السمعة</string>
     <string name="posts">المنشورات</string>
     <string name="reviews">التقييمات</string>

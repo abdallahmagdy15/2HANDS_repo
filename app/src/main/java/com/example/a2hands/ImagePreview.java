@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 
 import com.r0adkll.slidr.Slidr;
@@ -30,9 +31,12 @@ public class ImagePreview extends AppCompatActivity {
         setContentView(R.layout.activity_image_preview);
 
         Toolbar toolbar = findViewById(R.id.imagePreviewToolbar);
-        ImageView image = findViewById(R.id.imagePreview);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.inflateMenu(R.menu.image_preview_options_menu);
+        ImageView image = findViewById(R.id.imagePreview);
 
         Uri imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_PATH"));
         Picasso.get().load(imageUri).into(image);
@@ -52,6 +56,12 @@ public class ImagePreview extends AppCompatActivity {
         slidr = Slidr.attach(this, config);
         //starting when Intent begins
         overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.image_preview_options_menu, menu);
+        return true;
     }
 
     @Override

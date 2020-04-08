@@ -19,63 +19,94 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VideoPreview"
-            android:configChanges="orientation|keyboardHidden|screenSize">
 
-        </activity>
+        <activity android:name=".profile.EditProfileActivity"></activity>
+
+        <activity
+            android:name=".VideoPreview"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
         <activity
             android:name=".ImagePreview"
             android:parentActivityName=".ImagePreview" />
+
         <activity
             android:name=".home.LikesActivity"
             android:parentActivityName=".home.LikesActivity" />
+
         <activity android:name=".chat.MessageImageActivity" />
+
         <activity
             android:name=".profile.FollowingsActivity"
             android:label="@string/title_activity_followings"
             android:parentActivityName=".profile.FollowingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".profile.FollowersActivity"
             android:label="@string/title_activity_followers"
             android:parentActivityName=".profile.FollowersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".locationsearch.SearchLocation" />
+
         <activity
             android:name=".SavedPostsActivity"
             android:parentActivityName=".SavedPostsActivity" />
+
         <activity
             android:name=".rating.RatingsActivity"
             android:parentActivityName=".rating.RatingsActivity" />
+
         <activity android:name=".ForgetPasswordActivity" />
+
         <activity
             android:name=".profile.ProfileActivity"
             android:parentActivityName=".profile.ProfileActivity" />
+
         <activity android:name=".CreatePost" />
+
         <activity android:name=".signup.signupActivity" />
+
         <activity
             android:name=".home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".signup.signupSetBioActivity" />
+
         <activity android:name=".signup.signupPickPictureActivity" />
+
         <activity android:name=".home.comments.CommentsActivity" />
+
         <activity android:name=".settings.SettingsActivity" />
+
         <activity android:name=".settings.AboutAppActivity" />
+
         <activity
             android:name=".settings.BlockedUsersActivity"
             android:parentActivityName=".settings.BlockedUsersActivity" />
+
         <activity android:name=".settings.DeleteAccActivity" />
+
         <activity android:name=".settings.EditCountryActivity" />
+
         <activity android:name=".settings.EditEmailActivity" />
+
         <activity android:name=".settings.EditNameActivity" />
+
         <activity android:name=".settings.EditPassActivity" />
+
         <activity android:name=".settings.EditPhoneActivity" />
+
         <activity android:name=".settings.LanguageActivity" />
+
         <activity android:name=".settings.NotificationActivity" />
+
         <activity
             android:name=".chat.ChatActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,6 +118,7 @@
         <service
             android:name=".notifications.NotificationsService"
             android:exported="false" />
+
         <service android:name=".chat.chat_notifications.FirebaseService"
             android:enabled="true"
             android:exported="true">
@@ -94,6 +126,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_SERVICE"/>
             </intent-filter>
         </service>
+
         <service android:name=".chat.chat_notifications.FirebaseMessaging"
             android:enabled="true"
             android:exported="true">
@@ -115,6 +148,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
 
 </manifest>

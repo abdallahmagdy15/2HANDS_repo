@@ -133,6 +133,7 @@
 
     <!--activity profile-->
     <string name="follow">Suivre</string>
+    <string name="Edit">Éditer</string>
     <string name="reputation">Réputation</string>
     <string name="posts">Publications</string>
     <string name="reviews">Commentaires</string>

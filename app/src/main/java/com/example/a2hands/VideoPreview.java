@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -113,6 +114,12 @@ public class VideoPreview extends AppCompatActivity {
         slidr = Slidr.attach(this, config);
         //starting when Intent begins
         overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.video_preview_options_menu, menu);
+        return true;
     }
     @Override
     public void finish() {
