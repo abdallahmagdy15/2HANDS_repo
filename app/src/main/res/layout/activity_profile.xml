@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="180dp"
-                android:background="#FFFFFF"
+                android:background="@color/colorPureWhite"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
@@ -61,14 +61,13 @@
                 <TextView
                     android:id="@+id/profileName"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="#181818"
                     android:textDirection="locale"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    card_view:layout_constraintBaseline_toBaselineOf="@+id/profileFollowBtn"
                     card_view:layout_constraintBottom_toTopOf="@+id/jobTitle"
                     card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
                     card_view:layout_constraintStart_toStartOf="parent"
@@ -76,8 +75,8 @@
 
                 <TextView
                     android:id="@+id/jobTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
                     android:text="Job"
                     android:textColor="#222222"
@@ -89,8 +88,8 @@
 
                 <TextView
                     android:id="@+id/country_region"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
                     android:text="Kfs"
                     android:textColor="#242424"
@@ -201,13 +200,14 @@
                     android:id="@+id/textView6"
                     android:layout_width="0dp"
                     android:layout_height="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="end"
                     android:text="@string/reputation"
                     android:textSize="18sp"
                     card_view:layout_constraintBottom_toTopOf="@+id/profileRate"
                     card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@id/profileName" />
+                    card_view:layout_constraintTop_toBottomOf="@id/profileFollowBtn"
+                    card_view:layout_goneMarginTop="52dp" />
 
                 <TextView
                     android:id="@+id/profileRate"
@@ -223,12 +223,11 @@
 
                 <RatingBar
                     android:id="@+id/ratingBarGet"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    style="@android:style/Widget.Material.RatingBar.Small"
                     android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_gravity="end"
                     android:progressTint="@color/colorAccent"
-                    android:rating="8.7"
                     card_view:layout_constraintBottom_toTopOf="@+id/ratings_count"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/profileRate" />

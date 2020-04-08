@@ -6,4 +6,105 @@
     android:layout_height="match_parent"
     tools:context=".profile.EditProfileActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/editProfile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/editProfile_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/save"
+            android:textColor="@color/colorPureWhite"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="337dp"
+            tools:layout_editor_absoluteY="18dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/editProfile_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="192dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_toolbar"
+        app:srcCompat="@drawable/default_bg" />
+
+    <ImageView
+        android:id="@+id/editProfile_addCover"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:background="#80000000"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/editProfile_cover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_toolbar"
+        app:srcCompat="@drawable/add_image" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/editProfile_addPic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/camera"
+        app:civ_border_color="@color/colorWhite"
+        app:civ_border_width="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editProfile_toolbar" />
+
+    <EditText
+        android:id="@+id/editProfile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/fullName"
+        android:inputType="textPersonName"
+        android:maxLength="50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editProfile_addCover" />
+
+    <EditText
+        android:id="@+id/editProfile_job"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Your job"
+        android:inputType="textPersonName"
+        android:maxLength="64"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_name" />
+
+    <EditText
+        android:id="@+id/editProfile_bio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/yourBio"
+        android:inputType="textPersonName"
+        android:maxLength="300"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_job" />
 </androidx.constraintlayout.widget.ConstraintLayout>

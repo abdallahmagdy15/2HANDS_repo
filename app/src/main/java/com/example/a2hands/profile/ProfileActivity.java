@@ -87,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity
     TextView profileFollowersCount;
     TextView profileFollowBtnTxt;
     String UserName;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +166,22 @@ public class ProfileActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.profile_options_menu, menu);
         return true;
     }
+    void setEditBtnListener(){
+        profileEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                i.putExtra("UID",curr_uid);
+                i.putExtra("NAME",user.full_name);
+                i.putExtra("JOB",user.job_title);
+                i.putExtra("BIO",user.bio);
+                i.putExtra("COVER_PATH",user.profile_cover);
+                i.putExtra("PIC_PATH",user.profile_pic);
+                startActivity(i);
+            }
+        });
+
+    }
 
     //loading JSON file of countries and states from assets folder
     public String loadCountryStateJSONFromAsset() {
@@ -217,6 +234,7 @@ public class ProfileActivity extends AppCompatActivity
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
+
     void setLoadingFollowersListener(){
         profileFollowersCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +245,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
     }
+
     void setLoadingFollowingsListener(){
         profileFollowingsCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +256,7 @@ public class ProfileActivity extends AppCompatActivity
             }
         });
     }
+
     void setFollowListener(){
         profileFollowBtn.setVisibility(View.VISIBLE);
         profileMessaging.setVisibility(View.VISIBLE);
@@ -286,12 +306,13 @@ public class ProfileActivity extends AppCompatActivity
                     }
                 });
     }
+
     void loadUserProfile(){
         db.collection("/users").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
+                user = task.getResult().toObject(User.class);
                 try {
                     loadPhotos(profilePic,"Profile_Pics/"+uid+"/"+user.profile_pic );
                 } catch (Exception e) {
@@ -310,6 +331,9 @@ public class ProfileActivity extends AppCompatActivity
                 NumberFormat nf = NumberFormat.getInstance();
                 nf.setGroupingUsed(true);
                 ratings_count.setText( nf.format(user.ratings_count) );
+
+                if(uid.equals(curr_uid))
+                    setEditBtnListener();
 
             }
         });
