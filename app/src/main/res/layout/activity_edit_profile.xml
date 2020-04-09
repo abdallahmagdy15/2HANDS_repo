@@ -43,6 +43,7 @@
         android:id="@+id/editProfile_addCover"
         android:layout_width="match_parent"
         android:layout_height="192dp"
+        android:alpha=".85"
         android:background="#80000000"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="@+id/editProfile_cover"
@@ -52,14 +53,28 @@
         app:srcCompat="@drawable/add_image" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/editProfile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/male"
+        app:civ_border_color="@color/colorWhite"
+        app:civ_border_width="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editProfile_toolbar" />
+
+    <ImageView
         android:id="@+id/editProfile_addPic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="70dp"
+        android:alpha=".85"
+        android:scaleType="centerInside"
+        android:scaleX=".75"
+        android:scaleY=".75"
         android:src="@drawable/camera"
-        app:civ_border_color="@color/colorWhite"
-        app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editProfile_toolbar" />
 

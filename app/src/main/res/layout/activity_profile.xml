@@ -66,7 +66,7 @@
                     android:text="Name"
                     android:textColor="#181818"
                     android:textDirection="locale"
-                    android:textSize="16sp"
+                    android:textSize="19sp"
                     android:textStyle="bold"
                     card_view:layout_constraintBottom_toTopOf="@+id/jobTitle"
                     card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"

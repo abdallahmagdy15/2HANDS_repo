@@ -318,7 +318,7 @@ public class ProfileActivity extends AppCompatActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                loadPhotos(coverPhoto,"Profile_Covers/"+user.profile_cover);
+                loadPhotos(coverPhoto,"Profile_Covers/"+uid+"/"+user.profile_cover);
                 UserName = user.full_name;
                 profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
