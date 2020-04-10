@@ -77,6 +77,8 @@
         android:layout_above="@id/messagelayout"
         android:layout_below="@id/toolbar"
         android:paddingBottom="8dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/messagelayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

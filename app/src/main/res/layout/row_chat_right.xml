@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:paddingStart="0dp"
     android:paddingEnd="10dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="4dp"
+    android:focusableInTouchMode="true"
+    android:hapticFeedbackEnabled="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
