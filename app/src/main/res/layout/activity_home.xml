@@ -152,9 +152,9 @@
             android:layout_gravity="bottom"
             android:background="@color/colorPureWhite"
             app:elevation="0dp"
-            app:itemIconSize="28sp"
+            app:itemIconSize="27sp"
             app:itemTextColor="@color/bottom_nav_colors"
-            app:labelVisibilityMode="labeled"
+            app:labelVisibilityMode="unlabeled"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation" />
