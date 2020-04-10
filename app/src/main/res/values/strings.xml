@@ -73,6 +73,7 @@
     <!--activity search location-->
     <string name="searchYourState">Search your state</string>
     <string name="showInAllStates">Show in all states</string>
+    <string name="orSelectAstate">or select a state</string>
 
     <!--fragment rating-->
     <string name="to">To</string>

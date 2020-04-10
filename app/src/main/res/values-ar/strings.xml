@@ -74,6 +74,7 @@
     <!--activity search location-->
     <string name="searchYourState">ابحث عن المحافظة</string>
     <string name="showInAllStates">عرض في جميع المحافظات</string>
+    <string name="orSelectAstate">أو اختر محافظة</string>
 
     <!--fragment rating-->
     <string name="to">الى</string>
