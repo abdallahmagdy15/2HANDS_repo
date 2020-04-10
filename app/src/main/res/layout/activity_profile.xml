@@ -62,11 +62,12 @@
                     android:id="@+id/profileName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="80dp"
                     android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="#181818"
                     android:textDirection="locale"
-                    android:textSize="19sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     card_view:layout_constraintBottom_toTopOf="@+id/jobTitle"
                     card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
@@ -145,8 +146,8 @@
 
                 <ImageView
                     android:id="@+id/profileMessaging"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/messaging2"
                     android:visibility="gone"
@@ -156,8 +157,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profileFollowBtn"
-                    android:layout_width="102dp"
-                    android:layout_height="45dp"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
                     android:visibility="visible"
                     card_view:cardBackgroundColor="@color/colorWhite"
                     card_view:cardCornerRadius="25dp"
@@ -177,8 +178,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profileEditBtn"
-                    android:layout_width="100dp"
-                    android:layout_height="45dp"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
                     android:visibility="gone"
                     card_view:cardBackgroundColor="@color/colorWhite"
                     card_view:cardCornerRadius="25dp"

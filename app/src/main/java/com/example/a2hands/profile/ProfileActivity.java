@@ -1,6 +1,7 @@
 package com.example.a2hands.profile;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -177,10 +178,21 @@ public class ProfileActivity extends AppCompatActivity
                 i.putExtra("BIO",user.bio);
                 i.putExtra("COVER_PATH",user.profile_cover);
                 i.putExtra("PIC_PATH",user.profile_pic);
-                startActivity(i);
+                startActivityForResult(i,1);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            finish();
+            Intent i = new Intent(this,ProfileActivity.class);
+            i.putExtra("UID",uid);
+            startActivity(i);
+        }
     }
 
     //loading JSON file of countries and states from assets folder

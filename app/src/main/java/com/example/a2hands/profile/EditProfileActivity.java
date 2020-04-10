@@ -177,13 +177,12 @@ public class EditProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(EditProfileActivity.this,"Profile updated!",Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
                         finish();
-                        Intent i = new Intent(EditProfileActivity.this,ProfileActivity.class);
-                        i.putExtra("UID",uid);
-                        EditProfileActivity.this.startActivity(i);
                     }
                 });
     }
+
     void choosePhoto(int reqCode){
         Intent i = new Intent();
         i.setType("image/*");
