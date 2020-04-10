@@ -640,7 +640,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 Bundle b = new Bundle();
                 b.putString("post_id",curr_post.post_id);
                 sharing_option.setArguments(b);
-                sharing_option.show(((HomeActivity)context).getSupportFragmentManager(),"");
+                sharing_option.show(((AppCompatActivity)context).getSupportFragmentManager(),"");
             }
         });
     }

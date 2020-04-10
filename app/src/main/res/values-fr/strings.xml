@@ -71,6 +71,9 @@
     <!--fragment post-->
     <string name="shared">partagé</string>
 
+    <!--activity search location-->
+    <string name="searchYourState">Recherchez votre état</string>
+
     <!--fragment rating-->
     <string name="to">À</string>
     <string name="expressYourGratitude">Exprimez votre gratitude</string>
@@ -104,6 +107,33 @@
     <string name="deleteAccount">Supprimer le compte</string>
     <string name="general">Général</string>
 
+    <!--AboutAppActivity-->
+    <string name="aboutApp">À propos de l\'app</string>
+
+    <!--BlockedUsersActivity-->
+    <string name="blockedUsers">Utilisateurs bloqués</string>
+
+    <!--EditCountryActivity-->
+    <string name="editCountry">Modifier le pays</string>
+
+    <!--EditEmailActivity-->
+    <string name="editEmail">Modifier l\'e-mail</string>
+
+    <!--EditNameActivity-->
+    <string name="editName">Modifier le nom</string>
+
+    <!--EditPasswordActivity-->
+    <string name="editPassword">Modifier le mot de passe</string>
+
+    <!--EditPhoneActivity-->
+    <string name="editPhone">Modifier le téléphone</string>
+
+    <!--LanguageActivity-->
+    <string name="language">Langue</string>
+
+    <!--NotificationActivity-->
+    <string name="notificationSettings">Paramètres des notifications</string>
+
     <!--activity_delete acc-->
     <string name="currentPassword">Mot de passe actuel</string>
     <string name="delete">Supprime</string>
@@ -131,12 +161,25 @@
     <string name="postAnonymously">Publier de manière anonyme?</string>
     <string name="addToYourPost">Ajouter à votre message</string>
 
+    <!--ProfileActivity-->
+    <string name="following">Suivez-le</string>
+    <string name="areYouSureYouWantToUnfollow">Voulez-vous vraiment ne plus suivre?</string>
+
     <!--activity profile-->
     <string name="follow">Suivre</string>
     <string name="Edit">Éditer</string>
     <string name="reputation">Réputation</string>
     <string name="posts">Publications</string>
     <string name="reviews">Commentaires</string>
+
+    <!--activity edit profile-->
+    <string name="yourJob">votre travail</string>
+
+    <!--activity followers-->
+    <string name="followers">Suiveuses</string>
+
+    <!--activity following-->
+    <string name="followings">Suivants</string>
 
     <!--sharing bottom sheet-->
     <string name="shareNow">Partage maintenant</string>
@@ -173,6 +216,15 @@
     <string name="no">Non</string>
     <string name="seen">a été vu</string>
     <string name="delivered">a été livré</string>
+
+    <!--notifications MyNotificationRecyclerViewAdapter-->
+    <string name="helpRequestRefused">Demande d\'aide refusée</string>
+    <string name="helpRequestAccepted">Demande d\'aide acceptée</string>
+
+    <!--NotificationHelper-->
+    <string name="sentYouAHelpRequest">vous a envoyé une demande d\'aide</string>
+    <string name="sharedYourPost">a partagé votre message</string>
+    <string name="followedYou">vous a suivi</string>
 
 
     <string-array name="generalSettings">

@@ -71,6 +71,9 @@
     <!--fragment post-->
     <string name="shared">شاركه</string>
 
+    <!--activity search location-->
+    <string name="searchYourState">ابحث عن المحافظة</string>
+
     <!--fragment rating-->
     <string name="to">الى</string>
     <string name="expressYourGratitude">عبر عن امتنانك</string>
@@ -104,8 +107,35 @@
     <string name="deleteAccount">مسح الحساب</string>
     <string name="general">عام</string>
 
+    <!--AboutAppActivity-->
+    <string name="aboutApp">عن التطبيق</string>
+
+    <!--BlockedUsersActivity-->
+    <string name="blockedUsers">المستخدمون المحظورون</string>
+
+    <!--EditCountryActivity-->
+    <string name="editCountry">تعديل الدولة</string>
+
+    <!--EditEmailActivity-->
+    <string name="editEmail">تعديل البريد</string>
+
+    <!--EditNameActivity-->
+    <string name="editName">تعديل الاسم</string>
+
+    <!--EditPasswordActivity-->
+    <string name="editPassword">تعديل كلمة المرور</string>
+
+    <!--EditPhoneActivity-->
+    <string name="editPhone">تعديل رقم المحمول</string>
+
+    <!--LanguageActivity-->
+    <string name="language">اللغة</string>
+
+    <!--NotificationActivity-->
+    <string name="notificationSettings">اعدادات التنبيهات</string>
+
     <!--activity_delete acc-->
-    <string name="currentPassword">كلمة المرور الحاليةd</string>
+    <string name="currentPassword">كلمة المرور الحالية</string>
     <string name="delete">مسح</string>
 
     <!--activity edit country-->
@@ -131,12 +161,25 @@
     <string name="postAnonymously">انشر مجهولا؟</string>
     <string name="addToYourPost">أضف الى منشورك</string>
 
+    <!--ProfileActivity-->
+    <string name="following">أتابعه</string>
+    <string name="areYouSureYouWantToUnfollow">هل انت متأكد من الغاء المتابعه ؟</string>
+
     <!--activity profile-->
     <string name="follow">تابع</string>
     <string name="Edit">تعديل</string>
     <string name="reputation">السمعة</string>
     <string name="posts">المنشورات</string>
     <string name="reviews">التقييمات</string>
+
+    <!--activity edit profile-->
+    <string name="yourJob">ادخل وظيفتك</string>
+
+    <!--activity followers-->
+    <string name="followers">المتابِعون</string>
+
+    <!--activity following-->
+    <string name="followings">المتابَعون</string>
 
     <!--sharing bottom sheet-->
     <string name="shareNow">انشر الان</string>
@@ -173,6 +216,15 @@
     <string name="no">لا</string>
     <string name="seen">تمت رؤيتها</string>
     <string name="delivered">وصلت</string>
+
+    <!--notifications MyNotificationRecyclerViewAdapter-->
+    <string name="helpRequestRefused">تم رفض طلب المساعدة</string>
+    <string name="helpRequestAccepted">تم قبول طلب المساعدة</string>
+
+    <!--NotificationHelper-->
+    <string name="sentYouAHelpRequest">ارسل لك طلب مساعدة</string>
+    <string name="sharedYourPost">شارك منشورك</string>
+    <string name="followedYou">تابعك</string>
 
 
     <string-array name="generalSettings">

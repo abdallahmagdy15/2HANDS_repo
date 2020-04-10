@@ -52,7 +52,7 @@ public class NotificationHelper {
 
         String userName = user.full_name;
         notifi.publisher_name = userName;
-        notifi.content = userName + " sent you a help request";
+        notifi.content = userName + " " + context.getResources().getString(R.string.sentYouAHelpRequest);
         notifi.subscriber_id = helpReq.subscriber_id;
         notifi.publisher_id = helpReq.publisher_id;
         notifi.publisher_pic = user.profile_pic;
@@ -103,7 +103,7 @@ public class NotificationHelper {
                         if(task.getResult() != null){
                             Post curr_post = task.getResult().toObject(Post.class);
                             sendReactOnPostNotification(user,"SHARE_POST",curr_post
-                                    ," Shared your post \""+curr_post.content_text+"\"");
+                                    ," " + context.getResources().getString(R.string.sharedYourPost) + " \""+curr_post.content_text+"\"");
                         }
                     }
                 });
@@ -115,7 +115,7 @@ public class NotificationHelper {
         final Notification notifi = new Notification();
         String userName = publisherUser.full_name;
         notifi.publisher_name = userName;
-        notifi.content = userName + " followed you";
+        notifi.content = userName + " " + context.getResources().getString(R.string.followedYou);
         notifi.subscriber_id = subscriberId;
         notifi.publisher_id = publisherUser.user_id;
         notifi.publisher_pic = publisherUser.profile_pic;

@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPureWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Following"
+            app:title="@string/followings"
             app:titleTextColor="@color/colorDark" />
 
     </com.google.android.material.appbar.AppBarLayout>

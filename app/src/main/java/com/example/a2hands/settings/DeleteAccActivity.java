@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
@@ -40,6 +41,19 @@ public class DeleteAccActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_delete_acc);
+
+        Toolbar toolbar = findViewById(R.id.deleteAccToolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.deleteAccount));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         currentPass = findViewById(R.id.editTxt_deleteAcc_currentPass);
         deleteAcc = findViewById(R.id.deleteEmail_btnReal);
