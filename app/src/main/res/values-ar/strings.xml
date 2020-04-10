@@ -73,6 +73,7 @@
 
     <!--activity search location-->
     <string name="searchYourState">ابحث عن المحافظة</string>
+    <string name="showInAllStates">عرض في جميع المحافظات</string>
 
     <!--fragment rating-->
     <string name="to">الى</string>

@@ -66,12 +66,19 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 
 import id.zelory.compressor.Compressor;
@@ -122,7 +129,7 @@ public class CreatePost extends AppCompatActivity {
     //Search Location button
     Button postLocation;
     public static final int LOCATION_REQUEST_CODE = 5;
-    String gover;
+    String location;
 
     //mention
     final ArrayList<String> usersSuggNames = new ArrayList<>();
@@ -383,8 +390,8 @@ public class CreatePost extends AppCompatActivity {
         post.content_text = createdPostText.getText().toString();
         if(shared_post_id != null) post.shared_id = shared_post_id;
         //check if location not empty
-        if(gover != null)
-            post.location = gover;
+        if(location != null)
+            post.location = location;
         else{
             FirebaseFirestore.getInstance().collection("/users")
                     .document(curr_uid).get()
@@ -393,7 +400,7 @@ public class CreatePost extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     User user = task.getResult().toObject(User.class);
-                                    post.location = user.region;
+                                    post.location = loadCountryUsingItsISO(user.country);
                                 }
                             }
                     );
@@ -541,8 +548,8 @@ public class CreatePost extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
-            gover = data.getStringExtra("governate");
-            postLocation.setText(gover);
+            location = data.getStringExtra("SELECTED_LOCATION");
+            postLocation.setText(location);
         }
         else if (requestCode == VIDEO_REQUEST_CODE && resultCode == RESULT_OK && data != null){
             videoUri = data.getData();
@@ -648,6 +655,47 @@ public class CreatePost extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         navigateUpTo(new Intent(CreatePost.this, HomeActivity.class));
+    }
+
+
+
+    // loading JSON file of countries and states from assets folder
+    public String loadCountryStateJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
+            int size = inputStreanm.available();
+            byte[] buffer = new byte[size];
+            inputStreanm.read(buffer);
+            inputStreanm.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadCountryUsingItsISO(String countryCode){
+        try {
+            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
+            JSONArray countries_arr = obj.getJSONArray("countries");
+
+            Map<String,String> countries_code_name = new HashMap<>();
+
+            for (int i = 0; i < countries_arr.length(); i++) {
+                JSONObject jo_inside = countries_arr.getJSONObject(i);
+                String iso2 = jo_inside.getString("iso2");
+                String country_name = jo_inside.getString("name");
+
+                countries_code_name.put(iso2,country_name);
+            }
+            return countries_code_name.get(countryCode);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

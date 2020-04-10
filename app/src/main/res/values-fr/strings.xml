@@ -73,6 +73,7 @@
 
     <!--activity search location-->
     <string name="searchYourState">Recherchez votre état</string>
+    <string name="showInAllStates">Afficher dans tous les états</string>
 
     <!--fragment rating-->
     <string name="to">À</string>

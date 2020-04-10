@@ -28,7 +28,7 @@
                     android:id="@+id/createPost_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorPrimary"
+                    android:background="@color/colorAccent"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme">
 
@@ -36,7 +36,7 @@
                         android:id="@+id/submitPost"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
+                        android:gravity="start"
                         android:text="@string/post"
                         android:textColor="@color/colorWhite"
                         android:textSize="16sp" />
