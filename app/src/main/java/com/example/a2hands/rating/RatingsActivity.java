@@ -23,12 +23,13 @@ public class RatingsActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_ratings);
+
         Toolbar toolbar = findViewById(R.id.ratingsToolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Ratings");
+        getSupportActionBar().setTitle(getResources().getString(R.string.ratings));
 
         Intent i = getIntent();
         String postId  = i.getStringExtra("postId");

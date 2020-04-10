@@ -107,8 +107,35 @@
     <string name="deleteAccount">مسح الحساب</string>
     <string name="general">عام</string>
 
+    <!--AboutAppActivity-->
+    <string name="aboutApp">عن التطبيق</string>
+
+    <!--BlockedUsersActivity-->
+    <string name="blockedUsers">المستخدمون المحظورون</string>
+
+    <!--EditCountryActivity-->
+    <string name="editCountry">تعديل الدولة</string>
+
+    <!--EditEmailActivity-->
+    <string name="editEmail">تعديل البريد</string>
+
+    <!--EditNameActivity-->
+    <string name="editName">تعديل الاسم</string>
+
+    <!--EditPasswordActivity-->
+    <string name="editPassword">تعديل كلمة المرور</string>
+
+    <!--EditPhoneActivity-->
+    <string name="editPhone">تعديل رقم المحمول</string>
+
+    <!--LanguageActivity-->
+    <string name="language">اللغة</string>
+
+    <!--NotificationActivity-->
+    <string name="notificationSettings">اعدادات التنبيهات</string>
+
     <!--activity_delete acc-->
-    <string name="currentPassword">كلمة المرور الحاليةd</string>
+    <string name="currentPassword">كلمة المرور الحالية</string>
     <string name="delete">مسح</string>
 
     <!--activity edit country-->

@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".settings.DeleteAccActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/deleteAccToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPureWhite"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorDark" />
+
     <EditText
         android:id="@+id/editTxt_deleteAcc_currentPass"
         android:layout_width="0dp"
@@ -14,11 +26,11 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="textPassword"
         android:hint="@string/currentPassword"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteAccToolbar" />
 
     <Button
         android:id="@+id/deleteEmail_btnReal"

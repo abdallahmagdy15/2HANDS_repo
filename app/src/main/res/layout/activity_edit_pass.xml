@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".settings.EditPassActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/editPassToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPureWhite"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorDark" />
+
     <EditText
         android:id="@+id/editTxt_changePass_current"
         android:layout_width="0dp"
@@ -18,7 +30,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editPassToolbar" />
 
     <EditText
         android:id="@+id/editTxt_changePass_new"

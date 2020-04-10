@@ -1,9 +1,11 @@
 package com.example.a2hands.settings;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,12 +30,18 @@ public class BlockedUsersActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Blocked Users");
+        getSupportActionBar().setTitle(getResources().getString(R.string.blockedUsers));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BlockedUsersActivity.this, SettingsActivity.class));
+            }
+        });
 
         Fragment frg = new UsersFragment();
         Bundle b = new Bundle();
         b.putString("FOR","BLOCKED_USERS");
-        b.putString("UID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        b.putString("ID", FirebaseAuth.getInstance().getCurrentUser().getUid());
         frg.setArguments(b);
         FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.blockedUsersContainer,frg,null).addToBackStack(null);
@@ -42,7 +50,7 @@ public class BlockedUsersActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(BlockedUsersActivity.this, SettingsActivity.class));
     }
 
 

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,6 +49,19 @@ public class EditCountryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_edit_country);
+
+        Toolbar toolbar = findViewById(R.id.editCountryToolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.editCountry));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         saveCountry = findViewById(R.id.saveNewCountry_btn);
         ccpCountry = findViewById(R.id.ccpCountry_editCountry);

@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.R;
 
@@ -30,6 +31,19 @@ public class LanguageActivity extends AppCompatActivity {
         //loading locale before setting the content view
         loadLocale();
         setContentView(R.layout.activity_language);
+
+        Toolbar toolbar = findViewById(R.id.languageToolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.language));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         langGroup = findViewById(R.id.languageRadioGroup);
         btnDone = findViewById(R.id.changeLang_btn);

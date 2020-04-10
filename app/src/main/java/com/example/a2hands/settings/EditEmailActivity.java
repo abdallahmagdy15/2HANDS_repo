@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +39,19 @@ public class EditEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_edit_email);
+
+        Toolbar toolbar = findViewById(R.id.editEmailToolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(getResources().getString(R.string.editEmail));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         email = findViewById(R.id.editTxt_changeEmail);
         currentPass = findViewById(R.id.editTxt_changeEmail_currentPass);

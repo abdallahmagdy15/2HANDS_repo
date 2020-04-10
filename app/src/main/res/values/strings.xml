@@ -106,6 +106,33 @@
     <string name="deleteAccount">Delete Account</string>
     <string name="general">General</string>
 
+    <!--AboutAppActivity-->
+    <string name="aboutApp">About App</string>
+
+    <!--BlockedUsersActivity-->
+    <string name="blockedUsers">Blocked Users</string>
+
+    <!--EditCountryActivity-->
+    <string name="editCountry">Edit Country</string>
+
+    <!--EditEmailActivity-->
+    <string name="editEmail">Edit Email</string>
+
+    <!--EditNameActivity-->
+    <string name="editName">Edit Name</string>
+
+    <!--EditPasswordActivity-->
+    <string name="editPassword">Edit Password</string>
+
+    <!--EditPhoneActivity-->
+    <string name="editPhone">Edit Phone</string>
+
+    <!--LanguageActivity-->
+    <string name="language">Language</string>
+
+    <!--NotificationActivity-->
+    <string name="notificationSettings">Notifications Settings</string>
+
     <!--activity_delete acc-->
     <string name="currentPassword">Current Password</string>
     <string name="delete">Delete</string>
