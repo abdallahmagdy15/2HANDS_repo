@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,7 +83,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
-        context = parent.getContext();
         return new ViewHolder(view);
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -117,6 +117,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            context = view.getContext();
             time=view.findViewById(R.id.postTime);
             location =view.findViewById(R.id.postLocation);
             postOwner = view.findViewById(R.id.postOwner);
@@ -124,7 +125,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             postOwnerPic = view.findViewById(R.id.postOwnerPic);
             postUserSharedPost = view.findViewById(R.id.postUserSharedPost);
             sharingContainer = view.findViewById(R.id.sharingContainer);
-            post_clickableVideo=view.findViewById(R.id.post_clickableVideo);
 
             if (view.getId() != R.id.sharedPostContainer){
                 postContent =  view.findViewById(R.id.content);
@@ -143,13 +143,16 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 postVideo = view.findViewById(R.id.postVideo);
                 mMediaController = view.findViewById(R.id.media_controller);
                 videoContainer = view.findViewById(R.id.videoContainer);
+                post_clickableVideo=view.findViewById(R.id.post_clickableVideo);
+
             }
             else {
                 postContent =  view.findViewById(R.id.sharedContent);
-                postImage = view.findViewById(R.id.sharedPostImage);
-                postVideo = view.findViewById(R.id.sharedPostVideo);
-                mMediaController = view.findViewById(R.id.media_controller);
-                videoContainer = view.findViewById(R.id.videoContainerSharedPost);
+                postImage = view.findViewById(R.id.sharedPost_image);
+                postVideo = view.findViewById(R.id.sharedPost_video);
+                mMediaController = view.findViewById(R.id.sharedPost_mediaController);
+                videoContainer = view.findViewById(R.id.sharedPost_videoContainer);
+                post_clickableVideo=view.findViewById(R.id.sharedPost_clickableVideo);
                 postLikesCount = null;
                 postCommentsCount = null;
                 postRatingsCount = null;
@@ -198,8 +201,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         //check if main post has content
         if (currPost.content_text != null) //yes
         {
-            final View sharedPostContainer = holder.mView.findViewById(R.id.sharedPostContainer);
-            sharedPostContainer.setVisibility(View.VISIBLE);
+            final
+            View sharedPostContainer = holder.mView.findViewById(R.id.sharedPostContainer);
+            final CardView cardView = holder.mView.findViewById(R.id.post_cardView);
+            cardView.setVisibility(View.VISIBLE);
             MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
             MyPostRecyclerViewAdapter.ViewHolder vh = myPostRecyclerViewAdapter.new ViewHolder(sharedPostContainer);
             setupPostData(holder,currPost,false);

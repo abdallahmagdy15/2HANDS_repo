@@ -85,7 +85,6 @@
                         android:id="@+id/searchView"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
                         android:iconifiedByDefault="false"
                         android:queryHint="@string/searchHint"
                         android:visibility="invisible"
@@ -142,20 +141,20 @@
             android:layout_width="match_parent"
             android:layout_height=".5dp"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="55dp"
+            android:layout_marginBottom="49dp"
             android:background="@color/colorDisabled" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             style="@style/BottomNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="54.5dp"
+            android:layout_height="48.5dp"
             android:layout_gravity="bottom"
-            android:background="#fff"
+            android:background="@color/colorPureWhite"
             app:elevation="0dp"
-            app:itemIconSize="24sp"
+            app:itemIconSize="28sp"
             app:itemTextColor="@color/bottom_nav_colors"
-            app:labelVisibilityMode="selected"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation" />
