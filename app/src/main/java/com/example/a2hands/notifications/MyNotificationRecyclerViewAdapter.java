@@ -1,6 +1,5 @@
 package com.example.a2hands.notifications;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +38,6 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
 
 public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNotificationRecyclerViewAdapter.ViewHolder> {
 
@@ -95,7 +93,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                 @Override
                 public void onClick(View v) {
                     deleteNotifiAndhelpReq(pos,vh);
-                    Toast.makeText(vh.mView.getContext(),"Help Request Refused",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(vh.mView.getContext(),vh.mView.getContext().getResources().getString(R.string.helpRequestRefused),Toast.LENGTH_SHORT).show();
                     //delete help request
                     FirebaseFirestore.getInstance().collection("help_requests")
                             .document(notifisList.get(pos).help_request_id).delete();
@@ -159,7 +157,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         rating.review_text="";
         rating.date = new Date();
         ref.child(rating_id).setValue(rating);
-        Toast.makeText(vh.mView.getContext(),"Help request accepted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(vh.mView.getContext(),vh.mView.getContext().getResources().getString(R.string.helpRequestAccepted), Toast.LENGTH_SHORT).show();
         //update counter for ratings
         FirebaseDatabase.getInstance().getReference("counter").child(rating.post_id )
                 .child("ratings_count").runTransaction(new Transaction.Handler() {

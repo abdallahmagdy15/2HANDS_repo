@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-
 public class ProfileActivity extends AppCompatActivity
 {
 
@@ -270,13 +269,13 @@ public class ProfileActivity extends AppCompatActivity
                             //change style of follow btn
                             profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPureWhite));
                             profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
-                            profileFollowBtnTxt.setText("Following");
+                            profileFollowBtnTxt.setText(getResources().getString(R.string.following));
                             profileFollowBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     //confirm unfollow
                                     new AlertDialog.Builder(ProfileActivity.this)
-                                            .setTitle("Are you sure you want to unfollow ?")
+                                            .setTitle(getResources().getString(R.string.areYouSureYouWantToUnfollow))
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
                                                     FollowingHelper fh = new FollowingHelper(curr_uid,uid,ProfileActivity.this);
@@ -289,7 +288,7 @@ public class ProfileActivity extends AppCompatActivity
                             //change style of follow btn
                             profileFollowBtnTxt.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                             profileFollowBtn.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
-                            profileFollowBtnTxt.setText("Follow");
+                            profileFollowBtnTxt.setText(getResources().getString(R.string.follow));
 
                             profileFollowBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -343,7 +342,7 @@ public class ProfileActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String count = Long.toString(dataSnapshot.getChildrenCount());
-                        count = "<b>"+count+"</b> Followings";
+                        count = "<b>"+count+"</b>"+ "  " + getResources().getString(R.string.followings);
                         profileFollowingsCount.setText(Html.fromHtml(count));
                     }
                     @Override
@@ -356,7 +355,7 @@ public class ProfileActivity extends AppCompatActivity
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String count = Long.toString(dataSnapshot.getChildrenCount());
-                        count = "<b>"+count+"</b> Followers";
+                        count = "<b>"+count+"</b>"+ "  " + getResources().getString(R.string.followers);
                         profileFollowersCount.setText(Html.fromHtml(count));
                     }
                     @Override
@@ -413,7 +412,6 @@ public class ProfileActivity extends AppCompatActivity
                 frg.setArguments(b);
                 return frg;
             }
-
         }
 
         @Override

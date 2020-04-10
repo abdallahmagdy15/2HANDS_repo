@@ -64,7 +64,7 @@ dependencies {
     //    country picker with its code
     implementation 'com.hbb20:ccp:2.3.7'
 
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'com.google.android:flexbox:2.0.1'
 
     //for image compression
@@ -83,7 +83,7 @@ dependencies {
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
     // image preview , zoom and save
-    implementation 'com.github.chrisbanes:PhotoView:+'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     //customized videoView ..  full screen , media controller..
     implementation 'com.linsea:universalvideoview:1.1.0@aar'
