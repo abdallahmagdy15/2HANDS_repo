@@ -36,12 +36,16 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     private LinearLayout copyPostLinkBtn;
     private String current_uid;
     private String shared_post_id;
+    private String shared_post_location;
     private Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         current_uid = FirebaseAuth.getInstance().getUid();
-        shared_post_id = getArguments().getString("post_id");
+        shared_post_id = getArguments().getString("POST_ID");
+        shared_post_location = getArguments().getString("POST_LOCATION");
+
     }
 
     @Override
@@ -106,7 +110,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
         post.post_id = postid;
         post.user_id = current_uid;
         post.shared_id = shared_post_id;
-        post.location="Egypt";
+        post.location = shared_post_location;
         PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(final User user) {

@@ -16,8 +16,8 @@ public class Post {
     public List<String> videos;
     public List<String> images;
     public List<String> mentions;
-    public boolean state;
-    public boolean visibility;
+    public boolean state=true;
+    public boolean visibility=true;
     public String location;
     public String postOwner;
     public String user_id;
