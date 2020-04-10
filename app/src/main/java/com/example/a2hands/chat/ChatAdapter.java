@@ -76,7 +76,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         String timestamp = chatList.get(position).getTimestamp();
         final String messageImagee = chatList.get(position).getMessageImage();
 
-        if(messageImagee.equals("") || message.equals(context.getResources().getString(R.string.thisMessageWasDeleted))){
+        if(chatList.get(position).getIsDeleted()){
+            holder.messageImage.setVisibility(View.GONE);
+            holder.message.setVisibility(View.VISIBLE);
+            holder.message.setTextColor(context.getResources().getColor(R.color.deletedMessage));
+            holder.time.setTextColor(context.getResources().getColor(R.color.deletedMessage));
+            holder.message.setPaddingRelative(12, 8, 8, 0);
+            holder.message.setText(context.getResources().getString(R.string.thisMessageWasDeleted));
+            holder.message.getLayoutParams().width = Constraints.LayoutParams.WRAP_CONTENT;
+        }
+        else if(messageImagee.equals("")){
             holder.messageImage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
             holder.message.setPaddingRelative(12, 8, 8, 0);
@@ -96,7 +105,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
 
         }
-        holder.Time.setText(timestamp);
+        holder.time.setText(timestamp);
         try{
             Picasso.get().load(imageURI).into(holder.otherProfileImage);
         }
@@ -104,7 +113,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
         }
 
-        // click to show delete dialog
+        //long click to show delete dialog
         holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -144,7 +153,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                             holder.isSeen.setText(context.getResources().getString(R.string.delivered));
                         }
                     } else if(holder.isSeen.getVisibility() == View.VISIBLE
-                                && position != chatList.size()-1)
+                            && position != chatList.size()-1)
                     {
                         holder.isSeen.setVisibility(View.GONE);
                     }
@@ -198,7 +207,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
                     HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("Message", context.getResources().getString(R.string.thisMessageWasDeleted));
+                    hashMap.put("isDeleted",true);
                     ds.getRef().updateChildren(hashMap);
                 }
             }
@@ -216,7 +225,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
                     HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("Message",context.getResources().getString(R.string.thisMessageWasDeleted));
+                    hashMap.put("isDeleted",true);
                     ds.getRef().updateChildren(hashMap);
                 }
             }
@@ -228,7 +237,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         });
     }
 
-    void loadPhotos(final ImageView imgV , String path){
+    private void loadPhotos(final ImageView imgV, String path){
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -263,7 +272,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     class MyHolder extends RecyclerView.ViewHolder{
 
         ImageView otherProfileImage,messageImage;
-        TextView message,Time,isSeen;
+        TextView message,time,isSeen;
         androidx.constraintlayout.widget.ConstraintLayout messageLayout;
 
         public MyHolder(@NonNull View itemView) {
@@ -272,7 +281,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             otherProfileImage =itemView.findViewById(R.id.profileIv);
             messageImage =itemView.findViewById(R.id.messageImage);
             message =itemView.findViewById(R.id.messageTv);
-            Time =itemView.findViewById(R.id.messageTime);
+            time =itemView.findViewById(R.id.messageTime);
             isSeen =itemView.findViewById(R.id.isSeen);
             messageLayout=itemView.findViewById(R.id.messageLayout);
         }

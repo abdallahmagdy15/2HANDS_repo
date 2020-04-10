@@ -319,6 +319,7 @@ public class ChatActivity extends AppCompatActivity {
         MSG.put("Sender",myUid);
         MSG.put("Timestamp",dateTime);
         MSG.put("isSeen",false);
+        MSG.put("isDeleted",false);
 
         DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
         firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -589,6 +590,7 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
+                                MSG.put("isDeleted",false);
                             }else {
                                 MSG.put("MSGID", MSG_ID);
                                 MSG.put("Message", messagebody);
@@ -597,6 +599,7 @@ public class ChatActivity extends AppCompatActivity {
                                 MSG.put("Sender", myUid);
                                 MSG.put("Timestamp", dateTime);
                                 MSG.put("isSeen", false);
+                                MSG.put("isDeleted",false);
 
                                 //reset edittext after sending message
                                 message.setText("");

@@ -2,13 +2,13 @@ package com.example.a2hands.chat;
 
 public class Chat {
     private String MSGID,Message,MessageImage,Receiver,Sender,Timestamp;
-    boolean isSeen;
+    private boolean isSeen,isDeleted;
 
     public Chat() {
 
     }
 
-    public Chat(String MSGID, String message, String messageImage, String receiver, String sender, String timestamp, boolean isSeen) {
+    public Chat(String MSGID, String message, String messageImage, String receiver, String sender, String timestamp, boolean isSeen, boolean isDeleted) {
         this.MSGID = MSGID;
         Message = message;
         MessageImage = messageImage;
@@ -16,6 +16,7 @@ public class Chat {
         Sender = sender;
         Timestamp = timestamp;
         this.isSeen = isSeen;
+        this.isDeleted = isDeleted;
     }
 
     public String getMSGID() {
@@ -31,7 +32,15 @@ public class Chat {
     }
 
     public void setMessage(String message) {
-        this.Message = message;
+        Message = message;
+    }
+
+    public String getMessageImage() {
+        return MessageImage;
+    }
+
+    public void setMessageImage(String messageImage) {
+        MessageImage = messageImage;
     }
 
     public String getReceiver() {
@@ -39,7 +48,7 @@ public class Chat {
     }
 
     public void setReceiver(String receiver) {
-        this.Receiver = receiver;
+        Receiver = receiver;
     }
 
     public String getSender() {
@@ -47,7 +56,7 @@ public class Chat {
     }
 
     public void setSender(String sender) {
-        this.Sender = sender;
+        Sender = sender;
     }
 
     public String getTimestamp() {
@@ -55,7 +64,7 @@ public class Chat {
     }
 
     public void setTimestamp(String timestamp) {
-        this.Timestamp = timestamp;
+        Timestamp = timestamp;
     }
 
     public boolean getIsSeen() {
@@ -66,11 +75,11 @@ public class Chat {
         isSeen = seen;
     }
 
-    public String getMessageImage() {
-        return MessageImage;
+    public boolean getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setMessageImage(String messageImage) {
-        MessageImage = messageImage;
+    public void setIsDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

@@ -9,4 +9,6 @@
     <color name="colorWhiteGray">#E2E2E2</color>
     <color name="colorWhite">#F5F5F5</color>
     <color name="colorPureWhite">#FFF</color>
+
+    <color name="deletedMessage">#D32F2F</color>
 </resources>
