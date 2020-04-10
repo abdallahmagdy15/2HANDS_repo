@@ -6,13 +6,23 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 @IgnoreExtraProperties
-public class Notification {
+public class Notification implements Comparable<Notification> {
     public String subscriber_id;
     public String publisher_id;
     public String publisher_pic;
     public String subscriber_pic;
     public boolean is_seen=false;
     public String content;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Notification setDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
     public @ServerTimestamp Date date;
     public String type;
     public String help_request_id;
@@ -23,8 +33,16 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String subscriber_id, String publisher_id, String publisher_pic,String subscriber_name,
-                        String content, Date date, String type,String post_id ,String subscriber_pic,boolean is_seen,
+    @Override
+    public int compareTo(Notification notifi) {
+        if (getDate() == null || notifi.getDate() == null) {
+            return 0;
+        }
+        return getDate().compareTo(notifi.getDate());
+    }
+
+    public Notification(String subscriber_id, String publisher_id, String publisher_pic, String subscriber_name,
+                        String content, Date date, String type, String post_id , String subscriber_pic, boolean is_seen,
                         String help_request_id, String notification_id , String publisher_name) {
         this.subscriber_id = subscriber_id;
         this.publisher_id = publisher_id;

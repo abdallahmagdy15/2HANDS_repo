@@ -3,6 +3,8 @@ package com.example.a2hands;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -34,6 +36,7 @@ import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -75,8 +78,7 @@ import id.zelory.compressor.Compressor;
 
 public class CreatePost extends AppCompatActivity {
 
-    Button backBtn;
-    Button submitPost;
+    TextView submitPost;
     Spinner catSpinner;
     EditText createdPostText;
     Switch createdPostIsAnon;
@@ -85,6 +87,7 @@ public class CreatePost extends AppCompatActivity {
     final Post post = new Post();
     ListView mentionSuggestionsList;
     View postSharedPreview;
+    CardView cardView;
     String curr_uid;
     String shared_post_id;
     LinearLayout createPostAttachContainer;
@@ -132,7 +135,14 @@ public class CreatePost extends AppCompatActivity {
         loadLocale();
         setContentView(R.layout.activity_create_post);
 
-        backBtn = findViewById(R.id.backBtn);
+        Toolbar toolbar = findViewById(R.id.createPost_toolbar);
+
+        // setup
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         submitPost = findViewById(R.id.submitPost);
         catSpinner = findViewById(R.id.catSpinner);
         createdPostText = findViewById(R.id.createdPostText);
@@ -142,19 +152,13 @@ public class CreatePost extends AppCompatActivity {
         mentionSuggestionsList= findViewById(R.id.mentionSuggestionsList);
         curr_uid = FirebaseAuth.getInstance().getUid();
         createPostAttachContainer = findViewById(R.id.createPostAttachContainer);
+        cardView = findViewById(R.id.createPost_cardView);
 
         checkSharedPostExits();
         setLocationSelector();
         loadProfilePic();
         setMediaAttachListener();
         setMentionUserListener();
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         submitPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +174,7 @@ public class CreatePost extends AppCompatActivity {
         if(shared_post_id != null){
             createPostAttachContainer.setVisibility(View.GONE);
             postSharedPreview = findViewById(R.id.postSharedPreview);
-            postSharedPreview.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
             postSharedPreview.findViewById(R.id.postOptions).setVisibility(View.GONE);
             postSharedPreview.findViewById(R.id.postReactContainer).setVisibility(View.GONE);
             MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
@@ -372,7 +376,6 @@ public class CreatePost extends AppCompatActivity {
         });
     }
 
-
     public void submitPost() {
         submitPost.setEnabled(false);
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
@@ -483,7 +486,6 @@ public class CreatePost extends AppCompatActivity {
         }
     }
 
-
     void savePost(){
         CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
         String postid = ref.document().getId();
@@ -510,7 +512,6 @@ public class CreatePost extends AppCompatActivity {
             }
         });
     }
-
 
     ///////////--- methods for media upload - waleed
     private void openVideoChooser() {

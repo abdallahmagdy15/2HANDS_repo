@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -201,6 +202,7 @@ public class NotificationHelper {
         //get notifications of current user from realtime
         FirebaseDatabase.getInstance().getReference("notifications")
                 .orderByChild("subscriber_id").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .limitToLast(30)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -208,6 +210,7 @@ public class NotificationHelper {
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                             notifis.add(snapshot.getValue(Notification.class));
                         }
+                        Collections.reverse(notifis);
                         recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(notifis));
                     }
                     @Override

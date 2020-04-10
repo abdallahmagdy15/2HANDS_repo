@@ -64,7 +64,7 @@
             android:name=".profile.ProfileActivity"
             android:parentActivityName=".profile.ProfileActivity" />
 
-        <activity android:name=".CreatePost" />
+        <activity android:name=".CreatePost" android:parentActivityName=".CreatePost" />
 
         <activity android:name=".signup.signupActivity" />
 
