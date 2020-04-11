@@ -3,10 +3,13 @@ package com.example.a2hands.chat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +23,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -126,8 +130,10 @@ public class ChatActivity extends AppCompatActivity {
 
     ImageButton closeImageButton;
 
-
     LinearLayoutManager linearLayoutManager;
+
+    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
 
     @SuppressLint("PrivateResource")
     @Override
@@ -684,7 +690,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        if(isAppIsInBackground(getApplicationContext())){
+            String dateTime = simpleDateFormat.format(cal.getTime());
+            updateOnlineStatus(dateTime);
+        }
+        super.onStop();
+    }
+
+    @Override
     protected void onResume() {
+        updateOnlineStatus("online");
         loadUserOnlineAndtypingStatus();
         super.onResume();
     }
@@ -741,6 +757,12 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    private void updateOnlineStatus(String status) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("onlineStatus", status);
+        db.collection("users/").document(myUid).update(hashMap);
+    }
+
     private void updateTypingStatus(String typing) {
         db.collection("users/").document(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -757,6 +779,32 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(ChatActivity.this, HomeActivity.class));
             finish();
         }
+    }
+
+
+    private boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isInBackground = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if (componentInfo.getPackageName().equals(context.getPackageName())) {
+                isInBackground = false;
+            }
+        }
+        return isInBackground;
     }
 
 
