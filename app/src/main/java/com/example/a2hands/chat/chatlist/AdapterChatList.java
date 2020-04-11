@@ -95,10 +95,10 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //start chat activity with that user
-            Intent intent = new Intent(context, ChatActivity.class);
-            intent.putExtra("hisUid",Uid);
-            context.startActivity(intent);
+                //start chat activity with that user
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("hisUid",Uid);
+                context.startActivity(intent);
             }
         });
 
@@ -108,7 +108,7 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
         SeenOfTheLastMessage.put(userId,isSeen);
     }
 
-    void loadPhotos(final ImageView imgV , String path){
+    private void loadPhotos(final ImageView imgV, String path){
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

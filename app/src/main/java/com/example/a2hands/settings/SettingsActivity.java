@@ -62,12 +62,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         //account
         TextView editNamebtn = findViewById(R.id.btn_editName);
+        TextView editUserNamebtn = findViewById(R.id.btn_editUserName);
         TextView editEmailbtn = findViewById(R.id.btn_editEmail);
         TextView editPhonebtn = findViewById(R.id.btn_editPhone);
         TextView editCountrybtn = findViewById(R.id.btn_editCountry);
         TextView editPassbtn = findViewById(R.id.btn_editPass);
         final TextView editPhoneTxt = findViewById(R.id.txtView_editPhone);
         final TextView editNameTxt = findViewById(R.id.txtView_editName);
+        final TextView editUserNameTxt = findViewById(R.id.txtView_editUserName);
         final TextView editCountryTxt = findViewById(R.id.txtView_editCountry);
         final TextView editEmailTxt = findViewById(R.id.txtView_editEmail);
         TextView editPassTxt = findViewById(R.id.textView_editPass);
@@ -110,6 +112,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         });
 
         editNamebtn.setOnClickListener(this);
+        editUserNamebtn.setOnClickListener(this);
         editEmailbtn.setOnClickListener(this);
         editPhonebtn.setOnClickListener(this);
         editPassbtn.setOnClickListener(this);
@@ -125,6 +128,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 User user = task.getResult().toObject(User.class);
 
                 editNameTxt.setText(user.full_name);
+                editUserNameTxt.setText("@" + user.user_name);
                 editCountryTxt.setText(loadCountryUsingItsISO(user.country));
                 editPhoneTxt.setText(user.phone);
                 editEmailTxt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -140,6 +144,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.btn_editName:
                 startActivity(new Intent(SettingsActivity.this , EditNameActivity.class));
+                break;
+            case R.id.btn_editUserName:
+                startActivity(new Intent(SettingsActivity.this , EditUserNameActivity.class));
                 break;
             case R.id.btn_editEmail:
                 startActivity(new Intent(SettingsActivity.this , EditEmailActivity.class));

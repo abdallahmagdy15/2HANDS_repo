@@ -121,7 +121,10 @@
     <string name="editEmail">Edit Email</string>
 
     <!--EditNameActivity-->
-    <string name="editName">Edit Name</string>
+    <string name="editName">Edit Full Name</string>
+
+    <!--EditUserNameActivity-->
+    <string name="editUserName">Edit Username</string>
 
     <!--EditPasswordActivity-->
     <string name="editPassword">Edit Password</string>
@@ -161,7 +164,7 @@
     <string name="letsGetSomeHelp">Let\'s get some help!</string>
     <string name="postAnonymously">Post Anonymously?</string>
     <string name="addToYourPost">Add to your post</string>
-    
+
     <!--ProfileActivity-->
     <string name="following">Following</string>
     <string name="areYouSureYouWantToUnfollow">Are you sure you want to unfollow ?</string>
@@ -228,7 +231,26 @@
     <string name="followedYou">followed you</string>
 
 
+    <string name="app_name">2HANDS</string>
 
+    <string name="title_activity_signup">Create your account</string>
+
+
+    <string name="prompt_email">Email</string>
+
+
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_followers">FollowersActivity</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="generalSettings">
         <item>Language</item>
         <item>Notifications</item>
@@ -236,7 +258,6 @@
         <item>Night Mode</item>
         <item>About 2Hands</item>
     </string-array>
-
     <string-array name="categories">
         <item>General</item>
         <item>Medicine</item>
@@ -245,29 +266,10 @@
         <item>Social</item>
         <item>Family</item>
     </string-array>
-
-
     <string-array name="postShareOptions">
         <item>Share now</item>
         <item>Share with comment</item>
         <item>Share to someone</item>
         <item>Copy link</item>
     </string-array>
-
-
-    <string name="app_name">2HANDS</string>
-    <string name="title_activity_signup">Create your account</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_followers">FollowersActivity</string>
-    <string name="title_activity_followings">FollowingsActivity</string>
 </resources>

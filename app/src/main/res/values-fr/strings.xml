@@ -124,6 +124,9 @@
     <!--EditNameActivity-->
     <string name="editName">Modifier le nom</string>
 
+    <!--EditUserNameActivity-->
+    <string name="editUserName">Modifier le nom d\'utilisateur</string>
+
     <!--EditPasswordActivity-->
     <string name="editPassword">Modifier le mot de passe</string>
 

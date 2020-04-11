@@ -122,7 +122,10 @@
     <string name="editEmail">تعديل البريد</string>
 
     <!--EditNameActivity-->
-    <string name="editName">تعديل الاسم</string>
+    <string name="editName">تعديل الاسم كاملا</string>
+
+    <!--EditUserNameActivity-->
+    <string name="editUserName">تعديل اسم المستخدم</string>
 
     <!--EditPasswordActivity-->
     <string name="editPassword">تعديل كلمة المرور</string>

@@ -68,6 +68,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/view4" />
 
             <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/userName"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+            <TextView
                 android:id="@+id/txtView_editName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,6 +91,46 @@
                 app:layout_constraintHorizontal_bias="0.631"
                 app:layout_constraintStart_toEndOf="@+id/textView6"
                 tools:text="your name" />
+
+            <TextView
+                android:id="@+id/txtView_editUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="viewStart"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView23"
+                app:layout_constraintEnd_toStartOf="@+id/btn_editUserName"
+                app:layout_constraintHorizontal_bias="0.631"
+                app:layout_constraintStart_toEndOf="@id/textView23"
+                tools:text="your Username" />
+
+            <TextView
+                android:id="@+id/btn_editUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="0dp"
+                android:text="@string/edit"
+                android:textColor="#8BC34A"
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/txtView_editUserName"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <View
+                android:id="@+id/view100"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/dividerHorizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtView_editUserName" />
 
             <TextView
                 android:id="@+id/btn_editName"
@@ -103,7 +154,7 @@
                 android:text="@string/email"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view5" />
+                app:layout_constraintTop_toBottomOf="@+id/view100" />
 
             <TextView
                 android:id="@+id/txtView_editEmail"
