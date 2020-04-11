@@ -110,7 +110,6 @@ public class ChatActivity extends AppCompatActivity {
     String hisImage;
 
     APIService apiService;
-    boolean notify;
 
     //UPLOAD IMAGE
     private static final int CAMERA_REQUEST_CODE=100;
@@ -223,7 +222,6 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notify = true;
                 String Message = message.getText().toString().trim();
                 sendImageMessage(Message);
                 messageImage.setVisibility(View.GONE);
@@ -327,10 +325,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user= task.getResult().toObject(User.class);
 
-                if (notify){
-                    sendNotification(hisUid,user.full_name,messagebody);
-                }
-                notify=false;
+                sendNotification(hisUid,user.full_name,messagebody);
             }
         });
 
@@ -611,10 +606,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     User user= task.getResult().toObject(User.class);
 
-                                    if (notify){
-                                        sendNotification(hisUid,user.full_name,messagebody);
-                                    }
-                                    notify=false;
+                                    sendNotification(hisUid,user.full_name,messagebody);
                                 }
                             });
                             //Chat List

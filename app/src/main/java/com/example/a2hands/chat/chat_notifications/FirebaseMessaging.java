@@ -1,9 +1,11 @@
 package com.example.a2hands.chat.chat_notifications;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +24,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.List;
+
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class FirebaseMessaging extends FirebaseMessagingService {
 
@@ -35,11 +39,13 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String user = remoteMessage.getData().get("user");
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser != null && sent.equals(fUser.getUid())){
-            if (!savedCurrentUser.equals(user)){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    sendOAndAboveNotification(remoteMessage);
-                }else {
-                    sendNormalNotification(remoteMessage);
+            if(isAppIsInBackground(getApplicationContext())) {
+                if (!savedCurrentUser.equals(user)){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        sendOAndAboveNotification(remoteMessage);
+                    }else {
+                        sendNormalNotification(remoteMessage);
+                    }
                 }
             }
         }
@@ -100,5 +106,30 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             j = i;
         }
         notification1.getManager().notify(j,builder.build());
+    }
+
+    private boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isInBackground = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if (componentInfo.getPackageName().equals(context.getPackageName())) {
+                isInBackground = false;
+            }
+        }
+        return isInBackground;
     }
 }

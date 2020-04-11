@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -59,6 +62,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -342,6 +346,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop()
     {
+        if(isAppIsInBackground(getApplicationContext())){
+            String dateTime = simpleDateFormat.format(cal.getTime());
+            updateOnlineStatus(dateTime);
+        }
         super.onStop();
         if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
     }
@@ -377,7 +385,30 @@ public class HomeActivity extends AppCompatActivity {
         mHandler.postDelayed(mRunnable, 2000);
     }
 
+    private boolean isAppIsInBackground(Context context) {
+        boolean isInBackground = true;
 
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isInBackground = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if (componentInfo.getPackageName().equals(context.getPackageName())) {
+                isInBackground = false;
+            }
+        }
+        return isInBackground;
+    }
 
     private void updateOnlineStatus(String status) {
         HashMap<String, Object> hashMap = new HashMap<>();
