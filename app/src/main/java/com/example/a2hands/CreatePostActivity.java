@@ -652,12 +652,6 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        navigateUpTo(new Intent(CreatePostActivity.this, HomeActivity.class));
-    }
-
-
 
     // loading JSON file of countries and states from assets folder
     public String loadCountryStateJSONFromAsset() {

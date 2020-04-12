@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.FollowingHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -88,6 +90,8 @@ public class ProfileActivity extends AppCompatActivity {
     String UserName;
     User user;
 
+    FloatingActionButton addPostFAbtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +125,8 @@ public class ProfileActivity extends AppCompatActivity {
         profileFollowersCount = findViewById(R.id.profileFollowersCount);
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
 
+        addPostFAbtn = findViewById(R.id.addPostFloatingActionbtnProfile);
+
 
         // setup
         setSupportActionBar(toolbar);
@@ -128,6 +134,13 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        addPostFAbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, CreatePostActivity.class));
+            }
+        });
 
         //Chat Activity
         profileMessaging.setOnClickListener(new View.OnClickListener() {
