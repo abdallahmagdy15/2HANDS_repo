@@ -2,6 +2,7 @@ package com.example.a2hands;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+
 import java.util.Date;
 @IgnoreExtraProperties
 public class User {

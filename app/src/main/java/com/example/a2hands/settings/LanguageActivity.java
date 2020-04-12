@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 
 import java.util.Locale;
@@ -27,9 +28,8 @@ public class LanguageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //loading locale before setting the content view
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_language);
 
         Toolbar toolbar = findViewById(R.id.languageToolbar);

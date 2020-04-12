@@ -32,6 +32,7 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
     private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ChangeLocale.loadLocale(context);
         super.onCreate(savedInstanceState);
         current_uid = FirebaseAuth.getInstance().getUid();
         post_id = getArguments().getString("post_id");

@@ -1,9 +1,7 @@
 package com.example.a2hands;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.ActionBar;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -30,6 +27,7 @@ public class VideoPreview extends AppCompatActivity {
     SlidrInterface slidr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ChangeLocale.loadLocale(getBaseContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_preview);
         video = findViewById(R.id.videoPreview_video);

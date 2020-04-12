@@ -303,31 +303,10 @@
         <item>عائلية</item>
     </string-array>
 
-    <string-array name="postShareOptions">
-        <item>شارك الان</item>
-        <item>شاركه في تعليق</item>
-        <item>شارك لاحد ما</item>
-        <item>انسخ الرابط</item>
-    </string-array>
-
-
-
-
 
     <string name="app_name">2HANDS</string>
-    <string name="title_activity_signup">أنشئ حسابك</string>
-    <string name="prompt_email">البريد</string>
-    <string name="prompt_password">رقم المرور</string>
-    <string name="action_sign_in">سجل الدخول او اضف حسابا</string>
-    <string name="action_sign_in_short">تسجيل الدخول</string>
-    <string name="welcome">"مرحبا !"</string>
-    <string name="invalid_username">اسم مستخدم غير صالح</string>
-    <string name="invalid_password">يجب ان تكون كلمة المرور اكبر من 5 حروف</string>
-    <string name="login_failed">"فشل تسجبل الدخول"</string>
 
 
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_followers">FollowersActivity</string>
     <string name="title_activity_followings">FollowingsActivity</string>
 

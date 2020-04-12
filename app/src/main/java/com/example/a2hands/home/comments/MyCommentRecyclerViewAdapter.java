@@ -24,7 +24,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyCommentRecyclerViewAdapter.ViewHolder> {
 
     private final List<Comment> commentsList;

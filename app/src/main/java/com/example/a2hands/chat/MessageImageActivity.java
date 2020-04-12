@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +35,7 @@ public class MessageImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_message_image);
 
         MSGImage = findViewById(R.id.MSGImage);

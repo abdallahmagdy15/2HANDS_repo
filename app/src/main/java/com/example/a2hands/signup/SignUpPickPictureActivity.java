@@ -3,11 +3,8 @@ package com.example.a2hands.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +28,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class SignUpPickPictureActivity extends AppCompatActivity {
@@ -49,7 +46,7 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_signup_pick_picture);
 
         profilePic = findViewById(R.id.pickPic_imageView);
@@ -161,29 +158,6 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
-
 
 
 }

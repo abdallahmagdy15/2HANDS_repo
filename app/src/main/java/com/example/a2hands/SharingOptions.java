@@ -40,6 +40,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ChangeLocale.loadLocale(context);
         super.onCreate(savedInstanceState);
         current_uid = FirebaseAuth.getInstance().getUid();
         shared_post_id = getArguments().getString("POST_ID");

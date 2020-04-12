@@ -3,10 +3,7 @@ package com.example.a2hands;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -25,8 +22,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-
-import java.util.Locale;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_login);
 
         //Sign in with email and password//////////////////////////////////////
@@ -240,25 +235,4 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 }

@@ -10,12 +10,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -40,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.a2hands.home.HomeActivity;
 import com.example.a2hands.home.posts.MyPostRecyclerViewAdapter;
 import com.example.a2hands.locationsearch.SearchLocation;
 import com.example.a2hands.home.posts.Post;
@@ -77,11 +73,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-
 import id.zelory.compressor.Compressor;
+
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -139,7 +134,7 @@ public class CreatePostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_create_post);
 
         Toolbar toolbar = findViewById(R.id.createPost_toolbar);
@@ -693,23 +688,4 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
 
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 }

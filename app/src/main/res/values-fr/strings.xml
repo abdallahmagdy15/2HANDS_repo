@@ -303,31 +303,10 @@
         <item>Famille</item>
     </string-array>
 
-    <string-array name="postShareOptions">
-        <item>Partage maintenant</item>
-        <item>Partager avec commentaire</item>
-        <item>Partager avec quelqu\'un</item>
-        <item>Copier le lien</item>
-    </string-array>
-
-
-
-
 
     <string name="app_name">2HANDS</string>
-    <string name="title_activity_signup">Créez votre compte</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Mot de passe</string>
-    <string name="action_sign_in">Connexion ou Inscription</string>
-    <string name="action_sign_in_short">Connecte vous</string>
-    <string name="welcome">"Bienvenue !"</string>
-    <string name="invalid_username">Pas un nom d\'utilisateur valide</string>
-    <string name="invalid_password">Le mot de passe doit être > 5 caractères</string>
-    <string name="login_failed">"Échec de la connexion"</string>
 
 
-
-    <string name="hello_blank_fragment">Bonjour les fragmen vierges</string>
     <string name="title_activity_followers">FollowersActivity</string>
     <string name="title_activity_followings">FollowingsActivity</string>
 

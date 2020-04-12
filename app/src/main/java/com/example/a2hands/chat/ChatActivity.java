@@ -14,14 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +38,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.chat.chat_notifications.APIService;
@@ -139,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_chat);
 
         getWindow().setBackgroundDrawableResource(R.drawable.chat_bg);
@@ -806,27 +799,5 @@ public class ChatActivity extends AppCompatActivity {
         }
         return isInBackground;
     }
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
-
 
 }

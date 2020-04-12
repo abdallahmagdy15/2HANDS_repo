@@ -1,9 +1,6 @@
 package com.example.a2hands.settings;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.HomeActivity;
@@ -34,7 +32,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -44,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_settings);
 
         Toolbar toolbar = findViewById(R.id.settingsAppToolbar);
@@ -235,25 +232,5 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 
 }
