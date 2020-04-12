@@ -45,15 +45,15 @@
             android:name=".profile.ProfileActivity"
             android:parentActivityName=".profile.ProfileActivity" />
         <activity
-            android:name=".CreatePost"
-            android:parentActivityName=".CreatePost" />
-        <activity android:name=".signup.signupActivity" />
+            android:name=".CreatePostActivity"
+            android:parentActivityName=".CreatePostActivity" />
+        <activity android:name=".signup.SignUpActivity" />
         <activity
             android:name=".home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".signup.signupSetBioActivity" />
-        <activity android:name=".signup.signupPickPictureActivity" />
+        <activity android:name=".signup.SignUpSetBioActivity" />
+        <activity android:name=".signup.SignUpPickPictureActivity" />
         <activity android:name=".home.comments.CommentsActivity" />
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.AboutAppActivity" />

@@ -1,36 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--sign up strings-->
+    <!--SignUpActivity-->
+    <string name="enterYourEmail">أدخل البريد الالكتروني</string>
+    <string name="emailAlreadyInUse">البريد الالكتروني مستخدم مسبقا</string>
+    <string name="enterYourFullName">أدخل اسمك كاملا</string>
+    <string name="enterYourUserName">أدخل اسم المستخدم</string>
+    <string name="userNameIsAlreadyUsed">اسم المستخدم مأخوذ</string>
+    <string name="userNameIsNotValid">اسم المستخدم غير صالح</string>
+    <string name="enterYourPhone">أدخل رقم الهاتف</string>
+    <string name="phoneIsNotValid">رقم الهاتف غير صالح</string>
+    <string name="selectYourGender">اختر جنسك</string>
+    <string name="emailIsNotValid">البريد الالكتروني غير صالح</string>
+    <string name="dateOfBirthCanNotBeFromTheFuture">تاريخ الميلاد لا يمكن ان يكون من المستقبل</string>
+    <string name="enterYourPassword">أدخل كلمة المرور</string>
+    <string name="tooShortPassword">كلمة المرور قصيرة</string>
+    <string name="enterYourConfirmPassword">أدخل كلمة المرور مرة اخرى</string>
+    <string name="passwordDoesnotMatch">كلمة المرور غير متطابقة</string>
+    <string name="atLeast1Capital1Number1SpecialChar">على الاقل 1 حرف, 1 رقم, 1 رمز</string>
+
+    <!--activity sign up-->
     <string name="fullName">الاسم كاملا</string>
     <string name="userName">اسم المستخدم</string>
     <string name="gender">الجنس</string>
     <string name="male">ذكر</string>
     <string name="female">انثى</string>
-    <string name="SelectYourDateOfBirth">حدد تاريخ ميلادك</string>
+    <string name="selectYourDateOfBirth">حدد تاريخ ميلادك</string>
     <string name="phone">الهاتف</string>
-    <string name="email">الايميل</string>
+    <string name="email">البريد الالكتروني</string>
     <string name="password">رقم المرور</string>
     <string name="confirmPassword">تأكبد رقم المرور</string>
     <string name="signUp">تسجيل</string>
     <string name="back">السابق</string>
     <string name="next">التالي</string>
 
-    <!--signup pic picture strings-->
+    <!--activity signup pic picture-->
     <string name="pickAProfilePicture">اختر صورة الملف الشخصي</string>
     <string name="skip">تخطي</string>
 
-    <!--signup set bio strings-->
+    <!--SignUpSetBioActivity-->
+    <string name="checkYourEmailForVerification">اذهب للبريد الالكتروني لتأكيد الحساب</string>
+
+    <!--activity signup set bio-->
     <string name="talkAboutYourself">تحدث عن نفسك</string>
     <string name="yourBio">نبذة عن نفسك</string>
+
+    <!--LoginActivity-->
+    <string name="wrongPassword">كلمة المرور غير صحيحة!</string>
+    <string name="noNetwork">لا يوجد انترنت!</string>
+    <string name="errorSigningIn">خطأ في تسجيل الدخول!</string>
 
     <!--activity login-->
     <string name="login">دخول</string>
     <string name="orSignInWith">او سجل دخول باستخدام</string>
 
+    <!--ForgotPasswordActivity-->
+    <string name="checkYourEmailToResetYourPassword">اذهب للبريد الالكتروني لتجديد كلمة المرور</string>
+
     <!--activity forgot password-->
     <string name="forgotYourPassword">هل نسيت رقم المرور؟</string>
     <string name="submit">ارسال</string>
+
+    <!--MyUserRecyclerViewAdapter-->
+    <string name="areYouSureYouWantToUnFollow">هل أنت متأكد من الغاء المتابعة؟</string>
 
     <!--HomeActivity-->
     <string name="pressBackAgainToExit">اضغط رجوع مرة اخرى للخروج</string>
@@ -70,6 +102,20 @@
 
     <!--fragment post-->
     <string name="shared">شاركه</string>
+
+    <!--PostOptionsDialog-->
+    <string name="postIsSavedSuccessfully">تم حفظ المنشور بنجاح!</string>
+    <string name="postIsDisabledSuccessfully">تم تعطيل التفاعل على المنشور!</string>
+    <string name="postIsDeletedSuccessfully">تم مسح المنشور بنجاح!</string>
+    <string name="postIsHiddenSuccessfully">تم اخفاء المنشور بنجاح!</string>
+    <string name="userIsMutedSuccessfully">تم ايقاف الاشعارات للناشر!</string>
+    <string name="userIsBlockedSuccessfully">تم حظر الناشر بنجاح!</string>
+
+    <!--SharingOptions-->
+    <string name="postSharedSuccessfully">تمت مشاركة المنشور بنجاح!</string>
+
+    <!--SavedPostsActivity-->
+    <string name="savedPosts">المنشورات المحفوظة</string>
 
     <!--activity search location-->
     <string name="searchYourState">ابحث عن المحافظة</string>
@@ -159,6 +205,10 @@
     <string name="french">Français</string>
     <string name="done">انهاء</string>
 
+    <!--CreatePostActivity-->
+    <string name="postCreatedSuccessfully">تم انشاء المنشور بنجاح!</string>
+    <string name="cameraPermissionIsRequired">مطلوب اذن استخدام الكاميرا</string>
+
     <!--activity create post-->
     <string name="post">نشر</string>
     <string name="location">الموقع</string>
@@ -168,7 +218,6 @@
 
     <!--ProfileActivity-->
     <string name="following">أتابعه</string>
-    <string name="areYouSureYouWantToUnfollow">هل انت متأكد من الغاء المتابعه ؟</string>
 
     <!--activity profile-->
     <string name="follow">تابع</string>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".signup.signupActivity">
+    tools:context=".signup.SignUpActivity">
 
     <ViewFlipper
         android:id="@+id/view_flipper"
@@ -99,7 +99,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/SelectYourDateOfBirth"
+                android:text="@string/selectYourDateOfBirth"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

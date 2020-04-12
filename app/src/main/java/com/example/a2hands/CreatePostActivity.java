@@ -83,7 +83,7 @@ import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 
-public class CreatePost extends AppCompatActivity {
+public class CreatePostActivity extends AppCompatActivity {
 
     TextView submitPost;
     Spinner catSpinner;
@@ -213,7 +213,7 @@ public class CreatePost extends AppCompatActivity {
         postLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(CreatePost.this, SearchLocation.class), LOCATION_REQUEST_CODE);
+                startActivityForResult(new Intent(CreatePostActivity.this, SearchLocation.class), LOCATION_REQUEST_CODE);
             }
         });
     }
@@ -256,7 +256,7 @@ public class CreatePost extends AppCompatActivity {
         selectedVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mc = new MediaController(CreatePost.this);
+                mc = new MediaController(CreatePostActivity.this);
                 selectedVideo.setMediaController(mc);
                 mc.setAnchorView(selectedVideo);
             }
@@ -318,7 +318,7 @@ public class CreatePost extends AppCompatActivity {
                                         usersSuggNames.add(user.full_name);
                                     }
                                 ////update mention suggestions list
-                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
+                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePostActivity.this,
                                         R.layout.mention_suggestions_layout,R.id.suggName,usersSuggNames);
                                 mentionSuggestionsList.setAdapter(userNames);
                                 ///set listener for items in suggestion list
@@ -352,7 +352,7 @@ public class CreatePost extends AppCompatActivity {
                                         usersSuggNames.add(user.full_name);
                                     }
                                 ////update mention suggestions list
-                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePost.this,
+                                ArrayAdapter<String> userNames = new ArrayAdapter<String>(CreatePostActivity.this,
                                         R.layout.mention_suggestions_layout,R.id.suggName,usersSuggNames);
                                 mentionSuggestionsList.setAdapter(userNames);
                                 ///set listener for items in suggestion list
@@ -451,7 +451,7 @@ public class CreatePost extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -477,14 +477,14 @@ public class CreatePost extends AppCompatActivity {
                         savePost();
                     }
                     else {
-                        Toast.makeText(CreatePost.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatePostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreatePost.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -504,10 +504,10 @@ public class CreatePost extends AppCompatActivity {
                 .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(CreatePost.this, "Post created successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreatePostActivity.this, getResources().getString(R.string.postCreatedSuccessfully), Toast.LENGTH_LONG).show();
                 //check if shared post to send notifi
                 if(shared_post_id != null){
-                    final NotificationHelper nh = new NotificationHelper(CreatePost.this);
+                    final NotificationHelper nh = new NotificationHelper(CreatePostActivity.this);
                     PostsFragment.getUser(new Callback() {
                         @Override
                         public void callbackUser(User user) {
@@ -583,7 +583,7 @@ public class CreatePost extends AppCompatActivity {
             selectedImage.setVisibility(View.VISIBLE);
         }
         else {
-            startActivity(new Intent(CreatePost.this, LoginActivity.class));
+            startActivity(new Intent(CreatePostActivity.this, LoginActivity.class));
             finish();
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
@@ -599,7 +599,7 @@ public class CreatePost extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpg",   /* suffix */
                 storageDir      /* directory */
         );
 
@@ -647,14 +647,14 @@ public class CreatePost extends AppCompatActivity {
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 dispatchTakePictureIntent();
             }else {
-                Toast.makeText(this, "Camera Permission is Required to Use camera.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.cameraPermissionIsRequired), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        navigateUpTo(new Intent(CreatePost.this, HomeActivity.class));
+        navigateUpTo(new Intent(CreatePostActivity.this, HomeActivity.class));
     }
 
 

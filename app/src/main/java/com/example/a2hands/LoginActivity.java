@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.home.HomeActivity;
-import com.example.a2hands.signup.signupActivity;
+import com.example.a2hands.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
@@ -72,12 +72,11 @@ public class LoginActivity extends AppCompatActivity {
                 String loginEmail = etloginEmail.getText().toString();
                 String loginPassword = etloginPassword.getText().toString();
                 if (TextUtils.isEmpty(loginEmail)){
-                    etloginEmail.setError("Enter your Email");
-                    //Toast.makeText(RegisterActivity.this, "Empty Email or Password!", Toast.LENGTH_SHORT).show();
+                    etloginEmail.setError(getResources().getString(R.string.enterYourEmail));
                 } else if(! Patterns.EMAIL_ADDRESS.matcher(loginEmail).matches()){
-                    etloginEmail.setError("Email is not valid");
+                    etloginEmail.setError(getResources().getString(R.string.emailIsNotValid));
                 } else if(TextUtils.isEmpty(loginPassword)){
-                    etloginPassword.setError("Enter your Password");
+                    etloginPassword.setError(getResources().getString(R.string.enterYourPassword));
                 }else{
                     loginUser(loginEmail , loginPassword);
                 }
@@ -109,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         goToSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this , signupActivity.class));
+                startActivity(new Intent(LoginActivity.this , SignUpActivity.class));
                 finish();
             }
         });
@@ -205,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
 
                             }else{
-                                Toast.makeText(LoginActivity.this, "Check your email for verification",
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.checkYourEmailForVerification),
                                         Toast.LENGTH_SHORT).show();
                             }
 
@@ -213,15 +212,15 @@ public class LoginActivity extends AppCompatActivity {
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthInvalidUserException e) {
-                                etloginEmail.setError("Invalid Email Address");
+                                etloginEmail.setError(getResources().getString(R.string.emailIsNotValid));
                                 etloginEmail.requestFocus();
                             } catch (FirebaseAuthInvalidCredentialsException e) {
-                                etloginPassword.setError("Wrong Password");
+                                etloginPassword.setError(getResources().getString(R.string.wrongPassword));
                                 etloginPassword.requestFocus();
                             } catch (FirebaseNetworkException e) {
-                                Toast.makeText(LoginActivity.this, "No Network!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.noNetwork), Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
-                                Toast.makeText(LoginActivity.this, "Error Signing In",
+                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.errorSigningIn),
                                         Toast.LENGTH_SHORT).show();
                             }
 

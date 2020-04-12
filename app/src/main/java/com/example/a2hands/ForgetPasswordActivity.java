@@ -42,9 +42,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(resetEmail.getText().toString().trim())){
-                    resetEmail.setError("Enter your Email");
+                    resetEmail.setError(getResources().getString(R.string.enterYourEmail));
                 }else if(! Patterns.EMAIL_ADDRESS.matcher(resetEmail.getText().toString().trim()).matches()){
-                    resetEmail.setError("Email is not valid");
+                    resetEmail.setError(getResources().getString(R.string.emailIsNotValid));
                 }else{
                     fAuth.sendPasswordResetEmail(resetEmail.getText().toString().trim())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -52,7 +52,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(ForgetPasswordActivity.this,
-                                                "Check your Email to reset your password",Toast.LENGTH_LONG).show();
+                                                getResources().getString(R.string.checkYourEmailToResetYourPassword),Toast.LENGTH_LONG).show();
                                     }else{
                                         Toast.makeText(ForgetPasswordActivity.this,
                                                 task.getException().getMessage(),Toast.LENGTH_LONG).show();

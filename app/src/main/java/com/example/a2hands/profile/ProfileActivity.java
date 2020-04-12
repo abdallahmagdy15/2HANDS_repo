@@ -287,7 +287,7 @@ public class ProfileActivity extends AppCompatActivity
                                 public void onClick(View v) {
                                     //confirm unfollow
                                     new AlertDialog.Builder(ProfileActivity.this)
-                                            .setTitle(getResources().getString(R.string.areYouSureYouWantToUnfollow))
+                                            .setTitle(getResources().getString(R.string.areYouSureYouWantToUnFollow))
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
                                                     FollowingHelper fh = new FollowingHelper(curr_uid,uid,ProfileActivity.this);

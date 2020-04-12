@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class signupSetBioActivity extends AppCompatActivity {
+public class SignUpSetBioActivity extends AppCompatActivity {
 
     private EditText bio;
     private Button skipButton;
@@ -70,7 +70,7 @@ public class signupSetBioActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(signupSetBioActivity.this , LoginActivity.class));
+                startActivity(new Intent(SignUpSetBioActivity.this , LoginActivity.class));
             }
         });
 
@@ -79,7 +79,7 @@ public class signupSetBioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String,Object> addBio = new HashMap<>();
                 addBio.put("bio", bio.getText().toString().trim());
-                startActivity(new Intent(signupSetBioActivity.this , LoginActivity.class));
+                startActivity(new Intent(SignUpSetBioActivity.this , LoginActivity.class));
 
                 db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(addBio)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -96,7 +96,7 @@ public class signupSetBioActivity extends AppCompatActivity {
                             }
                         });
 
-                Toast.makeText(signupSetBioActivity.this, "First verify your account then login", Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpSetBioActivity.this, getResources().getString(R.string.checkYourEmailForVerification), Toast.LENGTH_LONG).show();
             }
         });
 

@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--sign up strings-->
+    <!--SignUpActivity-->
+    <string name="enterYourEmail">Entrer votre Email</string>
+    <string name="emailAlreadyInUse">Email déjà utilisé!</string>
+    <string name="enterYourFullName">Entrez votre nom complet</string>
+    <string name="enterYourUserName">Entrez votre nom d\'utilisateur</string>
+    <string name="userNameIsAlreadyUsed">Le nom d\'utilisateur est déjà utilisé</string>
+    <string name="userNameIsNotValid">Le nom d\'utilisateur n\'est pas valide</string>
+    <string name="enterYourPhone">Entrez votre téléphone</string>
+    <string name="phoneIsNotValid">Le téléphone n\'est pas valide</string>
+    <string name="selectYourGender">Sélectionnez votre sexe</string>
+    <string name="emailIsNotValid">L\'email n\'est pas valide</string>
+    <string name="dateOfBirthCanNotBeFromTheFuture">La date de naissance ne peut pas être du futur!</string>
+    <string name="enterYourPassword">Tapez votre mot de passe</string>
+    <string name="tooShortPassword">Mot de passe trop court</string>
+    <string name="enterYourConfirmPassword">Entrez votre mot de passe de confirmation</string>
+    <string name="passwordDoesnotMatch">Le mot de passe ne correspond pas</string>
+    <string name="atLeast1Capital1Number1SpecialChar">Au moins 1 majuscule, 1 chiffre et 1 caractère spécial</string>
+
+    <!--activity sign up-->
     <string name="fullName">Nom complet</string>
     <string name="userName">Nom d\'utilisateur</string>
     <string name="gender">Le sexe: </string>
     <string name="male">Mâle</string>
     <string name="female">Femelle</string>
-    <string name="SelectYourDateOfBirth">Choisissez votre date de naissance</string>
+    <string name="selectYourDateOfBirth">Choisissez votre date de naissance</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
     <string name="password">Mot de passe</string>
@@ -16,21 +34,35 @@
     <string name="back">Retour</string>
     <string name="next">Prochain</string>
 
-    <!--signup pic picture strings-->
+    <!--activity signup pic picture-->
     <string name="pickAProfilePicture">Choisissez une photo de profil</string>
     <string name="skip">Sauter</string>
 
-    <!--signup set bio strings-->
+    <!--SignUpSetBioActivity-->
+    <string name="checkYourEmailForVerification">Vérifiez votre e-mail pour vérification</string>
+
+    <!--activity signup set bio-->
     <string name="talkAboutYourself">Parler de soi</string>
     <string name="yourBio">Votre bio</string>
+
+    <!--LoginActivity-->
+    <string name="wrongPassword">Le mot de passe est incorrect!</string>
+    <string name="noNetwork">il n\'y a pas de réseau</string>
+    <string name="errorSigningIn">Erreur de connexion!</string>
 
     <!--activity login-->
     <string name="login">S\'identifier</string>
     <string name="orSignInWith">ou connectez-vous avec</string>
 
+    <!--ForgotPasswordActivity-->
+    <string name="checkYourEmailToResetYourPassword">Vérifiez votre e-mail pour réinitialiser votre mot de passe</string>
+
     <!--activity forgot password-->
     <string name="forgotYourPassword">Mot de passe oublié?</string>
     <string name="submit">Soumettre</string>
+
+    <!--MyUserRecyclerViewAdapter-->
+    <string name="areYouSureYouWantToUnFollow">Voulez-vous vraiment ne plus suivre?</string>
 
     <!--HomeActivity-->
     <string name="pressBackAgainToExit">Appuyez à nouveau sur BACK pour quitter</string>
@@ -70,6 +102,20 @@
 
     <!--fragment post-->
     <string name="shared">partagé</string>
+
+    <!--PostOptionsDialog-->
+    <string name="postIsSavedSuccessfully">Le message a été enregistré!</string>
+    <string name="postIsDisabledSuccessfully">Les interactions sont désactivées!</string>
+    <string name="postIsDeletedSuccessfully">تLe message a été supprimé!</string>
+    <string name="postIsHiddenSuccessfully">Le message a été masqué!</string>
+    <string name="userIsMutedSuccessfully">Les notifications sont désactivées!</string>
+    <string name="userIsBlockedSuccessfully">L\'éditeur a été banni!</string>
+
+    <!--SharingOptions-->
+    <string name="postSharedSuccessfully">Message partagé avec succès!</string>
+
+    <!--SavedPostsActivity-->
+    <string name="savedPosts">Messages Enregistrés</string>
 
     <!--activity search location-->
     <string name="searchYourState">Recherchez votre état</string>
@@ -159,6 +205,10 @@
     <string name="french">Français</string>
     <string name="done">Fini</string>
 
+    <!--CreatePostActivity-->
+    <string name="postCreatedSuccessfully">Message créé avec succès!</string>
+    <string name="cameraPermissionIsRequired">L\'autorisation de la caméra est requise</string>
+
     <!--activity create post-->
     <string name="post">Publier</string>
     <string name="location">Emplacement</string>
@@ -168,7 +218,6 @@
 
     <!--ProfileActivity-->
     <string name="following">Suivez-le</string>
-    <string name="areYouSureYouWantToUnfollow">Voulez-vous vraiment ne plus suivre?</string>
 
     <!--activity profile-->
     <string name="follow">Suivre</string>

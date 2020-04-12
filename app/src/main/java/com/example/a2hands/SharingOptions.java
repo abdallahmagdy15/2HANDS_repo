@@ -27,7 +27,6 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 public class SharingOptions extends BottomSheetDialogFragment implements View.OnClickListener {
     private LinearLayout shareNowBtn;
     private LinearLayout quoteBtn;
@@ -119,7 +118,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
                         .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context, "Post Shared successfully!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, getResources().getString(R.string.postSharedSuccessfully), Toast.LENGTH_LONG).show();
                         //increment Shares on the post counter
                         FirebaseDatabase.getInstance().getReference("counter").child(shared_post_id )
                                 .child("shares_count").runTransaction(new Transaction.Handler() {
@@ -145,7 +144,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
         },current_uid);
     }
     private void shareWithComment(final String shared_post_id){
-        Intent i = new Intent(context , CreatePost.class);
+        Intent i = new Intent(context , CreatePostActivity.class);
         i.putExtra("shared_post_id",shared_post_id);
         context.startActivity(i);
     }

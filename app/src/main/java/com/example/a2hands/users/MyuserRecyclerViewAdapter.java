@@ -117,7 +117,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
             }
         });
     }
-    void checkFollowingState(final ViewHolder h , final User user){
+    private void checkFollowingState(final ViewHolder h, final User user){
         //check if follow or un follow
         FirebaseDatabase.getInstance().getReference("followings").child(curr_uid).child(user.user_id)
                 .addValueEventListener(new ValueEventListener() {
@@ -142,13 +142,13 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
                     }
                 });
     }
-    void setFollowListener(final ViewHolder h,final User user){
+    private void setFollowListener(final ViewHolder h, final User user){
         h.userFollowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //confirm unfollow
                 new AlertDialog.Builder(context)
-                        .setTitle("Are you sure you want to unfollow ?")
+                        .setTitle(context.getResources().getString(R.string.areYouSureYouWantToUnFollow))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //// delete following and follower

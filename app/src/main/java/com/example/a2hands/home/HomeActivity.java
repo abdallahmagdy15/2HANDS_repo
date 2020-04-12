@@ -25,7 +25,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.CreatePost;
+import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.chat.chat_notifications.Token;
 import com.example.a2hands.chat.chatlist.ChatListFragment;
@@ -464,7 +464,7 @@ public class HomeActivity extends AppCompatActivity {
         ft.commit();
     }
     public void navigateCreatePost(){
-        Intent intent = new Intent(this, CreatePost.class);
+        Intent intent = new Intent(this, CreatePostActivity.class);
         intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         startActivity(intent);
     }

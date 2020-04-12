@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class signupPickPictureActivity extends AppCompatActivity {
+public class SignUpPickPictureActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -45,8 +45,6 @@ public class signupPickPictureActivity extends AppCompatActivity {
     private Uri mImageUri;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-//    private StorageTask mUploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(signupPickPictureActivity.this , signupSetBioActivity.class));
+                startActivity(new Intent(SignUpPickPictureActivity.this , SignUpSetBioActivity.class));
             }
         });
 
@@ -77,7 +75,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
-                startActivity(new Intent(signupPickPictureActivity.this , signupSetBioActivity.class));
+                startActivity(new Intent(SignUpPickPictureActivity.this , SignUpSetBioActivity.class));
             }
         });
 
@@ -128,8 +126,6 @@ public class signupPickPictureActivity extends AppCompatActivity {
                                 }
                             }, 2000);
 
-                            Toast.makeText(signupPickPictureActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-
                             Map<String,Object> profile_pic = new HashMap<>();
                             profile_pic.put("profile_pic", taskSnapshot.getMetadata().getName());
 
@@ -151,7 +147,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(signupPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

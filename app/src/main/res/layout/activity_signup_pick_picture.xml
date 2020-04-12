@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".signup.signupPickPictureActivity">
+    tools:context=".signup.SignUpPickPictureActivity">
 
     <ImageView
         android:id="@+id/logo_inPickPictureActivity"

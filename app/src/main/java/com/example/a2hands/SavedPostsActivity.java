@@ -26,7 +26,7 @@ public class SavedPostsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Saved Posts");
+        getSupportActionBar().setTitle(getResources().getString(R.string.savedPosts));
 
         Fragment frg = new PostsFragment();
         Bundle b = new Bundle();
