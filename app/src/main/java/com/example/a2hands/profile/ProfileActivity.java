@@ -61,8 +61,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class ProfileActivity extends AppCompatActivity
-{
+public class ProfileActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;

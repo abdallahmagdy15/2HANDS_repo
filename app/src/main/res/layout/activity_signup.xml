@@ -32,6 +32,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
+                android:textAlignment="viewStart"
                 android:ems="10"
                 android:hint="@string/fullName"
                 android:inputType="textPersonName"
@@ -46,6 +47,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
+                android:textAlignment="viewStart"
                 android:ems="10"
                 android:hint="@string/userName"
                 android:inputType="textPersonName"
@@ -186,10 +188,12 @@
                     android:id="@+id/editText_carrierNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
                     android:editable="false"
                     android:hint="@string/phone"
                     android:inputType="phone"
                     android:singleLine="true" />
+
             </LinearLayout>
 
             <!--<EditText-->
@@ -223,6 +227,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:textAlignment="viewStart"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
@@ -240,6 +245,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:textAlignment="viewStart"
                 android:hint="@string/password"
                 android:password="true"
                 android:singleLine="true"
@@ -255,13 +261,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:textAlignment="viewStart"
                 android:hint="@string/confirmPassword"
                 android:password="true"
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
-
 
             <Button
                 android:id="@+id/btnSignUp"

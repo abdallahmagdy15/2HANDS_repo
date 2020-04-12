@@ -25,6 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="80dp"
+        android:textAlignment="viewStart"
         android:ems="10"
         android:hint="@string/fullName"
         android:inputType="textPersonName"

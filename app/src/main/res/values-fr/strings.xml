@@ -226,6 +226,11 @@
     <string name="posts">Publications</string>
     <string name="reviews">Commentaires</string>
 
+    <!--profile options menue-->
+    <string name="report">Rapport</string>
+    <string name="block">Bloquer</string>
+    <string name="mute">Muet</string>
+
     <!--activity edit profile-->
     <string name="yourJob">votre travail</string>
 

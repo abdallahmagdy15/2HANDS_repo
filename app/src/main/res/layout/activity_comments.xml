@@ -72,6 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textAlignment="viewStart"
             android:background="@android:color/transparent"
             android:hint="@string/writeAComment"
             android:padding="10sp" />

@@ -5,8 +5,7 @@
     <item
         android:id="@+id/homeNav"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/home"
-        />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/searchNav"
@@ -25,4 +24,5 @@
         android:id="@+id/messagingNav"
         android:icon="@drawable/ic_mail_black_24dp"
         android:title="@string/messages" />
+
 </menu>

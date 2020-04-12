@@ -225,6 +225,11 @@
     <string name="posts">Posts</string>
     <string name="reviews">Reviews</string>
 
+    <!--profile options menue-->
+    <string name="report">Report</string>
+    <string name="block">Block</string>
+    <string name="mute">Mute</string>
+
     <!--activity edit profile-->
     <string name="yourJob">Your job</string>
 

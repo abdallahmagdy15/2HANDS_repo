@@ -194,8 +194,8 @@
                         android:text="@string/Edit"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp" />
-                </androidx.cardview.widget.CardView>
 
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/textView6"
@@ -242,7 +242,9 @@
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/ratingBarGet" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

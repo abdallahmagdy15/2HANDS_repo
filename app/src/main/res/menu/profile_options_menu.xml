@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Share" />
-    <item android:title="Report" />
-    <item android:title="Block" />
-    <item android:title="Mute" />
+    <item android:title="@string/share" />
+    <item android:title="@string/report" />
+    <item android:title="@string/block" />
+    <item android:title="@string/mute" />
+
 </menu>

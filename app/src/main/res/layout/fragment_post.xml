@@ -154,8 +154,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/postOwnerPic" />
 
-
-
     <androidx.cardview.widget.CardView
         android:id="@+id/post_cardView"
         android:layout_width="match_parent"
@@ -168,14 +166,14 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
+
         <include
             android:id="@+id/sharedPostContainer"
             layout="@layout/fragment_shared_post"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
+
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -368,6 +366,7 @@
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
             app:srcCompat="@drawable/share" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -226,6 +226,11 @@
     <string name="posts">المنشورات</string>
     <string name="reviews">التقييمات</string>
 
+    <!--profile options menue-->
+    <string name="report">ابلاغ</string>
+    <string name="block">حظر</string>
+    <string name="mute">كتم الاشعارات</string>
+
     <!--activity edit profile-->
     <string name="yourJob">ادخل وظيفتك</string>
 
