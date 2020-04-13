@@ -381,7 +381,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data =new Data(myUid,full_name+":"+messagebody,"New Message",hisUid,R.drawable.twohands_logo);
+                    Data data =new Data(myUid,full_name+":"+messagebody,"New Message",hisUid,R.drawable.messaging2);
 
                     Sender sender = new Sender(data,token.getToken());
                     apiService.sendNotification(sender)
