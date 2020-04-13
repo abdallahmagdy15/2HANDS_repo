@@ -687,5 +687,20 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, curr_uid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, curr_uid);
+        }
+        super.onStop();
+    }
+
 
 }

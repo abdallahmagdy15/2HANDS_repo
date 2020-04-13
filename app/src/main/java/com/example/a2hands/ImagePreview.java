@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
@@ -17,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 
 public class ImagePreview extends AppCompatActivity {
+
+    String myUid;
 
     SlidrInterface slidr;
 
@@ -34,6 +37,8 @@ public class ImagePreview extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.imagePreview);
 
+        myUid = FirebaseAuth.getInstance().getUid();
+
         Uri imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_PATH"));
         Picasso.get().load(imageUri).into(image);
 
@@ -49,6 +54,7 @@ public class ImagePreview extends AppCompatActivity {
                 .edge(true|false)
                 .edgeSize(0.18f) // The % of the screen that counts as the edge, default 18%
                 .build();
+
         slidr = Slidr.attach(this, config);
         //starting when Intent begins
         overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
@@ -64,6 +70,21 @@ public class ImagePreview extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

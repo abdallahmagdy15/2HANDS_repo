@@ -10,10 +10,13 @@ import android.os.Bundle;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class RatingsActivity extends AppCompatActivity  {
 
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,8 @@ public class RatingsActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.ratings));
 
+        myUid = FirebaseAuth.getInstance().getUid();
+
         Intent i = getIntent();
         String postId  = i.getStringExtra("postId");
 
@@ -40,6 +45,21 @@ public class RatingsActivity extends AppCompatActivity  {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.ratingsContainer,frg);
         ft.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

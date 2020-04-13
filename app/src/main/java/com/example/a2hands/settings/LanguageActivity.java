@@ -16,11 +16,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
 
 
 public class LanguageActivity extends AppCompatActivity {
+
+    String myUid;
 
     private RadioGroup langGroup;
     private Button btnDone;
@@ -44,6 +48,8 @@ public class LanguageActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        myUid = FirebaseAuth.getInstance().getUid();
 
         langGroup = findViewById(R.id.languageRadioGroup);
         btnDone = findViewById(R.id.changeLang_btn);
@@ -112,6 +118,21 @@ public class LanguageActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         String language = prefs.getString("My_Language", "");
         setLocale(language);
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

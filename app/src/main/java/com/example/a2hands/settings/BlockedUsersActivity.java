@@ -11,11 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.users.UsersFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 
 public class BlockedUsersActivity extends AppCompatActivity {
+
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class BlockedUsersActivity extends AppCompatActivity {
             }
         });
 
+        myUid = FirebaseAuth.getInstance().getUid();
+
         Fragment frg = new UsersFragment();
         Bundle b = new Bundle();
         b.putString("FOR","BLOCKED_USERS");
@@ -48,6 +53,21 @@ public class BlockedUsersActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(BlockedUsersActivity.this, SettingsActivity.class));
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

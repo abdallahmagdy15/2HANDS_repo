@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -55,6 +57,8 @@ public class EditProfileActivity extends AppCompatActivity {
     StorageReference picRef;
     StorageReference coverRef;
 
+    String myUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,8 @@ public class EditProfileActivity extends AppCompatActivity {
         coverPath= getIntent().getStringExtra("COVER_PATH");
         picPath  = getIntent().getStringExtra("PIC_PATH");
         uid      = getIntent().getStringExtra("UID");
+
+        myUid = FirebaseAuth.getInstance().getUid();
 
         toolbar = findViewById(R.id.editProfile_toolbar);
         cover = findViewById(R.id.editProfile_cover);
@@ -203,6 +209,21 @@ public class EditProfileActivity extends AppCompatActivity {
                 pic.setImageURI(picUri);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 }

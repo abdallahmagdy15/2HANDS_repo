@@ -8,9 +8,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class NotificationActivity extends AppCompatActivity {
+
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +35,28 @@ public class NotificationActivity extends AppCompatActivity {
             }
         });
 
+        myUid = FirebaseAuth.getInstance().getUid();
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

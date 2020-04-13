@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
@@ -21,15 +22,22 @@ import com.universalvideoview.UniversalMediaController;
 import com.universalvideoview.UniversalVideoView;
 
 public class VideoPreview extends AppCompatActivity {
+
+    String myUid;
+
     private UniversalVideoView video;
     private UniversalMediaController controller;
     private FrameLayout container;
     SlidrInterface slidr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ChangeLocale.loadLocale(getBaseContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_preview);
+
+        myUid = FirebaseAuth.getInstance().getUid();
+
         video = findViewById(R.id.videoPreview_video);
         controller = findViewById(R.id.videoPreview_controller);
         container = findViewById(R.id.videoPreview_container);
@@ -124,4 +132,21 @@ public class VideoPreview extends AppCompatActivity {
         super.finish();
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
     }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
+    }
+
+
 }

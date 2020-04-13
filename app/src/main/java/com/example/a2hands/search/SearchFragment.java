@@ -42,7 +42,7 @@ public class SearchFragment extends Fragment {
 
 
         //start the searchResultsFragment
-        Fragment frg = new searchItemFragment();
+        Fragment frg = new SearchItemFragment();
         Bundle b = new Bundle();
         b.putString("search_query",query);
         frg.setArguments(b);

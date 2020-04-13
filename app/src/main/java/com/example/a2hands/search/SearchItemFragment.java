@@ -29,11 +29,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class searchItemFragment extends Fragment {
+public class SearchItemFragment extends Fragment {
     final List<User> users = new ArrayList<>();
 
 
-    public searchItemFragment() {
+    public SearchItemFragment() {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

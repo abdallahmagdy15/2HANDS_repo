@@ -10,10 +10,14 @@ import android.widget.FrameLayout;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.users.UsersFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LikesActivity extends AppCompatActivity {
+
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class LikesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        myUid = FirebaseAuth.getInstance().getUid();
         String postId = getIntent().getStringExtra("POST_ID");
 
         FrameLayout likesContainer = findViewById(R.id.likesContainer);
@@ -40,5 +45,20 @@ public class LikesActivity extends AppCompatActivity {
         ft.commit();
     }
 
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
+    }
 
 }

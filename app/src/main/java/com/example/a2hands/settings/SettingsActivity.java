@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +36,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
+
+    String myUid;
 
     String[] generalSettingsItems;
 
@@ -56,6 +59,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
             }
         });
+
+        myUid = FirebaseAuth.getInstance().getUid();
 
         //account
         TextView editNamebtn = findViewById(R.id.btn_editName);
@@ -230,6 +235,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

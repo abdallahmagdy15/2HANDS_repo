@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.UserStatus;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,11 +47,15 @@ public class SearchLocation extends AppCompatActivity {
 
     private CountryCodePicker ccpCountry;
 
+    String myUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_search_location);
+
+        myUid = FirebaseAuth.getInstance().getUid();
 
         ccpCountry = findViewById(R.id.ccpCountry_postLocation);
         showInAllStatesbtn = findViewById(R.id.showInAllStatesbtn);
@@ -189,6 +194,21 @@ public class SearchLocation extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, myUid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
+        }
+        super.onStop();
     }
 
 

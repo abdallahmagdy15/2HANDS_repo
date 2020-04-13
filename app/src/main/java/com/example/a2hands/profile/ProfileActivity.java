@@ -122,13 +122,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         addPostFAbtn = findViewById(R.id.addPostFloatingActionbtnProfile);
 
-
         // setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         addPostFAbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,10 +159,10 @@ public class ProfileActivity extends AppCompatActivity {
             uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
         }
+
         loadUserProfile();
         setLoadingFollowersListener();
         setLoadingFollowingsListener();
-
 
     }// end of onCreate method
 
@@ -173,6 +171,7 @@ public class ProfileActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.profile_options_menu, menu);
         return true;
     }
+
     void setEditBtnListener(){
         profileEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override

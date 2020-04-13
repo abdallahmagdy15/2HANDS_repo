@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.chat.chat_notifications.APIService;
 import com.example.a2hands.chat.chat_notifications.Client;
 import com.example.a2hands.chat.chat_notifications.Data;
@@ -125,8 +126,6 @@ public class ChatActivity extends AppCompatActivity {
 
     LinearLayoutManager linearLayoutManager;
 
-    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
 
     @SuppressLint("PrivateResource")
     @Override
@@ -237,7 +236,7 @@ public class ChatActivity extends AppCompatActivity {
 
         loadHisInfoAndchat();
         seenMessages();
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
     }
 
 
@@ -442,6 +441,7 @@ public class ChatActivity extends AppCompatActivity {
         builder.create().show();
 
     }
+
     private void pickFromGallery(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -467,10 +467,12 @@ public class ChatActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
         return result;
     }
+
     private void requestStoragePermission(){
         //request runtime permission
         ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
     }
+
     private boolean checkCameraPermission(){
         //check if Camera permission is enabled
         //return true if enabled
@@ -481,6 +483,7 @@ public class ChatActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
+
     private void requestCameraPermission(){
         ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
     }
@@ -669,14 +672,14 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
         checkUserStatus();
         super.onStart();
     }
 
     @Override
     protected void onPause() {
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
         updateTypingStatus("noOne");
         userRefForSeen.removeEventListener(seenListener);
         super.onPause();
@@ -684,17 +687,16 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        if(isAppIsInBackground(getApplicationContext())){
-            String dateTime = simpleDateFormat.format(cal.getTime());
-            updateOnlineStatus(dateTime);
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
         }
         super.onStop();
     }
 
     @Override
     protected void onResume() {
-        updateOnlineStatus("online");
-        loadUserOnlineAndtypingStatus();
+        UserStatus.updateOnlineStatus(true, myUid);
+        loadUserOnlineAndTypingStatus();
         super.onResume();
     }
 
@@ -727,7 +729,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-    private void loadUserOnlineAndtypingStatus(){
+    private void loadUserOnlineAndTypingStatus(){
         db.collection("users/").document(hisUid)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -750,12 +752,6 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void updateOnlineStatus(String status) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("onlineStatus", status);
-        db.collection("users/").document(myUid).update(hashMap);
-    }
-
     private void updateTypingStatus(String typing) {
         db.collection("users/").document(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -774,30 +770,5 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
-    private boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
-                        }
-                    }
-                }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
-        }
-        return isInBackground;
-    }
 
 }

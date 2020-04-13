@@ -19,6 +19,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 import com.example.a2hands.Callback;
 import com.example.a2hands.ChangeLocale;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.home.LikesActivity;
 import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.R;
@@ -203,6 +204,21 @@ public class CommentsActivity extends AppCompatActivity  {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, curr_uid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, curr_uid);
+        }
+        super.onStop();
     }
 
 
