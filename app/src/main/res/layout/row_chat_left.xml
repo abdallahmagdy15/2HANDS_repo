@@ -12,13 +12,12 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileIv"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_centerVertical="true"
         android:paddingStart="5dp"
         android:paddingEnd="0dp"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_face_black_24dp"
         app:civ_border_color="@null"
         app:civ_border_overlay="false"
         app:civ_border_width="0dp"
@@ -26,13 +25,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_face_black_24dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_receiver"
         android:paddingStart="2dp"

@@ -176,6 +176,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver())){
 
             holder.otherProfileImage.setVisibility(View.INVISIBLE);
+
+        }else if(position - 1 != -1 && holder.otherProfileImage != null){
+            holder.otherProfileImage.setVisibility(View.VISIBLE);
         }
 
         holder.messageImage.setOnClickListener(new View.OnClickListener() {
