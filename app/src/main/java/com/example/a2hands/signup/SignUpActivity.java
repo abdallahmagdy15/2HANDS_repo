@@ -3,11 +3,8 @@ package com.example.a2hands.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +22,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 //gitHub country code picker
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
@@ -52,19 +50,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class signupActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class SignUpActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private EditText fullName;
     private EditText userName;
-    //    private Spinner countrySelect;
+    //private Spinner countrySelect;
     private Spinner stateSelect;
     private RadioGroup genderGroup;
-    //    private EditText phone;
+    //private EditText phone;
     private EditText email;
     private EditText confirmPassword;
     private EditText password;
@@ -93,32 +90,32 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_signup);
 
         auth = FirebaseAuth.getInstance();
         signingInAdmin();
-
 
         Button signUp;
         fullName = findViewById(R.id.signUpFullName);
         userName = findViewById(R.id.signUpUsername);
         genderGroup = findViewById(R.id.radioGroup);
         birthDate = findViewById(R.id.show_dialog);
+
         //country selection
         ccpCountry = findViewById(R.id.ccpCountry);
         ccpCountry.setAutoDetectedCountry(true);
+
         //code and phone
         ccpCode = findViewById(R.id.ccpCode);
         editTextCarrierNumber = findViewById(R.id.editText_carrierNumber);
         ccpCode.registerCarrierNumberEditText(editTextCarrierNumber);
-//        countrySelect = findViewById(R.id.countrySpinner);
         stateSelect = findViewById(R.id.statesSpinner);
-//        phone = findViewById(R.id.phone);
         email = findViewById(R.id.signUpEmail);
         password = findViewById(R.id.signUpPassword);
         confirmPassword = findViewById(R.id.signUpConfirmPassword);
         signUp = findViewById(R.id.btnSignUp);
+
         //flipper
         viewFlipper = findViewById(R.id.view_flipper);
         btnBack = findViewById(R.id.btnBack);
@@ -142,25 +139,6 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
-//        ordinary country spinner initiation
-//        Locale[] locale = Locale.getAvailableLocales();
-//        ArrayList<String> countries = new ArrayList<>();
-//        String country;
-//        for( Locale loc : locale ){
-//            country = loc.getDisplayCountry();
-//            if( country.length() > 0 && !countries.contains(country) ){
-//                countries.add( country );
-//            }
-//        }
-//        Collections.sort(countries, String.CASE_INSENSITIVE_ORDER);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, countries);
-//        countrySelect.setAdapter(adapter);
-//        //makes Egypt the default country
-//        ArrayAdapter<String> spinnerAdapter = (ArrayAdapter<String>) countrySelect.getAdapter();
-//        int spinnerPosition = spinnerAdapter.getPosition("Egypt");
-//        countrySelect.setSelection(spinnerPosition);
-
-
 
         ////////////////////Sign up button
         signUp.setOnClickListener(new View.OnClickListener() {
@@ -170,22 +148,20 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 String txt_password = password.getText().toString();
 
                 if (TextUtils.isEmpty(txt_email)){
-                    email.setError("Enter your Email");
-                    //Toast.makeText(RegisterActivity.this, "Empty Email or Password!", Toast.LENGTH_SHORT).show();
+                    email.setError(getResources().getString(R.string.enterYourEmail));
                 } else if(! Patterns.EMAIL_ADDRESS.matcher(txt_email).matches()){
-                    email.setError("Email is not valid");
+                    email.setError(getResources().getString(R.string.emailIsNotValid));
                 } else if(password.getText().toString().length() < 8 ){
-                    if(TextUtils.isEmpty(txt_password)){
-                        password.setError("Enter your Password");
-                    }else{
-                        Toast.makeText(signupActivity.this, "Too short password", Toast.LENGTH_SHORT).show();
-                    }
+                    if(TextUtils.isEmpty(txt_password))
+                        password.setError(getResources().getString(R.string.enterYourPassword));
+                    else
+                        password.setError(getResources().getString(R.string.tooShortPassword));
                 } else if(TextUtils.isEmpty(confirmPassword.getText().toString())){
-                    confirmPassword.setError("Enter your Confirm Password");
+                    confirmPassword.setError(getResources().getString(R.string.enterYourConfirmPassword));
                 } else if(! confirmPassword.getText().toString().equals(password.getText().toString())){
-                    confirmPassword.setError("Password doesn't match");
+                    confirmPassword.setError(getResources().getString(R.string.passwordDoesnotMatch));
                 } else if (! isValidPassword(confirmPassword.getText().toString())){
-                    Toast.makeText(signupActivity.this, "Please add at least 1 Alphabet," + "\n" +" 1 Number and 1 Special Character", Toast.LENGTH_LONG).show();
+                    confirmPassword.setError(getResources().getString(R.string.atLeast1Capital1Number1SpecialChar));
                 }else{
                     signUpUser(txt_email , txt_password);
                 }
@@ -205,8 +181,8 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 if (viewFlipper.getDisplayedChild()==0) {
                     viewFlipper.stopFlipping();
                 } else {
-                    viewFlipper.setInAnimation(signupActivity.this, android.R.anim.slide_in_left);
-                    viewFlipper.setOutAnimation(signupActivity.this, android.R.anim.slide_out_right);
+                    viewFlipper.setInAnimation(SignUpActivity.this, android.R.anim.slide_in_left);
+                    viewFlipper.setOutAnimation(SignUpActivity.this, android.R.anim.slide_out_right);
 
                     viewFlipper.showPrevious();
                 }
@@ -216,28 +192,27 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                viewFlipper.setInAnimation(signupActivity.this, R.anim.slide_in_right);
-                viewFlipper.setOutAnimation(signupActivity.this, R.anim.slide_out_left);
+                viewFlipper.setInAnimation(SignUpActivity.this, R.anim.slide_in_right);
+                viewFlipper.setOutAnimation(SignUpActivity.this, R.anim.slide_out_left);
 
                 if(viewFlipper.getDisplayedChild()==0){
                     if(TextUtils.isEmpty(fullName.getText().toString().trim())){
-                        fullName.setError("Enter your Full Name");
+                        fullName.setError(getResources().getString(R.string.enterYourFullName));
                     } else if(TextUtils.isEmpty(userName.getText().toString().trim())){
-                        userName.setError("Enter your Username");
-                    } else if (birthDate.getText().toString().equals("Select Your Date Of Birth")){
-                        Toast.makeText(signupActivity.this, "Select your date of birth", Toast.LENGTH_SHORT).show();
+                        userName.setError(getResources().getString(R.string.enterYourUserName));
                     } else if (genderGroup.getCheckedRadioButtonId() == -1){
-                        Toast.makeText(signupActivity.this, "Select Your Gender", Toast.LENGTH_SHORT).show();
-                    }else {
+                        Toast.makeText(SignUpActivity.this, getResources().getString(R.string.selectYourGender), Toast.LENGTH_SHORT).show();
+                    } else if (birthDate.getText().toString().equals(getResources().getString(R.string.selectYourDateOfBirth))){
+                        Toast.makeText(SignUpActivity.this, getResources().getString(R.string.selectYourDateOfBirth), Toast.LENGTH_SHORT).show();
+                    } else {
                         checkIfValidUsername(userName.getText().toString().trim());
                     }
                 } else if (viewFlipper.getDisplayedChild()==1){
                     if(TextUtils.isEmpty(editTextCarrierNumber.getText().toString().trim())){
-                        editTextCarrierNumber.setError("Enter your Phone");
+                        editTextCarrierNumber.setError(getResources().getString(R.string.enterYourPhone));
                     }
                     else if(! ccpCode.isValidFullNumber()) {
-                        editTextCarrierNumber.setError("Phone is not valid");
+                        editTextCarrierNumber.setError(getResources().getString(R.string.phoneIsNotValid));
                     }else {
                         v.setVisibility(View.INVISIBLE);
                         viewFlipper.showNext();
@@ -248,10 +223,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
-
-
-
-    }//end of onCreate
+    }/////////////////////end of onCreate
 
 
 
@@ -314,7 +286,6 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
 
     //username validation
     public void checkIfValidUsername(final String username){
-
         final Query usernameQuery = FirebaseFirestore.getInstance().collection("users")
                 .whereEqualTo("user_name", username);
 
@@ -331,7 +302,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                         for (DocumentSnapshot ds: task.getResult()){
                             String userNames = ds.getString("user_name");
                             if (username.equals(userNames)) {
-                                userName.setError("Username is already used");
+                                userName.setError(getResources().getString(R.string.userNameIsAlreadyUsed));
                             }
                         }
                     }
@@ -342,7 +313,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                 }
             });
         } else {
-            userName.setError("Username is not valid");
+            userName.setError(getResources().getString(R.string.userNameIsNotValid));
         }
 
     }// end of checkIfValidUsername
@@ -363,15 +334,13 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (year > yearNow || year >= yearNow &&  month > monthNow || year >= yearNow &&  month >= monthNow && dayOfMonth > dayNow) {
-            Toast.makeText(signupActivity.this, "Date of Birth can't be from the future!", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignUpActivity.this, getResources().getString(R.string.dateOfBirthCanNotBeFromTheFuture), Toast.LENGTH_LONG).show();
         }
         month += 1;
         String date =  dayOfMonth + "/" + month + "/" + year;
         birthDate.setText(date);
 
     }
-
-
 
 
     ///////Signing up
@@ -386,11 +355,10 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isComplete()){
-                                    Toast.makeText(signupActivity.this, "Registered Successfully!" + "\n"+ "Check your verification email", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(signupActivity.this , signupPickPictureActivity.class));
+                                    startActivity(new Intent(SignUpActivity.this , SignUpPickPictureActivity.class));
                                     finish();
                                 }else {
-                                    Toast.makeText(signupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -398,7 +366,7 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(signupActivity.this, "Email already in use!", Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, getResources().getString(R.string.emailAlreadyInUse), Toast.LENGTH_LONG).show();
             }
         });
     }//end of signUpUser
@@ -471,35 +439,17 @@ public class signupActivity extends AppCompatActivity implements DatePickerDialo
     @Override
     public void onBackPressed() {
         if(viewFlipper.getDisplayedChild()==0){
-            startActivity(new Intent(signupActivity.this, LoginActivity.class));
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
         }else if(viewFlipper.getDisplayedChild()==1){
             btnBack.setVisibility(View.INVISIBLE);
             viewFlipper.showPrevious();
         }else if(viewFlipper.getDisplayedChild()==2){
             btnNext.setVisibility(View.VISIBLE);
             viewFlipper.showPrevious();
+        }else{
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
         }
     }
 
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 
 }

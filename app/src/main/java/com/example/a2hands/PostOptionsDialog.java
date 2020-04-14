@@ -32,6 +32,7 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
     private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ChangeLocale.loadLocale(context);
         super.onCreate(savedInstanceState);
         current_uid = FirebaseAuth.getInstance().getUid();
         post_id = getArguments().getString("post_id");
@@ -53,7 +54,7 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
         reportBtn  = view.findViewById(R.id.postOptionReport);
 
 
-        //check user privilages
+        //check user privileges
         if(current_uid.equals(post_user_id)){
             muteBtn.setVisibility(View.GONE);
             blockBtn.setVisibility(View.GONE);
@@ -116,64 +117,66 @@ public class PostOptionsDialog extends BottomSheetDialogFragment implements View
         this.context = context;
     }
 
-    private void savePost       (){
+    private void savePost(){
         FirebaseDatabase.getInstance().getReference("saved_posts").child(current_uid).child(post_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"Post is saved successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.postIsSavedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    private void disableReact   (){
+    private void disableReact(){
         FirebaseFirestore.getInstance().collection("posts").document(post_id).update("state",false)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"Post is disabled successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.postIsDisabledSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    private void deletePost     (){
+    private void deletePost(){
         FirebaseFirestore.getInstance().collection("posts").document(post_id).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"Post is deleted successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.postIsDeletedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    private void hidePost       (){
+    private void hidePost(){
         FirebaseDatabase.getInstance().getReference("hidden_posts").child(current_uid).child(post_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"Post is hidden successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.postIsHiddenSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    private void muteUser       (){
+    private void muteUser(){
         FirebaseDatabase.getInstance().getReference("muted_users").child(current_uid).child(post_user_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"User is muted successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.userIsMutedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    public void blockUser      (){
+
+    public void blockUser(){
         //add to blocked users
         FirebaseDatabase.getInstance().getReference("blocked_users").child(current_uid).child(post_user_id).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(context,"User is blocked successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,getResources().getString(R.string.userIsBlockedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
         FollowingHelper fh = new FollowingHelper(current_uid,post_user_id,context);
         fh.unfollow();
     }
-    private void reportPost     (){
+
+    private void reportPost(){
 
     }
 }

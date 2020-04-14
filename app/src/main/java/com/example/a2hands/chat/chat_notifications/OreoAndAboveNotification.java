@@ -10,10 +10,11 @@ import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 public class OreoAndAboveNotification extends ContextWrapper {
 
-    private static final String ID= "some_id";
+    private static final String ID = "NOTIFICATION_MESSAGE";
     private static final String NAME = "2HANDS";
 
     private NotificationManager notificationManager;
@@ -52,6 +53,8 @@ public class OreoAndAboveNotification extends ContextWrapper {
                 .setContentText(body)
                 .setSound(soundUri)
                 .setAutoCancel(true)
-                .setSmallIcon(Integer.parseInt(icon));
+                .setSmallIcon(Integer.parseInt(icon))
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setCategory(Notification.CATEGORY_MESSAGE);
     }
 }

@@ -43,10 +43,12 @@
             android:id="@+id/editText_carrierNumber_phoneEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
             android:editable="false"
             android:hint="@string/phone"
             android:inputType="phone"
             android:singleLine="true" />
+
     </LinearLayout>
 
     <Button

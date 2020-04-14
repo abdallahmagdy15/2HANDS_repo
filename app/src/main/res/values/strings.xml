@@ -1,12 +1,30 @@
 <resources>
 
-    <!--sign up strings-->
+    <!--SignUpActivity-->
+    <string name="enterYourEmail">Enter your Email</string>
+    <string name="emailAlreadyInUse">Email already in use!</string>
+    <string name="enterYourFullName">Enter your full name</string>
+    <string name="enterYourUserName">Enter your user name</string>
+    <string name="userNameIsAlreadyUsed">Username is already used</string>
+    <string name="userNameIsNotValid">Username is not valid</string>
+    <string name="enterYourPhone">Enter your phone</string>
+    <string name="phoneIsNotValid">Phone is not valid</string>
+    <string name="selectYourGender">Select your gender</string>
+    <string name="emailIsNotValid">Email is not valid</string>
+    <string name="dateOfBirthCanNotBeFromTheFuture">Date of Birth can\'t be from the future!</string>
+    <string name="enterYourPassword">Enter your password</string>
+    <string name="tooShortPassword">Too short password</string>
+    <string name="enterYourConfirmPassword">Enter your Confirm Password</string>
+    <string name="passwordDoesnotMatch">Password doesn\'t match</string>
+    <string name="atLeast1Capital1Number1SpecialChar">At least 1 Capital, 1 Number and 1 Special Character</string>
+
+    <!--activity sign up-->
     <string name="fullName">Full Name</string>
     <string name="userName">Username</string>
     <string name="gender">Gender: </string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="SelectYourDateOfBirth">Select Your Date Of Birth</string>
+    <string name="selectYourDateOfBirth">Select Your Date Of Birth</string>
     <string name="phone">Phone</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -15,21 +33,35 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
 
-    <!--signup pic picture strings-->
+    <!--activity signup pic picture-->
     <string name="pickAProfilePicture">Pick a Profile Picture</string>
     <string name="skip">Skip</string>
 
-    <!--signup set bio strings-->
+    <!--SignUpSetBioActivity-->
+    <string name="checkYourEmailForVerification">Check your email for verification</string>
+
+    <!--activity signup set bio-->
     <string name="talkAboutYourself">Talk about yourself</string>
     <string name="yourBio">Your Bio</string>
+
+    <!--LoginActivity-->
+    <string name="wrongPassword">Wrong Password!</string>
+    <string name="noNetwork">No Network!</string>
+    <string name="errorSigningIn">Error Signing In!</string>
 
     <!--activity login-->
     <string name="login">Login</string>
     <string name="orSignInWith">or sign in with</string>
 
+    <!--ForgotPasswordActivity-->
+    <string name="checkYourEmailToResetYourPassword">Check your Email to reset your password</string>
+
     <!--activity forgot password-->
     <string name="forgotYourPassword">Forgot Your Password?</string>
     <string name="submit">Submit</string>
+
+    <!--MyUserRecyclerViewAdapter-->
+    <string name="areYouSureYouWantToUnFollow">Are you sure you want to unfollow?</string>
 
     <!--HomeActivity-->
     <string name="pressBackAgainToExit">Press BACK again to exit</string>
@@ -69,6 +101,20 @@
 
     <!--fragment post-->
     <string name="shared">Shared</string>
+
+    <!--PostOptionsDialog-->
+    <string name="postIsSavedSuccessfully">Post is saved successfully!</string>
+    <string name="postIsDisabledSuccessfully">Post is disabled successfully!</string>
+    <string name="postIsDeletedSuccessfully">Post is deleted successfully!</string>
+    <string name="postIsHiddenSuccessfully">Post is hidden successfully!</string>
+    <string name="userIsMutedSuccessfully">User is muted successfully!</string>
+    <string name="userIsBlockedSuccessfully">User is blocked successfully!</string>
+
+    <!--SharingOptions-->
+    <string name="postSharedSuccessfully">Post Shared successfully!</string>
+
+    <!--SavedPostsActivity-->
+    <string name="savedPosts">Saved Posts</string>
 
     <!--activity search location-->
     <string name="searchYourState">Search your state</string>
@@ -121,7 +167,10 @@
     <string name="editEmail">Edit Email</string>
 
     <!--EditNameActivity-->
-    <string name="editName">Edit Name</string>
+    <string name="editName">Edit Full Name</string>
+
+    <!--EditUserNameActivity-->
+    <string name="editUserName">Edit Username</string>
 
     <!--EditPasswordActivity-->
     <string name="editPassword">Edit Password</string>
@@ -155,16 +204,19 @@
     <string name="french">Français</string>
     <string name="done">Done</string>
 
+    <!--CreatePostActivity-->
+    <string name="postCreatedSuccessfully">Post created successfully!</string>
+    <string name="cameraPermissionIsRequired">Camera Permission is Required</string>
+
     <!--activity create post-->
     <string name="post">Post</string>
     <string name="location">Location</string>
     <string name="letsGetSomeHelp">Let\'s get some help!</string>
     <string name="postAnonymously">Post Anonymously?</string>
     <string name="addToYourPost">Add to your post</string>
-    
+
     <!--ProfileActivity-->
     <string name="following">Following</string>
-    <string name="areYouSureYouWantToUnfollow">Are you sure you want to unfollow ?</string>
 
     <!--activity profile-->
     <string name="follow">Follow</string>
@@ -172,6 +224,11 @@
     <string name="reputation">Reputation</string>
     <string name="posts">Posts</string>
     <string name="reviews">Reviews</string>
+
+    <!--profile options menue-->
+    <string name="report">Report</string>
+    <string name="block">Block</string>
+    <string name="mute">Mute</string>
 
     <!--activity edit profile-->
     <string name="yourJob">Your job</string>
@@ -228,7 +285,13 @@
     <string name="followedYou">followed you</string>
 
 
+    <string name="app_name">2HANDS</string>
 
+
+    <string name="title_activity_followers">FollowersActivity</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="generalSettings">
         <item>Language</item>
         <item>Notifications</item>
@@ -236,7 +299,6 @@
         <item>Night Mode</item>
         <item>About 2Hands</item>
     </string-array>
-
     <string-array name="categories">
         <item>General</item>
         <item>Medicine</item>
@@ -245,29 +307,4 @@
         <item>Social</item>
         <item>Family</item>
     </string-array>
-
-
-    <string-array name="postShareOptions">
-        <item>Share now</item>
-        <item>Share with comment</item>
-        <item>Share to someone</item>
-        <item>Copy link</item>
-    </string-array>
-
-
-    <string name="app_name">2HANDS</string>
-    <string name="title_activity_signup">Create your account</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_followers">FollowersActivity</string>
-    <string name="title_activity_followings">FollowingsActivity</string>
 </resources>

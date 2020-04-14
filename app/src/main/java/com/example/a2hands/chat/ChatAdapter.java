@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
@@ -171,6 +170,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             }
         }else {
             holder.isSeen.setVisibility(View.GONE);
+        }
+
+        if(position - 1 != -1 && holder.otherProfileImage != null &&
+                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver())){
+
+            holder.otherProfileImage.setVisibility(View.INVISIBLE);
+
+        }else if(position - 1 != -1 && holder.otherProfileImage != null){
+            holder.otherProfileImage.setVisibility(View.VISIBLE);
         }
 
         holder.messageImage.setOnClickListener(new View.OnClickListener() {

@@ -14,14 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,8 +38,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.chat.chat_notifications.APIService;
 import com.example.a2hands.chat.chat_notifications.Client;
 import com.example.a2hands.chat.chat_notifications.Data;
@@ -132,14 +126,12 @@ public class ChatActivity extends AppCompatActivity {
 
     LinearLayoutManager linearLayoutManager;
 
-    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
 
     @SuppressLint("PrivateResource")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_chat);
 
         getWindow().setBackgroundDrawableResource(R.drawable.chat_bg);
@@ -244,7 +236,7 @@ public class ChatActivity extends AppCompatActivity {
 
         loadHisInfoAndchat();
         seenMessages();
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
     }
 
 
@@ -388,7 +380,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data =new Data(myUid,full_name+":"+messagebody,"New Message",hisUid,R.drawable.twohands_logo);
+                    Data data =new Data(myUid,full_name+":"+messagebody,"New Message",hisUid,R.drawable.messaging2);
 
                     Sender sender = new Sender(data,token.getToken());
                     apiService.sendNotification(sender)
@@ -449,6 +441,7 @@ public class ChatActivity extends AppCompatActivity {
         builder.create().show();
 
     }
+
     private void pickFromGallery(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -474,10 +467,12 @@ public class ChatActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
         return result;
     }
+
     private void requestStoragePermission(){
         //request runtime permission
         ActivityCompat.requestPermissions(this,storagePermissions,STORAGE_REQUEST_CODE);
     }
+
     private boolean checkCameraPermission(){
         //check if Camera permission is enabled
         //return true if enabled
@@ -488,6 +483,7 @@ public class ChatActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) ==(PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
+
     private void requestCameraPermission(){
         ActivityCompat.requestPermissions(this,cameraPermissions,CAMERA_REQUEST_CODE);
     }
@@ -676,14 +672,14 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
         checkUserStatus();
         super.onStart();
     }
 
     @Override
     protected void onPause() {
-        loadUserOnlineAndtypingStatus();
+        loadUserOnlineAndTypingStatus();
         updateTypingStatus("noOne");
         userRefForSeen.removeEventListener(seenListener);
         super.onPause();
@@ -691,17 +687,16 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        if(isAppIsInBackground(getApplicationContext())){
-            String dateTime = simpleDateFormat.format(cal.getTime());
-            updateOnlineStatus(dateTime);
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
         }
         super.onStop();
     }
 
     @Override
     protected void onResume() {
-        updateOnlineStatus("online");
-        loadUserOnlineAndtypingStatus();
+        UserStatus.updateOnlineStatus(true, myUid);
+        loadUserOnlineAndTypingStatus();
         super.onResume();
     }
 
@@ -734,7 +729,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-    private void loadUserOnlineAndtypingStatus(){
+    private void loadUserOnlineAndTypingStatus(){
         db.collection("users/").document(hisUid)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -757,12 +752,6 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void updateOnlineStatus(String status) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("onlineStatus", status);
-        db.collection("users/").document(myUid).update(hashMap);
-    }
-
     private void updateTypingStatus(String typing) {
         db.collection("users/").document(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -779,53 +768,6 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(ChatActivity.this, HomeActivity.class));
             finish();
         }
-    }
-
-
-    private boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
-                        }
-                    }
-                }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
-        }
-        return isInBackground;
-    }
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
     }
 
 

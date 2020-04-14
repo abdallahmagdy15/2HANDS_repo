@@ -41,7 +41,6 @@ import com.example.a2hands.SharingOptions;
 import com.example.a2hands.User;
 import com.example.a2hands.R;
 import com.example.a2hands.rating.RatingsActivity;
-import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

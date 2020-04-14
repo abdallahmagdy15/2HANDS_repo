@@ -2,16 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a2hands">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_2hands_2"
@@ -19,94 +9,68 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".profile.EditProfileActivity" android:parentActivityName=".profile.EditProfileActivity"></activity>
-
+        <activity android:name=".settings.EditUserNameActivity" />
+        <activity
+            android:name=".profile.EditProfileActivity"
+            android:parentActivityName=".profile.EditProfileActivity" />
         <activity
             android:name=".VideoPreview"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
         <activity
             android:name=".ImagePreview"
             android:parentActivityName=".ImagePreview" />
-
         <activity
             android:name=".home.LikesActivity"
             android:parentActivityName=".home.LikesActivity" />
-
         <activity android:name=".chat.MessageImageActivity" />
-
         <activity
             android:name=".profile.FollowingsActivity"
             android:label="@string/title_activity_followings"
             android:parentActivityName=".profile.FollowingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".profile.FollowersActivity"
             android:label="@string/title_activity_followers"
             android:parentActivityName=".profile.FollowersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".locationsearch.SearchLocation" />
-
         <activity
             android:name=".SavedPostsActivity"
             android:parentActivityName=".SavedPostsActivity" />
-
         <activity
             android:name=".rating.RatingsActivity"
             android:parentActivityName=".rating.RatingsActivity" />
-
         <activity android:name=".ForgetPasswordActivity" />
-
         <activity
             android:name=".profile.ProfileActivity"
             android:parentActivityName=".profile.ProfileActivity" />
-
-        <activity android:name=".CreatePost" android:parentActivityName=".CreatePost" />
-
-        <activity android:name=".signup.signupActivity" />
-
+        <activity
+            android:name=".CreatePostActivity"
+            android:parentActivityName=".CreatePostActivity" />
+        <activity android:name=".signup.SignUpActivity" />
         <activity
             android:name=".home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".signup.signupSetBioActivity" />
-
-        <activity android:name=".signup.signupPickPictureActivity" />
-
+        <activity android:name=".signup.SignUpSetBioActivity" />
+        <activity android:name=".signup.SignUpPickPictureActivity" />
         <activity android:name=".home.comments.CommentsActivity" />
-
         <activity android:name=".settings.SettingsActivity" />
-
         <activity android:name=".settings.AboutAppActivity" />
-
         <activity
             android:name=".settings.BlockedUsersActivity"
             android:parentActivityName=".settings.BlockedUsersActivity" />
-
         <activity android:name=".settings.DeleteAccActivity" />
-
         <activity android:name=".settings.EditCountryActivity" />
-
         <activity android:name=".settings.EditEmailActivity" />
-
         <activity android:name=".settings.EditNameActivity" />
-
         <activity android:name=".settings.EditPassActivity" />
-
         <activity android:name=".settings.EditPhoneActivity" />
-
         <activity android:name=".settings.LanguageActivity" />
-
         <activity android:name=".settings.NotificationActivity" />
-
         <activity
             android:name=".chat.ChatActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -114,30 +78,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".notifications.NotificationsService"
-            android:exported="false" />
-
-        <service android:name=".chat.chat_notifications.FirebaseService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE"/>
-            </intent-filter>
-        </service>
-
-        <service android:name=".chat.chat_notifications.FirebaseMessaging"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service
-            android:name=".notifications.NotificationsService"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -148,7 +88,39 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <service
+            android:name=".notifications.NotificationsService"
+            android:exported="false" />
+        <service
+            android:name=".chat.chat_notifications.FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".chat.chat_notifications.FirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
+        <service
+            android:name=".notifications.NotificationsService"
+            android:exported="false" />
     </application>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

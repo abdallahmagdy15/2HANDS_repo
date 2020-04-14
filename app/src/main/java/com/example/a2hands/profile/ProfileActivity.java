@@ -12,23 +12,20 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.text.Html;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.a2hands.ChangeLocale;
+import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.FollowingHelper;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
@@ -38,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,11 +56,9 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-public class ProfileActivity extends AppCompatActivity
-{
+public class ProfileActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
@@ -89,10 +85,12 @@ public class ProfileActivity extends AppCompatActivity
     String UserName;
     User user;
 
+    FloatingActionButton addPostFAbtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_profile);
 
         //declare
@@ -122,6 +120,7 @@ public class ProfileActivity extends AppCompatActivity
         profileFollowersCount = findViewById(R.id.profileFollowersCount);
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
 
+        addPostFAbtn = findViewById(R.id.addPostFloatingActionbtnProfile);
 
         // setup
         setSupportActionBar(toolbar);
@@ -129,6 +128,12 @@ public class ProfileActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        addPostFAbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, CreatePostActivity.class));
+            }
+        });
 
         //Chat Activity
         profileMessaging.setOnClickListener(new View.OnClickListener() {
@@ -154,10 +159,10 @@ public class ProfileActivity extends AppCompatActivity
             uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
         }
+
         loadUserProfile();
         setLoadingFollowersListener();
         setLoadingFollowingsListener();
-
 
     }// end of onCreate method
 
@@ -166,6 +171,7 @@ public class ProfileActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.profile_options_menu, menu);
         return true;
     }
+
     void setEditBtnListener(){
         profileEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,7 +293,7 @@ public class ProfileActivity extends AppCompatActivity
                                 public void onClick(View v) {
                                     //confirm unfollow
                                     new AlertDialog.Builder(ProfileActivity.this)
-                                            .setTitle(getResources().getString(R.string.areYouSureYouWantToUnfollow))
+                                            .setTitle(getResources().getString(R.string.areYouSureYouWantToUnFollow))
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
                                                     FollowingHelper fh = new FollowingHelper(curr_uid,uid,ProfileActivity.this);
@@ -439,25 +445,5 @@ public class ProfileActivity extends AppCompatActivity
         }
     }
 
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 
 }

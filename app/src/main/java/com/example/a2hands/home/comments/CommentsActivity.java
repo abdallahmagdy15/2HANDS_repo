@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import com.example.a2hands.Callback;
+import com.example.a2hands.ChangeLocale;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.home.LikesActivity;
 import com.example.a2hands.notifications.NotificationHelper;
 import com.example.a2hands.R;
@@ -41,7 +42,6 @@ import com.r0adkll.slidr.model.SlidrInterface;
 import com.r0adkll.slidr.model.SlidrPosition;
 
 import java.util.Date;
-import java.util.Locale;
 
 public class CommentsActivity extends AppCompatActivity  {
 
@@ -57,7 +57,7 @@ public class CommentsActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_comments);
 
         commentsToolbar = findViewById(R.id.commentsToolbar);
@@ -206,25 +206,19 @@ public class CommentsActivity extends AppCompatActivity  {
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_bottom);
     }
 
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, curr_uid);
+        super.onResume();
     }
 
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, curr_uid);
+        }
+        super.onStop();
     }
 
 

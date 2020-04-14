@@ -8,10 +8,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -25,8 +21,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2hands.CreatePost;
+import com.example.a2hands.ChangeLocale;
+import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.LoginActivity;
+import com.example.a2hands.UserStatus;
 import com.example.a2hands.chat.chat_notifications.Token;
 import com.example.a2hands.chat.chatlist.ChatListFragment;
 import com.example.a2hands.notifications.Notification;
@@ -88,13 +86,10 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     String myUid;
 
-    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_home);
 
         db = FirebaseFirestore.getInstance();
@@ -120,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //drawer header data
-        View headerView =  navigationView.getHeaderView(0);
+        View headerView = navigationView.getHeaderView(0);
         final CircleImageView header_profilePic =headerView.findViewById(R.id.drawer_profileImage);
         final TextView header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
         final TextView header_email = headerView.findViewById(R.id.drawer_userEmail);
@@ -176,8 +171,8 @@ public class HomeActivity extends AppCompatActivity {
                         Intent intent = new Intent(HomeActivity.this, NotificationsService.class);
                         stopService(intent);
 
-                        String dateTime =simpleDateFormat.format(cal.getTime());
-                        updateOnlineStatus(dateTime);
+                        UserStatus.updateOnlineStatus(false, myUid);
+
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this , LoginActivity.class));
                         break;
@@ -320,15 +315,15 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotificationsService.class);
         startService(intent);
 
-        updateOnlineStatus("online");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        updateOnlineStatus("online");
+        UserStatus.updateOnlineStatus(true, myUid);
         super.onResume();
     }
+
 
     ///////////////////////////////////////////////////////////////
     ///////////////////press back again to exit////////////////////
@@ -346,9 +341,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop()
     {
-        if(isAppIsInBackground(getApplicationContext())){
-            String dateTime = simpleDateFormat.format(cal.getTime());
-            updateOnlineStatus(dateTime);
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, myUid);
         }
         super.onStop();
         if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
@@ -369,9 +363,6 @@ public class HomeActivity extends AppCompatActivity {
             navigateHome();
             return;
         } else if (doubleBackToExitPressedOnce) {
-            String dateTime =simpleDateFormat.format(cal.getTime());
-
-            updateOnlineStatus(dateTime);
 
             Intent a = new Intent(Intent.ACTION_MAIN);
             a.addCategory(Intent.CATEGORY_HOME);
@@ -384,38 +375,6 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(this, getResources().getString(R.string.pressBackAgainToExit), Toast.LENGTH_SHORT).show();
         mHandler.postDelayed(mRunnable, 2000);
     }
-
-    private boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
-                        }
-                    }
-                }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
-        }
-        return isInBackground;
-    }
-
-    private void updateOnlineStatus(String status) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("onlineStatus", status);
-        db.collection("users/").document(myUid).update(hashMap);
-    }
-
 
 
 
@@ -464,7 +423,7 @@ public class HomeActivity extends AppCompatActivity {
         ft.commit();
     }
     public void navigateCreatePost(){
-        Intent intent = new Intent(this, CreatePost.class);
+        Intent intent = new Intent(this, CreatePostActivity.class);
         intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         startActivity(intent);
     }
@@ -514,27 +473,5 @@ public class HomeActivity extends AppCompatActivity {
     }////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////
 
-
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
 
 }

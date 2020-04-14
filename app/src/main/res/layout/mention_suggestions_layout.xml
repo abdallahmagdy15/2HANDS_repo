@@ -24,4 +24,5 @@
         android:textColor="@color/colorDark"
         android:textSize="15sp"
         android:textStyle="bold" />
+
 </LinearLayout>

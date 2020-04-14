@@ -3,11 +3,8 @@ package com.example.a2hands.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,10 +28,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-public class signupPickPictureActivity extends AppCompatActivity {
+public class SignUpPickPictureActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -46,12 +43,10 @@ public class signupPickPictureActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-//    private StorageTask mUploadTask;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_signup_pick_picture);
 
         profilePic = findViewById(R.id.pickPic_imageView);
@@ -69,7 +64,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(signupPickPictureActivity.this , signupSetBioActivity.class));
+                startActivity(new Intent(SignUpPickPictureActivity.this , SignUpSetBioActivity.class));
             }
         });
 
@@ -77,7 +72,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
-                startActivity(new Intent(signupPickPictureActivity.this , signupSetBioActivity.class));
+                startActivity(new Intent(SignUpPickPictureActivity.this , SignUpSetBioActivity.class));
             }
         });
 
@@ -128,8 +123,6 @@ public class signupPickPictureActivity extends AppCompatActivity {
                                 }
                             }, 2000);
 
-                            Toast.makeText(signupPickPictureActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-
                             Map<String,Object> profile_pic = new HashMap<>();
                             profile_pic.put("profile_pic", taskSnapshot.getMetadata().getName());
 
@@ -151,7 +144,7 @@ public class signupPickPictureActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(signupPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -165,29 +158,6 @@ public class signupPickPictureActivity extends AppCompatActivity {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-    //for changing app language
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
-
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
-    }
-
-    public void loadLocale (){
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        setLocale(language);
-    }
-
 
 
 }

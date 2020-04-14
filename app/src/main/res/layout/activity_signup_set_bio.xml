@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".signup.signupSetBioActivity">
+    tools:context=".signup.SignUpSetBioActivity">
 
     <TextView
         android:id="@+id/textView4"
@@ -25,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:textAlignment="viewStart"
         android:ems="10"
         android:hint="@string/yourBio"
         android:inputType="textPersonName"
