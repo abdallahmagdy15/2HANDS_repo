@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.R;
+import com.example.a2hands.home.posts.Post_Preview;
+import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.rating.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -70,6 +73,22 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int pos) {
         final ViewHolder vh ;
+        Notification n = notifisList.get(pos);
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 if(n.type.equals("FOLLOWING")){
+                     Intent i = new Intent(holder.context , ProfileActivity.class);
+                     i.putExtra("uid",n.publisher_id);
+                     holder.context.startActivity(i);
+                 }
+                else {
+                    Intent i = new Intent(holder.context , Post_Preview.class);
+                    i.putExtra("POST_ID",n.post_id);
+                    holder.context.startActivity(i);
+                }
+            }
+        });
 
         //check if notifi is seen
         if(!notifisList.get(pos).is_seen){
@@ -226,7 +245,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
             else if(type.equals("SHARE_POST")){
                 holder.notifiTypePic.setImageResource(R.drawable.share_filled);
             }
-            else if(type.equals("FOLLOWED")){
+            else if(type.equals("FOLLOWING")){
                 holder.notifiTypePic.setImageResource(R.drawable.followed_user);
             }
         }
