@@ -644,6 +644,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 SharingOptions sharing_option = new SharingOptions();
                 Bundle b = new Bundle();
                 b.putString("POST_ID",curr_post.post_id);
+                b.putString("SHARED_POST_ID",curr_post.shared_id);
                 b.putString("POST_LOCATION",curr_post.location);
                 sharing_option.setArguments(b);
                 sharing_option.show(((AppCompatActivity)context).getSupportFragmentManager(),"");

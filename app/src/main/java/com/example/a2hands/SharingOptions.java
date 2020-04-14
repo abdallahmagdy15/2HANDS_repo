@@ -35,6 +35,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     private LinearLayout shareExternalBtn;
     private LinearLayout copyPostLinkBtn;
     private String current_uid;
+    private String post_id;
     private String shared_post_id;
     private String shared_post_location;
     private Context context;
@@ -43,7 +44,8 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         current_uid = FirebaseAuth.getInstance().getUid();
-        shared_post_id = getArguments().getString("POST_ID");
+        post_id = getArguments().getString("POST_ID");
+        shared_post_id = getArguments().getString("SHARED_POST_ID");
         shared_post_location = getArguments().getString("POST_LOCATION");
 
     }
@@ -74,11 +76,11 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
     @Override
     public void onClick(View v) {
         if (v.getId() == shareNowBtn.getId()){
-            shareNow(shared_post_id,current_uid);
+            shareNow((shared_post_id!=null)?shared_post_id:post_id,current_uid);
             dismiss();
         }
         else if(v.getId() == quoteBtn.getId()){
-            shareWithComment(shared_post_id);
+            shareWithComment((shared_post_id!=null)?shared_post_id:post_id);
             dismiss();
         }
 
@@ -104,6 +106,7 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
 
     // sharing options methods
     private void shareNow(final String shared_post_id, final String current_uid){
+
         final CollectionReference ref = FirebaseFirestore.getInstance().collection("/posts");
         final String postid = ref.document().getId();
         final Post post= new Post();
