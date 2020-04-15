@@ -69,6 +69,8 @@ public class LanguageActivity extends AppCompatActivity {
                         setLocale("en");
                     }else if(selectedRadioButton.getText().equals(getResources().getString(R.string.french))){
                         setLocale("fr");
+                    }else if(selectedRadioButton.getText().equals(getResources().getString(R.string.spanish))){
+                        setLocale("es");
                     }
                     startActivity(new Intent(LanguageActivity.this, SettingsActivity.class));
                 }

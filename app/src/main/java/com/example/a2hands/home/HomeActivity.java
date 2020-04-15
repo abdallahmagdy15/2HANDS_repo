@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     //bottom navigation
     private BottomNavigationView nav;
     private int navItemId;
+
     private BadgeDrawable badge;
 
     MaterialSpinner catsSpinner;
@@ -273,6 +274,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
+
 
         catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {

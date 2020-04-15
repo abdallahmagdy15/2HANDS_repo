@@ -203,6 +203,7 @@
     <string name="arabic">العربية</string>
     <string name="english">English</string>
     <string name="french">Français</string>
+    <string name="spanish">Española</string>
     <string name="done">انهاء</string>
 
     <!--CreatePostActivity-->
