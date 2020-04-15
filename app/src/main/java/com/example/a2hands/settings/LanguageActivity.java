@@ -58,7 +58,7 @@ public class LanguageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (langGroup.getCheckedRadioButtonId() == -1){
-                    Toast.makeText(LanguageActivity.this, "Select Your Language", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LanguageActivity.this, getResources().getString(R.string.selectYourLanguage), Toast.LENGTH_SHORT).show();
                 }else{
                     int langID = langGroup.getCheckedRadioButtonId();
                     RadioButton selectedRadioButton = findViewById(langID);
@@ -73,8 +73,10 @@ public class LanguageActivity extends AppCompatActivity {
                         setLocale("es");
                     }else if(selectedRadioButton.getText().equals(getResources().getString(R.string.portuguese))){
                         setLocale("pt");
+                    }else if(selectedRadioButton.getText().equals(getResources().getString(R.string.german))){
+                        setLocale("de");
                     }
-                    startActivity(new Intent(LanguageActivity.this, SettingsActivity.class));
+                    onBackPressed();
                 }
             }
         });

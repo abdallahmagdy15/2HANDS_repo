@@ -181,6 +181,7 @@
 
     <!--LanguageActivity-->
     <string name="language">Langue</string>
+    <string name="selectYourLanguage">Choisissez votre langue</string>
 
     <!--NotificationActivity-->
     <string name="notificationSettings">Paramètres des notifications</string>
@@ -205,6 +206,7 @@
     <string name="french">Français</string>
     <string name="spanish">Española</string>
     <string name="portuguese">Português</string>
+    <string name="german">Deutsche</string>
     <string name="done">Fini</string>
 
     <!--CreatePostActivity-->

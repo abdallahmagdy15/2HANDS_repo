@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="enterYourEmail">Geben sie ihre E-Mail Adresse ein</string>
+    <string name="emailAlreadyInUse">E-Mail bereits verwendet!</string>
+    <string name="enterYourFullName">Geben Sie Ihren vollständigen Namen ein</string>
+    <string name="enterYourUserName">Geben Sie Ihren Benutzernamen ein</string>
+    <string name="userNameIsAlreadyUsed">Nutzername ist bereits vergeben</string>
+    <string name="userNameIsNotValid">Nutzername ist ungültig</string>
+    <string name="enterYourPhone">Geben Sie Ihr Telefon ein</string>
+    <string name="phoneIsNotValid">Telefon ist nicht gültig</string>
+    <string name="selectYourGender">Wähle dein Geschlecht</string>
+    <string name="emailIsNotValid">Email ist ungültig</string>
+    <string name="dateOfBirthCanNotBeFromTheFuture">Geburtsdatum kann nicht aus der Zukunft sein!</string>
+    <string name="enterYourPassword">Geben Sie Ihr Passwort ein</string>
+    <string name="tooShortPassword">Zu kurzes Passwort</string>
+    <string name="enterYourConfirmPassword">Geben Sie Ihr Bestätigungskennwort ein</string>
+    <string name="passwordDoesnotMatch">Passwort stimmt nicht überein</string>
+    <string name="atLeast1Capital1Number1SpecialChar">Mindestens 1 Kapital, 1 Zahl und 1 Sonderzeichen</string>
+
+
+    <string name="fullName">Vollständiger Name</string>
+    <string name="userName">Nutzername</string>
+    <string name="gender">Geschlecht:</string>
+    <string name="male">Männlich</string>
+    <string name="female">Weiblich</string>
+    <string name="selectYourDateOfBirth">Wähle dein Geburtsdatum</string>
+    <string name="phone">Telefon</string>
+    <string name="email">Email</string>
+    <string name="password">Passwort</string>
+    <string name="confirmPassword">Kennwort bestätigen</string>
+    <string name="signUp">Anmelden</string>
+    <string name="back">Zurück</string>
+    <string name="next">Nächster</string>
+
+
+    <string name="pickAProfilePicture">Wählen Sie ein Profilbild</string>
+    <string name="skip">Überspringen</string>
+
+
+    <string name="checkYourEmailForVerification">Überprüfen Sie Ihre E-Mails zur Bestätigung</string>
+
+
+    <string name="talkAboutYourself">Rede über dich selbst</string>
+    <string name="yourBio">Ihre Bio</string>
+
+
+    <string name="wrongPassword">Falsches Passwort!</string>
+    <string name="noNetwork">Kein Netzwerk!</string>
+    <string name="errorSigningIn">Fehler beim Anmelden!</string>
+
+
+    <string name="login">Einloggen</string>
+    <string name="orSignInWith">oder melden Sie sich mit an</string>
+
+
+    <string name="checkYourEmailToResetYourPassword">Überprüfen Sie Ihre E-Mails, um Ihr Passwort zurückzusetzen</string>
+
+
+    <string name="forgotYourPassword">Passwort vergessen?</string>
+    <string name="submit">einreichen</string>
+
+
+    <string name="areYouSureYouWantToUnFollow">Sind Sie sicher, dass Sie nicht mehr folgen möchten?</string>
+
+
+    <string name="pressBackAgainToExit">Drücken Sie erneut BACK, um den Vorgang zu beenden</string>
+
+
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="inbox">Posteingang</string>
+
+
+    <string name="home">Zuhause</string>
+    <string name="search">Suche</string>
+    <string name="messages">Mitteilungen</string>
+
+
+    <string name="likes">Likes</string>
+
+
+    <string name="like">Mögen</string>
+    <string name="reply">Antworten</string>
+
+
+    <string name="writeAComment">Schreibe einen Kommentar…</string>
+
+
+    <string name="peopleLikedThisPost">Die Leute mochten diesen Beitrag</string>
+
+
+    <string name="anonymous">Anonym</string>
+    <string name="canNotSendHelpRequestToYourself">Sie können keine Hilfeanfrage an sich selbst senden!</string>
+    <string name="sendHelpRequestTo">Hilfeanfrage senden an</string>
+    <string name="cancel">Stornieren</string>
+    <string name="helpRequestIsSent">Hilfeanfrage wird gesendet!</string>
+    <string name="likedYourPost">mochte Ihren Beitrag</string>
+    <string name="comments">Bemerkungen</string>
+    <string name="ratings">Bewertungen</string>
+    <string name="shares">Anteile</string>
+
+
+    <string name="shared">Geteilt</string>
+
+
+    <string name="postIsSavedSuccessfully">Beitrag wurde erfolgreich gespeichert!</string>
+    <string name="postIsDisabledSuccessfully">Beitrag wurde erfolgreich deaktiviert!</string>
+    <string name="postIsDeletedSuccessfully">Beitrag wurde erfolgreich gelöscht!</string>
+    <string name="postIsHiddenSuccessfully">Beitrag wurde erfolgreich ausgeblendet!</string>
+    <string name="userIsMutedSuccessfully">Benutzer ist erfolgreich stummgeschaltet!</string>
+    <string name="userIsBlockedSuccessfully">Benutzer wurde erfolgreich blockiert!</string>
+
+
+    <string name="postSharedSuccessfully">Beitrag erfolgreich geteilt!</string>
+
+
+    <string name="savedPosts">Gespeicherte Beiträge</string>
+
+
+    <string name="searchYourState">Suchen Sie Ihren Staat</string>
+    <string name="showInAllStates">In allen Staaten anzeigen</string>
+    <string name="orSelectAstate">oder wählen Sie einen Zustand</string>
+
+
+    <string name="to">Zu</string>
+    <string name="expressYourGratitude">Drücken Sie Ihre Dankbarkeit aus</string>
+    <string name="writeAReview">Eine Rezension schreiben</string>
+    <string name="finised">Fertig</string>
+
+
+
+    <string name="accept">Akzeptieren</string>
+    <string name="refuse">Sich weigern</string>
+
+
+    <string name="recentSearches">Letzte Suchanfragen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="searchHint">Suche…</string>
+
+
+    <string name="myProfile">Mein Profil</string>
+    <string name="saved">Gerettet</string>
+    <string name="settings">die Einstellungen</string>
+    <string name="signOut">Ausloggen</string>
+    <string name="communicate">Kommunizieren</string>
+    <string name="share">Aktie</string>
+    <string name="send">Senden</string>
+
+
+    <string name="account">Konto</string>
+    <string name="name">Name</string>
+    <string name="country">Land</string>
+    <string name="changeYourPassword">Ändern Sie Ihr Passwort</string>
+    <string name="deleteAccount">Konto löschen</string>
+    <string name="general">Allgemeines</string>
+
+
+    <string name="aboutApp">Über App</string>
+
+
+    <string name="blockedUsers">Blockierte Benutzer</string>
+
+
+    <string name="editCountry">Land bearbeiten</string>
+
+
+    <string name="editEmail">E-Mail bearbeiten</string>
+
+
+    <string name="editName">Vollständigen Namen bearbeiten</string>
+
+
+    <string name="editUserName">Benutzername bearbeiten</string>
+
+
+    <string name="editPassword">Passwort bearbeiten</string>
+
+
+    <string name="editPhone">Telefon bearbeiten</string>
+
+
+    <string name="language">Sprache</string>
+    <string name="selectYourLanguage">Wähle deine Sprache</string>
+
+
+    <string name="notificationSettings">Benachrichtigungseinstellungen</string>
+
+
+    <string name="currentPassword">derzeitiges Passwort</string>
+    <string name="delete">Löschen</string>
+
+
+    <string name="save">sparen</string>
+
+
+    <string name="newEmail">Neue e-mail</string>
+
+
+    <string name="newPassword">Neues Kennwort</string>
+
+
+    <string name="witchLanguageDoYouSpeak">Hexensprache sprichst du?</string>
+    <string name="arabic">العربية</string>
+    <string name="english">English</string>
+    <string name="french">Français</string>
+    <string name="spanish">Española</string>
+    <string name="portuguese">Português</string>
+    <string name="german">Deutsche</string>
+    <string name="done">Getan</string>
+
+
+    <string name="postCreatedSuccessfully">Beitrag erfolgreich erstellt!</string>
+    <string name="cameraPermissionIsRequired">Kameraerlaubnis ist erforderlich</string>
+
+
+    <string name="post">Post</string>
+    <string name="location">Lage</string>
+    <string name="letsGetSomeHelp">Lassen Sie uns etwas Hilfe bekommen!</string>
+    <string name="postAnonymously">Anonym posten?</string>
+    <string name="addToYourPost">Zu deinem Beitrag hinzufügen</string>
+
+
+    <string name="following">Folgen</string>
+
+
+    <string name="follow">Folgen</string>
+    <string name="Edit">Bearbeiten</string>
+    <string name="reputation">Ruf</string>
+    <string name="posts">Beiträge</string>
+    <string name="reviews">Bewertungen</string>
+
+
+    <string name="report">Bericht</string>
+    <string name="block">Block</string>
+    <string name="mute">Stumm</string>
+
+
+    <string name="yourJob">Deine Arbeit</string>
+
+
+    <string name="followers">Anhänger</string>
+
+
+    <string name="followings">Folgen</string>
+
+
+    <string name="shareNow">Jetzt teilen</string>
+    <string name="shareWithComment">Mit Kommentar teilen</string>
+    <string name="shareInPrivateMessage">In privater Nachricht teilen</string>
+    <string name="copyPostLink">Post-Link kopieren</string>
+    <string name="shareExternal">Extern teilen</string>
+
+
+    <string name="disableReact">Deaktivieren Sie reagieren</string>
+    <string name="savePost">Beitrag speichern</string>
+    <string name="deletePost">Beitrag entfernen</string>
+    <string name="hidePost">Beitrag ausblenden</string>
+    <string name="muteUser">Benutzer stumm schalten</string>
+    <string name="blockUser">Benutzer blockieren</string>
+    <string name="reportPost">Beitrag melden</string>
+
+
+    <string name="thisMessageWasDeleted">Diese Nachricht wurde gelöscht ...</string>
+    <string name="sentAPhoto">schickte ein Foto…</string>
+
+
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galerie</string>
+    <string name="chooseImageFrom">Wählen Sie Bild aus</string>
+    <string name="sendingImage">Bild senden…</string>
+    <string name="youCanNotSendEmptyMessage">Sie können keine leere Nachricht senden ...</string>
+    <string name="typing">Tippen…</string>
+    <string name="online">online</string>
+    <string name="typeAMessage">Geben Sie eine Nachricht ein…</string>
+
+
+    <string name="areYouSureToDeleteThisMessage">Sind Sie sicher, diese Nachricht zu löschen?</string>
+    <string name="no">Nein</string>
+    <string name="seen">gesehen</string>
+    <string name="delivered">geliefert</string>
+
+
+    <string name="helpRequestRefused">Hilfeanforderung abgelehnt</string>
+    <string name="helpRequestAccepted">Hilfeanforderung akzeptiert</string>
+
+
+    <string name="sentYouAHelpRequest">hat Ihnen eine Hilfeanfrage gesendet</string>
+    <string name="sharedYourPost">Hat deinen Beitrag geteilt</string>
+    <string name="followedYou">dir gefolgt</string>
+
+
+    <string name="app_name">2HANDS</string>
+
+
+    <string name="title_activity_followers">FollowersActivity</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+
+    <string-array name="generalSettings">
+        <item>Sprache</item>
+        <item>Benachrichtigungen</item>
+        <item>Blockierte Benutzer</item>
+        <item>Night Mode</item>
+        <item>Über 2Hands</item>
+    </string-array>
+    <string-array name="categories">
+        <item>Allgemeines</item>
+        <item>Medizin</item>
+        <item>Psychologie</item>
+        <item>Finanziell</item>
+        <item>Sozial</item>
+        <item>Familie</item>
+    </string-array>
+
+</resources>

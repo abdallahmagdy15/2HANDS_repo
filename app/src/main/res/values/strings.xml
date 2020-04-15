@@ -180,6 +180,7 @@
 
     <!--LanguageActivity-->
     <string name="language">Language</string>
+    <string name="selectYourLanguage">Select your language</string>
 
     <!--NotificationActivity-->
     <string name="notificationSettings">Notifications Settings</string>
@@ -198,12 +199,13 @@
     <string name="newPassword">New Password</string>
 
     <!--activity language-->
-    <string name="witchLanguageDoYouSpeak">Witch Language Do You Speak?</string>
+    <string name="witchLanguageDoYouSpeak">Witch language do you speak?</string>
     <string name="arabic">العربية</string>
     <string name="english">English</string>
     <string name="french">Français</string>
     <string name="spanish">Española</string>
     <string name="portuguese">Português</string>
+    <string name="german">Deutsche</string>
     <string name="done">Done</string>
 
     <!--CreatePostActivity-->

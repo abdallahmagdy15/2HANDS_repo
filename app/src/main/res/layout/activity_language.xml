@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:text="@string/witchLanguageDoYouSpeak"
         android:textSize="36sp"
@@ -94,6 +94,16 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/portuguese"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radioDeutsche"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/german"
             android:textAlignment="center"
             android:textSize="20sp" />
 
