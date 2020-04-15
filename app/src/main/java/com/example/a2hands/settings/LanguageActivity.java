@@ -75,6 +75,8 @@ public class LanguageActivity extends AppCompatActivity {
                         setLocale("pt");
                     }else if(selectedRadioButton.getText().equals(getResources().getString(R.string.german))){
                         setLocale("de");
+                    } else if(selectedRadioButton.getText().equals(getResources().getString(R.string.italian))){
+                        setLocale("it");
                     }
                     onBackPressed();
                 }

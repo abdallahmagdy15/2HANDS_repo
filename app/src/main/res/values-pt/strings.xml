@@ -207,6 +207,7 @@
     <string name="spanish">Española</string>
     <string name="portuguese">Português</string>
     <string name="german">Deutsche</string>
+    <string name="italian">Italiano</string>
     <string name="done">Feito</string>
 
     <!--CreatePostActivity-->
