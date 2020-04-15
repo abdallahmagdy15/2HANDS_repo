@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--SignUpActivity-->
+    <string name="enterYourEmail">Digite seu e-mail</string>
+    <string name="emailAlreadyInUse">Email já em uso!</string>
+    <string name="enterYourFullName">Escreva seu nome completo</string>
+    <string name="enterYourUserName">Entre com seu nome de usuário</string>
+    <string name="userNameIsAlreadyUsed">O nome de usuário já está sendo usado</string>
+    <string name="userNameIsNotValid">nome de usuário não é válido</string>
+    <string name="enterYourPhone">Digite seu telefone</string>
+    <string name="phoneIsNotValid">O telefone não é válido</string>
+    <string name="selectYourGender">Selecione o seu sexo</string>
+    <string name="emailIsNotValid">E-mail não é válido</string>
+    <string name="dateOfBirthCanNotBeFromTheFuture">Data de nascimento não pode ser do futuro!</string>
+    <string name="enterYourPassword">Coloque sua senha</string>
+    <string name="tooShortPassword">Senha muito curta</string>
+    <string name="enterYourConfirmPassword">Digite sua senha de confirmação</string>
+    <string name="passwordDoesnotMatch">A senha não corresponde</string>
+    <string name="atLeast1Capital1Number1SpecialChar">Pelo menos 1 Capital, 1 Número e 1 Caractere Especial</string>
+
+    <!--activity sign up-->
+    <string name="fullName">Nome completo</string>
+    <string name="userName">Nome do usuário</string>
+    <string name="gender">Gênero:</string>
+    <string name="male">Masculino</string>
+    <string name="female">Fêmea</string>
+    <string name="selectYourDateOfBirth">Selecione sua data de nascimento</string>
+    <string name="phone">telefone</string>
+    <string name="email">O email</string>
+    <string name="password">Senha</string>
+    <string name="confirmPassword">Confirme a Senha</string>
+    <string name="signUp">Inscrever-se</string>
+    <string name="back">De volta</string>
+    <string name="next">Próximo</string>
+
+    <!--activity signup pic picture-->
+    <string name="pickAProfilePicture">Escolha uma foto do perfil</string>
+    <string name="skip">Pular</string>
+
+    <!--SignUpSetBioActivity-->
+    <string name="checkYourEmailForVerification">Verifique seu e-mail para verificação</string>
+
+    <!--activity signup set bio-->
+    <string name="talkAboutYourself">Fale sobre você</string>
+    <string name="yourBio">Sua Biografia</string>
+
+    <!--LoginActivity-->
+    <string name="wrongPassword">Senha incorreta!</string>
+    <string name="noNetwork">No Network!</string>
+    <string name="errorSigningIn">Erro ao iniciar sessão!</string>
+
+    <!--activity login-->
+    <string name="login">Login</string>
+    <string name="orSignInWith">ou entre com</string>
+
+    <!--ForgotPasswordActivity-->
+    <string name="checkYourEmailToResetYourPassword">Verifique seu e-mail para redefinir sua senha</string>
+
+    <!--activity forgot password-->
+    <string name="forgotYourPassword">Esqueceu sua senha?</string>
+    <string name="submit">Enviar</string>
+
+    <!--MyUserRecyclerViewAdapter-->
+    <string name="areYouSureYouWantToUnFollow">Tem certeza de que deseja deixar de seguir?</string>
+
+    <!--HomeActivity-->
+    <string name="pressBackAgainToExit">Pressione BACK novamente para sair</string>
+
+    <!--activity home-->
+    <string name="notifications">Notificações</string>
+    <string name="inbox">Caixa de entrada</string>
+
+    <!--bottom navigation-->
+    <string name="home">Casa</string>
+    <string name="search">Procurar</string>
+    <string name="messages">Mensagens</string>
+
+    <!--CommentsActivity-->
+    <string name="likes">Curtidas</string>
+
+    <!--fragment comment-->
+    <string name="like">Gostar</string>
+    <string name="reply">Resposta</string>
+
+    <!--comment layout-->
+    <string name="writeAComment">Escreva um comentário…</string>
+
+    <!--activity likes-->
+    <string name="peopleLikedThisPost">As pessoas gostaram deste post</string>
+
+    <!--MyPostRecyclerViewAdapter-->
+    <string name="anonymous">Anônimo</string>
+    <string name="canNotSendHelpRequestToYourself">Não é possível enviar uma solicitação de ajuda para si mesmo!</string>
+    <string name="sendHelpRequestTo">Enviar solicitação de ajuda para</string>
+    <string name="cancel">Cancelar</string>
+    <string name="helpRequestIsSent">Pedido de ajuda enviado!</string>
+    <string name="likedYourPost">gostou da sua postagem</string>
+    <string name="comments">comentários</string>
+    <string name="ratings">classificações</string>
+    <string name="shares">ações</string>
+
+    <!--fragment post-->
+    <string name="shared">Compartilhado</string>
+
+    <!--PostOptionsDialog-->
+    <string name="postIsSavedSuccessfully">A postagem foi salva com sucesso!</string>
+    <string name="postIsDisabledSuccessfully">A postagem foi desativada com sucesso!</string>
+    <string name="postIsDeletedSuccessfully">A postagem foi excluída com sucesso!</string>
+    <string name="postIsHiddenSuccessfully">A publicação está oculta com sucesso!</string>
+    <string name="userIsMutedSuccessfully">O usuário foi silenciado com sucesso!</string>
+    <string name="userIsBlockedSuccessfully">Usuário bloqueado com sucesso!</string>
+
+    <!--SharingOptions-->
+    <string name="postSharedSuccessfully">Postagem compartilhada com sucesso!</string>
+
+    <!--SavedPostsActivity-->
+    <string name="savedPosts">Posts salvos</string>
+
+    <!--activity search location-->
+    <string name="searchYourState">Pesquise seu estado</string>
+    <string name="showInAllStates">Mostrar em todos os estados</string>
+    <string name="orSelectAstate">ou selecione um estado</string>
+
+    <!--fragment rating-->
+    <string name="to">Para</string>
+    <string name="expressYourGratitude">Expresse sua gratidão</string>
+    <string name="writeAReview">Escreva uma crítica</string>
+    <string name="finised">Acabado</string>
+
+    <!--fragment notification-->
+    <!--not complete-->
+    <string name="accept">Aceitar</string>
+    <string name="refuse">Recusar</string>
+
+    <!--fragment search-->
+    <string name="recentSearches">pesquisas recentes</string>
+    <string name="edit">Editar</string>
+    <string name="searchHint">Procurar…</string>
+
+    <!--drawer menu-->
+    <string name="myProfile">Meu perfil</string>
+    <string name="saved">Salvou</string>
+    <string name="settings">Configurações</string>
+    <string name="signOut">Sair</string>
+    <string name="communicate">Comunicar</string>
+    <string name="share">Compartilhar</string>
+    <string name="send">Mandar</string>
+
+    <!--activity settings-->
+    <string name="account">Conta</string>
+    <string name="name">Nome</string>
+    <string name="country">País</string>
+    <string name="changeYourPassword">Mude sua senha</string>
+    <string name="deleteAccount">Deletar conta</string>
+    <string name="general">Geral</string>
+
+    <!--AboutAppActivity-->
+    <string name="aboutApp">Sobre o aplicativo</string>
+
+    <!--BlockedUsersActivity-->
+    <string name="blockedUsers">Usuários bloqueados</string>
+
+    <!--EditCountryActivity-->
+    <string name="editCountry">Editar país</string>
+
+    <!--EditEmailActivity-->
+    <string name="editEmail">Editar email</string>
+
+    <!--EditNameActivity-->
+    <string name="editName">Editar nome completo</string>
+
+    <!--EditUserNameActivity-->
+    <string name="editUserName">Editar nome de usuário</string>
+
+    <!--EditPasswordActivity-->
+    <string name="editPassword">Editar senha</string>
+
+    <!--EditPhoneActivity-->
+    <string name="editPhone">Editar telefone</string>
+
+    <!--LanguageActivity-->
+    <string name="language">Língua</string>
+
+    <!--NotificationActivity-->
+    <string name="notificationSettings">Configurações de notificações</string>
+
+    <!--activity_delete acc-->
+    <string name="currentPassword">senha atual</string>
+    <string name="delete">Excluir</string>
+
+    <!--activity edit country-->
+    <string name="save">Salve </string>
+
+    <!--activity edit email-->
+    <string name="newEmail">Novo Email</string>
+
+    <!--activity edit pass-->
+    <string name="newPassword">Nova senha</string>
+
+    <!--activity language-->
+    <string name="witchLanguageDoYouSpeak">Língua da bruxa você fala?</string>
+    <string name="arabic">العربية</string>
+    <string name="english">English</string>
+    <string name="french">Français</string>
+    <string name="spanish">Española</string>
+    <string name="portuguese">Português</string>
+    <string name="done">Feito</string>
+
+    <!--CreatePostActivity-->
+    <string name="postCreatedSuccessfully">Mensagem criada com sucesso!</string>
+    <string name="cameraPermissionIsRequired">É necessária permissão da câmera</string>
+
+    <!--activity create post-->
+    <string name="post">Postar</string>
+    <string name="location">Localização</string>
+    <string name="letsGetSomeHelp">Vamos obter ajuda!</string>
+    <string name="postAnonymously">Postar anonimamente?</string>
+    <string name="addToYourPost">Adicione à sua postagem</string>
+
+    <!--ProfileActivity-->
+    <string name="following">Segue</string>
+
+    <!--activity profile-->
+    <string name="follow">Segue</string>
+    <string name="Edit">Editar</string>
+    <string name="reputation">Reputação</string>
+    <string name="posts">Postagens</string>
+    <string name="reviews">Avaliações</string>
+
+    <!--profile options menue-->
+    <string name="report">Relatório</string>
+    <string name="block">Quadra</string>
+    <string name="mute">Mudo</string>
+
+    <!--activity edit profile-->
+    <string name="yourJob">Seu emprego</string>
+
+    <!--activity followers-->
+    <string name="followers">Seguidores</string>
+
+    <!--activity following-->
+    <string name="followings">Seguintes</string>
+
+    <!--sharing bottom sheet-->
+    <string name="shareNow">Compartilhe agora</string>
+    <string name="shareWithComment">Compartilhar com comentário</string>
+    <string name="shareInPrivateMessage">Compartilhar em mensagem privada</string>
+    <string name="copyPostLink">Copiar link da postagem</string>
+    <string name="shareExternal">Compartilhar externo</string>
+
+    <!--post options bottom sheet-->
+    <string name="disableReact">Desativar reagir</string>
+    <string name="savePost">Salvar postagem</string>
+    <string name="deletePost">Apague a postagem</string>
+    <string name="hidePost">Esconder publicação</string>
+    <string name="muteUser">Silenciar usuário</string>
+    <string name="blockUser">Bloquear usuário</string>
+    <string name="reportPost">Denunciar postagem</string>
+
+    <!--ChatListFragment-->
+    <string name="thisMessageWasDeleted">Esta mensagem foi excluída…</string>
+    <string name="sentAPhoto">enviou uma foto…</string>
+
+    <!--ChatActivity-->
+    <string name="camera">Câmera</string>
+    <string name="gallery">Galeria</string>
+    <string name="chooseImageFrom">Escolha Imagem de</string>
+    <string name="sendingImage">Enviando imagem…</string>
+    <string name="youCanNotSendEmptyMessage">Você não pode enviar uma mensagem vazia…</string>
+    <string name="typing">digitando…</string>
+    <string name="online">conectados</string>
+    <string name="typeAMessage">Digite uma mensagem…</string>
+
+    <!--ChatAdapter-->
+    <string name="areYouSureToDeleteThisMessage">Tem certeza de que deseja excluir esta mensagem?</string>
+    <string name="no">No</string>
+    <string name="seen">visto</string>
+    <string name="delivered">entregue</string>
+
+    <!--notifications MyNotificationRecyclerViewAdapter-->
+    <string name="helpRequestRefused">Pedido de ajuda recusado</string>
+    <string name="helpRequestAccepted">Pedido de ajuda aceito</string>
+
+    <!--NotificationHelper-->
+    <string name="sentYouAHelpRequest">enviou uma solicitação de ajuda</string>
+    <string name="sharedYourPost">Compartilhou sua postagem</string>
+    <string name="followedYou">seguiu você</string>
+
+
+    <string name="app_name">2HANDS</string>
+
+
+    <string name="title_activity_followers">SeguidoresActividade</string>
+    <string name="title_activity_followings">FollowingsActivity</string>
+
+
+    <string-array name="generalSettings">
+        <item>Língua</item>
+        <item>Notificações</item>
+        <item>Usuários bloqueados</item>
+        <item>Modo noturno</item>
+        <item>Sobre 2Hands</item>
+    </string-array>
+    <string-array name="categories">
+        <item>Geral</item>
+        <item>Medicamento</item>
+        <item>Psicologia</item>
+        <item>Financeiro</item>
+        <item>Social</item>
+        <item>Família</item>
+    </string-array>
+
+</resources>

@@ -204,6 +204,7 @@
     <string name="english">English</string>
     <string name="french">Français</string>
     <string name="spanish">Española</string>
+    <string name="portuguese">Português</string>
     <string name="done">انهاء</string>
 
     <!--CreatePostActivity-->
