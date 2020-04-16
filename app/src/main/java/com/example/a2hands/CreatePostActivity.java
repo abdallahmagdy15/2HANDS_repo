@@ -77,7 +77,6 @@ import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 
-
 public class CreatePostActivity extends AppCompatActivity {
 
     TextView submitPost;
@@ -381,7 +380,10 @@ public class CreatePostActivity extends AppCompatActivity {
     public void submitPost() {
         submitPost.setEnabled(false);
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
-        post.category = catSpinner.getSelectedItem().toString();
+        //selecting the position of category instead of its value ...
+        //to be able to load posts under that category when your language changes
+        int selectedCatPos = catSpinner.getSelectedItemPosition();
+        post.category = String.valueOf(selectedCatPos);
         post.content_text = createdPostText.getText().toString();
         if(shared_post_id != null) post.shared_id = shared_post_id;
         //check if location not empty

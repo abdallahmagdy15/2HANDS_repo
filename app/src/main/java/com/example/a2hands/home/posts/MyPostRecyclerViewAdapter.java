@@ -238,8 +238,9 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         PrettyTime p = new PrettyTime();
         holder.time.setText(p.format(curr_post.date));
         holder.location.setText(curr_post.location);
-        String cat = curr_post.category;
-        holder.category.setText((!cat.equals(context.getResources().getString(R.string.general)))? cat : "");
+        //getting the value of the string depending on position of it in the array that we saved in database
+        int catPos = Integer.parseInt(curr_post.category);
+        holder.category.setText(context.getResources().getStringArray(R.array.categories)[catPos]);
 
         checkPostOwnerVisibility(holder,curr_post);
 

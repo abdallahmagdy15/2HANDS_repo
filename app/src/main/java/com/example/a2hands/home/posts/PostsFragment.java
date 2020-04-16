@@ -75,7 +75,7 @@ public class PostsFragment extends Fragment {
         String activityName = bundle.getString("FOR");
 
         if (activityName.equals("HOME") ) {
-            selectedCat = bundle.getString("CAT", getEnglishString(R.string.general));
+            selectedCat = bundle.getString("CAT", String.valueOf(0));
             getUser(new Callback() {
                 @Override
                 public void callbackUser(User user) {
@@ -167,7 +167,7 @@ public class PostsFragment extends Fragment {
         // Read from the database
         Query query = FirebaseFirestore.getInstance().collection("/posts")
                 .whereIn("location", location);
-        if(!category.equals(getEnglishString(R.string.general))){
+        if(!category.equals(String.valueOf(0))){
             query = query.whereEqualTo("category",category);
         }
         query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)

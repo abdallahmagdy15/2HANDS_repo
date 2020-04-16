@@ -107,11 +107,13 @@ public class HomeActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
         //category spinner declaration
-        catsStrings = getEnglishStringArray(R.array.categories);
+        //catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
 
 
@@ -383,7 +385,7 @@ public class HomeActivity extends AppCompatActivity {
     void loadPosts(int pos){
         Fragment frg = new PostsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("CAT", catsStrings[pos]);
+        bundle.putString("CAT", String.valueOf(pos));
         bundle.putString("FOR","HOME");
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
