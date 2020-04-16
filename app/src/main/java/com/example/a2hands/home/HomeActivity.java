@@ -84,6 +84,12 @@ public class HomeActivity extends AppCompatActivity {
     SearchView searchView;
     TextView notificationsTitle;
 
+    //drawer header data
+    View headerView;
+    CircleImageView header_profilePic;
+    TextView header_fAndLName;
+    TextView header_email;
+
     private FirebaseFirestore db;
     String myUid;
 
@@ -94,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         db = FirebaseFirestore.getInstance();
-        myUid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //drawer
         drawer = findViewById(R.id.drawer_layout);
@@ -107,9 +113,6 @@ public class HomeActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-
         //category spinner declaration
         //catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
@@ -118,18 +121,74 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //drawer header data
-        View headerView = navigationView.getHeaderView(0);
-        final CircleImageView header_profilePic =headerView.findViewById(R.id.drawer_profileImage);
-        final TextView header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
-        final TextView header_email = headerView.findViewById(R.id.drawer_userEmail);
+        headerView = navigationView.getHeaderView(0);
+        header_profilePic = headerView.findViewById(R.id.drawer_profileImage);
+        header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
+        header_email = headerView.findViewById(R.id.drawer_userEmail);
 
-        FirebaseFirestore.getInstance().collection("users/").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+
+        header_profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
+
+        catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                loadPosts(position);
+            }
+        });
+
+        loadUserPicInTopMenu();
+        loadNavigationDrawerData();
+        setListenerForBottomNavigation();
+        setListenerForNavigationView();
+        checkForNotifications();
+        navigateHome();
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
+    }//////////////////////////////////end of onCreate method
+
+
+
+    public void loadUserPicInTopMenu(){
+        //load current user main pic in home top menu
+        FirebaseFirestore.getInstance().collection("users/").document(myUid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+uid+"/"+user.profile_pic).getDownloadUrl()
+                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+myUid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri.toString()).into(profile_image);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            }
+        });
+    }
+
+    public void loadNavigationDrawerData(){
+        FirebaseFirestore.getInstance().collection("users/").document(myUid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user = task.getResult().toObject(User.class);
+                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+myUid+"/"+user.profile_pic).getDownloadUrl()
                         .addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
@@ -146,15 +205,40 @@ public class HomeActivity extends AppCompatActivity {
                 header_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
             }
         });
+    }
 
-        header_profilePic.setOnClickListener(new View.OnClickListener() {
+    public void setListenerForBottomNavigation(){
+        //bottom navigation
+        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                drawer.closeDrawer(GravityCompat.START);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int pos =0;
+                navItemId = item.getItemId();
+                for (int i = 0; i < nav.getMenu().size(); i++) {
+                    if(navItemId == nav.getMenu().getItem(i).getItemId()){
+                        pos = i;
+                        break;
+                    }
+                }
+
+                switch (pos) {
+                    case 0: navigateHome();
+                        break;
+                    case 1: navigateSearch();
+                        break;
+                    case 2: navigateCreatePost();
+                        break;
+                    case 3: navigateNotification();
+                        break;
+                    case 4: navigateChatList();
+                        break;
+                }
+                return true;
             }
         });
+    }
 
+    public void setListenerForNavigationView(){
         //navigation drawer menu items
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -191,73 +275,13 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
-
-
-
-        /////////////////////////////////////
-        /////////////////////////////////////
-        //bottom navigation
-        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int pos =0;
-                navItemId = item.getItemId();
-                for (int i = 0; i < nav.getMenu().size(); i++) {
-                    if(navItemId == nav.getMenu().getItem(i).getItemId()){
-                        pos = i;
-                        break;
-                    }
-                }
-
-                switch (pos) {
-                    case 0: navigateHome();
-                        break;
-                    case 1: navigateSearch();
-                        break;
-                    case 2: navigateCreatePost();
-                        break;
-                    case 3: navigateNotification();
-                        break;
-                    case 4: navigateChatList();
-                        break;
-                }
-                return true;
-            }
-        });
-
-        //load current user main pic in home top menu
-        FirebaseFirestore.getInstance().collection("users/").document(uid)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+uid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri.toString()).into(profile_image);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
-            }
-        });
-
-
-        profile_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
-
+    public void checkForNotifications(){
         //check notifications
         FirebaseDatabase.getInstance().getReference("notifications")
                 .orderByChild("subscriber_id")
-                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .equalTo(myUid)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -276,30 +300,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
-
-
-        catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                loadPosts(position);
-            }
-        });
-
-        /*catsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                loadPosts(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });*/
-
-        navigateHome();
-        updateToken(FirebaseInstanceId.getInstance().getToken());
-
-    }//////////////////////////////////end of onCreate method
-
-
+    }
 
     public void updateToken(String token){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Tokens");
@@ -428,7 +429,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void navigateCreatePost(){
         Intent intent = new Intent(this, CreatePostActivity.class);
-        intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        intent.putExtra("uid", myUid);
         startActivity(intent);
     }
     void navigateNotification(){
@@ -454,28 +455,5 @@ public class HomeActivity extends AppCompatActivity {
         ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);
         ft.commit();
     }
-
-
-
-
-    /////////////////////////////////////////////////////////////
-    // changing the language only to get english Array strings //
-    // for categories to be able to load posts correctly.......//
-    /////////////////////////////////////////////////////////////
-    @NonNull
-    protected String[] getEnglishStringArray(int list) {
-        Configuration configuration = getEnglishConfiguration();
-
-        return this.createConfigurationContext(configuration).getResources().getStringArray(list);
-    }
-
-    @NonNull
-    private Configuration getEnglishConfiguration() {
-        Configuration configuration = new Configuration(this.getResources().getConfiguration());
-        configuration.setLocale(new Locale("en"));
-        return configuration;
-    }////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////
-
 
 }
