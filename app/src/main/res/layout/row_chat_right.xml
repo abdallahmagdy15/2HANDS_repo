@@ -64,6 +64,31 @@
             app:layout_constraintTop_toBottomOf="@+id/messageImage" />
 
         <TextView
+            android:id="@+id/deletedMessageTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:paddingStart="2dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:text="@string/thisMessageWasDeleted"
+            android:textAlignment="viewStart"
+            android:textColor="@color/deletedMessage"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/messageImage"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/messageImage"
+            app:layout_constraintTop_toBottomOf="@+id/messageImage" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/messageBarrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="messageTv,deletedMessageTv"/>
+
+        <TextView
             android:id="@+id/messageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/messageTv" />
+            app:layout_constraintTop_toBottomOf="@+id/messageBarrier" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

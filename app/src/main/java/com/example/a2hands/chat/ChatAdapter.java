@@ -77,14 +77,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
         if(chatList.get(position).getIsDeleted()){
             holder.messageImage.setVisibility(View.GONE);
-            holder.message.setVisibility(View.VISIBLE);
-            holder.message.setTextColor(context.getResources().getColor(R.color.deletedMessage));
-            holder.time.setTextColor(context.getResources().getColor(R.color.deletedMessage));
-            holder.message.setPaddingRelative(12, 8, 8, 0);
-            holder.message.setText(context.getResources().getString(R.string.thisMessageWasDeleted));
-            holder.message.getLayoutParams().width = Constraints.LayoutParams.WRAP_CONTENT;
+            holder.message.setVisibility(View.GONE);
+            holder.deletedMessage.setVisibility(View.VISIBLE);
+            holder.deletedMessage.setPaddingRelative(12, 8, 8, 0);
+            holder.deletedMessage.getLayoutParams().width = Constraints.LayoutParams.WRAP_CONTENT;
         }
         else if(messageImagee.equals("")){
+            holder.deletedMessage.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
             holder.message.setPaddingRelative(12, 8, 8, 0);
@@ -92,10 +91,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.message.getLayoutParams().width = Constraints.LayoutParams.WRAP_CONTENT;
 
         } else if(message.equals("")){
+            holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.VISIBLE);
             loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
         } else {
+            holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
             holder.messageImage.setVisibility(View.VISIBLE);
             holder.message.getLayoutParams().width = Constraints.LayoutParams.MATCH_CONSTRAINT;
@@ -279,8 +280,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     class MyHolder extends RecyclerView.ViewHolder{
 
-        ImageView otherProfileImage,messageImage;
-        TextView message,time,isSeen;
+        ImageView otherProfileImage, messageImage;
+        TextView message, deletedMessage, time, isSeen;
         androidx.constraintlayout.widget.ConstraintLayout messageLayout;
 
         public MyHolder(@NonNull View itemView) {
@@ -289,6 +290,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             otherProfileImage =itemView.findViewById(R.id.profileIv);
             messageImage =itemView.findViewById(R.id.messageImage);
             message =itemView.findViewById(R.id.messageTv);
+            deletedMessage =itemView.findViewById(R.id.deletedMessageTv);
             time =itemView.findViewById(R.id.messageTime);
             isSeen =itemView.findViewById(R.id.isSeen);
             messageLayout=itemView.findViewById(R.id.messageLayout);
