@@ -76,18 +76,20 @@ dependencies {
     //slider lib
     implementation 'com.r0adkll:slidableactivity:2.1.0'
 
-    //cardview lib
+    //CardView lib
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //readMore textView lib
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
-    // image preview , zoom and save
+    //image preview , zoom and save
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     //customized videoView ..  full screen , media controller..
     implementation 'com.linsea:universalvideoview:1.1.0@aar'
 
+    //custom image view that has corners radius
+    implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

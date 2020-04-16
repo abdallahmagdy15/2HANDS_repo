@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageView;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -35,7 +36,7 @@ public class ImagePreview extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ImageView image = findViewById(R.id.imagePreview);
+        PhotoView image = findViewById(R.id.imagePreview);
 
         myUid = FirebaseAuth.getInstance().getUid();
 
