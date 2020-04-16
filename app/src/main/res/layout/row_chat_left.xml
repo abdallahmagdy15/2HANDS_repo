@@ -54,7 +54,7 @@
             android:maxHeight="384dp"
             android:paddingBottom="2dp"
             android:scaleType="centerCrop"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

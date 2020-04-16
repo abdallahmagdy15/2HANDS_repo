@@ -285,11 +285,18 @@ public class ChatActivity extends AppCompatActivity {
                         chatList.add(chat);
                     }
 
-                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid);
+
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);
-                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+                    recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        }
+                    }, 1000);
 
                 }
             }

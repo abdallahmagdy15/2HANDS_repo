@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.R;
@@ -45,13 +46,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     String hisUid;
     String hisImage;
 
+    LinearLayoutManager linearLayoutManager;
+
     FirebaseUser user;
 
-    public ChatAdapter(Context context, List<Chat> chatList, String imageURI, String hisUid) {
+    public ChatAdapter(Context context, List<Chat> chatList, String imageURI, String hisUid, LinearLayoutManager linearLayoutManager) {
         this.context = context;
         this.chatList = chatList;
         this.imageURI = imageURI;
         this.hisUid = hisUid;
+        this.linearLayoutManager = linearLayoutManager;
     }
 
     @NonNull
@@ -105,12 +109,39 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
 
         }
+
+        if(position==chatList.size()-1 && chatList.get(position).getSender().equals(user.getUid())){
+            holder.isSeen.setVisibility(View.VISIBLE);
+            if (chatList.get(position).getIsSeen()){
+                holder.isSeen.setText(context.getResources().getString(R.string.seen));
+            }else {
+                holder.isSeen.setText(context.getResources().getString(R.string.delivered));
+            }
+        }else {
+            holder.isSeen.setVisibility(View.GONE);
+        }
+
+
+        if(position - 1 != -1 && holder.otherProfileImage != null &&
+                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver())){
+
+            holder.otherProfileImage.setVisibility(View.INVISIBLE);
+            if(position + 1 == -1)
+                holder.messageLayout.setPaddingRelative(0,0,10,8);
+            else
+                holder.messageLayout.setPaddingRelative(0,0,10,2);
+
+        }else if(position - 1 != -1 && holder.otherProfileImage != null){
+            holder.otherProfileImage.setVisibility(View.VISIBLE);
+        }
+
+
         holder.time.setText(timestamp);
         try{
             Picasso.get().load(imageURI).into(holder.otherProfileImage);
         }
         catch (Exception e){
-
+            //handle errors
         }
 
         //long click to show delete dialog
@@ -147,6 +178,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 if(chatList.get(position).getSender().equals(user.getUid())) {
                     if(holder.isSeen.getVisibility() == View.GONE){
                         holder.isSeen.setVisibility(View.VISIBLE);
+
+                        linearLayoutManager.scrollToPosition(position);
                         if (chatList.get(position).getIsSeen()){
                             holder.isSeen.setText(context.getResources().getString(R.string.seen));
                         }else {
@@ -156,31 +189,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                             && position != chatList.size()-1)
                     {
                         holder.isSeen.setVisibility(View.GONE);
+                        linearLayoutManager.scrollToPosition(position);
                     }
                 }
             }
         });
-
-//
-        if(position==chatList.size()-1 && chatList.get(position).getSender().equals(user.getUid())){
-            holder.isSeen.setVisibility(View.VISIBLE);
-            if (chatList.get(position).getIsSeen()){
-                holder.isSeen.setText(context.getResources().getString(R.string.seen));
-            }else {
-                holder.isSeen.setText(context.getResources().getString(R.string.delivered));
-            }
-        }else {
-            holder.isSeen.setVisibility(View.GONE);
-        }
-
-        if(position - 1 != -1 && holder.otherProfileImage != null &&
-                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver())){
-
-            holder.otherProfileImage.setVisibility(View.INVISIBLE);
-
-        }else if(position - 1 != -1 && holder.otherProfileImage != null){
-            holder.otherProfileImage.setVisibility(View.VISIBLE);
-        }
 
         holder.messageImage.setOnClickListener(new View.OnClickListener() {
             @Override
