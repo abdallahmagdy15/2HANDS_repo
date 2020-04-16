@@ -53,6 +53,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -91,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
     public TextView userStatus;
     EditText message;
     ImageButton sendButton,uploadImage;
+    FloatingActionButton scrollDownBtn;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -157,6 +159,14 @@ public class ChatActivity extends AppCompatActivity {
         userStatus = findViewById(R.id.userstatus);
         message = findViewById(R.id.messageEdit);
         sendButton = findViewById(R.id.sendbutton);
+
+        scrollDownBtn = findViewById(R.id.scrollDownFloatingActionBtn);
+        scrollDownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToBottom();
+            }
+        });
 
         SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         String language = prefs.getString("My_Language", "");
@@ -237,7 +247,40 @@ public class ChatActivity extends AppCompatActivity {
         loadHisInfoAndchat();
         seenMessages();
         loadUserOnlineAndTypingStatus();
+//        changeScrollBtnVisibilityWhileScrolling();
+
+    }//////////////end of onCreate
+
+
+
+    public void scrollToBottom(){
+        recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+        recyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scrollDownBtn.setVisibility(View.GONE);
+                recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            }
+        }, 1000);
     }
+
+//    public void changeScrollBtnVisibilityWhileScrolling(){
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                //dx horizontal distance scrolled in pixels
+//                //dy vertical distance scrolled in pixels
+//                super.onScrolled(recyclerView, dx, dy);
+//
+////                if (dy > 0 && scrollDownBtn.getVisibility() == View.VISIBLE){
+////                    scrollDownBtn.setVisibility(View.GONE);
+////                } else
+//                    if (dy < 0 && scrollDownBtn.getVisibility() != View.VISIBLE) {
+//                    scrollDownBtn.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+//    }
 
 
     private void seenMessages() {
@@ -286,17 +329,11 @@ public class ChatActivity extends AppCompatActivity {
                     }
 
 
-                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager);
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager,scrollDownBtn);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);
-                    recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                    recyclerView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-                        }
-                    }, 1000);
+                    scrollToBottom();
 
                 }
             }

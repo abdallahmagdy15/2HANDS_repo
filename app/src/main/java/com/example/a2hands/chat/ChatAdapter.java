@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private static final int MSG_TYPE_RIGHT=1;
 
     private Context context;
+    private FloatingActionButton scrollDownBtn;
     private List<Chat> chatList;
     private String imageURI;
     private String hisUid;
@@ -50,12 +52,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     FirebaseUser user;
 
-    public ChatAdapter(Context context, List<Chat> chatList, String imageURI, String hisUid, LinearLayoutManager linearLayoutManager) {
+    public ChatAdapter(Context context, List<Chat> chatList, String imageURI,
+                       String hisUid, LinearLayoutManager linearLayoutManager,
+                       FloatingActionButton scrollDownBtn)
+    {
         this.context = context;
         this.chatList = chatList;
         this.imageURI = imageURI;
         this.hisUid = hisUid;
         this.linearLayoutManager = linearLayoutManager;
+        this.scrollDownBtn = scrollDownBtn;
     }
 
     @NonNull
@@ -112,6 +118,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
         if(position==chatList.size()-1 && chatList.get(position).getSender().equals(user.getUid())){
             holder.isSeen.setVisibility(View.VISIBLE);
+
             if (chatList.get(position).getIsSeen()){
                 holder.isSeen.setText(context.getResources().getString(R.string.seen));
             }else {
@@ -139,6 +146,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.messageLayout.setPaddingRelative(0,16,10,2);
         }else{
             holder.messageLayout.setPaddingRelative(0,0,10,2);
+        }
+
+        //change the visibility of scrollDown button
+        if(chatList.size() - 2 != -1&&position >= chatList.size() - 2){
+            scrollDownBtn.setVisibility(View.GONE);
+        }else {
+            scrollDownBtn.setVisibility(View.VISIBLE);
         }
 
 
@@ -280,6 +294,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
