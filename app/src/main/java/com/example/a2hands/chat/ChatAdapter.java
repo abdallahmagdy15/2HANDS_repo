@@ -40,13 +40,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private static final int MSG_TYPE_LEFT=0;
     private static final int MSG_TYPE_RIGHT=1;
 
-    Context context;
-    List<Chat> chatList;
-    String imageURI;
-    String hisUid;
+    private Context context;
+    private List<Chat> chatList;
+    private String imageURI;
+    private String hisUid;
     String hisImage;
 
-    LinearLayoutManager linearLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
     FirebaseUser user;
 
@@ -121,18 +121,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.isSeen.setVisibility(View.GONE);
         }
 
-
+        //for showing or hiding left message imageView
         if(position - 1 != -1 && holder.otherProfileImage != null &&
-                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver())){
-
+                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver()))
+        {
             holder.otherProfileImage.setVisibility(View.INVISIBLE);
-            if(position + 1 == -1)
-                holder.messageLayout.setPaddingRelative(0,0,10,8);
-            else
-                holder.messageLayout.setPaddingRelative(0,0,10,2);
-
         }else if(position - 1 != -1 && holder.otherProfileImage != null){
             holder.otherProfileImage.setVisibility(View.VISIBLE);
+        }
+
+        //for spacing between messages types (RIGHT or LEFT)
+        if (position - 1 != -1 && getItemViewType(position) == MSG_TYPE_RIGHT &&
+                getItemViewType(position-1) == MSG_TYPE_LEFT
+                || position - 1 != -1 && getItemViewType(position) == MSG_TYPE_LEFT &&
+                getItemViewType(position-1) == MSG_TYPE_RIGHT)
+        {
+            holder.messageLayout.setPaddingRelative(0,16,10,2);
+        }else{
+            holder.messageLayout.setPaddingRelative(0,0,10,2);
         }
 
 

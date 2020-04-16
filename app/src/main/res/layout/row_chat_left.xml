@@ -7,25 +7,23 @@
     android:layout_height="wrap_content"
     android:paddingStart="0dp"
     android:paddingEnd="10dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="2dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileIv"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_centerVertical="true"
-        android:paddingStart="5dp"
-        android:paddingEnd="0dp"
-        android:scaleType="centerCrop"
-        app:civ_border_color="@null"
-        app:civ_border_overlay="false"
-        app:civ_border_width="0dp"
-        app:civ_circle_background_color="@color/colorPrimaryDark"
+    <TextView
+        android:id="@+id/isSeen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="end"
+        android:text="derived"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_face_black_24dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -41,25 +39,6 @@
         app:layout_constraintStart_toEndOf="@+id/profileIv"
         app:layout_constraintTop_toTopOf="@+id/profileIv"
         app:layout_constraintWidth_default="wrap">
-
-        <com.joooonho.SelectableRoundedImageView
-            android:id="@+id/messageImage"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginStart="3dp"
-            android:adjustViewBounds="true"
-            app:sriv_left_top_corner_radius="15dp"
-            app:sriv_right_top_corner_radius="15dp"
-            android:maxHeight="384dp"
-            android:paddingBottom="2dp"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_image_black_24dp" />
 
         <TextView
             android:id="@+id/messageTv"
@@ -97,13 +76,6 @@
             app:layout_constraintStart_toStartOf="@+id/messageImage"
             app:layout_constraintTop_toBottomOf="@+id/messageImage" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/messageBarrier"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="messageTv,deletedMessageTv"/>
-
         <TextView
             android:id="@+id/messageTime"
             android:layout_width="wrap_content"
@@ -119,22 +91,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/messageBarrier" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/messageBarrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="messageTv,deletedMessageTv" />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/messageImage"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="384dp"
+            android:paddingBottom="2dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_image_black_24dp"
+            app:sriv_left_top_corner_radius="15dp"
+            app:sriv_right_top_corner_radius="15dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/isSeen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="end"
-        android:text="derived"
-        android:textAlignment="textEnd"
-        android:textColor="@color/colorPrimaryDark"
-        android:visibility="gone"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileIv"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerVertical="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="0dp"
+        android:scaleType="centerCrop"
+        app:civ_border_color="@null"
+        app:civ_border_overlay="false"
+        app:civ_border_width="0dp"
+        app:civ_circle_background_color="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_face_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
