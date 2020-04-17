@@ -3,19 +3,15 @@ package com.example.a2hands.chat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -49,6 +45,7 @@ import com.example.a2hands.chat.chat_notifications.Response;
 import com.example.a2hands.chat.chat_notifications.Sender;
 import com.example.a2hands.chat.chat_notifications.Token;
 import com.example.a2hands.home.HomeActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -247,7 +244,6 @@ public class ChatActivity extends AppCompatActivity {
         loadHisInfoAndchat();
         seenMessages();
         loadUserOnlineAndTypingStatus();
-//        changeScrollBtnVisibilityWhileScrolling();
 
     }//////////////end of onCreate
 
@@ -264,23 +260,6 @@ public class ChatActivity extends AppCompatActivity {
         }, 1000);
     }
 
-//    public void changeScrollBtnVisibilityWhileScrolling(){
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                //dx horizontal distance scrolled in pixels
-//                //dy vertical distance scrolled in pixels
-//                super.onScrolled(recyclerView, dx, dy);
-//
-////                if (dy > 0 && scrollDownBtn.getVisibility() == View.VISIBLE){
-////                    scrollDownBtn.setVisibility(View.GONE);
-////                } else
-//                    if (dy < 0 && scrollDownBtn.getVisibility() != View.VISIBLE) {
-//                    scrollDownBtn.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
-//    }
 
 
     private void seenMessages() {
@@ -327,14 +306,11 @@ public class ChatActivity extends AppCompatActivity {
                             chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
                         chatList.add(chat);
                     }
-
-
                     adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager,scrollDownBtn);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);
                     scrollToBottom();
-
                 }
             }
 
@@ -345,21 +321,135 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(final String messagebody) {
+    private void sendImageMessage(final String messageBody) {
+        if (image_uri != null) {
+
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getResources().getString(R.string.sendingImage));
+            progressDialog.show();
+
+            final StorageReference ChatImageRef = FirebaseStorage.getInstance().getReference("Chat_Pics/" +
+                    System.currentTimeMillis() + "." + getFileExtension(image_uri).trim());
+
+            UploadTask uploadTask = ChatImageRef.putFile(image_uri);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return ChatImageRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            progressDialog.dismiss();
+
+                            Uri downloadUri = task.getResult();
+
+                            Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                            String dateTime = simpleDateFormat.format(cal.getTime());
+
+                            String MSG_ID =String.valueOf(System.currentTimeMillis());
+                            String MSG_Img = downloadUri.toString();
+
+                            final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(myUid).child("myUsersList").child(hisUid);
+                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(myUid)
+                                    .child(hisUid);
+
+                            final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(hisUid).child("myUsersList").child(myUid);
+                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
+                                    .child(hisUid)
+                                    .child(myUid);
+
+                            //setup required data
+                            Chat MSG = new Chat(
+                                    MSG_ID,messageBody,MSG_Img,hisUid,myUid,dateTime,false,false
+                            );
+
+                            //reset editText after sending message
+                            message.setText("");
+
+                            //Notifications
+                            DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
+                            firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    User user = task.getResult().toObject(User.class);
+
+                                    sendNotification(hisUid,user.full_name,messageBody);
+                                }
+                            });
+
+                            //Chat List
+                            chatRef1.child("messages").push().setValue(MSG);
+                            myUsersList1.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()){
+                                        myUsersList1.child("id").setValue(hisUid);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            chatRef2.child("messages").push().setValue(MSG);
+                            myUsersList2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()){
+                                        myUsersList2.child("id").setValue(myUid);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        }
+                    });
+
+            //set imageUri to null after sending the message
+            image_uri = null;
+        } else {
+            if(TextUtils.isEmpty(messageBody)){
+                Toast.makeText(this, getResources().getString(R.string.youCanNotSendEmptyMessage), Toast.LENGTH_SHORT).show();
+            }else {
+                sendMessage(messageBody);
+                //reset editText after sending message
+                message.setText("");
+            }
+        }
+    }
+
+    private void sendMessage(final String messageBody) {
+
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
         String dateTime = simpleDateFormat.format(cal.getTime());
+
         String MSG_ID = String.valueOf(System.currentTimeMillis());
 
-        HashMap<String,Object> MSG = new HashMap<>();
-        MSG.put("MSGID",MSG_ID);
-        MSG.put("Message",messagebody);
-        MSG.put("MessageImage","");
-        MSG.put("Receiver",hisUid);
-        MSG.put("Sender",myUid);
-        MSG.put("Timestamp",dateTime);
-        MSG.put("isSeen",false);
-        MSG.put("isDeleted",false);
+        Chat MSG = new Chat(
+                MSG_ID,messageBody,"",hisUid,myUid,dateTime,false,false
+        );
 
         DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
         firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -367,7 +457,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user= task.getResult().toObject(User.class);
 
-                sendNotification(hisUid,user.full_name,messagebody);
+                sendNotification(hisUid,user.full_name,messageBody);
             }
         });
 
@@ -594,125 +684,6 @@ public class ChatActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void sendImageMessage(final String messagebody) {
-        if (image_uri != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(getResources().getString(R.string.sendingImage));
-            progressDialog.show();
-            final StorageReference ChatImageRef = FirebaseStorage.getInstance().getReference("Chat_Pics/" +
-                    System.currentTimeMillis() + "." + getFileExtension(image_uri).trim());
-            ChatImageRef.putFile(image_uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //image upload
-                            progressDialog.dismiss();
-                            Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-                            String dateTime =simpleDateFormat.format(cal.getTime());
-                            String MSG_ID =String.valueOf(System.currentTimeMillis());
-                            final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(myUid).child("myUsersList").child(hisUid);
-                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(myUid)
-                                    .child(hisUid);
-                            final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(hisUid).child("myUsersList").child(myUid);
-                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(hisUid)
-                                    .child(myUid);
-                            HashMap<String, Object> MSG = new HashMap<>();
-                            //setup required data
-                            if (TextUtils.isEmpty(messagebody)) {
-                                MSG.put("MSGID", MSG_ID);
-                                MSG.put("Message", "");
-                                MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
-                                MSG.put("Receiver", hisUid);
-                                MSG.put("Sender", myUid);
-                                MSG.put("Timestamp", dateTime);
-                                MSG.put("isSeen", false);
-                                MSG.put("isDeleted",false);
-                            }else {
-                                MSG.put("MSGID", MSG_ID);
-                                MSG.put("Message", messagebody);
-                                MSG.put("MessageImage", taskSnapshot.getMetadata().getName());
-                                MSG.put("Receiver", hisUid);
-                                MSG.put("Sender", myUid);
-                                MSG.put("Timestamp", dateTime);
-                                MSG.put("isSeen", false);
-                                MSG.put("isDeleted",false);
-
-                                //reset edittext after sending message
-                                message.setText("");
-                            }
-                            //Notifications
-                            DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
-                            firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    User user= task.getResult().toObject(User.class);
-
-                                    sendNotification(hisUid,user.full_name,messagebody);
-                                }
-                            });
-                            //Chat List
-                            chatRef1.child("messages").push().setValue(MSG);
-                            myUsersList1.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()){
-                                        myUsersList1.child("id").setValue(hisUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                            chatRef2.child("messages").push().setValue(MSG);
-                            myUsersList2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()){
-                                        myUsersList2.child("id").setValue(myUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-
-                        }
-                    });
-            image_uri=null;
-        } else {
-            if(TextUtils.isEmpty(messagebody)){
-                Toast.makeText(this, getResources().getString(R.string.youCanNotSendEmptyMessage), Toast.LENGTH_SHORT).show();
-            }else {
-                sendMessage(messagebody);
-                //reset editText after sending message
-                message.setText("");
-            }
-        }
-    }
 
     @Override
     protected void onStart() {

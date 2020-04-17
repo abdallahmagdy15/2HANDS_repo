@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".home.posts.Post_Preview" android:parentActivityName=".home.posts.Post_Preview"></activity>
+        <activity android:name=".home.posts.Post_Preview"
+            android:parentActivityName=".home.posts.Post_Preview"/>
         <activity android:name=".settings.EditUserNameActivity" />
         <activity
             android:name=".profile.EditProfileActivity"
@@ -33,7 +34,6 @@
         <activity
             android:name=".home.LikesActivity"
             android:parentActivityName=".home.LikesActivity" />
-        <activity android:name=".chat.MessageImageActivity" />
         <activity
             android:name=".profile.FollowingsActivity"
             android:label="@string/title_activity_followings"

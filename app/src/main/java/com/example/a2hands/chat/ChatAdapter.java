@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.Constraints;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.a2hands.ImagePreview;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -104,7 +105,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.VISIBLE);
-            loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
+            Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
+            //loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
         } else {
             holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
@@ -112,10 +114,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.message.getLayoutParams().width = Constraints.LayoutParams.MATCH_CONSTRAINT;
             holder.message.setPaddingRelative(8, 8, 8, 0);
             holder.message.setText(message);
-            loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
-
+            Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
+            //loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
         }
 
+        //set text of last message seen TextView of sender
         if(position==chatList.size()-1 && chatList.get(position).getSender().equals(user.getUid())){
             holder.isSeen.setVisibility(View.VISIBLE);
 
@@ -218,10 +221,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         holder.messageImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MessageImageActivity.class);
-                intent.putExtra("MSGDI",chatList.get(position).getMSGID());
-                intent.putExtra("myUid",chatList.get(position).getReceiver());
-                intent.putExtra("hisUid",chatList.get(position).getSender());
+                String imagePath = chatList.get(position).getMessageImage();
+                final Intent intent = new Intent(context, ImagePreview.class);
+                intent.putExtra("IMAGE_PATH",imagePath);
                 context.startActivity(intent);
             }
         });
@@ -280,6 +282,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     }
 
     private void loadPhotos(final ImageView imgV, String path){
+
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
