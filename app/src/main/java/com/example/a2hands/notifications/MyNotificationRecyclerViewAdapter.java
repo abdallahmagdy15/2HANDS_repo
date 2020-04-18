@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.R;
-import com.example.a2hands.home.posts.Post_Preview;
+import com.example.a2hands.home.posts.PostPreviewActivity;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.rating.Rating;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -83,7 +83,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                      holder.context.startActivity(i);
                  }
                 else {
-                    Intent i = new Intent(holder.context , Post_Preview.class);
+                    Intent i = new Intent(holder.context , PostPreviewActivity.class);
                     i.putExtra("POST_ID",n.post_id);
                     holder.context.startActivity(i);
                 }

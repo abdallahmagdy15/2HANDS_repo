@@ -196,7 +196,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 });
     }
 
-    private void setupSharedPostLayout(final ViewHolder holder, final Post currPost , final Post sharedPost){
+    private void setupSharedPostLayout(final ViewHolder holder, @NonNull final Post currPost , final Post sharedPost){
         //check if main post has content
         if (currPost.content_text != null) //yes
         {

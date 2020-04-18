@@ -172,6 +172,9 @@ public class ProfileActivity extends AppCompatActivity {
             if(uid.equals(curr_uid)){ // if its your profile
                 profileEditBtn.setVisibility(View.VISIBLE);
                 profile_addPost.setVisibility(View.VISIBLE);
+                loadUserProfile();
+                setLoadingFollowersListener();
+                setLoadingFollowingsListener();
             }
             else {// someone's profile
                 checkBlockedStatus();
@@ -180,6 +183,9 @@ public class ProfileActivity extends AppCompatActivity {
         else { // then its your profile
             uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
+            loadUserProfile();
+            setLoadingFollowersListener();
+            setLoadingFollowingsListener();
         }
 
     }

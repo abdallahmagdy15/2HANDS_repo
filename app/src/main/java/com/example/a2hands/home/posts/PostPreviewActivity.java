@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class Post_Preview extends AppCompatActivity {
+public class PostPreviewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +30,21 @@ public class Post_Preview extends AppCompatActivity {
 
         MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
         MyPostRecyclerViewAdapter.ViewHolder vh = myPostRecyclerViewAdapter.new ViewHolder(postContainer);
-        getSharedPost(postid,myPostRecyclerViewAdapter,vh);
+        getPost(postid,myPostRecyclerViewAdapter,vh);
     }
 
-    private void getSharedPost(
-            final String shared_post_id ,
+    private void getPost(
+            final String post_id ,
             final MyPostRecyclerViewAdapter myPostRecyclerViewAdapter,
             final MyPostRecyclerViewAdapter.ViewHolder vh)
     {
-        FirebaseFirestore.getInstance().collection("posts").document(shared_post_id)
+        FirebaseFirestore.getInstance().collection("posts").document(post_id)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    myPostRecyclerViewAdapter.setupPostData(vh,task.getResult().toObject(Post.class),true);
+                Post post = task.getResult().toObject(Post.class);
+                if(post != null) {
+                    myPostRecyclerViewAdapter.setupPostData(vh,post,true);
                 }
             }
         });
