@@ -6,6 +6,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -19,10 +21,12 @@ import android.os.Bundle;
 
 import android.text.Html;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.CreatePostActivity;
@@ -35,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -84,7 +89,12 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileFollowBtnTxt;
     String UserName;
     User user;
-
+    NestedScrollView     profile_nestedScrollView;
+    ConstraintLayout profile_info_container;
+    FloatingActionButton profile_addPost;
+    ConstraintLayout profile_blockedStatus_container;
+    TextView profile_blockedStatus_name;
+    TextView profile_blockedStatus;
     FloatingActionButton addPostFAbtn;
 
     @Override
@@ -119,8 +129,13 @@ public class ProfileActivity extends AppCompatActivity {
         profileFollowingsCount = findViewById(R.id.profileFollowingsCount);
         profileFollowersCount = findViewById(R.id.profileFollowersCount);
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
-
-        addPostFAbtn = findViewById(R.id.addPostFloatingActionbtnProfile);
+        profile_nestedScrollView = findViewById(R.id.profile_nestedScrollView);
+        profile_info_container = findViewById(R.id.profile_info_container);
+        profile_addPost=findViewById(R.id.profile_addPost);
+        addPostFAbtn = findViewById(R.id.profile_addPost);
+        profile_blockedStatus_container = findViewById(R.id.profile_blockedStatus_container);
+        profile_blockedStatus_name = findViewById(R.id.profile_blockedStatus_name);
+        profile_blockedStatus = findViewById(R.id.profile_blockedStatus);
 
         // setup
         setSupportActionBar(toolbar);
@@ -147,24 +162,199 @@ public class ProfileActivity extends AppCompatActivity {
 
         mPager.setAdapter(pagerAdapter);
 
+        checkProfileStatus();
+
+
+    }// end of onCreate method
+
+    void checkProfileStatus(){
         if(uid != null){//if redirected to this profile by uid
-            if(uid.equals(curr_uid)){
+            if(uid.equals(curr_uid)){ // if its your profile
                 profileEditBtn.setVisibility(View.VISIBLE);
+                profile_addPost.setVisibility(View.VISIBLE);
             }
-            else {
-                setFollowListener();
+            else {// someone's profile
+                checkBlockedStatus();
             }
         }
-        else {//if not by uid then its by curr uid
+        else { // then its your profile
             uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
         }
 
-        loadUserProfile();
-        setLoadingFollowersListener();
-        setLoadingFollowingsListener();
+    }
 
-    }// end of onCreate method
+    void checkBlockedStatus(){
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).child(curr_uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //check if this user is blocking you you
+                        if (dataSnapshot.exists()) {
+                            profile_info_container.setVisibility(View.GONE);
+                            profile_addPost.setVisibility(View.GONE);
+                            profile_nestedScrollView.setVisibility(View.GONE);
+                            profile_blockedStatus_container.setVisibility(View.VISIBLE);
+                            loadBlockStatusData(true);
+                        }
+                        else {
+                            checkBlockingStatus();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    void checkBlockingStatus(){
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(curr_uid).child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //check if this user is blocking you you
+                        if (dataSnapshot.exists()) {
+                            profile_info_container.setVisibility(View.GONE);
+                            profile_addPost.setVisibility(View.GONE);
+                            profile_nestedScrollView.setVisibility(View.GONE);
+                            profile_blockedStatus_container.setVisibility(View.VISIBLE);
+                            loadBlockStatusData(false);
+                        }
+                        else {
+                            loadUserProfile();
+                            setLoadingFollowersListener();
+                            setLoadingFollowingsListener();
+                            setFollowListener();                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    void loadBlockStatusData(boolean blocked){
+        db.collection("/users").document(uid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                user = task.getResult().toObject(User.class);
+                profile_blockedStatus_name.setText(user.full_name);
+                if(blocked)
+                profile_blockedStatus.setText("You are blocked from following @"+user.user_name
+                        + " and viewing @"+user.user_name+" Posts and Reviews");
+                else
+                    profile_blockedStatus.setText("@"+user.user_name+" is blocked!");
+                profile_blockedStatus.setTextSize(24);
+            }});
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem block = menu.findItem(R.id.blockUserItem);
+        MenuItem mute = menu.findItem(R.id.muteUserItem);
+
+        if(!uid.equals(curr_uid)) {
+            FirebaseDatabase.getInstance().getReference("blocked_users").child(curr_uid).child(uid)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                block.setTitle("unblock");
+                                block.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        unblockUser();
+                                        return false;
+                                    }
+                                });
+                            } else {
+                                block.setTitle(R.string.blockUser);
+                                block.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        blockUser();
+                                        return false;
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+            FirebaseDatabase.getInstance().getReference("muted_users").child(curr_uid).child(uid)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                mute.setTitle("unmute");
+                                mute.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        unmuteUser();
+                                        return false;
+                                    }
+                                });
+                            } else {
+                                mute.setTitle(R.string.muteUser);
+                                mute.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        muteUser();
+                                        return false;
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void blockUser(){
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(curr_uid).child(uid).setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(ProfileActivity.this,"User has been blocked successfully!",Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void muteUser(){
+        FirebaseDatabase.getInstance().getReference("muted_users").child(curr_uid).child(uid).setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(ProfileActivity.this,"User has been muted successfully!",Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    void unblockUser(){
+        FirebaseDatabase.getInstance().getReference("blocked_users").child(curr_uid).child(uid).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(ProfileActivity.this,"User has been unblocked successfully!",Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    void unmuteUser(){
+        FirebaseDatabase.getInstance().getReference("muted_users").child(curr_uid).child(uid).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(ProfileActivity.this,"User has been unmuted successfully!",Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -238,7 +428,6 @@ public class ProfileActivity extends AppCompatActivity {
             return null;
         }
     }
-
 
     @Override
     public void onBackPressed() {

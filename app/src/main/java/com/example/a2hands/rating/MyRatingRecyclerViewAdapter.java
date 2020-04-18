@@ -90,7 +90,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
     public void onBindViewHolder(final ViewHolder holder,final int pos) {
 
         ////check the activity to change the layout
-        if(activity.equals("profile")){
+        if(activity.equals("PROFILE")){
             PostsFragment.getUser(new Callback() {
                 @Override
                 public void callbackUser(final User user) {

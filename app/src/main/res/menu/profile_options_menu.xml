@@ -3,7 +3,11 @@
 
     <item android:title="@string/share" />
     <item android:title="@string/report" />
-    <item android:title="@string/block" />
-    <item android:title="@string/mute" />
+    <item
+        android:id="@+id/blockUserItem"
+        android:title="@string/blockUser" />
+    <item
+        android:id="@+id/muteUserItem"
+        android:title="@string/muteUser" />
 
 </menu>
