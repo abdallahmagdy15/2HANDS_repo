@@ -11,11 +11,13 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -66,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,11 +98,12 @@ public class CreatePostActivity extends AppCompatActivity {
 
     //creating images and camera
     Uri imageUri;
+    Bitmap bitmap;
+    private byte[] mUploadBytes;
     String imageUrl = "";
     StorageTask uploadTask;
     StorageReference storageReference;
     private static final int PICK_IMAGE_REQUEST = 1;
-    Bitmap bitmap;
     ImageView selectedImage;
     ImageView add_image;
 
@@ -138,7 +142,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.createPost_toolbar);
 
-        // setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -167,6 +170,21 @@ public class CreatePostActivity extends AppCompatActivity {
                 submitPost();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        UserStatus.updateOnlineStatus(true, curr_uid);
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+            UserStatus.updateOnlineStatus(false, curr_uid);
+        }
+        super.onStop();
     }
 
     private void checkSharedPostExits(){
@@ -256,7 +274,6 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-
         videobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,9 +291,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 openFileChooser();
             }
         });
-
-        ///--------end
-
     }
 
     void setMentionUserListener(){
@@ -286,8 +300,8 @@ public class CreatePostActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 final String postText = createdPostText.getText().toString();
                 //get the last word
                 //and check if "@...."
@@ -365,25 +379,23 @@ public class CreatePostActivity extends AppCompatActivity {
                     }
                 }
                 else
-                {
                     mentionSuggestionsList.setVisibility(View.GONE);
-                }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
     }
 
     public void submitPost() {
         submitPost.setEnabled(false);
         submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
+
         //selecting the position of category instead of its value ...
         //to be able to load posts under that category when your language changes
         int selectedCatPos = catSpinner.getSelectedItemPosition();
         post.category = String.valueOf(selectedCatPos);
+
         post.content_text = createdPostText.getText().toString();
         if(shared_post_id != null) post.shared_id = shared_post_id;
         //check if location not empty
@@ -417,78 +429,86 @@ public class CreatePostActivity extends AppCompatActivity {
                 uploadMedia();
             }
         },uid);
-
-
     }
 
     void uploadMedia(){
-        //////// add media to post by  --- waleed
         if (videoUri != null){
-            final StorageReference fileReference = storageReference.child(videoName);
-            uploadTask = fileReference.putFile(videoUri);
-            uploadTask.continueWithTask(new Continuation() {
-                @Override
-                public Object then(@NonNull Task task) throws Exception {
-                    if(!task.isSuccessful()){
-                        task.getException();
-                    }
-                    return fileReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if(task.isSuccessful()){
-                        Uri downloadUri = (Uri) task.getResult();
-                        videoUrl = downloadUri.toString();
-                        post.videos = new ArrayList<>();
-                        post.videos.add(videoUrl);
-                        savePost();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            uploadVideo();
         }
         else if (imageUri != null){
-            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-            uploadTask = fileReference.putFile(imageUri);
-            uploadTask.continueWithTask(new Continuation() {
-                @Override
-                public Object then(@NonNull Task task) throws Exception {
-                    if(!task.isSuccessful()){
-                        task.getException();
-                    }
-                    return fileReference.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()){
-                        Uri downloadUri = task.getResult();
-                        imageUrl = downloadUri.toString();
-                        post.images = new ArrayList<>();
-                        post.images.add(imageUrl);
-                        savePost();
-                    }
-                    else {
-                        Toast.makeText(CreatePostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            //resize the image first then upload it
+            BackgroundImageResize resize = new BackgroundImageResize(null);
+            resize.execute(imageUri);
         }
         else{
             savePost();
         }
     }
+
+    public void uploadVideo(){
+        final StorageReference fileReference = storageReference.child(videoName);
+        uploadTask = fileReference.putFile(videoUri);
+        uploadTask.continueWithTask(new Continuation() {
+            @Override
+            public Object then(@NonNull Task task) throws Exception {
+                if(!task.isSuccessful()){
+                    task.getException();
+                }
+                return fileReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Uri downloadUri = (Uri) task.getResult();
+                    videoUrl = downloadUri.toString();
+                    post.videos = new ArrayList<>();
+                    post.videos.add(videoUrl);
+                    savePost();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void uploadPhoto(){
+        final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        uploadTask = fileReference.putBytes(mUploadBytes);
+        uploadTask.continueWithTask(new Continuation() {
+            @Override
+            public Object then(@NonNull Task task) throws Exception {
+                if(!task.isSuccessful()){
+                    task.getException();
+                }
+                return fileReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()){
+                    Uri downloadUri = task.getResult();
+                    imageUrl = downloadUri.toString();
+                    post.images = new ArrayList<>();
+                    post.images.add(imageUrl);
+                    savePost();
+                }
+                else {
+                    Toast.makeText(CreatePostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     void savePost(){
         CollectionReference ref =FirebaseFirestore.getInstance().collection("/posts");
@@ -542,8 +562,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
             location = data.getStringExtra("SELECTED_LOCATION");
             postLocation.setText(location);
@@ -560,24 +578,15 @@ public class CreatePostActivity extends AppCompatActivity {
             //Toast.makeText(PostActivity.this, videoName, Toast.LENGTH_LONG).show();
         }
         else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
-            File imageFile = new File(currentPhotoPath);
-            try {
-                bitmap = new Compressor(this).compressToBitmap(imageFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            selectedImage.setImageBitmap(bitmap);
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
-
+            Picasso.get().load(imageUri).into(selectedImage);
         }
         else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
-
             imageUri = data.getData();
-            selectedImage.setImageURI(imageUri);
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
+            Picasso.get().load(imageUri).into(selectedImage);
         }
         else {
             startActivity(new Intent(CreatePostActivity.this, LoginActivity.class));
@@ -585,47 +594,19 @@ public class CreatePostActivity extends AppCompatActivity {
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    //methods to convert bitmap to uriImage to upload it
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName;
-        imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",   /* suffix */
-                storageDir      /* directory */
-        );
-
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File...
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.a2hands.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-            }
-        }
+        //intent to pick image from camera
+        ContentValues cv = new ContentValues();
+        cv.put(MediaStore.Images.Media.TITLE,"Temp Pick");
+        cv.put(MediaStore.Images.Media.DESCRIPTION,"Temp Descr");
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cv);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+        startActivityForResult(intent,CAMERA_REQUEST_CODE);
     }
 
     //camera methods
@@ -689,19 +670,51 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        UserStatus.updateOnlineStatus(true, curr_uid);
-        super.onResume();
+
+    //class to resize images in the background thread
+    public class BackgroundImageResize extends AsyncTask<Uri, Integer, byte[]> {
+
+        Bitmap mBitmap;
+
+        public BackgroundImageResize(Bitmap bitmap) {
+            if(bitmap != null){
+                this.mBitmap = bitmap;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected byte[] doInBackground(Uri... params) {
+            if(mBitmap == null){
+                try{
+                    RotateBitmap rotateBitmap = new RotateBitmap();
+                    mBitmap = rotateBitmap.HandleSamplingAndRotationBitmap(CreatePostActivity.this, params[0]);
+                }catch (IOException e){
+                    //handle errors
+                }
+            }
+            byte[] bytes;
+            bytes = getBytesFromBitmap(mBitmap, 20);
+            return bytes;
+        }
+
+        @Override
+        protected void onPostExecute(byte[] bytes) {
+            super.onPostExecute(bytes);
+            mUploadBytes = bytes;
+            //execute the upload task
+            uploadPhoto();
+        }
     }
 
-    @Override
-    protected void onStop()
-    {
-        if(UserStatus.isAppIsInBackground(getApplicationContext())){
-            UserStatus.updateOnlineStatus(false, curr_uid);
-        }
-        super.onStop();
+    public static byte[] getBytesFromBitmap(Bitmap bitmap, int quality){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality,stream);
+        return stream.toByteArray();
     }
 
 

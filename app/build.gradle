@@ -91,5 +91,7 @@ dependencies {
     //custom image view that has corners radius
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
+    implementation "androidx.exifinterface:exifinterface:1.2.0"
+
 }
 apply plugin: 'com.google.gms.google-services'

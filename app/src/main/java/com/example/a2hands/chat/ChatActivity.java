@@ -671,8 +671,8 @@ public class ChatActivity extends AppCompatActivity {
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE ) {
                 messageImage.setVisibility(View.VISIBLE);
-                messageImage.setImageURI(image_uri);
                 closeImageButton.setVisibility(View.VISIBLE);
+                Picasso.get().load(image_uri).into(messageImage);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
