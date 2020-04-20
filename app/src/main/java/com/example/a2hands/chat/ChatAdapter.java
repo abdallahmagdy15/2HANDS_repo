@@ -106,7 +106,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.message.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.VISIBLE);
             Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
-            //loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
         } else {
             holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
@@ -115,7 +114,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.message.setPaddingRelative(8, 8, 8, 0);
             holder.message.setText(message);
             Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
-            //loadPhotos(holder.messageImage,"Chat_Pics/"+messageImagee);
         }
 
         //set text of last message seen TextView of sender
@@ -152,7 +150,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         }
 
         //change the visibility of scrollDown button
-        if(chatList.size() - 2 != -1&&position >= chatList.size() - 2){
+        if(chatList.size() - 2 != -1 && position >= chatList.size() - 2){
             scrollDownBtn.setVisibility(View.GONE);
         }else {
             scrollDownBtn.setVisibility(View.VISIBLE);
@@ -245,7 +243,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 .child("messages");
 
         Query query1 = chatRef1.orderByChild("MSGID").equalTo(MSG_ID);
-        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+        query1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
@@ -263,7 +261,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         });
 
         Query query2 = chatRef2.orderByChild("MSGID").equalTo(MSG_ID);
-        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+        query2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
@@ -277,23 +275,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-    }
-
-    private void loadPhotos(final ImageView imgV, String path){
-
-        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                hisImage=uri.toString();
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
             }
         });
     }

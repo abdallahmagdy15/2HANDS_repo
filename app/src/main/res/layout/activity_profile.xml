@@ -351,5 +351,4 @@
         card_view:rippleColor="@color/colorPrimary"
         card_view:srcCompat="@drawable/ic_add_box_black_24dp" />
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -19,7 +18,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -69,12 +67,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +93,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     //creating images and camera
     Uri imageUri;
-    Bitmap bitmap;
     private byte[] mUploadBytes;
     String imageUrl = "";
     StorageTask uploadTask;
@@ -107,13 +101,11 @@ public class CreatePostActivity extends AppCompatActivity {
     ImageView selectedImage;
     ImageView add_image;
 
-
     //cameraRequest
     //camera request
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     ImageView camerabtn;
-    String currentPhotoPath;
 
     //upload Video
     public static final int VIDEO_REQUEST_CODE = 3;
@@ -500,7 +492,6 @@ public class CreatePostActivity extends AppCompatActivity {
                     Toast.makeText(CreatePostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -575,7 +566,6 @@ public class CreatePostActivity extends AppCompatActivity {
             String mimeType = getContentResolver().getType(videoUri);
             String extension = mimeType.substring(mimeType.lastIndexOf("/")+1);
             videoName = System.currentTimeMillis() + "." + extension;
-            //Toast.makeText(PostActivity.this, videoName, Toast.LENGTH_LONG).show();
         }
         else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
             selectedVideo.setVisibility(View.GONE);
@@ -698,7 +688,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
             }
             byte[] bytes;
-            bytes = getBytesFromBitmap(mBitmap, 20);
+            bytes = getBytesFromBitmap(mBitmap, 15);
             return bytes;
         }
 

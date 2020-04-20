@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -63,6 +64,10 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 2;
@@ -89,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileFollowBtnTxt;
     String UserName;
     User user;
-    NestedScrollView     profile_nestedScrollView;
+    NestedScrollView profile_nestedScrollView;
     ConstraintLayout profile_info_container;
     FloatingActionButton profile_addPost;
     ConstraintLayout profile_blockedStatus_container;

@@ -25,7 +25,9 @@ import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.UserStatus;
+import com.example.a2hands.chat.Chat;
 import com.example.a2hands.chat.chat_notifications.Token;
+import com.example.a2hands.chat.chatlist.ChatList;
 import com.example.a2hands.chat.chatlist.ChatListFragment;
 import com.example.a2hands.notifications.Notification;
 import com.example.a2hands.notifications.NotificationFragment;
@@ -53,11 +55,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
     private int navItemId;
 
     private BadgeDrawable badge;
+    private BadgeDrawable badgeForMessages;
 
     MaterialSpinner catsSpinner;
     String[] catsStrings;
@@ -92,6 +97,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     String myUid;
+
+    List<ChatList> myUsersList = new ArrayList<>();
+    int[] messagesCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +117,9 @@ public class HomeActivity extends AppCompatActivity {
         nav = findViewById(R.id.bottom_navigation);
         badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
         badge.setVisible(false);
+
+        badgeForMessages = nav.getOrCreateBadge(nav.getMenu().getItem(4).getItemId());
+        badgeForMessages.setVisible(false);
 
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
@@ -148,17 +159,69 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(HomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                updateToken(newToken);
+            }
+        });
+
         loadUserPicInTopMenu();
         loadNavigationDrawerData();
         setListenerForBottomNavigation();
         setListenerForNavigationView();
+        getNewMessagesCountToBadge();
         checkForNotifications();
         navigateHome();
-        updateToken(FirebaseInstanceId.getInstance().getToken());
 
     }//////////////////////////////////end of onCreate method
 
 
+
+    public void getNewMessagesCountToBadge(){
+        FirebaseDatabase.getInstance().getReference("chatList").child(myUid).child("myUsersList").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myUsersList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    ChatList chatList=ds.getValue(ChatList.class);
+                    myUsersList.add(chatList);
+                }
+                messagesCount = new int[myUsersList.size()];
+                for (int i=0; i<myUsersList.size();i++){
+                    int finalI = i;
+                    FirebaseDatabase.getInstance().getReference("chatList").child(myUsersList.get(i).getId()).child(myUid).child("messages").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            messagesCount[finalI] = 0;
+                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                Chat chat = ds.getValue(Chat.class);
+                                if (chat.getReceiver().equals(myUid) && chat.getSender().equals(myUsersList.get(finalI).getId()) && !chat.getIsSeen()){
+                                    messagesCount[finalI]++;
+                                }
+                            }
+                            int allMessageCount = 0;
+                            for (int value : messagesCount) {
+                                allMessageCount += value;
+                            }
+                            if (allMessageCount > 0){
+                                badgeForMessages.setVisible(true);
+                                badgeForMessages.setNumber(allMessageCount);
+                            }else
+                                badgeForMessages.setVisible(false);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+    }
 
     public void loadUserPicInTopMenu(){
         //load current user main pic in home top menu
