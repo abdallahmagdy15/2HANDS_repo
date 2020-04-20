@@ -242,7 +242,6 @@ public class ChatActivity extends AppCompatActivity {
 
         loadHisInfoAndchat();
         seenMessages();
-        loadUserOnlineAndTypingStatus();
 
     }//////////////end of onCreate
 
@@ -686,7 +685,6 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        loadUserOnlineAndTypingStatus();
         checkUserStatus();
         super.onStart();
     }

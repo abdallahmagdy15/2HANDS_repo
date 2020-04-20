@@ -159,14 +159,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(HomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                String newToken = instanceIdResult.getToken();
-                updateToken(newToken);
-            }
-        });
 
+        updateToken();
         loadUserPicInTopMenu();
         loadNavigationDrawerData();
         setListenerForBottomNavigation();
@@ -365,15 +359,22 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
-    public void updateToken(String token){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Tokens");
-        Token mToken = new Token(token);
-        ref.child(myUid).setValue(mToken);
+    public void updateToken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(HomeActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
 
-        SharedPreferences sp = getSharedPreferences("SP_USER",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("Current_USERID",myUid);
-        editor.apply();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Tokens");
+                Token mToken = new Token(newToken);
+                ref.child(myUid).setValue(mToken);
+
+                SharedPreferences sp = getSharedPreferences("SP_USER",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("Current_USERID",myUid);
+                editor.apply();
+            }
+        });
     }
 
 

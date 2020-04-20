@@ -64,9 +64,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class ProfileActivity extends AppCompatActivity {
 

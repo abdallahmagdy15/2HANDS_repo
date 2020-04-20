@@ -242,15 +242,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 .child(myUid)
                 .child("messages");
 
-        Query query1 = chatRef1.orderByChild("MSGID").equalTo(MSG_ID);
-        query1.addValueEventListener(new ValueEventListener() {
+        chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
-                    HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("isDeleted",true);
-                    ds.getRef().updateChildren(hashMap);
+                    Chat chat = ds.getValue(Chat.class);
+
+                    if(chat.getMSGID().equals(MSG_ID)){
+                        HashMap<String,Object> hashMap=new HashMap<>();
+                        hashMap.put("isDeleted",true);
+                        ds.getRef().updateChildren(hashMap);
+                    }
                 }
             }
 
@@ -260,15 +263,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             }
         });
 
-        Query query2 = chatRef2.orderByChild("MSGID").equalTo(MSG_ID);
-        query2.addValueEventListener(new ValueEventListener() {
+        chatRef2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     //ds.getRef().removeValue();
-                    HashMap<String,Object> hashMap=new HashMap<>();
-                    hashMap.put("isDeleted",true);
-                    ds.getRef().updateChildren(hashMap);
+                    Chat chat = ds.getValue(Chat.class);
+
+                    if(chat.getMSGID().equals(MSG_ID)){
+                        HashMap<String,Object> hashMap=new HashMap<>();
+                        hashMap.put("isDeleted",true);
+                        ds.getRef().updateChildren(hashMap);
+                    }
                 }
             }
 
