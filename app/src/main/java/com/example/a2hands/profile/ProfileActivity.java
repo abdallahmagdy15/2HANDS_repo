@@ -104,7 +104,6 @@ public class ProfileActivity extends AppCompatActivity {
     ConstraintLayout profile_blockedStatus_container;
     TextView profile_blockedStatus_name;
     TextView profile_blockedStatus;
-    FloatingActionButton addPostFAbtn;
 
     KonfettiView konfettiView;
 
@@ -142,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
         profile_nestedScrollView = findViewById(R.id.profile_nestedScrollView);
         profile_info_container = findViewById(R.id.profile_info_container);
-        addPostFAbtn = findViewById(R.id.profile_addPost);
+        profile_addPost = findViewById(R.id.profile_addPost);
         profile_blockedStatus_container = findViewById(R.id.profile_blockedStatus_container);
         profile_blockedStatus_name = findViewById(R.id.profile_blockedStatus_name);
         profile_blockedStatus = findViewById(R.id.profile_blockedStatus);
@@ -155,7 +154,7 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        addPostFAbtn.setOnClickListener(new View.OnClickListener() {
+        profile_addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, CreatePostActivity.class));
@@ -567,7 +566,6 @@ public class ProfileActivity extends AppCompatActivity {
                         && calBirth.get(Calendar.DAY_OF_MONTH) == calNew.get(Calendar.DAY_OF_MONTH)){
 
                     startKonfetti();
-
                 }
 
                 if(uid.equals(curr_uid))
