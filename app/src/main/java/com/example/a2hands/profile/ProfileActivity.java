@@ -712,7 +712,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setSpeed(1f, 10f)
                         .setFadeOutEnabled(true)
                         .setTimeToLive(600L)
-                        .addSizes(new Size(6, 5))
+                        .addSizes(new Size(9, 5))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 2.0f)
                         .streamFor(200, 1500L);
             }
