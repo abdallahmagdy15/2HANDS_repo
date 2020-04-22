@@ -1,5 +1,6 @@
 package com.example.a2hands;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 
@@ -11,7 +12,7 @@ public class User {
     public String full_name;
     public String user_name;
     public boolean gender;
-    public Date birth_date;
+    public Timestamp birth_date;
 
     public String country;
     public String region;
@@ -33,7 +34,7 @@ public class User {
             String full_name,
             String user_name,
             boolean gender,
-            Date birth_date,
+            Timestamp birth_date,
 
             String country,
             String region,

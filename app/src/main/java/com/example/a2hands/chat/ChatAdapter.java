@@ -176,9 +176,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                     builder.setPositiveButton(context.getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            deleteMassage(position);
+                            deleteMessage(position);
                             holder.messageImage.setVisibility(View.GONE);
-                            holder.message.setVisibility(View.VISIBLE);
+                            holder.message.setVisibility(View.GONE);
                         }
                     });
                     builder.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -227,7 +227,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         });
     }
 
-    private void deleteMassage(int position) {
+    private void deleteMessage(int position) {
 
         final String myUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         String MSG_ID = chatList.get(position).getMSGID();

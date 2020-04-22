@@ -26,6 +26,7 @@ import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Query;
@@ -49,8 +50,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,6 +81,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
     private static final int DEFAULT_DAY = 1;
     private static final int DEFAULT_MONTH = 0;
     private static final int DEFAULT_YEAR = 1990;
+    Calendar combinedCal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
 
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
     private static final String USERNAME_PATTERN = "^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
@@ -335,11 +339,13 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if (year > yearNow || year >= yearNow &&  month > monthNow || year >= yearNow &&  month >= monthNow && dayOfMonth > dayNow) {
             Toast.makeText(SignUpActivity.this, getResources().getString(R.string.dateOfBirthCanNotBeFromTheFuture), Toast.LENGTH_LONG).show();
-        }
-        month += 1;
-        String date =  dayOfMonth + "/" + month + "/" + year;
-        birthDate.setText(date);
+        } else {
+            combinedCal.set(year, month, dayOfMonth);
 
+            month += 1;
+            String date =  dayOfMonth + "/" + month + "/" + year;
+            birthDate.setText(date);
+        }
     }
 
 
@@ -383,7 +389,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                 fullName.getText().toString().trim(),
                 userName.getText().toString().trim(),
                 selectedRadioButton.isChecked(),
-                new Date(),
+                new Timestamp(new Date(combinedCal.getTimeInMillis())),
                 ccpCountry.getSelectedCountryNameCode(),
                 stateSelect.getSelectedItem().toString(),
                 ccpCode.getFullNumber(),
