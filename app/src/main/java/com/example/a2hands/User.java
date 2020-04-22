@@ -4,7 +4,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 
-import java.util.Date;
 @IgnoreExtraProperties
 public class User {
     public String user_id;

@@ -351,4 +351,9 @@
         card_view:rippleColor="@color/colorPrimary"
         card_view:srcCompat="@drawable/ic_add_box_black_24dp" />
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/viewKonfetti"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

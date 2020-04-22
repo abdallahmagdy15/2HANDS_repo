@@ -94,8 +94,8 @@ dependencies {
     //user in RotateBitmap
     implementation "androidx.exifinterface:exifinterface:1.2.0"
 
-//    //for profile birthday celebration
-//    implementation 'nl.dionsegijn:konfetti:1.2.0'
-//    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61'
+    //for profile birthday celebration
+    implementation 'nl.dionsegijn:konfetti:1.2.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61'
 }
 apply plugin: 'com.google.gms.google-services'

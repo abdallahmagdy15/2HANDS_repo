@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -57,10 +58,18 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -97,6 +106,8 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profile_blockedStatus;
     FloatingActionButton addPostFAbtn;
 
+    KonfettiView konfettiView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,11 +142,12 @@ public class ProfileActivity extends AppCompatActivity {
         profileFollowBtnTxt = findViewById(R.id.profileFollowBtnTxt);
         profile_nestedScrollView = findViewById(R.id.profile_nestedScrollView);
         profile_info_container = findViewById(R.id.profile_info_container);
-        profile_addPost=findViewById(R.id.profile_addPost);
         addPostFAbtn = findViewById(R.id.profile_addPost);
         profile_blockedStatus_container = findViewById(R.id.profile_blockedStatus_container);
         profile_blockedStatus_name = findViewById(R.id.profile_blockedStatus_name);
         profile_blockedStatus = findViewById(R.id.profile_blockedStatus);
+
+        konfettiView = findViewById(R.id.viewKonfetti);
 
         // setup
         setSupportActionBar(toolbar);
@@ -382,7 +394,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(i,1);
             }
         });
-
     }
 
     @Override
@@ -544,6 +555,21 @@ public class ProfileActivity extends AppCompatActivity {
                 nf.setGroupingUsed(true);
                 ratings_count.setText( nf.format(user.ratings_count) );
 
+                java.util.Date birthDate = user.birth_date.toDate();
+                java.util.Date newDate = new java.util.Date();
+                Calendar calBirth = Calendar.getInstance();
+                Calendar calNew = Calendar.getInstance();
+                calBirth.setTime(birthDate);
+                calNew.setTime(newDate);
+
+                //start konfetti animation if today is the user's birthday
+                if(calBirth.get(Calendar.MONTH) == calNew.get(Calendar.MONTH)
+                        && calBirth.get(Calendar.DAY_OF_MONTH) == calNew.get(Calendar.DAY_OF_MONTH)){
+
+                    startKonfetti();
+
+                }
+
                 if(uid.equals(curr_uid))
                     setEditBtnListener();
 
@@ -638,6 +664,61 @@ public class ProfileActivity extends AppCompatActivity {
             else
                 return getResources().getString(R.string.reviews);
         }
+
+    }
+
+    public void startKonfetti(){
+        konfettiView.build()
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(3000L)
+                .addSizes(new Size(12, 5))
+                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                .streamFor(50, 5000L);
+        konfettiView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                konfettiView.build()
+                        .addColors(Color.RED)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(3f, 5f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(600L)
+                        .addSizes(new Size(6, 5))
+                        .setPosition(konfettiView.getX() + konfettiView.getWidth() / 3.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
+                        .streamFor(200, 800L);
+            }
+        }, 2000);
+        konfettiView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                konfettiView.build()
+                        .addColors(Color.RED)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(1f, 5f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(600L)
+                        .addSizes(new Size(6, 5))
+                        .setPosition(konfettiView.getX() + konfettiView.getWidth() - konfettiView.getWidth() / 4.0f, konfettiView.getY() + konfettiView.getHeight() - konfettiView.getHeight() / 4.0f)
+                        .streamFor(200, 800L);
+            }
+        },3000);
+        konfettiView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                konfettiView.build()
+                        .addColors(Color.RED)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(1f, 10f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(600L)
+                        .addSizes(new Size(6, 5))
+                        .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 2.0f)
+                        .streamFor(200, 1500L);
+            }
+        },4500);
     }
 
 
