@@ -667,7 +667,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void startKonfetti(){
         konfettiView.build()
-                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .addColors(Color.parseColor("#ffeb3b"), Color.parseColor("#ffd54f"))
                 .setDirection(0.0, 359.0)
                 .setSpeed(1f, 5f)
                 .setFadeOutEnabled(true)
@@ -679,28 +679,28 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void run() {
                 konfettiView.build()
-                        .addColors(Color.RED)
+                        .addColors(Color.parseColor("#ff5722"))
                         .setDirection(0.0, 359.0)
-                        .setSpeed(3f, 5f)
+                        .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(600L)
-                        .addSizes(new Size(6, 5))
+                        .setTimeToLive(2500L)
+                        .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 3.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
-                        .streamFor(200, 800L);
+                        .streamFor(3000, 1000L);
             }
         }, 2000);
         konfettiView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 konfettiView.build()
-                        .addColors(Color.RED)
+                        .addColors(Color.parseColor("#64b5f6"))
                         .setDirection(0.0, 359.0)
-                        .setSpeed(1f, 5f)
+                        .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(600L)
-                        .addSizes(new Size(6, 5))
+                        .setTimeToLive(2500L)
+                        .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() - konfettiView.getWidth() / 4.0f, konfettiView.getY() + konfettiView.getHeight() - konfettiView.getHeight() / 4.0f)
-                        .streamFor(200, 800L);
+                        .streamFor(3000, 1000L);
             }
         },3000);
         konfettiView.postDelayed(new Runnable() {
@@ -709,12 +709,12 @@ public class ProfileActivity extends AppCompatActivity {
                 konfettiView.build()
                         .addColors(Color.RED)
                         .setDirection(0.0, 359.0)
-                        .setSpeed(1f, 10f)
+                        .setSpeed(3.3f, .4f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(600L)
-                        .addSizes(new Size(9, 5))
-                        .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 2.0f)
-                        .streamFor(200, 1500L);
+                        .setTimeToLive(5000L)
+                        .addSizes(new Size(3, 4))
+                        .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
+                        .streamFor(5000, 1700L);
             }
         },4500);
     }
