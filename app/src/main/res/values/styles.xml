@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorPureWhite</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
     <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
