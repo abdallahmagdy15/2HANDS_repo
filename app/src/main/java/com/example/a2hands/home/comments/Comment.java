@@ -12,6 +12,7 @@ public class Comment {
     public @ServerTimestamp
     Date date;
     public String post_id;
+    public String comment_id;
     public String publisher_id;
     public List<String> mentions;
     public String publisher_pic;
@@ -19,13 +20,11 @@ public class Comment {
     public String video;
     public String name;
 
-    public Comment(String comment_content, Date date,
-                   String post_id,String name,
-                   String publisher_id, List<String> mentions,
-                   String publisher_pic, String image, String video) {
+    public Comment(String comment_content, Date date, String post_id, String comment_id, String publisher_id, List<String> mentions, String publisher_pic, String image, String video, String name) {
         this.comment_content = comment_content;
         this.date = date;
         this.post_id = post_id;
+        this.comment_id = comment_id;
         this.publisher_id = publisher_id;
         this.mentions = mentions;
         this.publisher_pic = publisher_pic;
@@ -33,5 +32,6 @@ public class Comment {
         this.video = video;
         this.name = name;
     }
+
     public Comment(){}
 }

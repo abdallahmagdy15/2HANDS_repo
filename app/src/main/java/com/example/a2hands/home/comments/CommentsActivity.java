@@ -158,6 +158,8 @@ public class CommentsActivity extends AppCompatActivity  {
             public void callbackUser(final User user) {
                 comment.publisher_pic=user.profile_pic;
                 comment.name=user.full_name;
+                //store Comment to use it in Like Comment
+                comment.comment_id = reference.push().getKey();
                 reference.push().setValue(comment)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
