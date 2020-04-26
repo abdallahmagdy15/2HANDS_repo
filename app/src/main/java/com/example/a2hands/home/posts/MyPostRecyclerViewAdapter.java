@@ -73,15 +73,27 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 {
     private final List<Post> postsList;
     private  Context context;
+    PostsFragment.OnBottomReachedListener onBottomReachedListener;
+
 
     public MyPostRecyclerViewAdapter(List<Post> posts) {
         postsList = posts;
+
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    /*    if (postsList.size() ==0){
+            onBottomReachedListener.onBottomReached(0);
+        }*/
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
+
         return new ViewHolder(view);
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -701,7 +713,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         });
 
     }
+    public void setOnBottomReachedListener(PostsFragment.OnBottomReachedListener onBottomReachedListener){
+        this.onBottomReachedListener = onBottomReachedListener;
+    }
 
+public void insertExtraPosts(List<Post> extraPosts){
+        postsList.addAll(extraPosts);
+
+}
     @Override
     public int getItemCount() {
         return postsList.size();

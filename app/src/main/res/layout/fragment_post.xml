@@ -5,8 +5,8 @@
     android:id="@+id/postContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="#FFFFFF"
+    android:layout_marginBottom="16dp"
+    android:background="@color/colorPureWhite"
     android:focusableInTouchMode="true">
 
     <LinearLayout
@@ -158,15 +158,15 @@
         android:id="@+id/post_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/postImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone">
+        app:layout_constraintTop_toBottomOf="@id/content">
 
         <include
             android:id="@+id/sharedPostContainer"
@@ -262,10 +262,10 @@
             android:paddingStart="0dp"
             android:paddingEnd="8dp"
             android:textAlignment="viewStart"
-            app:layout_constraintHorizontal_bias="0"
             android:textColor="@color/colorDisabled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/postRatingsCount"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/postLikesCount"
             app:layout_constraintTop_toTopOf="parent" />
 

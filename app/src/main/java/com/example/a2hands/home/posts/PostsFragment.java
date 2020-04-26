@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +25,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +40,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +52,7 @@ public class PostsFragment extends Fragment {
 
     FirebaseAuth mAuth;
     String selectedCat;
+    List<String> location =new ArrayList<>();
     String uid;
     String profile_user_id;
     View view;
@@ -54,6 +60,11 @@ public class PostsFragment extends Fragment {
     final List<String> mutedUsersId = new ArrayList<>();
     final List<String> blockedUsersId = new ArrayList<>();
     final List<Post> posts = new ArrayList<>();
+    MyPostRecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    int lastPostsCount=0;
+    boolean loading = false;
 
     public PostsFragment() {
     }
@@ -74,15 +85,24 @@ public class PostsFragment extends Fragment {
         this.view = view;
         String activityName = bundle.getString("FOR");
 
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setHasFixedSize(true);
+            adapter = new MyPostRecyclerViewAdapter(posts);
+            recyclerView.setAdapter(adapter);
+        }
+
         if (activityName.equals("HOME") ) {
             selectedCat = bundle.getString("CAT", String.valueOf(0));
             getUser(new Callback() {
                 @Override
                 public void callbackUser(User user) {
-                    List<String> location =new ArrayList<>();
                     location.add(loadCountryUsingItsISO(user.country));
                     location.add(user.region);
-                    getPostsForHome(location, selectedCat);
+                    getPostsForHome(location,selectedCat);
                 }
             },uid);
         }
@@ -164,13 +184,18 @@ public class PostsFragment extends Fragment {
     }
 
     private void getPostsForHome(final List<String> location,final String category ){
+        // order by location , category , isVisited , state , priority , date
         // Read from the database
         Query query = FirebaseFirestore.getInstance().collection("/posts")
                 .whereIn("location", location);
         if(!category.equals(String.valueOf(0))){
             query = query.whereEqualTo("category",category);
         }
-        query.orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+        query.orderBy("is_visited", Query.Direction.DESCENDING)
+                .whereEqualTo("state",true)
+                .orderBy("priority", Query.Direction.DESCENDING)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limitToLast(4)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -179,6 +204,7 @@ public class PostsFragment extends Fragment {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 final Post p = doc.toObject(Post.class);
                                 posts.add(p);
+                                lastPostsCount++;
                             }
                             getHiddenPostsId();
                         } else {
@@ -204,7 +230,7 @@ public class PostsFragment extends Fragment {
                                 final Post p = doc2.toObject(Post.class);
                                 posts.add(p);
                             }
-                            updateUiWithPosts(posts);
+                            updateUiWithPosts();
                         } else {
                             Log.w("", "Error getting documents.", task2.getException());
 
@@ -213,14 +239,31 @@ public class PostsFragment extends Fragment {
                 });
     }
 
+    private void markPrevPostsAsVisited(){
+        WriteBatch batch = db.batch();
+        for (int i = 0; i < posts.size(); i++) {
+            String prevPostId = posts.get(i).post_id;
+            DocumentReference postRef = db.collection("posts").document(prevPostId);
+            batch.update(postRef, "is_visited", true);
+        }
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                getPostsForHome(location, selectedCat);
+            }
+        });
+    }
+
     private void filterHomePosts(final List<Post> posts){
         Iterator<Post> i = posts.iterator();
         while (i.hasNext()){
             Post p = i.next();
-            if(hiddenPostsIds.contains(p.post_id) || mutedUsersId.contains(p.user_id) || blockedUsersId.contains(p.user_id))
+            if(hiddenPostsIds.contains(p.post_id) || mutedUsersId.contains(p.user_id) || blockedUsersId.contains(p.user_id)){
                 i.remove();
+                lastPostsCount--;
+            }
         }
-        updateUiWithPosts(posts);
+        updateUiWithPosts();
     }
 
     private void getHiddenPostsId(){
@@ -267,7 +310,7 @@ public class PostsFragment extends Fragment {
                         posts.add(ds.toObject(Post.class));
                     }
                 }
-                updateUiWithPosts(posts);
+                updateUiWithPosts();
             }
         });
     }
@@ -275,54 +318,75 @@ public class PostsFragment extends Fragment {
     private void getMutedUsersId(){
         FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
-            @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getChildrenCount() != 0){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        mutedUsersId.add(ds.getKey());
+                    @Override
+                    public void onDataChange( DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount() != 0){
+                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                mutedUsersId.add(ds.getKey());
+                            }
+                        }
+                        getBlockedUsersId();
                     }
-                }
-                getBlockedUsersId();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
     }
 
     private void getBlockedUsersId(){
         FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
-            @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getChildrenCount() != 0){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        blockedUsersId.add(ds.getKey());
+                    @Override
+                    public void onDataChange( DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount() != 0){
+                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                blockedUsersId.add(ds.getKey());
+                            }
+                        }
+                        //check if loading the profile posts
+                        if(profile_user_id != null){
+                            if(!blockedUsersId.contains(profile_user_id)){
+                                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                    @Override
+                                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                                        super.onScrollStateChanged(recyclerView, newState);
+                                        if (!recyclerView.canScrollVertically(1)) {
+                                            getPostsForProfile(profile_user_id);                                }
+                                    }
+                                });
+
+                            }
+                        }else {
+                            filterHomePosts(posts);
+                        }
                     }
-                }
-                //check if loading the profile posts
-                if(profile_user_id != null){
-                    if(!blockedUsersId.contains(profile_user_id)){
-                        getPostsForProfile(profile_user_id);
-                    }
-                }else {
-                    filterHomePosts(posts);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
     }
 
-    private void updateUiWithPosts(List<Post> posts){
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(new MyPostRecyclerViewAdapter(posts));
+    private void updateUiWithPosts(){
+        //adapter.insertExtraPosts(posts.subList(posts.size()-lastPostsCount,posts.size()));
+        if(posts.size()==4){
+            adapter.notifyDataSetChanged();
 
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (!recyclerView.canScrollVertically(1) && !loading  /*check if still loading*/) {
+                        loading = true;
+                        Toast.makeText(getActivity().getBaseContext(),"loading.....",Toast.LENGTH_SHORT).show();
+                        markPrevPostsAsVisited();
+                    }
+                }
+            });
         }
+        else{
+            adapter.notifyItemRangeInserted((posts.size()==0)?0:posts.size()-1,lastPostsCount);
+            loading = false;
+        }
+
+
     }
 
 
@@ -345,5 +409,9 @@ public class PostsFragment extends Fragment {
     }////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////
 
+    public interface OnBottomReachedListener {
 
+        void onBottomReached(int position);
+
+    }
 }

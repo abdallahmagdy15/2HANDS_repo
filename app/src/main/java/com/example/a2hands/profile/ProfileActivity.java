@@ -194,6 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
         else { // then its your profile
             uid = curr_uid;
             profileEditBtn.setVisibility(View.VISIBLE);
+            profile_addPost.setVisibility(View.VISIBLE);
             loadUserProfile();
             setLoadingFollowersListener();
             setLoadingFollowingsListener();
