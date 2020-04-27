@@ -222,6 +222,9 @@
 
     <!--ProfileActivity-->
     <string name="following">Following</string>
+    <string name="youAreBlockedFromfollowing">You are blocked from following</string>
+    <string name="andViewingHisPostsAndReviews">and viewing his Posts and Reviews</string>
+    <string name="isBlocked">is blocked!</string>
 
     <!--activity profile-->
     <string name="follow">Follow</string>

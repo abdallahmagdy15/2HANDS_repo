@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <!--SignUpActivity-->
     <string name="enterYourEmail">Inserisci la tua email</string>
     <string name="emailAlreadyInUse">Email già in uso!</string>
     <string name="enterYourFullName">Inserisci il tuo nome e cognome</string>
@@ -19,7 +19,7 @@
     <string name="passwordDoesnotMatch">La password non corrisponde</string>
     <string name="atLeast1Capital1Number1SpecialChar">Almeno 1 capitale, 1 numero e 1 carattere speciale</string>
 
-
+    <!--activity sign up-->
     <string name="fullName">Nome e cognome</string>
     <string name="userName">Nome utente</string>
     <string name="gender">Genere:</string>
@@ -34,62 +34,62 @@
     <string name="back">Indietro</string>
     <string name="next">Il prossimo</string>
 
-
+    <!--activity signup pic picture-->
     <string name="pickAProfilePicture">Scegli un\'immagine del profilo</string>
     <string name="skip">Salta</string>
 
-
+    <!--SignUpSetBioActivity-->
     <string name="checkYourEmailForVerification">Controlla la tua e-mail per la verifica</string>
 
-
+    <!--activity signup set bio-->
     <string name="talkAboutYourself">Parla di te</string>
     <string name="yourBio">La tua biografia</string>
 
-
+    <!--LoginActivity-->
     <string name="wrongPassword">Password errata!</string>
     <string name="noNetwork">Nessuna rete!</string>
     <string name="errorSigningIn">Errore durante l\'accesso!</string>
 
-
+    <!--activity login-->
     <string name="login">Accesso</string>
     <string name="orSignInWith">o accedi con</string>
 
-
+    <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Controlla la tua e-mail per reimpostare la password</string>
 
-
+    <!--activity forgot password-->
     <string name="forgotYourPassword">Hai dimenticato la password?</string>
     <string name="submit">Invia</string>
 
-
+    <!--MyUserRecyclerViewAdapter-->
     <string name="areYouSureYouWantToUnFollow">Sei sicuro di non voler più seguire?</string>
 
-
+    <!--HomeActivity-->
     <string name="pressBackAgainToExit">Premere di nuovo BACK per uscire</string>
 
-
+    <!--activity home-->
     <string name="notifications">notifiche</string>
     <string name="inbox">Posta in arrivo</string>
 
-
+    <!--bottom navigation-->
     <string name="home">Casa</string>
     <string name="search">Ricerca</string>
     <string name="messages">messaggi</string>
 
-
+    <!--CommentsActivity-->
     <string name="likes">Piace</string>
 
-
+    <!--fragment comment-->
     <string name="like">Piace</string>
     <string name="reply">rispondere</string>
 
-
+    <!--comment layout-->
     <string name="writeAComment">Scrivi un commento…</string>
 
-
+    <!--activity likes-->
     <string name="peopleLikedThisPost">Alla gente è piaciuto questo post</string>
 
-
+    <!--MyPostRecyclerViewAdapter-->
     <string name="anonymous">Anonimo</string>
     <string name="canNotSendHelpRequestToYourself">Non puoi inviare una richiesta di aiuto a te stesso!</string>
     <string name="sendHelpRequestTo">Invia richiesta di aiuto a</string>
@@ -100,10 +100,10 @@
     <string name="ratings">giudizi</string>
     <string name="shares">azioni</string>
 
-
+    <!--fragment post-->
     <string name="shared">Condivisa</string>
 
-
+    <!--PostOptionsDialog-->
     <string name="postIsSavedSuccessfully">La posta è stata salvata correttamente!</string>
     <string name="postIsDisabledSuccessfully">Post disabilitato correttamente!</string>
     <string name="postIsDeletedSuccessfully">La posta è stata eliminata correttamente!</string>
@@ -111,34 +111,34 @@
     <string name="userIsMutedSuccessfully">L\'utente è silenziato correttamente!</string>
     <string name="userIsBlockedSuccessfully">L\'utente è bloccato correttamente!</string>
 
-
+    <!--SharingOptions-->
     <string name="postSharedSuccessfully">Post condiviso con successo!</string>
 
-
+    <!--SavedPostsActivity-->
     <string name="savedPosts">Messaggi salvati</string>
 
-
+    <!--activity search location-->
     <string name="searchYourState">Cerca il tuo stato</string>
     <string name="showInAllStates">Mostra in tutti gli stati</string>
     <string name="orSelectAstate">o seleziona uno stato</string>
 
-
+    <!--fragment rating-->
     <string name="to">Per</string>
     <string name="expressYourGratitude">Esprimi la tua gratitudine</string>
     <string name="writeAReview">Scrivere una recensione</string>
     <string name="finised">Finito</string>
 
-
-
+    <!--fragment notification-->
+    <!--not complete-->
     <string name="accept">Accettare</string>
     <string name="refuse">Rifiuto</string>
 
-
+    <!--fragment search-->
     <string name="recentSearches">Ricerche recenti</string>
     <string name="edit">modificare</string>
     <string name="searchHint">Ricerca…</string>
 
-
+    <!--drawer menu-->
     <string name="myProfile">Il mio profilo</string>
     <string name="saved">Salvato</string>
     <string name="settings">impostazioni</string>
@@ -147,7 +147,7 @@
     <string name="share">Condividere</string>
     <string name="send">Spedire</string>
 
-
+    <!--activity settings-->
     <string name="account">account</string>
     <string name="name">Nome</string>
     <string name="country">Nazione</string>
@@ -155,51 +155,51 @@
     <string name="deleteAccount">Eliminare l\'account</string>
     <string name="general">Generale</string>
 
-
+    <!--AboutAppActivity-->
     <string name="aboutApp">Informazioni sull\'app</string>
 
-
+    <!--BlockedUsersActivity-->
     <string name="blockedUsers">Utenti bloccati</string>
 
-
+    <!--EditCountryActivity-->
     <string name="editCountry">Modifica Paese</string>
 
-
+    <!--EditEmailActivity-->
     <string name="editEmail">Modifica email</string>
 
-
+    <!--EditNameActivity-->
     <string name="editName">Modifica nome completo</string>
 
-
+    <!--EditUserNameActivity-->
     <string name="editUserName">Modifica nome utente</string>
 
-
+    <!--EditPasswordActivity-->
     <string name="editPassword">Modifica password</string>
 
-
+    <!--EditPhoneActivity-->
     <string name="editPhone">Modifica telefono</string>
 
-
+    <!--LanguageActivity-->
     <string name="language">linguaggio</string>
     <string name="selectYourLanguage">seleziona la tua lingua</string>
 
-
+    <!--NotificationActivity-->
     <string name="notificationSettings">Impostazioni notifiche</string>
 
-
+    <!--activity_delete acc-->
     <string name="currentPassword">Password attuale</string>
     <string name="delete">Elimina</string>
 
-
+    <!--activity edit country-->
     <string name="save">Salva</string>
 
-
+    <!--activity edit email-->
     <string name="newEmail">nuova email</string>
 
-
+    <!--activity edit pass-->
     <string name="newPassword">nuova password</string>
 
-
+    <!--activity language-->
     <string name="witchLanguageDoYouSpeak">Parli la lingua delle streghe?</string>
     <string name="arabic">العربية</string>
     <string name="english">English</string>
@@ -210,49 +210,52 @@
     <string name="italian">Italiano</string>
     <string name="done">Fatto</string>
 
-
+    <!--CreatePostActivity-->
     <string name="postCreatedSuccessfully">Post creato con successo!</string>
     <string name="cameraPermissionIsRequired">È richiesta l\'autorizzazione della fotocamera</string>
 
-
+    <!--activity create post-->
     <string name="post">Inviare</string>
     <string name="location">Posizione</string>
     <string name="letsGetSomeHelp">Cerchiamo un po \'di aiuto!</string>
     <string name="postAnonymously">Posta anonimamente?</string>
     <string name="addToYourPost">Aggiungi al tuo post</string>
 
-
+    <!--ProfileActivity-->
     <string name="following">A seguire</string>
+    <string name="youAreBlockedFromfollowing">Non sei autorizzato a seguire</string>
+    <string name="andViewingHisPostsAndReviews">e visualizzare i suoi post e recensioni</string>
+    <string name="isBlocked">è bloccato!</string>
 
-
+    <!--activity profile-->
     <string name="follow">Seguire</string>
     <string name="Edit">modificare</string>
     <string name="reputation">Reputazione</string>
     <string name="posts">Messaggi</string>
     <string name="reviews">Recensioni</string>
 
-
+    <!--profile options menue-->
     <string name="report">rapporto</string>
     <string name="block">Bloccare</string>
     <string name="mute">muto</string>
 
-
+    <!--activity edit profile-->
     <string name="yourJob">Il tuo lavoro</string>
 
-
+    <!--activity followers-->
     <string name="followers">Seguaci</string>
 
-
+    <!--activity following-->
     <string name="followings">A seguire</string>
 
-
+    <!--sharing bottom sheet-->
     <string name="shareNow">Condividi ora</string>
     <string name="shareWithComment">Condividi con commento</string>
     <string name="shareInPrivateMessage">Condividi in un messaggio privato</string>
     <string name="copyPostLink">Copia link post</string>
     <string name="shareExternal">Condividi esterno</string>
 
-
+    <!--post options bottom sheet-->
     <string name="disableReact">Disabilita la reazione</string>
     <string name="savePost">Salva messaggio</string>
     <string name="deletePost">Elimina post</string>
@@ -261,31 +264,31 @@
     <string name="blockUser">Blocca utente</string>
     <string name="reportPost">Segnala post</string>
 
+    <!--ChatListFragment-->
+    <string name="thisMessageWasDeleted">Questo messaggio è stato eliminato…</string>
+    <string name="sentAPhoto">ha inviato una foto…</string>
 
-    <string name="thisMessageWasDeleted">Questo messaggio è stato eliminato ...</string>
-    <string name="sentAPhoto">ha inviato una foto ...</string>
-
-
+    <!--ChatActivity-->
     <string name="camera">Camera</string>
     <string name="gallery">Galleria</string>
     <string name="chooseImageFrom">Scegli Immagine da</string>
-    <string name="sendingImage">Invio immagine in corso ...</string>
-    <string name="youCanNotSendEmptyMessage">Non puoi inviare messaggi vuoti ...</string>
+    <string name="sendingImage">Invio immagine in corso…</string>
+    <string name="youCanNotSendEmptyMessage">Non puoi inviare messaggi vuoti…</string>
     <string name="typing">digitando…</string>
     <string name="online">in linea</string>
     <string name="typeAMessage">Scrivi un messaggio…</string>
 
-
+    <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Sei sicuro di eliminare questo messaggio?</string>
     <string name="no">No</string>
     <string name="seen">visto</string>
     <string name="delivered">consegnato</string>
 
-
+    <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Richiesta di aiuto rifiutata</string>
     <string name="helpRequestAccepted">Richiesta di aiuto accettata</string>
 
-
+    <!--NotificationHelper-->
     <string name="sentYouAHelpRequest">ti ha inviato una richiesta di aiuto</string>
     <string name="sharedYourPost">Ha condiviso il tuo post</string>
     <string name="followedYou">ti ho seguito</string>

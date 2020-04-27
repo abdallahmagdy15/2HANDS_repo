@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
     View headerView;
     CircleImageView header_profilePic;
     TextView header_fAndLName;
-    TextView header_email;
+    TextView header_uname;
 
     private FirebaseFirestore db;
     String myUid;
@@ -125,17 +125,15 @@ public class HomeActivity extends AppCompatActivity {
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
         //category spinner declaration
-        //catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
-
 
         //drawer header data
         headerView = navigationView.getHeaderView(0);
         header_profilePic = headerView.findViewById(R.id.drawer_profileImage);
         header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
-        header_email = headerView.findViewById(R.id.drawer_userEmail);
+        header_uname = headerView.findViewById(R.id.drawer_userName);
 
 
         header_profilePic.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +243,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
+
+                header_fAndLName.setText(user.full_name);
+                header_uname.setText("@"+user.user_name);
+
                 FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+myUid+"/"+user.profile_pic).getDownloadUrl()
                         .addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
@@ -258,8 +260,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
-                header_fAndLName.setText(user.full_name);
-                header_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
             }
         });
     }

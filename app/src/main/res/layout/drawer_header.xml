@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toTopOf="@+id/drawer_userEmail"
+        app:layout_constraintBottom_toTopOf="@+id/drawer_userName"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/drawer_userEmail"
+        android:id="@+id/drawer_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

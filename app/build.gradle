@@ -100,5 +100,8 @@ dependencies {
 
     //Splash Screen
     implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
+
+
+    implementation 'com.github.florent37:shapeofview:1.4.7'
 }
 apply plugin: 'com.google.gms.google-services'

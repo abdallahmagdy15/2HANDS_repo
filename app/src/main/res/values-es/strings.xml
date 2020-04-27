@@ -223,6 +223,9 @@
 
     <!--ProfileActivity-->
     <string name="following">Siguiendo</string>
+    <string name="youAreBlockedFromfollowing">Estás bloqueado de seguir</string>
+    <string name="andViewingHisPostsAndReviews">y viendo sus publicaciones y comentarios</string>
+    <string name="isBlocked">está bloqueado!</string>
 
     <!--activity profile-->
     <string name="follow">Seguir</string>

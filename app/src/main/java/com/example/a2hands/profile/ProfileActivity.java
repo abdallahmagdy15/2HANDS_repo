@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -148,6 +150,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         konfettiView = findViewById(R.id.viewKonfetti);
 
+//        if(getSharedPreferences("settings", Activity.MODE_PRIVATE).getString("My_Language", "").equals("ar")){
+//            findViewById(R.id.profile_diagonal_cover).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
+
         // setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -253,15 +259,16 @@ public class ProfileActivity extends AppCompatActivity {
     void loadBlockStatusData(boolean blocked){
         db.collection("/users").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 user = task.getResult().toObject(User.class);
                 profile_blockedStatus_name.setText(user.full_name);
                 if(blocked)
-                profile_blockedStatus.setText("You are blocked from following @"+user.user_name
-                        + " and viewing @"+user.user_name+" Posts and Reviews");
+                profile_blockedStatus.setText(getResources().getString(R.string.youAreBlockedFromfollowing)+" @"+user.user_name
+                        + " " + getResources().getString(R.string.andViewingHisPostsAndReviews));
                 else
-                    profile_blockedStatus.setText("@"+user.user_name+" is blocked!");
+                    profile_blockedStatus.setText("@"+user.user_name+" "+getResources().getString(R.string.isBlocked));
                 profile_blockedStatus.setTextSize(24);
             }});
     }
@@ -640,9 +647,7 @@ public class ProfileActivity extends AppCompatActivity {
                     return frg;
                 }
             }
-            else
-            {
-
+            else {
                 Fragment frg = new RatingFragment();
                 Bundle b = new Bundle();
                 b.putString("UID",uid);
@@ -684,7 +689,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(2500L)
+                        .setTimeToLive(1000L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 3.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
                         .streamFor(3000, 1000L);
@@ -698,7 +703,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(2500L)
+                        .setTimeToLive(1000L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() - konfettiView.getWidth() / 4.0f, konfettiView.getY() + konfettiView.getHeight() - konfettiView.getHeight() / 4.0f)
                         .streamFor(3000, 1000L);
@@ -712,7 +717,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3.3f, .4f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(5000L)
+                        .setTimeToLive(1300L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
                         .streamFor(5000, 1700L);

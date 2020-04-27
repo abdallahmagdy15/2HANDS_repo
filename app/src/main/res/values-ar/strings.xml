@@ -223,6 +223,9 @@
 
     <!--ProfileActivity-->
     <string name="following">أتابعه</string>
+    <string name="youAreBlockedFromfollowing">تم حظرك من متابعة</string>
+    <string name="andViewingHisPostsAndReviews">ومشاهدة منشوراته وتقييماته</string>
+    <string name="isBlocked">تم حظره!</string>
 
     <!--activity profile-->
     <string name="follow">تابع</string>
