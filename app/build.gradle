@@ -101,7 +101,7 @@ dependencies {
     //Splash Screen
     implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
 
-
-    implementation 'com.github.florent37:shapeofview:1.4.7'
+    //uCrop
+    implementation 'com.github.yalantis:ucrop:2.2.4-native'
 }
 apply plugin: 'com.google.gms.google-services'

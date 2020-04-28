@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +29,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +45,8 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     private Button nextButton;
     private ProgressBar mProgressBar;
 
-    private Uri mImageUri;
+    private Uri sourceUri;
+    public Uri destinationUri;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -79,39 +86,80 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     }
 
     private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        Intent pictureIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        pictureIntent.setType("image/*");  // 1
+        pictureIntent.addCategory(Intent.CATEGORY_OPENABLE);  // 2
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String[] mimeTypes = new String[]{"image/jpeg", "image/png"};  // 3
+            pictureIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        }
+        startActivityForResult(Intent.createChooser(pictureIntent,"Select Picture"), PICK_IMAGE_REQUEST);  // 4
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            mImageUri = data.getData();
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            sourceUri = data.getData(); // 1
+
+            try {
+                File file = createImageFile();
+                destinationUri = Uri.fromFile(file);  // 3
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            openCropActivity(sourceUri, destinationUri);
+
+        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            destinationUri = UCrop.getOutput(data);
 
             skipButton.setVisibility(View.INVISIBLE);
             nextButton.setVisibility(View.VISIBLE);
-
-            profilePic.setImageURI(mImageUri);
+            profilePic.setImageURI(destinationUri);
         }
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
+    private void openCropActivity(Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+        options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        options.setToolbarColor(getResources().getColor(R.color.colorAccent));
+
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(480, 480)
+                .start(SignUpPickPictureActivity.this);
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
+    }
+
+
+//    private String getFileExtension(Uri uri) {
+//        ContentResolver cR = getContentResolver();
+//        MimeTypeMap mime = MimeTypeMap.getSingleton();
+//        return mime.getExtensionFromMimeType(cR.getType(uri));
+//    }
+
     private void uploadImage() {
-        if (mImageUri != null) {
+        if (destinationUri != null) {
             final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("Profile_Pics/"
                     + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +
-                    System.currentTimeMillis() + "." + getFileExtension(mImageUri).trim());
-            profileImageRef.putFile(mImageUri)
+                    System.currentTimeMillis() + ".png");
+            profileImageRef.putFile(destinationUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -161,3 +209,4 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
 
 
 }
+
