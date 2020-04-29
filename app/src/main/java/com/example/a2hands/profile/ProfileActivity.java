@@ -70,6 +70,7 @@ import nl.dionsegijn.konfetti.models.Size;
 public class ProfileActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 2;
+    private static final int PICTURES_REQUEST = 10;
     private ViewPager mPager;
     private PagerAdapter pagerAdapter;
     ImageView coverPhoto;
@@ -77,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
     CardView profileFollowBtn;
     CardView profileEditBtn;
     ImageView profileMessaging;
-    private StorageReference mStorageRef;
     private FirebaseFirestore db;
     public String uid;
     TextView profileName;
@@ -113,7 +113,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //initiate
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         uid = intent.getStringExtra("uid");
         mPager = findViewById(R.id.profilePostsContainer);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -142,10 +141,6 @@ public class ProfileActivity extends AppCompatActivity {
         profile_blockedStatus = findViewById(R.id.profile_blockedStatus);
 
         konfettiView = findViewById(R.id.viewKonfetti);
-
-//        if(getSharedPreferences("settings", Activity.MODE_PRIVATE).getString("My_Language", "").equals("ar")){
-//            findViewById(R.id.profile_diagonal_cover).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-//        }
 
         // setup
         setSupportActionBar(toolbar);
@@ -391,7 +386,7 @@ public class ProfileActivity extends AppCompatActivity {
                 i.putExtra("BIO",user.bio);
                 i.putExtra("COVER_PATH",user.profile_cover);
                 i.putExtra("PIC_PATH",user.profile_pic);
-                startActivityForResult(i,1);
+                startActivityForResult(i,PICTURES_REQUEST);
             }
         });
     }
@@ -399,11 +394,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            finish();
-            Intent i = new Intent(this,ProfileActivity.class);
-            i.putExtra("UID",uid);
-            startActivity(i);
+        if (requestCode == PICTURES_REQUEST && resultCode == RESULT_OK){
+            loadUserProfile();
         }
     }
 
