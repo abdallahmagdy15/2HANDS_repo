@@ -27,7 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -91,14 +92,19 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
         String location = user.country+((user.region.equals(""))?"":", "+user.region);
         holder.resultUserLocation.setText(location);
         //check if there is a pro pic
-        if(!user.profile_pic.equals(""))
-            FirebaseStorage.getInstance().getReference("Profile_Pics/"+user.user_id+"/"+user.profile_pic).getDownloadUrl()
-                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            Picasso.get().load(task.getResult()).into(holder.resultUserPic);
+        if(!user.profile_pic.equals("")){
+            FirebaseFirestore.getInstance().collection("users/").document(user.user_id)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            User user = task.getResult().toObject(User.class);
+                            Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.resultUserPic);
                         }
-                    });
+                    }
+                });
+        }
+
 
 
         //check if followed
@@ -164,7 +170,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
             }
         });
     }
-    void setUnfollowListener(final ViewHolder h,final User user) {
+    private void setUnfollowListener(final ViewHolder h, final User user) {
         h.userFollowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

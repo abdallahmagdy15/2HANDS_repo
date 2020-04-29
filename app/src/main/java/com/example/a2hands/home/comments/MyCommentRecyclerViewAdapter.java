@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a2hands.User;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
@@ -56,6 +59,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         public final TextView commentTime;
         public final Context context;
         public final String uid = FirebaseAuth.getInstance().getUid();
+
         public ViewHolder(View view) {
             super(view);
             context = view.getContext();
@@ -77,14 +81,18 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         holder.commentOwner.setText(curr_comment.name);
         PrettyTime p = new PrettyTime();
         holder.commentTime.setText(p.format(curr_comment.date));
-        FirebaseStorage.getInstance().getReference("Profile_Pics")
-                .child(curr_comment.publisher_id+"/"+curr_comment.publisher_pic).getDownloadUrl()
-                .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        Picasso.get().load( task.getResult()).into(holder.commentOwnerPic);
-                    }
-                });
+
+        FirebaseFirestore.getInstance().collection("users/").document(curr_comment.publisher_id)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.commentOwnerPic);
+                }
+            }
+        });
+
         holder.commentContent.setText(curr_comment.comment_content);
         holder.commentOwnerPic.setOnClickListener(new View.OnClickListener() {
             @Override

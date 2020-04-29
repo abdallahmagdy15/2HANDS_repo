@@ -3,30 +3,26 @@ package com.example.a2hands.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.yalantis.ucrop.UCrop;
@@ -43,12 +39,13 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     private ImageView profilePic;
     private Button skipButton;
     private Button nextButton;
-    private ProgressBar mProgressBar;
 
     private Uri sourceUri;
     public Uri destinationUri;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    UploadTask uploadTask;
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +56,8 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.pickPic_imageView);
         skipButton = findViewById(R.id.pickPic_skipButton);
         nextButton = findViewById(R.id.pickPic_nextButton);
-        mProgressBar = findViewById(R.id.pickPic_progressBar);
+
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +138,7 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
+                ".jpg",   /* suffix */
                 storageDir      /* directory */
         );
 
@@ -148,63 +146,45 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     }
 
 
-//    private String getFileExtension(Uri uri) {
-//        ContentResolver cR = getContentResolver();
-//        MimeTypeMap mime = MimeTypeMap.getSingleton();
-//        return mime.getExtensionFromMimeType(cR.getType(uri));
-//    }
-
     private void uploadImage() {
         if (destinationUri != null) {
+
             final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("Profile_Pics/"
                     + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +
                     System.currentTimeMillis() + ".png");
-            profileImageRef.putFile(destinationUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 2000);
 
-                            Map<String,Object> profile_pic = new HashMap<>();
-                            profile_pic.put("profile_pic", taskSnapshot.getMetadata().getName());
+            uploadTask = profileImageRef.putFile(destinationUri);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return profileImageRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Map<String,Object> profile_pic = new HashMap<>();
+                        profile_pic.put("profile_pic", task.getResult().toString());
 
-                            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(profile_pic)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("saveRegisterDate", "Done");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("saveRegisterDate", e.toString());
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                        }
-                    });
+                        db.collection("users").document(myUid)
+                                .update(profile_pic);
+                    }else {
+                        Toast.makeText(SignUpPickPictureActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 

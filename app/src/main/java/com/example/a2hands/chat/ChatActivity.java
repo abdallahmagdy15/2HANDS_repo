@@ -48,7 +48,6 @@ import com.example.a2hands.home.HomeActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -240,7 +239,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        loadHisInfoAndchat();
+        loadHisInfoAndChat();
         seenMessages();
 
     }//////////////end of onCreate
@@ -339,90 +338,89 @@ public class ChatActivity extends AppCompatActivity {
                     return ChatImageRef.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    progressDialog.dismiss();
+
+                    Uri downloadUri = task.getResult();
+
+                    Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                    String dateTime = simpleDateFormat.format(cal.getTime());
+
+                    String MSG_ID =String.valueOf(System.currentTimeMillis());
+                    String MSG_Img = downloadUri.toString();
+
+                    final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
+                            .child(myUid).child("myUsersList").child(hisUid);
+                    final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
+                            .child(myUid)
+                            .child(hisUid);
+
+                    final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
+                            .child(hisUid).child("myUsersList").child(myUid);
+                    final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
+                            .child(hisUid)
+                            .child(myUid);
+
+                    //setup required data
+                    Chat MSG = new Chat(
+                            MSG_ID,messageBody,MSG_Img,hisUid,myUid,dateTime,false,false
+                    );
+
+                    //reset editText after sending message
+                    message.setText("");
+
+                    //Notifications
+                    DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
+                    firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            progressDialog.dismiss();
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            User user = task.getResult().toObject(User.class);
 
-                            Uri downloadUri = task.getResult();
-
-                            Calendar cal =Calendar.getInstance(Locale.ENGLISH);
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-                            String dateTime = simpleDateFormat.format(cal.getTime());
-
-                            String MSG_ID =String.valueOf(System.currentTimeMillis());
-                            String MSG_Img = downloadUri.toString();
-
-                            final DatabaseReference myUsersList1 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(myUid).child("myUsersList").child(hisUid);
-                            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(myUid)
-                                    .child(hisUid);
-
-                            final DatabaseReference myUsersList2 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(hisUid).child("myUsersList").child(myUid);
-                            final DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
-                                    .child(hisUid)
-                                    .child(myUid);
-
-                            //setup required data
-                            Chat MSG = new Chat(
-                                    MSG_ID,messageBody,MSG_Img,hisUid,myUid,dateTime,false,false
-                            );
-
-                            //reset editText after sending message
-                            message.setText("");
-
-                            //Notifications
-                            DocumentReference firebaseFirestore =FirebaseFirestore.getInstance().collection("users").document(myUid);
-                            firebaseFirestore.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    User user = task.getResult().toObject(User.class);
-
-                                    sendNotification(hisUid,user.full_name,messageBody);
-                                }
-                            });
-
-                            //Chat List
-                            chatRef1.child("messages").push().setValue(MSG);
-                            myUsersList1.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()){
-                                        myUsersList1.child("id").setValue(hisUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                            chatRef2.child("messages").push().setValue(MSG);
-                            myUsersList2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (!dataSnapshot.exists()){
-                                        myUsersList2.child("id").setValue(myUid);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+                            sendNotification(hisUid,user.full_name,messageBody);
                         }
                     });
+
+                    //Chat List
+                    chatRef1.child("messages").push().setValue(MSG);
+                    myUsersList1.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()){
+                                myUsersList1.child("id").setValue(hisUid);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    chatRef2.child("messages").push().setValue(MSG);
+                    myUsersList2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()){
+                                myUsersList2.child("id").setValue(myUid);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(ChatActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
 
             //set imageUri to null after sending the message
             image_uri = null;
@@ -713,25 +711,22 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     //get other user's information
-    private void loadHisInfoAndchat() {
+    private void loadHisInfoAndChat() {
         db.collection("users/").document(hisUid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                String path = "Profile_Pics/"+hisUid+"/"+user.profile_pic;
-
-                mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                FirebaseFirestore.getInstance().collection("users/").document(hisUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        hisImage=uri.toString();
-                        Picasso.get().load(uri.toString()).into(profileImage);
-                        readMessages();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            User user = task.getResult().toObject(User.class);
+                            hisImage = user.profile_pic;
+                            Picasso.get().load(Uri.parse(hisImage)).into(profileImage);
+                            readMessages();
+                        }
                     }
                 });
                 hisName.setText(user.full_name);

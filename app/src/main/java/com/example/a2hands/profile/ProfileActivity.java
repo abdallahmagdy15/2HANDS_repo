@@ -15,7 +15,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -39,8 +38,6 @@ import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.rating.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,17 +57,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 
@@ -544,11 +537,11 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 user = task.getResult().toObject(User.class);
                 try {
-                    loadPhotos(profilePic,"Profile_Pics/"+uid+"/"+user.profile_pic );
+                    loadPhotos(profilePic,uid, "profile_pic");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                loadPhotos(coverPhoto,"Profile_Covers/"+uid+"/"+user.profile_cover);
+                loadPhotos(coverPhoto,uid, "cover");
                 UserName = user.full_name;
                 profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
@@ -608,17 +601,19 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    void loadPhotos(final ImageView imgV , String path){
-
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    void loadPhotos(final ImageView imgV , String path, String type){
+        FirebaseFirestore.getInstance().collection("users/").document(path)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    if (type.equals("cover")){
+                        Picasso.get().load(Uri.parse(user.profile_cover)).into(imgV);
+                    } else if (type.equals("profile_pic")){
+                        Picasso.get().load(Uri.parse(user.profile_pic)).into(imgV);
+                    }
+                }
             }
         });
     }

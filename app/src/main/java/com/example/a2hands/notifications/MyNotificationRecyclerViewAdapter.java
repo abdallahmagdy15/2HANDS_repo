@@ -19,18 +19,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a2hands.R;
+import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostPreviewActivity;
 import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.rating.Rating;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -132,14 +134,17 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
 
         PrettyTime p = new PrettyTime();
         holder.notifiTime.setText(p.format(notifisList.get(pos).date));
+
         //load pic of notifi publisher and put into the image view
-        FirebaseStorage.getInstance().getReference()
-                .child("Profile_Pics/" +notifisList.get(pos).publisher_id+ "/"
-                        + notifisList.get(pos).publisher_pic)
-                .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseFirestore.getInstance().collection("users/").document(notifisList.get(pos).publisher_id)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri.toString()).into(vh.notifiPic);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    if(user!=null)
+                        Picasso.get().load(Uri.parse(user.profile_pic)).into(vh.notifiPic);
+                }
             }
         });
 

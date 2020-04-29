@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.Callback;
@@ -18,11 +19,12 @@ import com.example.a2hands.profile.ProfileActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -95,14 +97,17 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                 @Override
                 public void callbackUser(final User user) {
                     //load publisher pic
-                    FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+user.user_id
-                            + "/"+user.profile_pic).getDownloadUrl()
-                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Picasso.get().load(uri).into(holder.ratingsPic);
-                                }
-                            });
+                    FirebaseFirestore.getInstance().collection("users/").document(user.user_id)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()){
+                                User user = task.getResult().toObject(User.class);
+                                Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
+                            }
+                        }
+                    });
+
                     String fullname = user.full_name;
                     holder.ratingUserName.setText(fullname);
                     //publisher pic on click
@@ -117,19 +122,22 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
 
                 }
             },ratingsList.get(pos).publisher_id);
-            holder.ratingToText.setVisibility(View.GONE);
 
+            holder.ratingToText.setVisibility(View.GONE);
 
         } else {
             //load subscriber pic
-            FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+ratingsList.get(pos).subscriber_id
-                    + "/"+ratingsList.get(pos).subscriber_pic).getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Picasso.get().load(uri).into(holder.ratingsPic);
-                        }
-                    });
+            FirebaseFirestore.getInstance().collection("users/").document(ratingsList.get(pos).subscriber_id)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        User user = task.getResult().toObject(User.class);
+                        Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
+                    }
+                }
+            });
+
             holder.ratingUserName.setText(ratingsList.get(pos).subscriber_name);
             //subscriber pic on click
             holder.ratingsPic.setOnClickListener(new View.OnClickListener() {
