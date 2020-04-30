@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.chat.chat_notifications.Data;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +41,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +55,7 @@ public class PostsFragment extends Fragment {
 
     FirebaseAuth mAuth;
     String selectedCat;
-    List<String> location =new ArrayList<>();
+    List<String> location = new ArrayList<>();
     String uid;
     String profile_user_id;
     View view;
@@ -63,8 +66,11 @@ public class PostsFragment extends Fragment {
     MyPostRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    int lastPostsCount=0;
+    int lastPostsCount = 0;
     boolean loading = false;
+    boolean firstTimeLoadingPosts = true;
+    Date lastPostDate;
+    double lastPostPriority = 0;
 
     public PostsFragment() {
     }
@@ -81,7 +87,7 @@ public class PostsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
         Bundle bundle = this.getArguments();
         mAuth = FirebaseAuth.getInstance();
-        uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.view = view;
         String activityName = bundle.getString("FOR");
 
@@ -95,41 +101,27 @@ public class PostsFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-        if (activityName.equals("HOME") ) {
+        if (activityName.equals("HOME")) {
             selectedCat = bundle.getString("CAT", String.valueOf(0));
             getUser(new Callback() {
                 @Override
                 public void callbackUser(User user) {
                     location.add(loadCountryUsingItsISO(user.country));
                     location.add(user.region);
-                    getPostsForHome(location,selectedCat);
+                    lastPostDate = new Date();
+                    getPostsForHomeByDate(location, selectedCat);
                 }
-            },uid);
-        }
-        else if (activityName.equals("PROFILE"))
-        {
+            }, uid);
+        } else if (activityName.equals("PROFILE")) {
             profile_user_id = bundle.getString("UID");
             getBlockedUsersId();
-        }
-        else if (activityName.equals("SAVED_POSTS"))
-        {
+        } else if (activityName.equals("SAVED_POSTS")) {
             getSavedPostsId();
         }
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    public static void getUser(final Callback callback,String uid) {
+    public static void getUser(final Callback callback, String uid) {
         FirebaseFirestore.getInstance().collection("/users")
                 .document(uid).get()
                 .addOnCompleteListener(
@@ -143,6 +135,119 @@ public class PostsFragment extends Fragment {
                 );
     }
 
+    private void getPostsForHomeByPriority(final List<String> location, final String category) {
+        // order by location , category , state , priority , date
+        Query query = FirebaseFirestore.getInstance().collection("posts")
+                .whereIn("location", location);
+        if (!category.equals(String.valueOf(0))) {
+            query = query.whereEqualTo("category", category);
+        }
+        query.whereEqualTo("state", true)
+                .orderBy("priority", Query.Direction.ASCENDING)
+                .startAt("priority", lastPostPriority)
+                .limitToLast(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Post> ps = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                final Post p = doc.toObject(Post.class);
+                                ps.add(p);
+                            }
+                            if(ps.size() !=0){
+                                posts.addAll(ps);
+                                lastPostsCount=ps.size();
+                            }
+                            else{
+                                lastPostsCount=0;
+                                recyclerView.clearOnScrollListeners();
+                            }
+                            getHiddenPostsId();
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+
+                        }
+                    }
+                });
+    }
+
+    private void getPostsForHomeByFollowings(final List<String> followingsIds, final String category) {
+        // order by location , category , state , priority , date
+        Query query = FirebaseFirestore.getInstance().collection("posts")
+                .whereIn("user_id", followingsIds);
+        if (!category.equals(String.valueOf(0))) {
+            query = query.whereEqualTo("category", category);
+        }
+        query.whereEqualTo("state", true)
+                .orderBy("date", Query.Direction.ASCENDING)
+                .startAt(lastPostDate)
+                .limitToLast(20)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Post> ps = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                final Post p = doc.toObject(Post.class);
+                                ps.add(p);
+                            }
+                            if(ps.size() !=0){
+                                posts.addAll(ps);
+                                lastPostsCount=ps.size();
+                            }
+                            else{
+                                lastPostsCount=0;
+                                recyclerView.clearOnScrollListeners();
+                            }
+                            getHiddenPostsId();
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+
+                        }
+                    }
+                });
+    }
+
+    private void getPostsForHomeByDate(final List<String> location, final String category) {
+        // order by location , category , state , priority , date
+        Query query = FirebaseFirestore.getInstance().collection("posts")
+                .whereIn("location", location);
+        if (!category.equals(String.valueOf(0))) {
+            query = query.whereEqualTo("category", category);
+        }
+        query.whereEqualTo("state", true)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .startAt(lastPostDate)
+                .limitToLast(20)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Post> ps = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                final Post p = doc.toObject(Post.class);
+                                ps.add(p);
+                            }
+                            if(ps.size() !=0){
+                                posts.addAll(ps);
+                                lastPostsCount=ps.size();
+                            }
+                            else{
+                                lastPostsCount=0;
+                                recyclerView.clearOnScrollListeners();
+                            }
+                            getHiddenPostsId();
+                        } else {
+                            Log.w("", "Error getting documents.", task.getException());
+
+                        }
+                    }
+                });
+    }
 
     //loading JSON file of countries and states from assets folder
     public String loadCountryStateJSONFromAsset() {
@@ -161,19 +266,19 @@ public class PostsFragment extends Fragment {
         return json;
     }
 
-    public String loadCountryUsingItsISO(String countryCode){
+    public String loadCountryUsingItsISO(String countryCode) {
         try {
             JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
             JSONArray countries_arr = obj.getJSONArray("countries");
 
-            Map<String,String> countries_code_name = new HashMap<>();
+            Map<String, String> countries_code_name = new HashMap<>();
 
             for (int i = 0; i < countries_arr.length(); i++) {
                 JSONObject jo_inside = countries_arr.getJSONObject(i);
                 String iso2 = jo_inside.getString("iso2");
                 String country_name = jo_inside.getString("name");
 
-                countries_code_name.put(iso2,country_name);
+                countries_code_name.put(iso2, country_name);
             }
             return countries_code_name.get(countryCode);
 
@@ -183,42 +288,10 @@ public class PostsFragment extends Fragment {
         }
     }
 
-    private void getPostsForHome(final List<String> location,final String category ){
-        // order by location , category , isVisited , state , priority , date
-        // Read from the database
-        Query query = FirebaseFirestore.getInstance().collection("/posts")
-                .whereIn("location", location);
-        if(!category.equals(String.valueOf(0))){
-            query = query.whereEqualTo("category",category);
-        }
-        query.orderBy("is_visited", Query.Direction.DESCENDING)
-                .whereEqualTo("state",true)
-                .orderBy("priority", Query.Direction.DESCENDING)
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limitToLast(4)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                final Post p = doc.toObject(Post.class);
-                                posts.add(p);
-                                lastPostsCount++;
-                            }
-                            getHiddenPostsId();
-                        } else {
-                            Log.w("", "Error getting documents.", task.getException());
-
-                        }
-                    }
-                });
-    }
-
-    private void getPostsForProfile(final String uid ){
+    private void getPostsForProfile(final String uid) {
         FirebaseFirestore.getInstance().collection("/posts")
-                .whereEqualTo("visibility",true)
-                .whereEqualTo("user_id",uid)
+                .whereEqualTo("visibility", true)
+                .whereEqualTo("user_id", uid)
                 .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -239,26 +312,11 @@ public class PostsFragment extends Fragment {
                 });
     }
 
-    private void markPrevPostsAsVisited(){
-        WriteBatch batch = db.batch();
-        for (int i = 0; i < posts.size(); i++) {
-            String prevPostId = posts.get(i).post_id;
-            DocumentReference postRef = db.collection("posts").document(prevPostId);
-            batch.update(postRef, "is_visited", true);
-        }
-        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                getPostsForHome(location, selectedCat);
-            }
-        });
-    }
-
-    private void filterHomePosts(final List<Post> posts){
+    private void filterHomePosts(final List<Post> posts) {
         Iterator<Post> i = posts.iterator();
-        while (i.hasNext()){
+        while (i.hasNext()) {
             Post p = i.next();
-            if(hiddenPostsIds.contains(p.post_id) || mutedUsersId.contains(p.user_id) || blockedUsersId.contains(p.user_id)){
+            if (hiddenPostsIds.contains(p.post_id) || mutedUsersId.contains(p.user_id) || blockedUsersId.contains(p.user_id)) {
                 i.remove();
                 lastPostsCount--;
             }
@@ -266,47 +324,51 @@ public class PostsFragment extends Fragment {
         updateUiWithPosts();
     }
 
-    private void getHiddenPostsId(){
+    private void getHiddenPostsId() {
         FirebaseDatabase.getInstance().getReference("hidden_posts").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getChildrenCount() != 0){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         hiddenPostsIds.add(ds.getKey());
                     }
                 }
                 getMutedUsersId();
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
     }
 
-    private void getSavedPostsId(){
+    private void getSavedPostsId() {
         FirebaseDatabase.getInstance().getReference("saved_posts").child(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<String> savedPostsId = new ArrayList<>();
-                        if(dataSnapshot.getChildrenCount() != 0 ){
-                            for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        if (dataSnapshot.getChildrenCount() != 0) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 savedPostsId.add(ds.getKey());
                             }
                             getSavedPosts(savedPostsId);
                         }
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
                 });
     }
 
-    private void getSavedPosts(List<String> savedPostsId){
-        FirebaseFirestore.getInstance().collection("posts").whereIn("post_id",savedPostsId)
+    private void getSavedPosts(List<String> savedPostsId) {
+        FirebaseFirestore.getInstance().collection("posts").whereIn("post_id", savedPostsId)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(!task.getResult().isEmpty()){
-                    for( DocumentSnapshot ds : task.getResult()){
+                if (!task.getResult().isEmpty()) {
+                    for (DocumentSnapshot ds : task.getResult()) {
                         posts.add(ds.toObject(Post.class));
                     }
                 }
@@ -315,75 +377,90 @@ public class PostsFragment extends Fragment {
         });
     }
 
-    private void getMutedUsersId(){
+    private void getMutedUsersId() {
         FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange( DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getChildrenCount() != 0){
-                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getChildrenCount() != 0) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 mutedUsersId.add(ds.getKey());
                             }
                         }
                         getBlockedUsersId();
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
                 });
     }
 
-    private void getBlockedUsersId(){
+    private void getBlockedUsersId() {
         FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange( DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getChildrenCount() != 0){
-                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getChildrenCount() != 0) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 blockedUsersId.add(ds.getKey());
                             }
                         }
                         //check if loading the profile posts
-                        if(profile_user_id != null){
-                            if(!blockedUsersId.contains(profile_user_id)){
+                        if (profile_user_id != null) {
+                            if (!blockedUsersId.contains(profile_user_id)) {
                                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                     @Override
                                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                                         super.onScrollStateChanged(recyclerView, newState);
                                         if (!recyclerView.canScrollVertically(1)) {
-                                            getPostsForProfile(profile_user_id);                                }
+                                            getPostsForProfile(profile_user_id);
+                                        }
                                     }
                                 });
 
                             }
-                        }else {
+                        } else {
                             filterHomePosts(posts);
                         }
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
                 });
     }
 
-    private void updateUiWithPosts(){
+    private void updateUiWithPosts() {
+        //set next posts date or priority
+        if(lastPostsCount != 0){
+            lastPostPriority = posts.get(posts.size() - 1).priority+1;
+            lastPostDate = posts.get(posts.size() - 1).date;
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(lastPostDate);
+            cal.add(Calendar.MILLISECOND,-1);
+            lastPostDate = cal.getTime();
+        }
         //adapter.insertExtraPosts(posts.subList(posts.size()-lastPostsCount,posts.size()));
-        if(posts.size()==4){
+        if (firstTimeLoadingPosts) {
             adapter.notifyDataSetChanged();
-
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
                     if (!recyclerView.canScrollVertically(1) && !loading  /*check if still loading*/) {
                         loading = true;
-                        Toast.makeText(getActivity().getBaseContext(),"loading.....",Toast.LENGTH_SHORT).show();
-                        markPrevPostsAsVisited();
+                        Toast.makeText(getActivity().getBaseContext(), "loading...", Toast.LENGTH_SHORT).show();
+                        getPostsForHomeByDate(location, selectedCat);
                     }
                 }
             });
-        }
-        else{
-            adapter.notifyItemRangeInserted((posts.size()==0)?0:posts.size()-1,lastPostsCount);
-            loading = false;
+            firstTimeLoadingPosts = false;
+        } else {
+            if(lastPostsCount !=0) {
+                adapter.notifyItemRangeInserted((posts.size() == 0) ? 0 : posts.size() - 1, lastPostsCount);
+                loading = false;
+            }
         }
 
 
@@ -409,9 +486,4 @@ public class PostsFragment extends Fragment {
     }////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////
 
-    public interface OnBottomReachedListener {
-
-        void onBottomReached(int position);
-
-    }
 }

@@ -24,9 +24,7 @@ public class Post {
     public String profile_pic;
     public String post_id;
     public String shared_id;
-    public int priority=0;
-    public boolean is_visited =false;
-
+    public double priority=0;
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
@@ -36,7 +34,7 @@ public class Post {
                 List<String> mentions, boolean state, boolean visibility,
                 String location, String postOwner, String user_id,
                 String profile_pic, String post_id, String shared_id,
-                int priority, boolean isVisited) {
+                double priority) {
         this.category = category;
         this.check_in = check_in;
         this.content_text = content_text;
@@ -53,6 +51,5 @@ public class Post {
         this.post_id = post_id;
         this.shared_id = shared_id;
         this.priority = priority;
-        this.is_visited = isVisited;
     }
 }

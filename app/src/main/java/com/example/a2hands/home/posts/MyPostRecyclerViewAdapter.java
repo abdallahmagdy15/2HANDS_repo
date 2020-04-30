@@ -54,6 +54,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -73,8 +74,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 {
     private final List<Post> postsList;
     private  Context context;
-    PostsFragment.OnBottomReachedListener onBottomReachedListener;
-
 
     public MyPostRecyclerViewAdapter(List<Post> posts) {
         postsList = posts;
@@ -595,7 +594,15 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
         holder.likeBtn.setTag("liked");
+        updatePriority(curr_post.post_id,0.1);
+
         //end update counter for likes
+    }
+
+    private void updatePriority(String id,double val){
+        //update the priority of the post
+        FirebaseFirestore.getInstance().collection("posts")
+                .document(id).update("priority", FieldValue.increment(val));
     }
 
     private void unlikePost(final ViewHolder holder , final Post curr_post){
@@ -712,9 +719,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         });
 
-    }
-    public void setOnBottomReachedListener(PostsFragment.OnBottomReachedListener onBottomReachedListener){
-        this.onBottomReachedListener = onBottomReachedListener;
     }
 
 public void insertExtraPosts(List<Post> extraPosts){
