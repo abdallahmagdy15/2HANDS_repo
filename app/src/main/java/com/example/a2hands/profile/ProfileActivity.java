@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,8 +38,6 @@ import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.rating.RatingFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,23 +57,20 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 
 public class ProfileActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 2;
+    private static final int PICTURES_REQUEST = 10;
     private ViewPager mPager;
     private PagerAdapter pagerAdapter;
     ImageView coverPhoto;
@@ -82,7 +78,6 @@ public class ProfileActivity extends AppCompatActivity {
     CardView profileFollowBtn;
     CardView profileEditBtn;
     ImageView profileMessaging;
-    private StorageReference mStorageRef;
     private FirebaseFirestore db;
     public String uid;
     TextView profileName;
@@ -118,7 +113,6 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //initiate
-        mStorageRef = FirebaseStorage.getInstance().getReference();
         uid = intent.getStringExtra("uid");
         mPager = findViewById(R.id.profilePostsContainer);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -253,15 +247,16 @@ public class ProfileActivity extends AppCompatActivity {
     void loadBlockStatusData(boolean blocked){
         db.collection("/users").document(uid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 user = task.getResult().toObject(User.class);
                 profile_blockedStatus_name.setText(user.full_name);
                 if(blocked)
-                profile_blockedStatus.setText("You are blocked from following @"+user.user_name
-                        + " and viewing @"+user.user_name+" Posts and Reviews");
+                profile_blockedStatus.setText(getResources().getString(R.string.youAreBlockedFromfollowing)+" @"+user.user_name
+                        + " " + getResources().getString(R.string.andViewingHisPostsAndReviews));
                 else
-                    profile_blockedStatus.setText("@"+user.user_name+" is blocked!");
+                    profile_blockedStatus.setText("@"+user.user_name+" "+getResources().getString(R.string.isBlocked));
                 profile_blockedStatus.setTextSize(24);
             }});
     }
@@ -391,7 +386,7 @@ public class ProfileActivity extends AppCompatActivity {
                 i.putExtra("BIO",user.bio);
                 i.putExtra("COVER_PATH",user.profile_cover);
                 i.putExtra("PIC_PATH",user.profile_pic);
-                startActivityForResult(i,1);
+                startActivityForResult(i,PICTURES_REQUEST);
             }
         });
     }
@@ -399,11 +394,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            finish();
-            Intent i = new Intent(this,ProfileActivity.class);
-            i.putExtra("UID",uid);
-            startActivity(i);
+        if (requestCode == PICTURES_REQUEST && resultCode == RESULT_OK){
+            loadUserProfile();
         }
     }
 
@@ -537,11 +529,11 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 user = task.getResult().toObject(User.class);
                 try {
-                    loadPhotos(profilePic,"Profile_Pics/"+uid+"/"+user.profile_pic );
+                    loadPhotos(profilePic,uid, "profile_pic");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                loadPhotos(coverPhoto,"Profile_Covers/"+uid+"/"+user.profile_cover);
+                loadPhotos(coverPhoto,uid, "cover");
                 UserName = user.full_name;
                 profileName.setText(UserName);
                 jobTitle.setText(user.job_title);
@@ -601,17 +593,19 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    void loadPhotos(final ImageView imgV , String path){
-
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    void loadPhotos(final ImageView imgV , String path, String type){
+        FirebaseFirestore.getInstance().collection("users/").document(path)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    if (type.equals("cover")){
+                        Picasso.get().load(Uri.parse(user.profile_cover)).into(imgV);
+                    } else if (type.equals("profile_pic")){
+                        Picasso.get().load(Uri.parse(user.profile_pic)).into(imgV);
+                    }
+                }
             }
         });
     }
@@ -640,9 +634,7 @@ public class ProfileActivity extends AppCompatActivity {
                     return frg;
                 }
             }
-            else
-            {
-
+            else {
                 Fragment frg = new RatingFragment();
                 Bundle b = new Bundle();
                 b.putString("UID",uid);
@@ -684,7 +676,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(2500L)
+                        .setTimeToLive(1000L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 3.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
                         .streamFor(3000, 1000L);
@@ -698,7 +690,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3f, .2f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(2500L)
+                        .setTimeToLive(1000L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() - konfettiView.getWidth() / 4.0f, konfettiView.getY() + konfettiView.getHeight() - konfettiView.getHeight() / 4.0f)
                         .streamFor(3000, 1000L);
@@ -712,7 +704,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setDirection(0.0, 359.0)
                         .setSpeed(3.3f, .4f)
                         .setFadeOutEnabled(true)
-                        .setTimeToLive(5000L)
+                        .setTimeToLive(1300L)
                         .addSizes(new Size(3, 4))
                         .setPosition(konfettiView.getX() + konfettiView.getWidth() / 2.0f, konfettiView.getY() + konfettiView.getHeight() / 3.0f)
                         .streamFor(5000, 1700L);

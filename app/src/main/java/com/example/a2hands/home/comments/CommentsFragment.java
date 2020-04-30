@@ -59,8 +59,6 @@ public class CommentsFragment extends Fragment {
                     }
                 });
 
-
-
         return view;
     }
 
@@ -68,13 +66,11 @@ public class CommentsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
     public void updateCommentsContainerWithComments(List<Comment> comments , View view ){

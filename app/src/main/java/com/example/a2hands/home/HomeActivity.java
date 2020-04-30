@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,7 +39,6 @@ import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeDrawable;
@@ -56,16 +54,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.storage.FirebaseStorage;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -93,7 +86,7 @@ public class HomeActivity extends AppCompatActivity {
     View headerView;
     CircleImageView header_profilePic;
     TextView header_fAndLName;
-    TextView header_email;
+    TextView header_uname;
 
     private FirebaseFirestore db;
     String myUid;
@@ -125,17 +118,15 @@ public class HomeActivity extends AppCompatActivity {
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
         //category spinner declaration
-        //catsStrings = getEnglishStringArray(R.array.categories);
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
-
 
         //drawer header data
         headerView = navigationView.getHeaderView(0);
         header_profilePic = headerView.findViewById(R.id.drawer_profileImage);
         header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
-        header_email = headerView.findViewById(R.id.drawer_userEmail);
+        header_uname = headerView.findViewById(R.id.drawer_userName);
 
 
         header_profilePic.setOnClickListener(new View.OnClickListener() {
@@ -224,17 +215,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+myUid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri.toString()).into(profile_image);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
+                Uri imageUri = Uri.parse(user.profile_pic);
+                Picasso.get().load(imageUri).into(profile_image);
             }
         });
     }
@@ -245,21 +227,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+myUid+"/"+user.profile_pic).getDownloadUrl()
-                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Picasso.get().load(uri.toString()).into(header_profilePic);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
 
                 header_fAndLName.setText(user.full_name);
-                header_email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                header_uname.setText("@"+user.user_name);
+
+                Uri imageUri = Uri.parse(user.profile_pic);
+                Picasso.get().load(imageUri).into(header_profilePic);
             }
         });
     }
@@ -457,6 +430,7 @@ public class HomeActivity extends AppCompatActivity {
         ft.replace(R.id.homeFrag,frg).addToBackStack("");
         ft.commit();
     }
+
     public void navigateHome(){
         catsSpinner.setVisibility(View.VISIBLE);
         catsSpinner.setTextSize(15);
@@ -464,6 +438,7 @@ public class HomeActivity extends AppCompatActivity {
         notificationsTitle.setVisibility(View.INVISIBLE);
         loadPosts(0);
     }
+
     public void navigateSearch(){
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.INVISIBLE);
@@ -482,6 +457,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
     void startFragmentSearch(String query){
         Fragment frg = new SearchFragment();
         Bundle b= new Bundle();
@@ -491,11 +467,13 @@ public class HomeActivity extends AppCompatActivity {
         ft.replace(R.id.homeFrag,frg).addToBackStack(null);
         ft.commit();
     }
+
     public void navigateCreatePost(){
         Intent intent = new Intent(this, CreatePostActivity.class);
         intent.putExtra("uid", myUid);
         startActivity(intent);
     }
+
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.notifications));

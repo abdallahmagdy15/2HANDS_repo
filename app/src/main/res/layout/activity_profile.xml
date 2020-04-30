@@ -38,7 +38,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="100dp"
                 android:src="@drawable/male"
                 app:civ_border_color="@color/colorWhite"
                 app:civ_border_width="2dp"
@@ -48,7 +48,7 @@
                 android:id="@+id/profile_blockedStatus_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="200dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
@@ -90,15 +90,35 @@
                 android:id="@+id/profile_info_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="200dp"
                 android:background="@color/colorPureWhite"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
-                android:paddingTop="8dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp"
                 app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/profileMessaging"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/messaging2"
+                    android:visibility="gone"
+                    card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
+                    card_view:layout_constraintTop_toTopOf="@id/profileFollowBtn" />
+
+                <RatingBar
+                    android:id="@+id/ratingBarGet"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:progressTint="@color/colorAccent"
+                    card_view:layout_constraintBottom_toTopOf="@+id/ratings_count"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/profileRate" />
 
                 <TextView
                     android:id="@+id/profileName"
@@ -128,6 +148,7 @@
                     card_view:layout_constraintBottom_toTopOf="@+id/country_region"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/profileName" />
+
 
                 <TextView
                     android:id="@+id/country_region"
@@ -168,6 +189,7 @@
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/profileBio" />
 
+
                 <TextView
                     android:id="@+id/profileFollowersCount"
                     android:layout_width="wrap_content"
@@ -185,17 +207,40 @@
                     card_view:layout_constraintStart_toEndOf="@+id/profileFollowingsCount"
                     card_view:layout_constraintTop_toBottomOf="@+id/profileBio" />
 
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="end"
+                    android:text="@string/reputation"
+                    android:textSize="18sp"
+                    card_view:layout_constraintBottom_toTopOf="@+id/profileRate"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/profileFollowBtn"
+                    card_view:layout_goneMarginTop="52dp" />
 
-                <ImageView
-                    android:id="@+id/profileMessaging"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/messaging2"
-                    android:visibility="gone"
-                    card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
-                    card_view:layout_constraintTop_toTopOf="@id/profileFollowBtn" />
+                <TextView
+                    android:id="@+id/profileRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text=".9"
+                    android:textSize="50sp"
+                    android:textStyle="bold"
+                    card_view:layout_constraintBottom_toTopOf="@+id/ratingBarGet"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+                <TextView
+                    android:id="@+id/ratings_count"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:gravity="end"
+                    android:text="15"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/ratingBarGet" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profileFollowBtn"
@@ -239,52 +284,6 @@
                         android:textSize="16sp" />
 
                 </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="end"
-                    android:text="@string/reputation"
-                    android:textSize="18sp"
-                    card_view:layout_constraintBottom_toTopOf="@+id/profileRate"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@id/profileFollowBtn"
-                    card_view:layout_goneMarginTop="52dp" />
-
-                <TextView
-                    android:id="@+id/profileRate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text=".9"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
-                    card_view:layout_constraintBottom_toTopOf="@+id/ratingBarGet"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarGet"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end"
-                    android:progressTint="@color/colorAccent"
-                    card_view:layout_constraintBottom_toTopOf="@+id/ratings_count"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/profileRate" />
-
-                <TextView
-                    android:id="@+id/ratings_count"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:gravity="end"
-                    android:text="15"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/ratingBarGet" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

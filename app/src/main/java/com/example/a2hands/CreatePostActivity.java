@@ -47,7 +47,6 @@ import com.example.a2hands.notifications.NotificationHelper;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -73,7 +72,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import id.zelory.compressor.Compressor;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -227,18 +225,10 @@ public class CreatePostActivity extends AppCompatActivity {
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-                FirebaseStorage.getInstance().getReference().child("Profile_Pics/"+curr_uid+"/"+user.profile_pic).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri.toString()).into(ownerPic);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    Picasso.get().load(Uri.parse(user.profile_pic)).into(ownerPic);
+                }
             }
         });
     }
@@ -534,7 +524,6 @@ public class CreatePostActivity extends AppCompatActivity {
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, VIDEO_REQUEST_CODE);
-
     }
 
     private void openFileChooser() {

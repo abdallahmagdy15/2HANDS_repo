@@ -5,10 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -18,16 +22,26 @@ import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.example.a2hands.User;
 import com.example.a2hands.UserStatus;
+import com.example.a2hands.signup.SignUpPickPictureActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,8 +59,10 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText bioEditor;
 
     String uid;
-    Uri coverUri;
-    Uri picUri;
+    Uri profileSourceUri;
+    Uri profileDestinationUri;
+    Uri coverSourceUri;
+    Uri coverDestinationUri;
     String name;
     String job;
     String bio;
@@ -56,6 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
     StorageReference mStorageRef;
     StorageReference picRef;
     StorageReference coverRef;
+    UploadTask uploadTask;
 
     String myUid;
 
@@ -98,21 +115,10 @@ public class EditProfileActivity extends AppCompatActivity {
         bioEditor.setText(bio);
 
         if(picPath!= null)
-            FirebaseStorage.getInstance().getReference().child("/Profile_Pics/"+uid+"/"+picPath)
-                    .getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Picasso.get().load(task.getResult()).into(pic);
-                }
-            });
+            Picasso.get().load(Uri.parse(picPath)).into(pic);
         if(coverPath != null)
-            FirebaseStorage.getInstance().getReference().child("/Profile_Covers/"+uid+"/"+coverPath)
-                    .getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    Picasso.get().load(task.getResult()).into(cover);
-                }
-            });
+            Picasso.get().load(Uri.parse(coverPath)).into(cover);
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +126,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 saveBtn.setEnabled(false);
                 saveBtn.setTextColor(getResources().getColor(R.color.colorDisabled));
                 updateProfile();
+
             }
         });
         addCover.setOnClickListener(new View.OnClickListener() {
@@ -136,80 +143,156 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    void choosePhoto(int reqCode){
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");  // 1
+        i.addCategory(Intent.CATEGORY_OPENABLE);  // 2
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String[] mimeTypes = new String[]{"image/jpeg", "image/png"};  // 3
+            i.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        }
+        startActivityForResult(i,reqCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode ==RESULT_OK && data != null && data.getData() != null){
+            if(requestCode == 1){
+                coverSourceUri = data.getData();
+                try {
+                    File file = createImageFile();
+                    coverDestinationUri = Uri.fromFile(file);  // 3
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                openCropActivity(coverSourceUri, coverDestinationUri,2,1);
+            }
+            else if(requestCode == 2 ) {
+                profileSourceUri = data.getData();
+                try {
+                    File file = createImageFile();
+                    profileDestinationUri = Uri.fromFile(file);  // 3
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                openCropActivity(profileSourceUri, profileDestinationUri,1 ,1);
+
+            }
+        } else if (resultCode == RESULT_OK && data != null && requestCode == UCrop.REQUEST_CROP) {
+            Uri imgUri = UCrop.getOutput(data);
+
+            if(profileDestinationUri != null && profileDestinationUri.equals(imgUri)){
+                pic.setImageURI(imgUri);
+
+            }if(coverDestinationUri != null && coverDestinationUri.equals(imgUri)){
+                cover.setImageURI(imgUri);
+            }
+        }
+
+    }
+
+    private void openCropActivity(Uri sourceUri, Uri destinationUri, int ratioX, int ratioY) {
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+        options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        options.setToolbarColor(getResources().getColor(R.color.colorAccent));
+        options.setActiveControlsWidgetColor(getResources().getColor(R.color.colorAccent));
+
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .withAspectRatio(ratioX, ratioY)
+                .withMaxResultSize(ratioX*480, ratioY*480)
+                .start(EditProfileActivity.this);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",   /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
+    }
+
+
     void updateProfile(){
-        if(picUri != null)
-            uploadPhoto(picRef,picUri,2);
-        else if(coverUri != null)
-            uploadPhoto(coverRef,coverUri,1);
+        //upload profile pic or cover if found
+        if(profileDestinationUri != null)
+            uploadPhoto(picRef,profileDestinationUri,2);
+        else if(coverDestinationUri != null)
+            uploadPhoto(coverRef,coverDestinationUri,1);
         else
             saveData();
     }
 
     void uploadPhoto(StorageReference ref,Uri uri,int code){
-        String newName = System.currentTimeMillis()+"."+getExtension(uri);
-        if(code==1)
-            coverPath = newName;
-        else if(code==2)
-            picPath = newName;
+        String newName = System.currentTimeMillis()+".png";
 
-        ref.child(newName)
-                .putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        uploadTask = ref.child(newName).putFile(uri);
+        uploadTask.continueWithTask(new Continuation() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                if(code==2)
-                    if(coverUri!=null)
-                        uploadPhoto(coverRef,coverUri,1);
-                    else
+            public Object then(@NonNull Task task) throws Exception {
+                if(!task.isSuccessful()){
+                    task.getException();
+                }
+                return ref.child(newName).getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    Map<String,Object> newPic = new HashMap<>();
+
+                    if(code == 2){
+                        picPath = task.getResult().toString();
+                        newPic.put("profile_pic", task.getResult().toString());
+                        FirebaseFirestore.getInstance().collection("users").document(myUid)
+                                .update(newPic);
+
+                        //upload profile cover if found after uploading profile pic
+                        if(coverDestinationUri != null)
+                            uploadPhoto(coverRef,coverDestinationUri,1);
+                        else
+                            //save bio, name and job after uploading photos
+                            saveData();
+                    } else if(code == 1){
+                        coverPath = task.getResult().toString();
+                        newPic.put("profile_cover", task.getResult().toString());
+                        FirebaseFirestore.getInstance().collection("users").document(myUid)
+                                .update(newPic);
+
+                        //save bio, name and job after uploading photos
                         saveData();
-                else if(code==1)
-                    saveData();
+                    }
+                }else {
+                    Toast.makeText(EditProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    String getExtension(Uri uri){
-        ContentResolver cr= getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(cr.getType(uri));
-    }
 
     public void saveData(){
         FirebaseFirestore.getInstance().collection("users").document(uid)
                 .update("full_name",nameEditor.getText().toString(),
                         "job_title",jobEditor.getText().toString(),
-                        "bio",bioEditor.getText().toString(),
-                        "profile_pic",picPath,
-                        "profile_cover",coverPath)
+                        "bio",bioEditor.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(EditProfileActivity.this,"Profile updated!",Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
+                        setResult(Activity.RESULT_OK);
                         finish();
                     }
                 });
     }
 
-    void choosePhoto(int reqCode){
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(i,reqCode);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode ==RESULT_OK && data != null){
-            if(requestCode == 1){
-                coverUri = data.getData();
-                cover.setImageURI(coverUri);
-            }
-            else if(requestCode == 2 ) {
-                picUri = data.getData();
-                pic.setImageURI(picUri);
-            }
-        }
-    }
 
     @Override
     protected void onResume() {

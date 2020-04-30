@@ -20,13 +20,9 @@ import com.example.a2hands.chat.ChatActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -39,7 +35,6 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
     List<User> usersList;
     private HashMap<String,String> lastMessageMap;
     private HashMap<String,String> SeenOfTheLastMessage;
-    String hisImage;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
 
     public AdapterChatList(Context context, List<User> usersList) {
@@ -65,7 +60,7 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
         @Override
         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
             User user = task.getResult().toObject(User.class);
-            loadPhotos(holder.profileIv,"Profile_Pics/"+Uid+"/"+user.profile_pic );
+            loadPhotos(holder.profileIv,Uid);
             holder.nameTv.setText(user.full_name);
             }
         });
@@ -109,17 +104,14 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
     }
 
     private void loadPhotos(final ImageView imgV, String path){
-        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        mStorageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseFirestore.getInstance().collection("users/").document(path)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Uri uri) {
-                hisImage=uri.toString();
-                Picasso.get().load(uri.toString()).into(imgV);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    Picasso.get().load(Uri.parse(user.profile_pic)).into(imgV);
+                }
             }
         });
     }

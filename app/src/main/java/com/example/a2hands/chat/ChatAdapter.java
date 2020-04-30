@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.ImagePreview;
 import com.example.a2hands.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,10 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -47,7 +42,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private List<Chat> chatList;
     private String imageURI;
     private String hisUid;
-    String hisImage;
 
     private LinearLayoutManager linearLayoutManager;
 

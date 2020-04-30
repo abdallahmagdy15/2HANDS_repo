@@ -51,7 +51,7 @@ public class UsersFragment extends Fragment  {
         getUsersId(activityName.toLowerCase());
         return view;
     }
-    void getUsersId(String type ){
+    private void getUsersId(String type){
         FirebaseDatabase.getInstance().getReference(type).child(id)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -94,7 +94,7 @@ public class UsersFragment extends Fragment  {
                     }
                 });
     }
-    void updateUiWithUsers(){
+    private void updateUiWithUsers(){
         Context context = view.getContext();
         final RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

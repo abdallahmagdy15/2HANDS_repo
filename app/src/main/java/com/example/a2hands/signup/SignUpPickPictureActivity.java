@@ -3,30 +3,32 @@ package com.example.a2hands.signup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import android.os.Environment;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,11 +39,13 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     private ImageView profilePic;
     private Button skipButton;
     private Button nextButton;
-    private ProgressBar mProgressBar;
 
-    private Uri mImageUri;
+    private Uri sourceUri;
+    public Uri destinationUri;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    UploadTask uploadTask;
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,8 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.pickPic_imageView);
         skipButton = findViewById(R.id.pickPic_skipButton);
         nextButton = findViewById(R.id.pickPic_nextButton);
-        mProgressBar = findViewById(R.id.pickPic_progressBar);
+
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,85 +84,108 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
     }
 
     private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        Intent pictureIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        pictureIntent.setType("image/*");  // 1
+        pictureIntent.addCategory(Intent.CATEGORY_OPENABLE);  // 2
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String[] mimeTypes = new String[]{"image/jpeg", "image/png"};  // 3
+            pictureIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        }
+        startActivityForResult(Intent.createChooser(pictureIntent,"Select Picture"), PICK_IMAGE_REQUEST);  // 4
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            mImageUri = data.getData();
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            sourceUri = data.getData(); // 1
+
+            try {
+                File file = createImageFile();
+                destinationUri = Uri.fromFile(file);  // 3
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            openCropActivity(sourceUri, destinationUri);
+
+        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            destinationUri = UCrop.getOutput(data);
 
             skipButton.setVisibility(View.INVISIBLE);
             nextButton.setVisibility(View.VISIBLE);
-
-            profilePic.setImageURI(mImageUri);
+            profilePic.setImageURI(destinationUri);
         }
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
+    private void openCropActivity(Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+        options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        options.setToolbarColor(getResources().getColor(R.color.colorAccent));
+
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .withAspectRatio(1, 1)
+                .withMaxResultSize(480, 480)
+                .start(SignUpPickPictureActivity.this);
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",   /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
+    }
+
+
     private void uploadImage() {
-        if (mImageUri != null) {
-            final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("Profile_Pics/"
-                    + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" +
-                    System.currentTimeMillis() + "." + getFileExtension(mImageUri).trim());
-            profileImageRef.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 2000);
+        if (destinationUri != null) {
 
-                            Map<String,Object> profile_pic = new HashMap<>();
-                            profile_pic.put("profile_pic", taskSnapshot.getMetadata().getName());
+            final StorageReference profileImageRef = FirebaseStorage.getInstance()
+                    .getReference("Profile_Pics/" + myUid + "/" + System.currentTimeMillis() + ".png");
 
-                            db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(profile_pic)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("saveRegisterDate", "Done");
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("saveRegisterDate", e.toString());
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                        }
-                    });
+            uploadTask = profileImageRef.putFile(destinationUri);
+            uploadTask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if(!task.isSuccessful()){
+                        task.getException();
+                    }
+                    return profileImageRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Map<String,Object> profile_pic = new HashMap<>();
+                        profile_pic.put("profile_pic", task.getResult().toString());
+
+                        db.collection("users").document(myUid)
+                                .update(profile_pic);
+                    }else {
+                        Toast.makeText(SignUpPickPictureActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SignUpPickPictureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
 }
+
