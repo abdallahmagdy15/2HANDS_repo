@@ -117,12 +117,11 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
         PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(final User user) {
-                post.postOwner = user.full_name;
                 ref.document(postid)
                         .set(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context, getResources().getString(R.string.postSharedSuccessfully), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.postSharedSuccessfully), Toast.LENGTH_LONG).show();
                         //increment Shares on the post counter
                         FirebaseDatabase.getInstance().getReference("counter").child(shared_post_id )
                                 .child("shares_count").runTransaction(new Transaction.Handler() {

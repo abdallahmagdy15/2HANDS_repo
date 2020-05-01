@@ -292,6 +292,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this , LoginActivity.class));
+                        finish();
                         break;
                     case R.id.nav_share:
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.share), Toast.LENGTH_SHORT).show();

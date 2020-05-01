@@ -19,7 +19,6 @@ public class Post {
     public boolean state=true;
     public boolean visibility=true;
     public String location;
-    public String postOwner;
     public String user_id;
     public String profile_pic;
     public String post_id;
@@ -32,7 +31,7 @@ public class Post {
     public Post(String category, String check_in, String content_text,
                 Date date, List<String> videos, List<String> images,
                 List<String> mentions, boolean state, boolean visibility,
-                String location, String postOwner, String user_id,
+                String location, String user_id,
                 String profile_pic, String post_id, String shared_id,
                 double priority) {
         this.category = category;
@@ -45,7 +44,6 @@ public class Post {
         this.state = state;
         this.visibility = visibility;
         this.location = location;
-        this.postOwner = postOwner;
         this.user_id = user_id;
         this.profile_pic = profile_pic;
         this.post_id = post_id;
