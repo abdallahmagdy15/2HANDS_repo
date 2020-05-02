@@ -12,7 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhiteGray">
+        android:background="@color/colorGray">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/profile_appbar"

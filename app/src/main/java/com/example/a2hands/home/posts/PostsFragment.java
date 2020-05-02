@@ -71,6 +71,7 @@ public class PostsFragment extends Fragment {
     boolean firstTimeLoadingPosts = true;
     Date lastPostDate;
     double lastPostPriority = 0;
+    String postsType;
 
     public PostsFragment() {
     }
@@ -89,7 +90,7 @@ public class PostsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.view = view;
-        String activityName = bundle.getString("FOR");
+        postsType = bundle.getString("FOR");
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -101,7 +102,19 @@ public class PostsFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-        if (activityName.equals("HOME")) {
+        lastPostDate = new Date();
+        if (postsType.equals("HOME_DATE")) {
+            selectedCat = bundle.getString("CAT", String.valueOf(0));
+            getUser(new Callback() {
+                @Override
+                public void callbackUser(User user) {
+                    location.add(loadCountryUsingItsISO(user.country));
+                    location.add(user.region);
+                    getPostsForHomeByDate(location, selectedCat);
+                }
+            }, uid);
+        }
+        else if (postsType.equals("HOME_PRIORITY")) {
             selectedCat = bundle.getString("CAT", String.valueOf(0));
             getUser(new Callback() {
                 @Override
@@ -109,13 +122,30 @@ public class PostsFragment extends Fragment {
                     location.add(loadCountryUsingItsISO(user.country));
                     location.add(user.region);
                     lastPostDate = new Date();
-                    getPostsForHomeByDate(location, selectedCat);
+                    getPostsForHomeByPriority(location, selectedCat);
                 }
             }, uid);
-        } else if (activityName.equals("PROFILE")) {
+        }
+        else if (postsType.equals("HOME_FOLLOWINGS_POSTS")) {
+            selectedCat = bundle.getString("CAT", String.valueOf(0));
+            getUser(new Callback() {
+                @Override
+                public void callbackUser(User user) {
+                    location.add(loadCountryUsingItsISO(user.country));
+                    location.add(user.region);
+                    lastPostDate = new Date();
+                    getPostsForHomeByFollowings(location, selectedCat);
+                }
+            }, uid);
+        }
+
+        else if (postsType.equals("PROFILE")) {
             profile_user_id = bundle.getString("UID");
-            getBlockedUsersId();
-        } else if (activityName.equals("SAVED_POSTS")) {
+            if(profile_user_id.equals(uid))
+                getPostsForProfile(profile_user_id);
+            else
+                getBlockedUsersId();
+        } else if (postsType.equals("SAVED_POSTS")) {
             getSavedPostsId();
         }
         return view;
@@ -144,8 +174,8 @@ public class PostsFragment extends Fragment {
         }
         query.whereEqualTo("state", true)
                 .orderBy("priority", Query.Direction.ASCENDING)
-                .startAt("priority", lastPostPriority)
-                .limitToLast(10)
+                .startAt(lastPostPriority)
+                .limitToLast(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -289,19 +319,30 @@ public class PostsFragment extends Fragment {
     }
 
     private void getPostsForProfile(final String uid) {
-        FirebaseFirestore.getInstance().collection("/posts")
-                .whereEqualTo("visibility", true)
-                .whereEqualTo("user_id", uid)
-                .orderBy("date", Query.Direction.DESCENDING).limitToLast(30)
+        Query query = FirebaseFirestore.getInstance().collection("/posts");
+        if (!profile_user_id.equals(uid))
+            query = query.whereEqualTo("visibility", true);
+        query.whereEqualTo("user_id", uid)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .startAt(lastPostDate)
+                .limitToLast(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task2) {
-                        List<Post> posts = new ArrayList<>();
                         if (task2.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc2 : task2.getResult()) {
-                                final Post p = doc2.toObject(Post.class);
-                                posts.add(p);
+                            List<Post> ps = new ArrayList<>();
+                            for (QueryDocumentSnapshot doc : task2.getResult()) {
+                                final Post p = doc.toObject(Post.class);
+                                ps.add(p);
+                            }
+                            if(ps.size() !=0){
+                                posts.addAll(ps);
+                                lastPostsCount=ps.size();
+                            }
+                            else{
+                                lastPostsCount=0;
+                                recyclerView.clearOnScrollListeners();
                             }
                             updateUiWithPosts();
                         } else {
@@ -409,16 +450,7 @@ public class PostsFragment extends Fragment {
                         //check if loading the profile posts
                         if (profile_user_id != null) {
                             if (!blockedUsersId.contains(profile_user_id)) {
-                                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                    @Override
-                                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                        super.onScrollStateChanged(recyclerView, newState);
-                                        if (!recyclerView.canScrollVertically(1)) {
-                                            getPostsForProfile(profile_user_id);
-                                        }
-                                    }
-                                });
-
+                                getPostsForProfile(profile_user_id);
                             }
                         } else {
                             filterHomePosts(posts);
@@ -451,7 +483,15 @@ public class PostsFragment extends Fragment {
                     if (!recyclerView.canScrollVertically(1) && !loading  /*check if still loading*/) {
                         loading = true;
                         Toast.makeText(getActivity().getBaseContext(), "loading...", Toast.LENGTH_SHORT).show();
-                        getPostsForHomeByDate(location, selectedCat);
+                        if (postsType.equals("HOME_DATE"))
+                            getPostsForHomeByDate(location, selectedCat);
+                        else if (postsType.equals("HOME_PRIORITY"))
+                            getPostsForHomeByPriority(location,selectedCat);
+                        else if (postsType.equals("HOME_FOLLOWINGS_POSTS"))
+                            getPostsForHomeByFollowings(location,selectedCat);
+                        else if (postsType.equals("PROFILE"))
+                            getPostsForProfile(profile_user_id);
+
                     }
                 }
             });

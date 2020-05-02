@@ -77,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
     private BadgeDrawable badgeForMessages;
 
     MaterialSpinner catsSpinner;
-    String[] catsStrings;
     CircleImageView profile_image ;
     SearchView searchView;
     TextView notificationsTitle;
@@ -87,6 +86,8 @@ public class HomeActivity extends AppCompatActivity {
     CircleImageView header_profilePic;
     TextView header_fAndLName;
     TextView header_uname;
+
+    String selectedPostsType="HOME_DATE";
 
     private FirebaseFirestore db;
     String myUid;
@@ -146,10 +147,9 @@ public class HomeActivity extends AppCompatActivity {
 
         catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                loadPosts(position);
+                loadPosts(position,selectedPostsType);
             }
         });
-
 
         updateToken();
         loadUserPicInTopMenu();
@@ -276,6 +276,18 @@ public class HomeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_profile:
                         startActivity(new Intent(HomeActivity.this , ProfileActivity.class));
+                        break;
+                    case R.id.nav_home:
+                        selectedPostsType = "HOME_DATE";
+                        loadPosts(0,"HOME_DATE");
+                        break;
+                    case R.id.nav_trending:
+                        selectedPostsType = "HOME_PRIORITY";
+                        loadPosts(0,"HOME_PRIORITY");
+                        break;
+                    case R.id.nav_followingsPosts:
+                        selectedPostsType = "HOME_FOLLOWINGS_POSTS";
+                        loadPosts(0,"HOME_FOLLOWINGS_POSTS");
                         break;
                     case R.id.nav_saved:
                         startActivity(new Intent(HomeActivity.this , SavedPostsActivity.class));
@@ -420,11 +432,11 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    void loadPosts(int pos){
+    void loadPosts(int pos,String type){
         Fragment frg = new PostsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("CAT", String.valueOf(pos));
-        bundle.putString("FOR","HOME");
+        bundle.putString("FOR",type);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,frg).addToBackStack("");
@@ -436,7 +448,7 @@ public class HomeActivity extends AppCompatActivity {
         catsSpinner.setTextSize(15);
         searchView.setVisibility(View.INVISIBLE);
         notificationsTitle.setVisibility(View.INVISIBLE);
-        loadPosts(0);
+        loadPosts(0,"HOME_PRIORITY");
     }
 
     public void navigateSearch(){
