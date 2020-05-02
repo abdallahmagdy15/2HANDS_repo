@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,15 +20,11 @@ import android.widget.Toast;
 
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
-import com.example.a2hands.User;
 import com.example.a2hands.UserStatus;
-import com.example.a2hands.signup.SignUpPickPictureActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -232,7 +226,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     void uploadPhoto(StorageReference ref,Uri uri,int code){
-        String newName = System.currentTimeMillis()+".png";
+        String newName = myUid +".png";
 
         uploadTask = ref.child(newName).putFile(uri);
         uploadTask.continueWithTask(new Continuation() {

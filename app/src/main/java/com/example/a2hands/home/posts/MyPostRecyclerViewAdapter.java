@@ -73,7 +73,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecyclerViewAdapter.ViewHolder>
 {
     private final List<Post> postsList;
-    private  Context context;
+    private Context context;
 
     public MyPostRecyclerViewAdapter(List<Post> posts) {
         postsList = posts;
@@ -217,12 +217,23 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             cardView.setVisibility(View.VISIBLE);
             MyPostRecyclerViewAdapter myPostRecyclerViewAdapter = new MyPostRecyclerViewAdapter(null);
             MyPostRecyclerViewAdapter.ViewHolder vh = myPostRecyclerViewAdapter.new ViewHolder(sharedPostContainer);
-            setupPostData(holder,currPost,false);
+            setupPostData(holder, currPost,false);
             setupPostData(vh , sharedPost,true);
         }
         else {
             //enable who sharing label
-            holder.postUserSharedPost.setText(currPost.postOwner);
+            //get the full name of user every time loading post from his data instead of
+            // saving it to the post, so when he change his name it also changes in his posts
+            FirebaseFirestore.getInstance()
+                    .collection("users").document(currPost.user_id)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    User user = task.getResult().toObject(User.class);
+                    holder.postUserSharedPost.setText(user.full_name);
+                }
+            });
+
             // set listener for user sharing the post to go to his profile
             holder.postUserSharedPost.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -427,7 +438,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             holder.postOwnerPic.setImageResource(R.drawable.anon);
         }
         else {
-            holder.postOwner.setText(curr_post.postOwner);
             holder.postOwnerPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -436,6 +446,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     v.getContext().startActivity(i);
                 }
             });
+            //get the full name of user every time loading post from his data instead of
+            // saving it to the post, so when he change his name it also changes in his posts
+            FirebaseFirestore.getInstance()
+                    .collection("users").document(curr_post.user_id)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    User user = task.getResult().toObject(User.class);
+                    holder.postOwner.setText(user.full_name);
+                }
+            });
+            //get user profile pic
             FirebaseStorage.getInstance().getReference()
                     .child("Profile_Pics/" +curr_post.user_id+ "/"
                             + curr_post.profile_pic)
@@ -495,6 +517,17 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     Toast.makeText(context, context.getResources().getString(R.string.canNotSendHelpRequestToYourself),
                             Toast.LENGTH_LONG).show();
                 else {
+                    // get current post owner
+                    final String[] postOwner = new String[1];
+                    FirebaseFirestore.getInstance()
+                            .collection("users").document(curr_post.user_id)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            User user = task.getResult().toObject(User.class);
+                            postOwner[0] = user.full_name;
+                        }
+                    });
                     //fill object of help request with data
                     final HelpRequest helpReq = new HelpRequest();
                     helpReq.post_id = curr_post.post_id;
@@ -503,7 +536,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     //show confirmation dialog if u want to send help request
                     new AlertDialog.Builder(context)
                             .setTitle(context.getResources().getString(R.string.sendHelpRequestTo)+ " " +
-                                    ((curr_post.visibility) ? curr_post.postOwner : context.getResources().getString(R.string.anonymous)) + "?")
+                                    ((curr_post.visibility) ? postOwner[0] : context.getResources().getString(R.string.anonymous)) + "?")
                             .setPositiveButton(context.getResources().getString(R.string.send), new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {

@@ -405,9 +405,8 @@ public class CreatePostActivity extends AppCompatActivity {
         PostsFragment.getUser(new Callback() {
             @Override
             public void callbackUser(User u) {
-                post.postOwner = u.full_name;
                 post.user_id = uid;
-                post.profile_pic = u.profile_pic;
+                post.profile_pic = u.user_id + ".png";
                 uploadMedia();
             }
         },uid);
