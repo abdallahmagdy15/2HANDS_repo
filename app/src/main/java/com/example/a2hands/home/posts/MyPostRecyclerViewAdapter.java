@@ -464,7 +464,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri.toString()).into(holder.postOwnerPic);
+                    Picasso.with(context).load(uri.toString()).into(holder.postOwnerPic);
                 }
             });
         }
@@ -478,7 +478,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
             //load image
             String imagePath = curr_post.images.get(0);
-            Picasso.get().load(Uri.parse(imagePath)).into(holder.postImage);
+            Picasso.with(context).load(Uri.parse(imagePath)).into(holder.postImage);
             //set on Photo Clicked listener
             final Intent i = new Intent(context, ImagePreview.class);
             i.putExtra("IMAGE_PATH",imagePath);

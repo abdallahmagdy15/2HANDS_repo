@@ -99,7 +99,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.GONE);
             holder.messageImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
+            Picasso.with(context).load(Uri.parse(messageImagee)).into(holder.messageImage);
         } else {
             holder.deletedMessage.setVisibility(View.GONE);
             holder.message.setVisibility(View.VISIBLE);
@@ -107,7 +107,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.message.getLayoutParams().width = Constraints.LayoutParams.MATCH_CONSTRAINT;
             holder.message.setPaddingRelative(8, 8, 8, 0);
             holder.message.setText(message);
-            Picasso.get().load(Uri.parse(messageImagee)).into(holder.messageImage);
+            Picasso.with(context).load(Uri.parse(messageImagee)).into(holder.messageImage);
         }
 
         //set text of last message seen TextView of sender
@@ -153,7 +153,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
         holder.time.setText(timestamp);
         try{
-            Picasso.get().load(imageURI).into(holder.otherProfileImage);
+            Picasso.with(context).load(imageURI).into(holder.otherProfileImage);
         }
         catch (Exception e){
             //handle errors

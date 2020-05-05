@@ -88,7 +88,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     User user = task.getResult().toObject(User.class);
-                    Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.commentOwnerPic);
+                    Picasso.with(holder.context).load(Uri.parse(user.profile_pic)).into(holder.commentOwnerPic);
                 }
             }
         });

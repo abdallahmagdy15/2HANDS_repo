@@ -61,7 +61,10 @@ dependencies {
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //picasso
+    //this version works perfectly with API 19 otherwise Kitkat devices would crash
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //country picker with its code
     implementation 'com.hbb20:ccp:2.3.7'

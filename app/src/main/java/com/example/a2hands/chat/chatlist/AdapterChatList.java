@@ -110,7 +110,7 @@ public class AdapterChatList extends RecyclerView.Adapter<AdapterChatList.MyHold
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     User user = task.getResult().toObject(User.class);
-                    Picasso.get().load(Uri.parse(user.profile_pic)).into(imgV);
+                    Picasso.with(context).load(Uri.parse(user.profile_pic)).into(imgV);
                 }
             }
         });

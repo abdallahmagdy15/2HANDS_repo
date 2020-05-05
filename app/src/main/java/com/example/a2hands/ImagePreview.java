@@ -40,7 +40,7 @@ public class ImagePreview extends AppCompatActivity {
         myUid = FirebaseAuth.getInstance().getUid();
 
         Uri imageUri = Uri.parse(getIntent().getStringExtra("IMAGE_PATH"));
-        Picasso.get().load(imageUri).into(image);
+        Picasso.with(ImagePreview.this).load(imageUri).into(image);
 
         //Custom Animation To Activity
         SlidrConfig config = new SlidrConfig.Builder()

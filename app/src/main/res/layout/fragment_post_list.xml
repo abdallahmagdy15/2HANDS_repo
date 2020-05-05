@@ -7,9 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGray"
+    android:paddingTop="12dp"
     android:clipToPadding="false"
     app:layoutManager="LinearLayoutManager"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".home.posts.PostsFragment"
-    tools:listitem="@layout/fragment_post"></androidx.recyclerview.widget.RecyclerView>
+    tools:listitem="@layout/fragment_post"/>
 

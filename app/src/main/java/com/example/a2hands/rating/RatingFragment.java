@@ -101,7 +101,7 @@ public class RatingFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, uid , activity));
+            recyclerView.setAdapter(new MyRatingRecyclerViewAdapter(ratings, uid , activity, context));
         }
     }
 

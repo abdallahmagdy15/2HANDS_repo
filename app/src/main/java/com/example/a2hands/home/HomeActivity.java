@@ -216,7 +216,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
                 Uri imageUri = Uri.parse(user.profile_pic);
-                Picasso.get().load(imageUri).into(profile_image);
+                Picasso.with(HomeActivity.this).load(imageUri).into(profile_image);
             }
         });
     }
@@ -232,7 +232,7 @@ public class HomeActivity extends AppCompatActivity {
                 header_uname.setText("@"+user.user_name);
 
                 Uri imageUri = Uri.parse(user.profile_pic);
-                Picasso.get().load(imageUri).into(header_profilePic);
+                Picasso.with(HomeActivity.this).load(imageUri).into(header_profilePic);
             }
         });
     }
@@ -396,7 +396,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop()
     {
-        if(UserStatus.isAppIsInBackground(getApplicationContext())){
+        if(UserStatus.isAppIsInBackground(getBaseContext())){
             UserStatus.updateOnlineStatus(false, myUid);
         }
         super.onStop();

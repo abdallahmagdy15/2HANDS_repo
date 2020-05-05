@@ -663,12 +663,12 @@ public class ChatActivity extends AppCompatActivity {
                 messageImage.setVisibility(View.VISIBLE);
                 closeImageButton.setVisibility(View.VISIBLE);
 
-                Picasso.get().load(image_uri).into(messageImage);
+                Picasso.with(ChatActivity.this).load(image_uri).into(messageImage);
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE ) {
                 messageImage.setVisibility(View.VISIBLE);
                 closeImageButton.setVisibility(View.VISIBLE);
-                Picasso.get().load(image_uri).into(messageImage);
+                Picasso.with(ChatActivity.this).load(image_uri).into(messageImage);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -724,7 +724,7 @@ public class ChatActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             User user = task.getResult().toObject(User.class);
                             hisImage = user.profile_pic;
-                            Picasso.get().load(Uri.parse(hisImage)).into(profileImage);
+                            Picasso.with(ChatActivity.this).load(hisImage).into(profileImage);
                             readMessages();
                         }
                     }

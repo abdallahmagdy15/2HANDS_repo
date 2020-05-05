@@ -227,7 +227,7 @@ public class CreatePostActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     User user = task.getResult().toObject(User.class);
-                    Picasso.get().load(Uri.parse(user.profile_pic)).into(ownerPic);
+                    Picasso.with(CreatePostActivity.this).load(Uri.parse(user.profile_pic)).into(ownerPic);
                 }
             }
         });
@@ -558,13 +558,13 @@ public class CreatePostActivity extends AppCompatActivity {
         else if(requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK){
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(imageUri).into(selectedImage);
+            Picasso.with(CreatePostActivity.this).load(imageUri).into(selectedImage);
         }
         else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
             imageUri = data.getData();
             selectedVideo.setVisibility(View.GONE);
             selectedImage.setVisibility(View.VISIBLE);
-            Picasso.get().load(imageUri).into(selectedImage);
+            Picasso.with(CreatePostActivity.this).load(imageUri).into(selectedImage);
         }
         else {
             startActivity(new Intent(CreatePostActivity.this, LoginActivity.class));

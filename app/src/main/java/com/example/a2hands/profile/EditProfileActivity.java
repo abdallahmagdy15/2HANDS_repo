@@ -109,9 +109,9 @@ public class EditProfileActivity extends AppCompatActivity {
         bioEditor.setText(bio);
 
         if(picPath!= null)
-            Picasso.get().load(Uri.parse(picPath)).into(pic);
+            Picasso.with(EditProfileActivity.this).load(Uri.parse(picPath)).into(pic);
         if(coverPath != null)
-            Picasso.get().load(Uri.parse(coverPath)).into(cover);
+            Picasso.with(EditProfileActivity.this).load(Uri.parse(coverPath)).into(cover);
 
 
         saveBtn.setOnClickListener(new View.OnClickListener() {

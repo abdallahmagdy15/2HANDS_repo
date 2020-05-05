@@ -99,7 +99,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             User user = task.getResult().toObject(User.class);
-                            Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.resultUserPic);
+                            Picasso.with(context).load(Uri.parse(user.profile_pic)).into(holder.resultUserPic);
                         }
                     }
                 });

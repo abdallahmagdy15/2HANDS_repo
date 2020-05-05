@@ -143,7 +143,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
                 if(task.isSuccessful()){
                     User user = task.getResult().toObject(User.class);
                     if(user!=null)
-                        Picasso.get().load(Uri.parse(user.profile_pic)).into(vh.notifiPic);
+                        Picasso.with(vh.context).load(Uri.parse(user.profile_pic)).into(vh.notifiPic);
                 }
             }
         });

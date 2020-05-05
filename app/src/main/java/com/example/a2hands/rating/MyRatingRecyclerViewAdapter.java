@@ -1,5 +1,6 @@
 package com.example.a2hands.rating;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -40,10 +41,12 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
     private final List<Rating> ratingsList;
     private final String uid;
     private final String activity;
-    public MyRatingRecyclerViewAdapter(List<Rating> ratings,  String uid , String activity) {
+    private final Context context;
+    public MyRatingRecyclerViewAdapter(List<Rating> ratings, String uid , String activity, Context context) {
         ratingsList = ratings;
         this.uid = uid;
         this.activity =activity;
+        this.context = context;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if(task.isSuccessful()){
                                 User user = task.getResult().toObject(User.class);
-                                Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
+                                Picasso.with(context).load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
                             }
                         }
                     });
@@ -133,7 +136,7 @@ public class MyRatingRecyclerViewAdapter extends RecyclerView.Adapter<MyRatingRe
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()){
                         User user = task.getResult().toObject(User.class);
-                        Picasso.get().load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
+                        Picasso.with(context).load(Uri.parse(user.profile_pic)).into(holder.ratingsPic);
                     }
                 }
             });

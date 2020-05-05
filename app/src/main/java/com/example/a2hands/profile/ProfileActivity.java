@@ -601,9 +601,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     User user = task.getResult().toObject(User.class);
                     if (type.equals("cover")){
-                        Picasso.get().load(Uri.parse(user.profile_cover)).into(imgV);
+                        Picasso.with(ProfileActivity.this).load(Uri.parse(user.profile_cover)).into(imgV);
                     } else if (type.equals("profile_pic")){
-                        Picasso.get().load(Uri.parse(user.profile_pic)).into(imgV);
+                        Picasso.with(ProfileActivity.this).load(Uri.parse(user.profile_pic)).into(imgV);
                     }
                 }
             }
