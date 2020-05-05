@@ -7,6 +7,7 @@
     <string name="enterYourUserName">Enter your user name</string>
     <string name="userNameIsAlreadyUsed">Username is already used</string>
     <string name="userNameIsNotValid">Username is not valid</string>
+    <string name="alreadyHaveAnAccount">Already have an account?</string>
     <string name="enterYourPhone">Enter your phone</string>
     <string name="phoneIsNotValid">Phone is not valid</string>
     <string name="selectYourGender">Select your gender</string>
@@ -46,6 +47,7 @@
 
     <!--LoginActivity-->
     <string name="wrongPassword">Wrong Password!</string>
+    <string name="doNotHaveAnAccount">Don\'t have an account?</string>
     <string name="noNetwork">No Network!</string>
     <string name="errorSigningIn">Error Signing In!</string>
 

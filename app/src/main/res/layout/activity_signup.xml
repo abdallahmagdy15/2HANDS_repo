@@ -7,6 +7,15 @@
     android:padding="10dp"
     tools:context=".signup.SignUpActivity">
 
+    <ImageView
+        android:id="@+id/signUpAppLogo"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@mipmap/ic_launcher_2hands_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ViewFlipper
         android:id="@+id/view_flipper"
         android:layout_width="match_parent"
@@ -17,63 +26,140 @@
         app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/signUpAppLogo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             tools:layout_editor_absoluteY="265dp">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpFullName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textAlignment="viewStart"
-                android:ems="10"
-                android:hint="@string/fullName"
-                android:inputType="textPersonName"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:endIconDrawable="@drawable/person_black_18dp"
+                app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpFullNameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="18"
+                    android:hint="@string/fullName"
+                    android:inputType="textPersonName"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpUsername"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textAlignment="viewStart"
-                android:ems="10"
-                android:hint="@string/userName"
-                android:inputType="textPersonName"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:endIconDrawable="@drawable/person_black_18dp"
+                app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpFullName" />
+                app:layout_constraintTop_toBottomOf="@id/signUpFullName">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpUsernameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="18"
+                    android:hint="@string/userName"
+                    android:inputType="text"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/show_dialog"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:endIconDrawable="@drawable/round_event_black_18dp"
+                app:endIconMode="custom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signUpUsername">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpBirthDayEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:ems="18"
+                    android:focusable="false"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:text="@string/selectYourDateOfBirth"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpUsername">
-
+                app:layout_constraintTop_toBottomOf="@+id/show_dialog"
+                app:layout_constraintVertical_bias="0.0">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
-                    android:textSize="20sp" />
-
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
                 <RadioButton
                     android:id="@+id/radioMale"
                     android:layout_width="wrap_content"
@@ -81,8 +167,7 @@
                     android:layout_marginStart="8dp"
                     android:checked="false"
                     android:text="@string/male"
-                    android:textSize="20sp" />
-
+                    android:textSize="18sp" />
                 <RadioButton
                     android:id="@+id/radioFemale"
                     android:layout_width="wrap_content"
@@ -90,25 +175,19 @@
                     android:layout_marginStart="8dp"
                     android:text="@string/female"
                     android:textSize="20sp" />
-
             </RadioGroup>
 
             <TextView
-                android:id="@+id/show_dialog"
+                android:id="@+id/signUpAlreadyHaveAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/selectYourDateOfBirth"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.503"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,27 +197,13 @@
             android:layout_gravity="center"
             android:paddingBottom="24dp">
 
-            <!--<Spinner-->
-            <!--android:id="@+id/countrySpinner"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="46dp"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginTop="24dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:spinnerMode="dropdown"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="0.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/phone" />-->
-
-            <!--Pick a country with its code-->
             <com.hbb20.CountryCodePicker
                 android:id="@+id/ccpCountry"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/spinner_background"
                 app:ccp_arrowColor="@color/colorAccent"
                 app:ccp_arrowSize="26sp"
                 app:ccp_textSize="18sp"
@@ -148,69 +213,55 @@
                 app:ccp_countryPreference="eg"
                 app:ccp_autoDetectCountry="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <Spinner
                 android:id="@+id/statesSpinner"
-                android:layout_width="376dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
+                android:background="@drawable/spinner_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ccpCountry" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:background="@drawable/spinner_background"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/statesSpinner">
-
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccpCode"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
                     app:ccp_autoDetectCountry="true"
                     app:ccp_countryPreference="eg"
                     app:ccp_hintExampleNumber="true"
                     app:ccp_showFlag="false" />
-
                 <EditText
                     android:id="@+id/editText_carrierNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:textSize="18sp"
                     android:textAlignment="viewStart"
-                    android:editable="false"
                     android:hint="@string/phone"
                     android:inputType="phone"
                     android:singleLine="true" />
-
             </LinearLayout>
-
-            <!--<EditText-->
-            <!--android:id="@+id/phone"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginTop="24dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:ems="10"-->
-            <!--android:hint="Phone"-->
-            <!--android:inputType="phone"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintHorizontal_bias="0.0"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/ccp" />-->
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,100 +271,153 @@
             android:layout_gravity="center"
             android:paddingBottom="24dp">
 
-            <EditText
-                android:id="@+id/signUpEmail"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpEmailLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:textAlignment="viewStart"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:soundEffectsEnabled="false"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:endIconDrawable="@drawable/round_mail_black_18dp"
+                app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="18"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-
-            <EditText
-                android:id="@+id/signUpPassword"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpPasswordLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/signUpEmail"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:textAlignment="viewStart"
-                android:hint="@string/password"
-                android:password="true"
-                android:singleLine="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:passwordToggleEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpEmail" />
+                app:layout_constraintTop_toBottomOf="@id/signUpEmailLayout">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="18"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/signUpConfirmPassword"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUpConfirmPasswordLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/signUpEmail"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:textAlignment="viewStart"
-                android:hint="@string/confirmPassword"
-                android:password="true"
-                android:singleLine="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:errorEnabled="true"
+                app:boxBackgroundColor="@color/colorPureWhite"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:passwordToggleEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
+                app:layout_constraintTop_toBottomOf="@id/signUpPasswordLayout">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/signUpConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="18"
+                    android:hint="@string/confirmPassword"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSignUp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/signUpConfirmPassword"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/signUp"
+                android:textColor="@color/colorPureWhite"
+                android:background="@drawable/radius_corners_burron"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpConfirmPassword" />
+                app:layout_constraintTop_toBottomOf="@+id/signUpConfirmPasswordLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </ViewFlipper>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/back"
+        android:textColor="@color/colorPureWhite"
         android:visibility="invisible"
+        android:background="@drawable/radius_corners_burron"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/next"
+        android:textColor="@color/colorPureWhite"
+        android:background="@drawable/radius_corners_burron"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

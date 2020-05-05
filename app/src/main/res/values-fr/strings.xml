@@ -8,6 +8,7 @@
     <string name="enterYourUserName">Entrez votre nom d\'utilisateur</string>
     <string name="userNameIsAlreadyUsed">Le nom d\'utilisateur est déjà utilisé</string>
     <string name="userNameIsNotValid">Le nom d\'utilisateur n\'est pas valide</string>
+    <string name="alreadyHaveAnAccount">Vous avez déjà un compte?</string>
     <string name="enterYourPhone">Entrez votre téléphone</string>
     <string name="phoneIsNotValid">Le téléphone n\'est pas valide</string>
     <string name="selectYourGender">Sélectionnez votre sexe</string>
@@ -47,6 +48,7 @@
 
     <!--LoginActivity-->
     <string name="wrongPassword">Le mot de passe est incorrect!</string>
+    <string name="doNotHaveAnAccount">Vous n\'avez pas de compte?</string>
     <string name="noNetwork">il n\'y a pas de réseau</string>
     <string name="errorSigningIn">Erreur de connexion!</string>
 
