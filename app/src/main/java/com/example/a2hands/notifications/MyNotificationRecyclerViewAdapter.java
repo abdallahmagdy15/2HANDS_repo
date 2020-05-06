@@ -94,7 +94,7 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
 
         //check if notifi is seen
         if(!notifisList.get(pos).is_seen){
-            holder.notifiContainer.setBackgroundColor(holder.context.getResources().getColor(R.color.colorPrimaryWhite));
+            holder.notifiContainer.setBackgroundColor(holder.context.getResources().getColor(R.color.colorPrimaryLight));
         }
 
         //check type of notifi
@@ -136,18 +136,8 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         holder.notifiTime.setText(p.format(notifisList.get(pos).date));
 
         //load pic of notifi publisher and put into the image view
-        FirebaseFirestore.getInstance().collection("users/").document(notifisList.get(pos).publisher_id)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    User user = task.getResult().toObject(User.class);
-                    if(user!=null)
-                        Picasso.with(vh.context).load(Uri.parse(user.profile_pic)).into(vh.notifiPic);
-                }
-            }
-        });
 
+        Picasso.with(vh.context).load(Uri.parse(notifisList.get(pos).publisher_pic)).into(vh.notifiPic);
 
     }
     private String getotifiDescWithBoldedName(String content){

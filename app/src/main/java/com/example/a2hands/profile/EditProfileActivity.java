@@ -118,7 +118,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveBtn.setEnabled(false);
-                saveBtn.setTextColor(getResources().getColor(R.color.colorDisabled));
+                saveBtn.setTextColor(getResources().getColor(R.color.colorGray));
                 updateProfile();
 
             }

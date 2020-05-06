@@ -53,6 +53,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -371,7 +372,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public void submitPost() {
         submitPost.setEnabled(false);
-        submitPost.setTextColor(getResources().getColor(R.color.colorDisabled));
+        submitPost.setTextColor(getResources().getColor(R.color.colorGray));
 
         //selecting the position of category instead of its value ...
         //to be able to load posts under that category when your language changes
@@ -406,7 +407,7 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void callbackUser(User u) {
                 post.user_id = uid;
-                post.profile_pic = u.user_id + ".png";
+                post.profile_pic = u.profile_pic;
                 uploadMedia();
             }
         },uid);
@@ -511,6 +512,8 @@ public class CreatePostActivity extends AppCompatActivity {
                             nh.sendSharingNotifi(user,shared_post_id);
                         }
                     },curr_uid);
+                    FirebaseFirestore.getInstance().collection("posts")
+                            .document(shared_post_id).update("priority", FieldValue.increment(0.1));
                 }
                 finish();
             }

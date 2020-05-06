@@ -88,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:textColor="@color/colorDisabled"
+        android:textColor="@color/colorGray"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -101,7 +101,7 @@
         android:clickable="true"
         android:focusable="auto"
         android:text="@string/like"
-        android:textColor="@color/colorDisabled"
+        android:textColor="@color/colorGray"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/commentTime"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -116,7 +116,7 @@
         android:clickable="true"
         android:focusable="auto"
         android:text="@string/reply"
-        android:textColor="@color/colorDisabled"
+        android:textColor="@color/colorGray"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

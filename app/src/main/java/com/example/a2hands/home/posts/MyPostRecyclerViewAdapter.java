@@ -458,15 +458,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 }
             });
             //get user profile pic
-            FirebaseStorage.getInstance().getReference()
-                    .child("Profile_Pics/" +curr_post.user_id+ "/"
-                            + curr_post.profile_pic)
-                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.with(context).load(uri.toString()).into(holder.postOwnerPic);
-                }
-            });
+            Picasso.with(context).load(Uri.parse(curr_post.profile_pic)).into(holder.postOwnerPic);
         }
     }
 
@@ -640,7 +632,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     private void unlikePost(final ViewHolder holder , final Post curr_post){
         FirebaseDatabase.getInstance().getReference().child("likes")
-                .child(curr_post.post_id).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                .child(curr_post.post_id).child(holder.uid).removeValue();
+
+        updatePriority(curr_post.post_id,0.1);
+
         //update counter for likes
         FirebaseDatabase.getInstance().getReference("counter").child(curr_post.post_id)
                 .child("likes_count").runTransaction(new Transaction.Handler() {
@@ -754,10 +749,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     }
 
-public void insertExtraPosts(List<Post> extraPosts){
-        postsList.addAll(extraPosts);
-
-}
     @Override
     public int getItemCount() {
         return postsList.size();

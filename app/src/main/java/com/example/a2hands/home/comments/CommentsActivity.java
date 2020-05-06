@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
@@ -180,6 +181,8 @@ public class CommentsActivity extends AppCompatActivity  {
                             }
                         });
                 add_comment.setText("");
+                FirebaseFirestore.getInstance().collection("posts")
+                        .document(postId).update("priority", FieldValue.increment(0.1));
                 //update counter for comments
                 FirebaseDatabase.getInstance().getReference("counter").child(postId)
                         .child("comments_count").runTransaction(new Transaction.Handler() {

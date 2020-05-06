@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SharingOptions extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -135,7 +136,8 @@ public class SharingOptions extends BottomSheetDialogFragment implements View.On
 
                             @Override
                             public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
+                                FirebaseFirestore.getInstance().collection("posts")
+                                        .document(shared_post_id).update("priority", FieldValue.increment(0.1));
                             }
                         });
                         //end update counter for shares

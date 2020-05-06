@@ -140,7 +140,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
                     textView.setTextColor(Color.parseColor("#00BCD4"));
                     textView.setTag("liked");
                 } else {
-                    textView.setTextColor(R.color.colorDisabled);
+                    textView.setTextColor(R.color.colorGray);
                     textView.setTag("like");
                 }
             }

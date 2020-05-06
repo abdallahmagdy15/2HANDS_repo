@@ -12,7 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGray">
+        android:background="@color/colorGrayLight">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/profile_appbar"
@@ -141,7 +141,7 @@
             android:layout_height=".5dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="49dp"
-            android:background="@color/colorDisabled" />
+            android:background="@color/colorGray" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

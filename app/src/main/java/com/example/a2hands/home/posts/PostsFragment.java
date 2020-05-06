@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static java.lang.Double.MAX_VALUE;
+
 
 public class PostsFragment extends Fragment {
 
@@ -65,7 +67,7 @@ public class PostsFragment extends Fragment {
     boolean loading = false;
     boolean firstTimeLoadingPosts = true;
     Date lastPostDate;
-    double lastPostPriority = 0;
+    double lastPostPriority = MAX_VALUE;
     String postsType;
 
     public PostsFragment() {
@@ -129,7 +131,7 @@ public class PostsFragment extends Fragment {
                     location.add(loadCountryUsingItsISO(user.country));
                     location.add(user.region);
                     lastPostDate = new Date();
-                    getPostsForHomeByFollowings(location, selectedCat);
+                    getFollowingsIds();
                 }
             }, uid);
         }
@@ -144,6 +146,25 @@ public class PostsFragment extends Fragment {
             getSavedPostsId();
         }
         return view;
+    }
+
+    private void getFollowingsIds(){
+        FirebaseDatabase.getInstance().getReference("followings").child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<String> followingsIds = new ArrayList<>();
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            followingsIds.add(ds.getKey());
+                        }
+                        getPostsForHomeByFollowings(followingsIds, selectedCat);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public static void getUser(final Callback callback, String uid) {
@@ -163,14 +184,15 @@ public class PostsFragment extends Fragment {
     private void getPostsForHomeByPriority(final List<String> location, final String category) {
         // order by location , category , state , priority , date
         Query query = FirebaseFirestore.getInstance().collection("posts")
-                .whereIn("location", location);
+                .orderBy("priority", Query.Direction.DESCENDING);
+        if(!firstTimeLoadingPosts)
+            query = query.startAt(lastPostPriority);
+        query = query.whereIn("location", location);
         if (!category.equals(String.valueOf(0))) {
             query = query.whereEqualTo("category", category);
         }
-        query.whereEqualTo("state", true)
-                .orderBy("priority", Query.Direction.ASCENDING)
-                .startAt(lastPostPriority)
-                .limitToLast(20)
+        query = query.whereEqualTo("state", true);
+        query.limit(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -201,14 +223,14 @@ public class PostsFragment extends Fragment {
     private void getPostsForHomeByFollowings(final List<String> followingsIds, final String category) {
         // order by location , category , state , priority , date
         Query query = FirebaseFirestore.getInstance().collection("posts")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .startAt(lastPostDate)
                 .whereIn("user_id", followingsIds);
         if (!category.equals(String.valueOf(0))) {
             query = query.whereEqualTo("category", category);
         }
         query.whereEqualTo("state", true)
-                .orderBy("date", Query.Direction.ASCENDING)
-                .startAt(lastPostDate)
-                .limitToLast(20)
+                .limit(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -239,14 +261,14 @@ public class PostsFragment extends Fragment {
     private void getPostsForHomeByDate(final List<String> location, final String category) {
         // order by location , category , state , priority , date
         Query query = FirebaseFirestore.getInstance().collection("posts")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .startAt(lastPostDate)
                 .whereIn("location", location);
         if (!category.equals(String.valueOf(0))) {
             query = query.whereEqualTo("category", category);
         }
         query.whereEqualTo("state", true)
-                .orderBy("date", Query.Direction.DESCENDING)
-                .startAt(lastPostDate)
-                .limitToLast(20)
+                .limit(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -314,13 +336,13 @@ public class PostsFragment extends Fragment {
     }
 
     private void getPostsForProfile(final String uid) {
-        Query query = FirebaseFirestore.getInstance().collection("/posts");
-        if (!profile_user_id.equals(uid))
-            query = query.whereEqualTo("visibility", true);
-        query.whereEqualTo("user_id", uid)
+        Query query = FirebaseFirestore.getInstance().collection("/posts")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .startAt(lastPostDate)
-                .limitToLast(20)
+                .whereEqualTo("user_id", uid);
+        if (!profile_user_id.equals(uid))
+            query = query.whereEqualTo("visibility", true);
+        query.limit(20)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -461,7 +483,7 @@ public class PostsFragment extends Fragment {
     private void updateUiWithPosts() {
         //set next posts date or priority
         if(lastPostsCount != 0){
-            lastPostPriority = posts.get(posts.size() - 1).priority+1;
+            lastPostPriority = posts.get(posts.size() - 1).priority - 0.1;
             lastPostDate = posts.get(posts.size() - 1).date;
             Calendar cal = Calendar.getInstance();
             cal.setTime(lastPostDate);

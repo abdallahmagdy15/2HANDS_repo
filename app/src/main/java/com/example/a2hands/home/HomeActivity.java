@@ -446,10 +446,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public void navigateHome(){
         catsSpinner.setVisibility(View.VISIBLE);
-        catsSpinner.setTextSize(15);
+        catsSpinner.setTextSize(16);
         searchView.setVisibility(View.INVISIBLE);
         notificationsTitle.setVisibility(View.INVISIBLE);
-        loadPosts(0,"HOME_PRIORITY");
+        loadPosts(0,"HOME_DATE");
     }
 
     public void navigateSearch(){
