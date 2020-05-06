@@ -117,6 +117,23 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
         //country selection
         ccpCountry = findViewById(R.id.ccpCountry);
         ccpCountry.setAutoDetectedCountry(true);
+        //set dialog title and search hint from string resources
+        ccpCountry.setCustomDialogTextProvider(new CountryCodePicker.CustomDialogTextProvider() {
+            @Override
+            public String getCCPDialogTitle(CountryCodePicker.Language language, String defaultTitle) {
+                return getResources().getString(R.string.country);
+            }
+
+            @Override
+            public String getCCPDialogSearchHintText(CountryCodePicker.Language language, String defaultSearchHintText) {
+                return getResources().getString(R.string.search);
+            }
+
+            @Override
+            public String getCCPDialogNoResultACK(CountryCodePicker.Language language, String defaultNoResultACK) {
+                return defaultNoResultACK;
+            }
+        });
 
         //code and phone
         ccpCode = findViewById(R.id.ccpCode);

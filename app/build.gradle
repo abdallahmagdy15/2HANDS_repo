@@ -29,51 +29,65 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core:1.2.0'
-    //noinspection GradleCompatible
-    implementation "com.android.support:support-compat:28.0.0"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.firebase:firebase-functions:19.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
+    //picasso
+    //this version works perfectly with API 19 otherwise app would crash in Kitkat devices
+    //noinspection GradleDependency
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    //firebase
     implementation 'com.google.firebase:firebase-analytics:17.4.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
     implementation 'com.google.firebase:firebase-messaging:20.1.6'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
+    //images
+    //CircleImageView lib
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    //image preview , zoom and save
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    //custom image view that has corners radius
+    implementation 'com.joooonho:selectableroundedimageview:1.0.1'
+
+    //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
 
-    implementation 'com.google.android.material:material:1.1.0'
+    //for profile birthday celebration
+    implementation 'nl.dionsegijn:konfetti:1.2.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61'
 
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-
+    //pretty time : used in showing time of posts
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
-
-    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
-
-    //picasso
-    //this version works perfectly with API 19 otherwise Kitkat devices would crash
-    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //country picker with its code
     implementation 'com.hbb20:ccp:2.3.7'
 
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
-    implementation 'com.google.android:flexbox:2.0.1'
-
     //custom spinner
     implementation 'com.jaredrummler:material-spinner:1.3.1'
+
+    //flexBox lib
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    //recyclerView lib
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //slider lib
     implementation 'com.r0adkll:slidableactivity:2.1.0'
@@ -84,27 +98,17 @@ dependencies {
     //readMore textView lib
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
-    //image preview , zoom and save
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-
-    //customized videoView ..  full screen , media controller..
+    //customized videoView .. full screen, media controller.
     implementation 'com.linsea:universalvideoview:1.1.0@aar'
-
-    //custom image view that has corners radius
-    implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
     //user in RotateBitmap
     implementation "androidx.exifinterface:exifinterface:1.2.0"
-
-    //for profile birthday celebration
-    implementation 'nl.dionsegijn:konfetti:1.2.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61'
 
     //Splash Screen
     implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
 
     //uCrop
-    implementation 'com.github.yalantis:ucrop:2.2.4-native'
-
+    implementation 'com.github.yalantis:ucrop:2.2.4'
 }
+
 apply plugin: 'com.google.gms.google-services'
