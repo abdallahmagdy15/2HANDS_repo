@@ -135,10 +135,18 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
         PrettyTime p = new PrettyTime();
         holder.notifiTime.setText(p.format(notifisList.get(pos).date));
 
-        //load pic of notifi publisher and put into the image view
-
-        Picasso.with(vh.context).load(Uri.parse(notifisList.get(pos).publisher_pic)).into(vh.notifiPic);
-
+        //load pic of notification publisher and put into the image view
+        FirebaseFirestore.getInstance().collection("users/").document(notifisList.get(pos).publisher_id)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+                    if(user!=null)
+                        Picasso.with(vh.context).load(Uri.parse(user.profile_pic)).into(vh.notifiPic);
+                }
+            }
+        });
     }
     private String getotifiDescWithBoldedName(String content){
         //get Name to be bold

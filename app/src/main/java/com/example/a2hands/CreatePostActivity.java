@@ -407,7 +407,7 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void callbackUser(User u) {
                 post.user_id = uid;
-                post.profile_pic = u.profile_pic;
+                post.profile_pic = u.user_id + ".png";
                 uploadMedia();
             }
         },uid);

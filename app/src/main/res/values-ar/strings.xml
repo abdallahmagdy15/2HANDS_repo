@@ -29,8 +29,8 @@
     <string name="selectYourDateOfBirth">حدد تاريخ ميلادك</string>
     <string name="phone">الهاتف</string>
     <string name="email">البريد الالكتروني</string>
-    <string name="password">رقم المرور</string>
-    <string name="confirmPassword">تأكبد رقم المرور</string>
+    <string name="password">كلمة المرور</string>
+    <string name="confirmPassword">تأكبد كلمة المرور</string>
     <string name="signUp">تسجيل</string>
     <string name="back">السابق</string>
     <string name="next">التالي</string>

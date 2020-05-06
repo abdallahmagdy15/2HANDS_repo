@@ -59,12 +59,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
     //images
-    //CircleImageView lib
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-    //image preview , zoom and save
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    //custom image view that has corners radius
-    implementation 'com.joooonho:selectableroundedimageview:1.0.1'
+    implementation 'de.hdodenhof:circleimageview:3.1.0' //CircleImageView lib
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0' //image preview , zoom and save
+    implementation 'com.joooonho:selectableroundedimageview:1.0.1' //image view has corner radius
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

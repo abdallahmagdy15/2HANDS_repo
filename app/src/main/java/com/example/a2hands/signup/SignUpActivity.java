@@ -224,7 +224,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                 } else if (! isValidPassword(password.getText().toString())){
                     textInputLayout = findViewById(R.id.signUpPasswordLayout);
                     textInputLayout.setError(getResources().getString(R.string.atLeast1Capital1Number1SpecialChar));
-                }else{
+                } else{
                     signUpUser(txt_email , txt_password);
                 }
             }
@@ -252,8 +252,6 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewFlipper.setInAnimation(SignUpActivity.this, R.anim.slide_in_right);
-                viewFlipper.setOutAnimation(SignUpActivity.this, R.anim.slide_out_left);
 
                 if(viewFlipper.getDisplayedChild()==0){
                     if(TextUtils.isEmpty(fullName.getText().toString().trim())){
@@ -278,14 +276,51 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                         editTextCarrierNumber.setError(getResources().getString(R.string.phoneIsNotValid));
                     }else {
                         v.setVisibility(View.INVISIBLE);
-                        viewFlipper.showNext();
+                        viewFlipper.setDisplayedChild(2);
                     }
-                } else if (viewFlipper.getDisplayedChild() == 2) {
-                    viewFlipper.stopFlipping();
                 }
+
+                viewFlipper.setInAnimation(SignUpActivity.this, R.anim.slide_in_right);
+                viewFlipper.setOutAnimation(SignUpActivity.this, R.anim.slide_out_left);
             }
         });
     }
+
+    //username validation
+    public void checkIfValidUsername(final String username){
+        final Query usernameQuery = FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("user_name", username);
+
+        Pattern usernamePattern;
+        Matcher usernameMatcher;
+        usernamePattern = Pattern.compile(USERNAME_PATTERN);
+        usernameMatcher = usernamePattern.matcher(username);
+
+        if(usernameMatcher.matches()){
+            usernameQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+                        for (DocumentSnapshot ds: task.getResult()){
+                            String userNames = ds.getString("user_name");
+                            if (username.equals(userNames)) {
+                                textInputLayout = findViewById(R.id.signUpUsername);
+                                textInputLayout.setError(getResources().getString(R.string.userNameIsAlreadyUsed));
+                            }
+                        }
+                    }
+                    if (task.getResult().size() == 0){
+                        viewFlipper.setDisplayedChild(1);
+                        btnBack.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        } else {
+            textInputLayout = findViewById(R.id.signUpUsername);
+            textInputLayout.setError(getResources().getString(R.string.userNameIsNotValid));
+        }
+
+    }// end of checkIfValidUsername
 
 
     public void setUpStatesSpinner(String selectedCountry){
@@ -343,43 +378,6 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
 
         return matcher.matches();
     }
-
-    //username validation
-    public void checkIfValidUsername(final String username){
-        final Query usernameQuery = FirebaseFirestore.getInstance().collection("users")
-                .whereEqualTo("user_name", username);
-
-        Pattern usernamePattern;
-        Matcher usernameMatcher;
-        usernamePattern = Pattern.compile(USERNAME_PATTERN);
-        usernameMatcher = usernamePattern.matcher(username);
-
-        if(usernameMatcher.matches()){
-            usernameQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()){
-                        for (DocumentSnapshot ds: task.getResult()){
-                            String userNames = ds.getString("user_name");
-                            if (username.equals(userNames)) {
-                                textInputLayout = findViewById(R.id.signUpUsername);
-                                textInputLayout.setError(getResources().getString(R.string.userNameIsAlreadyUsed));
-                            }
-                        }
-                    }
-                    if (task.getResult().size() == 0){
-                        viewFlipper.showNext();
-                        btnBack.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-        } else {
-            textInputLayout = findViewById(R.id.signUpUsername);
-            textInputLayout.setError(getResources().getString(R.string.userNameIsNotValid));
-        }
-
-    }// end of checkIfValidUsername
-
 
 
     ////////Date of birth
