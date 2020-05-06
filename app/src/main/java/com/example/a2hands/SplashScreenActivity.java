@@ -2,11 +2,8 @@ package com.example.a2hands;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-
-import com.example.a2hands.home.HomeActivity;
 
 import gr.net.maroulis.library.EasySplashScreen;
 
