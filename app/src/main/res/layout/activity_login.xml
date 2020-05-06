@@ -76,6 +76,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="50dp"
@@ -88,14 +93,16 @@
         <EditText
             android:id="@+id/loginEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:hint="@string/email"
+            android:background="@android:color/transparent"
             android:inputType="textEmailAddress"
-            android:paddingStart="58dp"
+            android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:singleLine="true"
-            android:soundEffectsEnabled="false"
             android:textAlignment="viewStart" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -113,25 +120,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginEmail_CV">
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:scaleX=".5"
-            android:scaleY=".5"
-            app:srcCompat="@drawable/ic_password" />
-
-        <EditText
-            android:id="@+id/loginPassword"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingStart="58dp"
-            android:paddingEnd="16dp"
-            android:singleLine="true"
-            android:textAlignment="viewStart" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                app:srcCompat="@drawable/ic_password" />
+
+            <EditText
+                android:id="@+id/loginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/password"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:singleLine="true"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <CheckBox
