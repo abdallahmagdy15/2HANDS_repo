@@ -20,11 +20,13 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -36,9 +38,11 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
-    private ImageView profilePic;
+    private RoundedImageView profilePic;
     private Button skipButton;
     private Button nextButton;
+
+    FloatingActionButton clearProfImageView;
 
     private Uri sourceUri;
     public Uri destinationUri;
@@ -56,6 +60,19 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.pickPic_imageView);
         skipButton = findViewById(R.id.pickPic_skipButton);
         nextButton = findViewById(R.id.pickPic_nextButton);
+
+        clearProfImageView = findViewById(R.id.signUpclearImageViewActionButton);
+        clearProfImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                destinationUri = null;
+                clearProfImageView.setVisibility(View.INVISIBLE);
+                profilePic.setImageResource(R.drawable.camera_add_pic);
+                profilePic.setBorderWidth(0f);
+                nextButton.setVisibility(View.INVISIBLE);
+                skipButton.setVisibility(View.VISIBLE);
+            }
+        });
 
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -113,8 +130,10 @@ public class SignUpPickPictureActivity extends AppCompatActivity {
         } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             destinationUri = UCrop.getOutput(data);
 
+            clearProfImageView.setVisibility(View.VISIBLE);
             skipButton.setVisibility(View.INVISIBLE);
             nextButton.setVisibility(View.VISIBLE);
+            profilePic.setBorderWidth(6.0f);
             profilePic.setImageURI(destinationUri);
         }
     }

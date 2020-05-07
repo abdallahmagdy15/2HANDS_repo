@@ -62,6 +62,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0' //CircleImageView lib
     implementation 'com.github.chrisbanes:PhotoView:2.3.0' //image preview , zoom and save
     implementation 'com.joooonho:selectableroundedimageview:1.0.1' //image view has corner radius
+    implementation 'com.makeramen:roundedimageview:2.3.0' //in signUpPickPicActivity
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

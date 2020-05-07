@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         updateToken();
-        loadUserPicInTopMenu();
+        loadUserPics();
         loadNavigationDrawerData();
         setListenerForBottomNavigation();
         setListenerForNavigationView();
@@ -208,7 +208,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void loadUserPicInTopMenu(){
+    public void loadUserPics(){
         //load current user main pic in home top menu
         FirebaseFirestore.getInstance().collection("users/").document(myUid)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -218,10 +218,15 @@ public class HomeActivity extends AppCompatActivity {
                 if(task.isSuccessful() && !user.profile_pic.equals("")){
                     Uri imageUri = Uri.parse(user.profile_pic);
                     Picasso.with(HomeActivity.this).load(imageUri).into(profile_image);
-                } else if (!user.gender) {
-                    profile_image.setBackground(getResources().getDrawable(R.drawable.female_1));
-                } else {
-                    profile_image.setBackground(getResources().getDrawable(R.drawable.male_1));
+                    Picasso.with(HomeActivity.this).load(imageUri).into(header_profilePic);
+                } else if (user.profile_pic.equals("")){
+                    if (!user.gender) {
+                        profile_image.setBackground(getResources().getDrawable(R.drawable.female_1));
+                        header_profilePic.setBackground(getResources().getDrawable(R.drawable.female_1));
+                    } else {
+                        profile_image.setBackground(getResources().getDrawable(R.drawable.male_1));
+                        header_profilePic.setBackground(getResources().getDrawable(R.drawable.male_1));
+                    }
                 }
             }
         });

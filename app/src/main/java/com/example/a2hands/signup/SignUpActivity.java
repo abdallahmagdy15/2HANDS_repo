@@ -411,16 +411,16 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
 
     ///////Signing up
     private void signUpUser(String email, String password) {
+        signingOutAdmin();
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                signingOutAdmin();
                 saveUserData(auth.getCurrentUser().getUid());
                 auth.getCurrentUser().sendEmailVerification()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isComplete()){
+                                if(task.isSuccessful()){
                                     startActivity(new Intent(SignUpActivity.this , SignUpPickPictureActivity.class));
                                     finish();
                                 }else {

@@ -18,6 +18,7 @@ import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,7 +27,7 @@ import java.util.Map;
 
 public class SignUpSetBioActivity extends AppCompatActivity {
 
-    private EditText bio;
+    private TextInputEditText bio;
     private Button skipButton;
     private Button nextButton;
 
@@ -76,7 +77,6 @@ public class SignUpSetBioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String,Object> addBio = new HashMap<>();
                 addBio.put("bio", bio.getText().toString().trim());
-                startActivity(new Intent(SignUpSetBioActivity.this , LoginActivity.class));
 
                 db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(addBio)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -93,6 +93,7 @@ public class SignUpSetBioActivity extends AppCompatActivity {
                             }
                         });
 
+                startActivity(new Intent(SignUpSetBioActivity.this , LoginActivity.class));
                 Toast.makeText(SignUpSetBioActivity.this, getResources().getString(R.string.checkYourEmailForVerification), Toast.LENGTH_LONG).show();
             }
         });
