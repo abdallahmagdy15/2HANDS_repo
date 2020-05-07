@@ -456,13 +456,18 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                             };
                             ss.setSpan(clickableSpan, mentionsIndexes[j][0], mentionsIndexes[j][1], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                             holder.postContent.setText(ss);
+                            if(ss.length() < 80 )
+                                holder.postContent.setTextSize(24);
                         }
                     }
                 }
             });
         }
-        else
+        else{
             holder.postContent.setText(curr_post.content_text);
+            if(curr_post.content_text.length() < 80 )
+                holder.postContent.setTextSize(24);
+        }
 
     }
 
