@@ -2,6 +2,8 @@ package com.example.a2hands.chat;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
@@ -46,6 +49,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private LinearLayoutManager linearLayoutManager;
 
     FirebaseUser user;
+    ClipboardManager clipboardManager;
 
     public ChatAdapter(Context context, List<Chat> chatList, String imageURI,
                        String hisUid, LinearLayoutManager linearLayoutManager,
@@ -164,21 +168,28 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             @Override
             public boolean onLongClick(View v) {
                 if(chatList.get(position).getSender().equals(user.getUid())) {
+                    String[] options = {context.getResources().getString(R.string.delete),"CopyText"};
                     AlertDialog.Builder builder= new AlertDialog.Builder(context);
-                    builder.setTitle(context.getResources().getString(R.string.delete));
-                    builder.setMessage(context.getResources().getString(R.string.areYouSureToDeleteThisMessage));
-                    builder.setPositiveButton(context.getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
+                    builder.setTitle("CopyText && Delete");
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            deleteMessage(position);
-                            holder.messageImage.setVisibility(View.GONE);
-                            holder.message.setVisibility(View.GONE);
-                        }
-                    });
-                    builder.setNegativeButton(context.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                            if (which == 0) {
+                                deleteMessage(position);
+                                holder.messageImage.setVisibility(View.GONE);
+                                holder.message.setVisibility(View.GONE);
+                            }
+                            if (which == 1){
+                                String MSG_TO_BE_COPY = chatList.get(position).getMessage();
+                                if (!MSG_TO_BE_COPY.equals("") && !chatList.get(position).getIsDeleted()){
+                                    ClipData clipData = ClipData.newPlainText("MSG_TO_BE_COPY",MSG_TO_BE_COPY);
+                                    clipboardManager.setPrimaryClip(clipData);
+                                    Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
+                                }
+                                if (chatList.get(position).getIsDeleted()){
+                                    Toast.makeText(context, "Cannot copy this message..", Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
                     });
                     builder.create().show();
@@ -312,6 +323,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             time =itemView.findViewById(R.id.messageTime);
             isSeen =itemView.findViewById(R.id.isSeen);
             messageLayout=itemView.findViewById(R.id.messageLayout);
+            clipboardManager=(ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         }
     }
 }

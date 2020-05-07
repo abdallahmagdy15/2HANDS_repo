@@ -4,32 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:paddingTop="0dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp"
+    android:paddingBottom="10dp"
     tools:context=".signup.SignUpActivity">
 
     <ImageView
-        android:id="@+id/signUpAppLogo"
-        android:layout_width="220dp"
+        android:id="@+id/imageView3"
+        android:layout_width="250dp"
         android:layout_height="150dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="false"
+        android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher_2hands_2_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground" />
+
+    <LinearLayout
+        android:id="@+id/signUp_LogoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2Ha"
+            android:textColor="@color/colorDark"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="nds"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ViewFlipper
         android:id="@+id/view_flipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:inAnimation="@android:anim/slide_in_left"
         android:outAnimation="@android:anim/slide_out_right"
         app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUpAppLogo">
+        app:layout_constraintTop_toBottomOf="@id/signUp_LogoName">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,7 +73,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -79,7 +110,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -115,7 +147,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -159,13 +192,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/show_dialog"
                 app:layout_constraintVertical_bias="0.0">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
                     android:textColor="#000"
-                    android:textStyle="bold"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <RadioButton
                     android:id="@+id/radioMale"
                     android:layout_width="wrap_content"
@@ -174,6 +209,7 @@
                     android:checked="false"
                     android:text="@string/male"
                     android:textSize="18sp" />
+
                 <RadioButton
                     android:id="@+id/radioFemale"
                     android:layout_width="wrap_content"
@@ -181,6 +217,7 @@
                     android:layout_marginStart="8dp"
                     android:text="@string/female"
                     android:textSize="20sp" />
+
             </RadioGroup>
 
             <TextView
@@ -188,13 +225,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp"
-                android:textSize="18sp"
+                android:layout_marginEnd="8dp"
                 android:textColor="#000"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radioGroup"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -211,27 +248,27 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/spinner_background"
-                app:ccpDialog_showFastScroller="false"
                 app:ccpDialog_showCloseIcon="true"
+                app:ccpDialog_showFastScroller="false"
                 app:ccp_arrowColor="@color/colorAccent"
                 app:ccp_arrowSize="26sp"
-                app:ccp_textSize="16sp"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_countryPreference="eg"
                 app:ccp_showFullName="true"
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="false"
-                app:ccp_countryPreference="eg"
-                app:ccp_autoDetectCountry="true"
+                app:ccp_textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
                 android:id="@+id/statesSpinner"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/spinner_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -244,35 +281,39 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:background="@drawable/spinner_background"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statesSpinner">
+                app:layout_constraintTop_toBottomOf="@+id/statesSpinner"
+                android:orientation="horizontal">
+
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccpCode"
                     android:layout_width="wrap_content"
                     android:layout_height="56dp"
                     android:layout_marginTop="8dp"
                     android:focusable="false"
-                    app:ccp_clickable="false"
-                    app:ccp_showArrow="false"
                     app:ccp_autoDetectCountry="true"
+                    app:ccp_clickable="false"
                     app:ccp_countryPreference="eg"
                     app:ccp_hintExampleNumber="true"
+                    app:ccp_showArrow="false"
                     app:ccp_showFlag="false" />
+
                 <EditText
                     android:id="@+id/editText_carrierNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:textSize="18sp"
-                    android:textAlignment="viewStart"
                     android:hint="@string/phone"
                     android:inputType="phone"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textAlignment="viewStart"
+                    android:textSize="18sp" />
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -290,7 +331,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
@@ -326,17 +368,19 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:errorEnabled="true"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:passwordToggleEnabled="true"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/signUpEmailLayout">
+                app:layout_constraintTop_toBottomOf="@id/signUpEmailLayout"
+                app:passwordToggleEnabled="true">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/signUpPassword"
                     android:layout_width="match_parent"
@@ -360,17 +404,19 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:errorEnabled="true"
-                app:boxBackgroundColor="@color/colorPureWhite"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@color/colorWhite"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:passwordToggleEnabled="true"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/signUpPasswordLayout">
+                app:layout_constraintTop_toBottomOf="@id/signUpPasswordLayout"
+                app:passwordToggleEnabled="true">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/signUpConfirmPassword"
                     android:layout_width="match_parent"
@@ -387,7 +433,7 @@
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -397,7 +443,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/signUp"
                 android:textColor="@color/colorPureWhite"
-                android:background="@drawable/radius_corners_burron"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -407,7 +454,7 @@
 
     </ViewFlipper>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -417,11 +464,12 @@
         android:text="@string/back"
         android:textColor="@color/colorPureWhite"
         android:visibility="invisible"
-        android:background="@drawable/radius_corners_burron"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -430,7 +478,8 @@
         android:layout_marginEnd="16dp"
         android:text="@string/next"
         android:textColor="@color/colorPureWhite"
-        android:background="@drawable/radius_corners_burron"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
