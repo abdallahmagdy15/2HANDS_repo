@@ -107,6 +107,10 @@ dependencies {
 
     //uCrop
     implementation 'com.github.yalantis:ucrop:2.2.4'
+
+    //bubble bottom nav
+    implementation 'com.gauravk.bubblenavigation:bubblenavigation:1.0.7'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

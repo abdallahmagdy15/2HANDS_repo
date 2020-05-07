@@ -196,7 +196,7 @@
 
             <RadioGroup
                 android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -209,19 +209,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/show_dialog"
                 app:layout_constraintVertical_bias="0.0">
 
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@drawable/ic_gender" />
+
                 <TextView
+                    android:id="@+id/textView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
-                    android:textColor="#000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorDark"
+                    android:textSize="18sp" />
 
                 <RadioButton
                     android:id="@+id/radioMale"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
                     android:checked="false"
                     android:text="@string/male"
                     android:textSize="18sp" />
@@ -229,8 +235,8 @@
                 <RadioButton
                     android:id="@+id/radioFemale"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
                     android:text="@string/female"
                     android:textSize="20sp" />
 

@@ -38,11 +38,12 @@ import com.example.a2hands.search.SearchFragment;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
+import com.gauravk.bubblenavigation.BubbleNavigationConstraintView;
+import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -56,7 +57,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,13 +68,10 @@ public class HomeActivity extends AppCompatActivity {
     //drawer
     private DrawerLayout drawer;
     public NavigationView navigationView;
+private FloatingActionButton addPost;
 
     //bottom navigation
-    private BottomNavigationView nav;
-    private int navItemId;
-
-    private BadgeDrawable badge;
-    private BadgeDrawable badgeForMessages;
+    private BubbleNavigationConstraintView nav;
 
     MaterialSpinner catsSpinner;
     CircleImageView profile_image ;
@@ -109,11 +106,6 @@ public class HomeActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
 
         nav = findViewById(R.id.bottom_navigation);
-        badge = nav.getOrCreateBadge(nav.getMenu().getItem(3).getItemId());
-        badge.setVisible(false);
-
-        badgeForMessages = nav.getOrCreateBadge(nav.getMenu().getItem(4).getItemId());
-        badgeForMessages.setVisible(false);
 
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
@@ -129,6 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
         header_uname = headerView.findViewById(R.id.drawer_userName);
 
+        addPost = findViewById(R.id.home_addPost);
 
         header_profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +141,13 @@ public class HomeActivity extends AppCompatActivity {
         catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 loadPosts(position,selectedPostsType);
+            }
+        });
+
+        addPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateCreatePost();
             }
         });
 
@@ -191,10 +191,12 @@ public class HomeActivity extends AppCompatActivity {
                                 allMessageCount += value;
                             }
                             if (allMessageCount > 0){
-                                badgeForMessages.setVisible(true);
-                                badgeForMessages.setNumber(allMessageCount);
-                            }else
-                                badgeForMessages.setVisible(false);
+
+                                nav.setBadgeValue(3,allMessageCount+"");
+                            }
+                            else
+                                nav.setBadgeValue(3,null);
+
                         }
 
                         @Override
@@ -248,37 +250,24 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void setListenerForBottomNavigation(){
+    public void setListenerForBottomNavigation() {
         //bottom navigation
-        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        nav.setNavigationChangeListener(new BubbleNavigationChangeListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int pos =0;
-                navItemId = item.getItemId();
-                for (int i = 0; i < nav.getMenu().size(); i++) {
-                    if(navItemId == nav.getMenu().getItem(i).getItemId()){
-                        pos = i;
-                        break;
-                    }
-                }
-
+            public void onNavigationChanged(View view, int pos) {
                 switch (pos) {
                     case 0: navigateHome();
                         break;
                     case 1: navigateSearch();
                         break;
-                    case 2: navigateCreatePost();
+                    case 2: navigateNotification();
                         break;
-                    case 3: navigateNotification();
-                        break;
-                    case 4: navigateChatList();
+                    case 3: navigateChatList();
                         break;
                 }
-                return true;
             }
         });
     }
-
     public void setListenerForNavigationView(){
         //navigation drawer menu items
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -344,12 +333,11 @@ public class HomeActivity extends AppCompatActivity {
                             if(!ds.getValue(Notification.class).is_seen) count++;
                         }
                         if(count > 0){
-                            badge.setVisible(true);
-                            badge.setNumber(count);
+                           nav.setBadgeValue(2,count+"");
                         }
-                        else {
-                            badge.setVisible(false);
-                        }
+                        else
+                            nav.setBadgeValue(2,null);
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
@@ -425,7 +413,7 @@ public class HomeActivity extends AppCompatActivity {
                 f instanceof SearchFragment ||
                 f instanceof NotificationFragment) {
 
-            nav.setSelectedItemId(nav.getMenu().getItem(0).getItemId());
+            //nav.setSelectedItemId(nav.getMenu().getItem(0).getItemId());
             navigateHome();
             return;
         } else if (doubleBackToExitPressedOnce) {
@@ -507,8 +495,7 @@ public class HomeActivity extends AppCompatActivity {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new NotificationFragment()).addToBackStack(null);
         ft.commit();
-        badge.clearNumber();
-        badge.setVisible(false);
+        nav.setBadgeValue(2,null);
     }
 
     public void navigateChatList(){

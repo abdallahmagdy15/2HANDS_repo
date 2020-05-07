@@ -499,7 +499,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
         }
     }
-
     private void checkPostMedia(final ViewHolder holder , final Post curr_post){
 
         //check if there is any media attached with the post

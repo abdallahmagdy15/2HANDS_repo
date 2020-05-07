@@ -346,9 +346,9 @@
         android:layout_marginBottom="24dp"
         android:visibility="gone"
         app:elevation="10dp"
-        card_view:backgroundTint="@color/colorWhite"
-        card_view:rippleColor="@color/colorPrimary"
-        card_view:srcCompat="@drawable/ic_add_box_black_24dp" />
+        card_view:backgroundTint="@color/colorAccent"
+        card_view:rippleColor="@color/colorPureWhite"
+        card_view:srcCompat="@drawable/ic_add" />
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/viewKonfetti"
