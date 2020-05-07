@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -265,6 +266,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         holder.category.setText(context.getResources().getStringArray(R.array.categories)[catPos]);
 
         checkPostOwnerVisibility(holder,curr_post);
+        getPostOwnerPic(holder,curr_post);
 
         checkPostMedia(holder,curr_post);
 
@@ -312,6 +314,39 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             }
         }
 
+    }
+
+    private void getPostOwnerPic(final ViewHolder holder , final Post curr_post){
+        //get user profile pic
+        FirebaseStorage.getInstance().getReference()
+                .child("Profile_Pics/" +curr_post.user_id+ "/"
+                        + curr_post.profile_pic)
+                .getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    Picasso.with(context).load(task.getResult().toString()).into(holder.postOwnerPic);
+                } else {
+                    FirebaseFirestore.getInstance()
+                            .collection("users").document(curr_post.user_id)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                User user = task.getResult().toObject(User.class);
+                                if (user.profile_pic.equals("") && curr_post.visibility){
+                                    if (!user.gender){
+                                        holder.postOwnerPic.setBackground(context.getResources().getDrawable(R.drawable.female_1));
+                                    } else {
+                                        holder.postOwnerPic.setBackground(context.getResources().getDrawable(R.drawable.male_1));
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void updatePostWithCounter(ViewHolder holder, int[] count){
@@ -435,7 +470,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
         //check visibility
         if(!curr_post.visibility){
             holder.postOwner.setText(context.getResources().getString(R.string.anonymous));
-            holder.postOwnerPic.setImageResource(R.drawable.anon);
+            holder.postOwnerPic.setImageResource(R.drawable.anonymous);
         }
         else {
             holder.postOwnerPic.setOnClickListener(new View.OnClickListener() {
@@ -446,6 +481,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     v.getContext().startActivity(i);
                 }
             });
+
             //get the full name of user every time loading post from his data instead of
             // saving it to the post, so when he change his name it also changes in his posts
             FirebaseFirestore.getInstance()
@@ -457,16 +493,10 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     holder.postOwner.setText(user.full_name);
                 }
             });
-            //get user profile pic
-            FirebaseStorage.getInstance().getReference()
-                    .child("Profile_Pics/" +curr_post.user_id+ "/"
-                            + curr_post.profile_pic)
-                    .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.with(context).load(uri.toString()).into(holder.postOwnerPic);
-                }
-            });
+
+
+
+
         }
     }
 

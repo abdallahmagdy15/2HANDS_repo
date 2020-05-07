@@ -215,8 +215,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                Uri imageUri = Uri.parse(user.profile_pic);
-                Picasso.with(HomeActivity.this).load(imageUri).into(profile_image);
+                if(task.isSuccessful() && !user.profile_pic.equals("")){
+                    Uri imageUri = Uri.parse(user.profile_pic);
+                    Picasso.with(HomeActivity.this).load(imageUri).into(profile_image);
+                } else if (!user.gender) {
+                    profile_image.setBackground(getResources().getDrawable(R.drawable.female_1));
+                } else {
+                    profile_image.setBackground(getResources().getDrawable(R.drawable.male_1));
+                }
             }
         });
     }

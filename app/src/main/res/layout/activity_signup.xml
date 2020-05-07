@@ -48,6 +48,22 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView143354453"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/signUp"
+        android:textColor="@color/colorDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signUp_LogoName"
+        app:layout_constraintVertical_chainStyle="packed" />
+
     <ViewFlipper
         android:id="@+id/view_flipper"
         android:layout_width="match_parent"
@@ -59,7 +75,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUp_LogoName">
+        app:layout_constraintTop_toBottomOf="@id/textView143354453">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

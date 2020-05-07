@@ -16,7 +16,6 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/profile_appbar"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPureWhite"
@@ -35,14 +34,9 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/home_profile_image"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="16dp"
-                        android:paddingStart="5dp"
-                        android:paddingTop="5dp"
-                        android:paddingEnd="5dp"
-                        android:paddingBottom="5dp"
-                        android:src="@drawable/male"
                         app:civ_border_color="@color/colorPrimaryDark"
                         app:civ_border_overlay="true"
                         app:civ_border_width=".5dp"
