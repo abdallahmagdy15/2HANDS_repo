@@ -37,8 +37,10 @@
                 android:id="@+id/profilePic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginStart="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="100dp"
+                android:layout_marginEnd="0dp"
                 android:src="@drawable/male"
                 app:civ_border_color="@color/colorWhite"
                 app:civ_border_width="2dp"
@@ -99,40 +101,20 @@
                 android:paddingBottom="8dp"
                 app:layout_collapseMode="parallax">
 
-                <ImageView
-                    android:id="@+id/profileMessaging"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/messaging2"
-                    android:visibility="gone"
-                    card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
-                    card_view:layout_constraintTop_toTopOf="@id/profileFollowBtn" />
-
-                <RatingBar
-                    android:id="@+id/ratingBarGet"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end"
-                    android:progressTint="@color/colorAccent"
-                    card_view:layout_constraintBottom_toTopOf="@+id/ratings_count"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/profileRate" />
-
                 <TextView
                     android:id="@+id/profileName"
-                    android:layout_width="0dp"
+                    android:layout_width="191dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="80dp"
-                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_horizontal"
                     android:text="Name"
                     android:textColor="#181818"
-                    android:textDirection="locale"
-                    android:textSize="18sp"
+                    android:textDirection="inherit"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     card_view:layout_constraintBottom_toTopOf="@+id/jobTitle"
-                    card_view:layout_constraintEnd_toStartOf="@+id/profileFollowBtn"
+                    card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -140,150 +122,234 @@
                     android:id="@+id/jobTitle"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_horizontal"
                     android:text="Job"
                     android:textColor="#222222"
                     android:textDirection="locale"
                     android:textSize="15sp"
-                    card_view:layout_constraintBottom_toTopOf="@+id/country_region"
+                    card_view:layout_constraintBottom_toTopOf="@id/profile_buttons_lv"
+                    card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
                     card_view:layout_constraintTop_toBottomOf="@+id/profileName" />
 
-
-                <TextView
-                    android:id="@+id/country_region"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
-                    android:text="Kfs"
-                    android:textColor="#242424"
-                    android:textDirection="locale"
-                    android:textSize="15sp"
-                    card_view:layout_constraintBottom_toTopOf="@+id/profileBio"
+                <LinearLayout
+                    android:id="@+id/profile_buttons_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    card_view:layout_constraintBottom_toTopOf="@+id/profile_rate_lv"
+                    card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/jobTitle" />
+                    card_view:layout_constraintTop_toBottomOf="@id/jobTitle">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profileFollowBtn"
+                        android:layout_width="90dp"
+                        android:layout_height="35dp"
+                        android:visibility="gone"
+                        card_view:cardCornerRadius="20dp">
+
+                        <TextView
+                            android:id="@+id/profileFollowBtnTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/card_edge"
+                            android:gravity="center"
+                            android:text="@string/follow"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profileEditBtn"
+                        android:layout_width="90dp"
+                        android:layout_height="35dp"
+                        android:visibility="gone"
+                        card_view:cardCornerRadius="25dp">
+
+                        <TextView
+                            android:id="@+id/profileEditBtnTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/card_edge"
+                            android:gravity="center"
+                            android:text="@string/Edit"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/profileMessaging"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/card_edge"
+                        android:padding="5dp"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorPrimary"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_secured_letter" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/profile_rate_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    card_view:layout_constraintBottom_toTopOf="@id/country_region_ll"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/profile_buttons_lv">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        card_view:cardBackgroundColor="@color/colorWhite"
+                        card_view:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/imageView8"
+                            android:layout_width="22dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+
+                            card_view:srcCompat="@drawable/ic_star1" />
+
+                        <TextView
+                            android:id="@+id/profileRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="38dp"
+                            android:layout_marginEnd="8dp"
+                            android:gravity="center"
+                            android:text=".9"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        card_view:cardBackgroundColor="@color/colorAccent"
+                        card_view:cardCornerRadius="15dp">
+
+                        <TextView
+                            android:id="@+id/ratings_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="15 Reviews"
+                            android:textColor="@color/colorPureWhite"
+                            android:textSize="15sp" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/country_region_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    card_view:layout_constraintBottom_toTopOf="@id/profileBio"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/profile_rate_lv">
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/location_btn_drawable" />
+
+                    <TextView
+                        android:id="@+id/country_region"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Egypt , KFS"
+                        android:textColor="#242424"
+                        android:textDirection="locale"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/profileBio"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_horizontal"
                     android:text="this is biooo"
-                    android:textDirection="locale"
-                    card_view:layout_constraintBottom_toTopOf="@+id/profileFollowingsCount"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/country_region" />
-
-
-                <TextView
-                    android:id="@+id/profileFollowingsCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:text="1 follwings"
                     android:textColor="@color/colorDark"
                     android:textDirection="locale"
                     card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintBottom_toTopOf="@id/profile_followCount_lv"
+                    card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/profileBio" />
+                    card_view:layout_constraintTop_toBottomOf="@+id/country_region_ll" />
 
-
-                <TextView
-                    android:id="@+id/profileFollowersCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="8dp"
+                <LinearLayout
+                    android:id="@+id/profile_followCount_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="0dp"
-                    android:text="22 followers"
-                    android:textColor="@color/colorDark"
-                    android:textDirection="locale"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
                     card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintStart_toEndOf="@+id/profileFollowingsCount"
-                    card_view:layout_constraintTop_toBottomOf="@+id/profileBio" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="end"
-                    android:text="@string/reputation"
-                    android:textSize="18sp"
-                    card_view:layout_constraintBottom_toTopOf="@+id/profileRate"
+                    card_view:layout_constraintBottom_toTopOf="@+id/profileName"
                     card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@id/profileFollowBtn"
-                    card_view:layout_goneMarginTop="52dp" />
-
-                <TextView
-                    android:id="@+id/profileRate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:text=".9"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
-                    card_view:layout_constraintBottom_toTopOf="@+id/ratingBarGet"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                <TextView
-                    android:id="@+id/ratings_count"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:gravity="end"
-                    android:text="15"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/ratingBarGet" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/profileFollowBtn"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    android:visibility="visible"
-                    card_view:cardBackgroundColor="@color/colorWhite"
-                    card_view:cardCornerRadius="25dp"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintStart_toEndOf="@+id/profileName"
-                    card_view:layout_constraintTop_toTopOf="parent">
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/profileBio">
 
                     <TextView
-                        android:id="@+id/profileFollowBtnTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/follow"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/profileEditBtn"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    android:visibility="gone"
-                    card_view:cardBackgroundColor="@color/colorWhite"
-                    card_view:cardCornerRadius="25dp"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toTopOf="@id/profileFollowBtn">
+                        android:id="@+id/profileFollowingsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:paddingEnd="8dp"
+                        android:text="1 follwings"
+                        android:textColor="@color/colorDark"
+                        android:textDirection="locale"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/profileEditBtnTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/Edit"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:id="@+id/profileFollowersCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="0dp"
+                        android:text="22 followers"
+                        android:textColor="@color/colorDark"
+                        android:textDirection="locale"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

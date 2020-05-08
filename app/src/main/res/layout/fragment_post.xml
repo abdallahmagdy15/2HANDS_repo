@@ -109,29 +109,51 @@
         app:layout_constraintStart_toEndOf="@id/postOwnerPic"
         app:layout_constraintTop_toBottomOf="@id/postOwner" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="18dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/postTime"
+        app:layout_constraintTop_toBottomOf="@id/postOwner"
+        app:srcCompat="@drawable/location_btn_drawable" />
+
     <TextView
         android:id="@+id/postLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:focusableInTouchMode="true"
         android:text="Egypt"
-        android:textColor="#2B2B2B"
+        android:textColor="@color/colorGray"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/postTime"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/imageView7"
         app:layout_constraintTop_toBottomOf="@id/postOwner" />
 
-    <TextView
-        android:id="@+id/postCategory"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/postCategory_cv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:focusableInTouchMode="true"
-        android:text="@string/general"
-        android:textColor="#2B2B2B"
-        android:textSize="12sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
         app:layout_constraintStart_toEndOf="@id/postLocation"
-        app:layout_constraintTop_toBottomOf="@id/postOwner" />
+        app:layout_constraintTop_toBottomOf="@id/postOwner">
+
+        <TextView
+            android:id="@+id/postCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/general"
+            android:textColor="@color/colorDark"
+            android:textSize="12sp" />
+    </androidx.cardview.widget.CardView>
 
     <com.borjabravo.readmoretextview.ReadMoreTextView
         android:id="@+id/content"
@@ -153,7 +175,9 @@
         app:layout_constraintBottom_toTopOf="@id/post_cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postOwnerPic" />
+        app:layout_constraintTop_toBottomOf="@id/postOwnerPic"
+        app:trimLength="100"
+        app:trimMode="trimModeLength" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/post_cardView"

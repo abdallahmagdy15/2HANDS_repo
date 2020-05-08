@@ -83,7 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView country_region;
     TextView profileBio;
     TextView profileRate;
-    RatingBar ratingBar;
     TextView ratings_count;
     String curr_uid;
     TextView profileFollowingsCount;
@@ -123,7 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
         country_region = findViewById(R.id.country_region);
         profileRate = findViewById(R.id.profileRate);
         profileFollowBtn = findViewById(R.id.profileFollowBtn);
-        ratingBar = findViewById(R.id.ratingBarGet);
         ratings_count = findViewById(R.id.ratings_count);
         profileEditBtn = findViewById(R.id.profileEditBtn);
         profileMessaging = findViewById(R.id.profileMessaging);
@@ -540,10 +538,9 @@ public class ProfileActivity extends AppCompatActivity {
                 profileBio.setText(user.bio);
                 DecimalFormat df = new DecimalFormat("##.##");
                 profileRate.setText(df.format(user.rate));
-                ratingBar.setRating( (float)user.rate);
                 NumberFormat nf = NumberFormat.getInstance();
                 nf.setGroupingUsed(true);
-                ratings_count.setText( nf.format(user.ratings_count) );
+                ratings_count.setText( nf.format(user.ratings_count) + " Reviews" );
 
                 java.util.Date birthDate = user.birth_date.toDate();
                 java.util.Date newDate = new java.util.Date();
