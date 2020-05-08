@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.CreatePostActivity;
 import com.example.a2hands.FollowingHelper;
+import com.example.a2hands.ImagePreview;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
@@ -164,7 +165,6 @@ public class ProfileActivity extends AppCompatActivity {
         mPager.setAdapter(pagerAdapter);
 
         checkProfileStatus();
-
 
     }// end of onCreate method
 
@@ -599,6 +599,14 @@ public class ProfileActivity extends AppCompatActivity {
                         Picasso.with(ProfileActivity.this).load(Uri.parse(user.profile_cover)).into(imgV);
                     } else if (type.equals("profile_pic")){
                         Picasso.with(ProfileActivity.this).load(Uri.parse(user.profile_pic)).into(imgV);
+                        profilePic.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Intent i = new Intent(ProfileActivity.this, ImagePreview.class);
+                                i.putExtra("IMAGE_PATH",user.profile_pic);
+                                startActivity(i);
+                            }
+                        });
                     }
                 }
             }

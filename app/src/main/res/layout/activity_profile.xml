@@ -35,11 +35,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profilePic"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="90dp"
                 android:layout_marginEnd="0dp"
                 android:src="@drawable/male"
                 app:civ_border_color="@color/colorWhite"
@@ -152,7 +152,9 @@
                         android:layout_width="90dp"
                         android:layout_height="35dp"
                         android:visibility="gone"
-                        card_view:cardCornerRadius="20dp">
+                        card_view:cardBackgroundColor="@color/colorPureWhite"
+                        card_view:cardCornerRadius="20dp"
+                        card_view:cardElevation="0dp">
 
                         <TextView
                             android:id="@+id/profileFollowBtnTxt"
@@ -171,7 +173,9 @@
                         android:layout_width="90dp"
                         android:layout_height="35dp"
                         android:visibility="gone"
-                        card_view:cardCornerRadius="25dp">
+                        card_view:cardBackgroundColor="@color/colorPureWhite"
+                        card_view:cardCornerRadius="25dp"
+                        card_view:cardElevation="0dp">
 
                         <TextView
                             android:id="@+id/profileEditBtnTxt"
