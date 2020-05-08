@@ -151,7 +151,7 @@ public class EditCountryActivity extends AppCompatActivity {
                 countries.add(iso2);
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, countries_states.get(selectedCountry));
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.simple_item_in_spinner, countries_states.get(selectedCountry));
             stateSelect.setAdapter(adapter);
 
 

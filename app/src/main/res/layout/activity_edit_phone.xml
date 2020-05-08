@@ -20,34 +20,43 @@
 
     <LinearLayout
         android:id="@+id/newPhoneLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/spinner_background"
         android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editPhoneToolbar">
+        app:layout_constraintTop_toBottomOf="@id/editPhoneToolbar"
+        android:orientation="horizontal">
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/ccpCode_phoneEdit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:focusable="false"
             app:ccp_autoDetectCountry="true"
+            app:ccp_clickable="false"
             app:ccp_countryPreference="eg"
             app:ccp_hintExampleNumber="true"
+            app:ccp_showArrow="false"
             app:ccp_showFlag="false" />
 
         <EditText
             android:id="@+id/editText_carrierNumber_phoneEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            android:editable="false"
+            android:background="@android:color/transparent"
             android:hint="@string/phone"
             android:inputType="phone"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -55,13 +64,18 @@
         android:id="@+id/saveNewPhone_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPhoneLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/newPhoneLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

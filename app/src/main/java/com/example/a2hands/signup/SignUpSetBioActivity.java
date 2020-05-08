@@ -52,15 +52,18 @@ public class SignUpSetBioActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count != 0){
-                    skipButton.setVisibility(View.INVISIBLE);
-                    nextButton.setVisibility(View.VISIBLE);
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(s.equals("")){
+                    skipButton.setVisibility(View.VISIBLE);
+                    nextButton.setVisibility(View.INVISIBLE);
+                } else {
+                    skipButton.setVisibility(View.INVISIBLE);
+                    nextButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 

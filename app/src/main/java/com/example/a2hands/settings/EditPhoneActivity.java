@@ -65,10 +65,10 @@ public class EditPhoneActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(editTextCarrierNumberr.getText().toString().trim())){
-                    editTextCarrierNumberr.setError("Enter your Phone");
+                    editTextCarrierNumberr.setError(getResources().getString(R.string.enterYourPhone));
                 }
                 else if(! ccpCode.isValidFullNumber()) {
-                    editTextCarrierNumberr.setError("Phone is not valid");
+                    editTextCarrierNumberr.setError(getResources().getString(R.string.phoneIsNotValid));
                 }else {
                     Map<String, Object> newPhone = new HashMap<>();
                     newPhone.put("phone", ccpCode.getFullNumber());

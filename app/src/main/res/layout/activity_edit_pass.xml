@@ -18,62 +18,130 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorDark" />
 
-    <EditText
-        android:id="@+id/editTxt_changePass_current"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changePass_currentLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:hint="@string/currentPassword"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPassToolbar" />
-
-    <EditText
-        android:id="@+id/editTxt_changePass_new"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:hint="@string/newPassword"
-        android:inputType="textPassword"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_changePass_current" />
+        app:layout_constraintTop_toBottomOf="@+id/editPassToolbar"
+        app:passwordToggleEnabled="true">
 
-    <EditText
-        android:id="@+id/editTxt_changePass_confirm"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_changePass_current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/currentPassword"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changePass_newLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:hint="@string/confirmPassword"
-        android:inputType="textPassword"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_changePass_new" />
+        app:layout_constraintTop_toBottomOf="@+id/changePass_currentLayout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_changePass_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/newPassword"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changePass_confirmLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changePass_newLayout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_changePass_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/confirmPassword"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/saveNewPass_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_changePass_confirm" />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/changePass_confirmLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

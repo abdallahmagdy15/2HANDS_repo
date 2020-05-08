@@ -18,32 +18,70 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorDark" />
 
-    <EditText
-        android:id="@+id/editTxt_deleteAcc_currentPass"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:hint="@string/currentPassword"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/enterYourPassword"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deleteAccToolbar" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/deleteAcc_currentPassLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_deleteAcc_currentPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/currentPassword"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/deleteEmail_btnReal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/delete"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_deleteAcc_currentPass" />
+        app:layout_constraintTop_toBottomOf="@id/deleteAcc_currentPassLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,28 +21,33 @@
     <com.hbb20.CountryCodePicker
         android:id="@+id/ccpCountry_editCountry"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/spinner_background"
+        app:ccpDialog_showCloseIcon="true"
+        app:ccpDialog_showFastScroller="false"
+        app:ccp_arrowColor="@color/colorAccent"
+        app:ccp_arrowSize="26sp"
         app:ccp_autoDetectCountry="true"
         app:ccp_countryPreference="eg"
         app:ccp_showFullName="true"
         app:ccp_showNameCode="false"
         app:ccp_showPhoneCode="false"
+        app:ccp_textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCountryToolbar" />
-
+        app:layout_constraintTop_toBottomOf="@id/editCountryToolbar" />
 
     <Spinner
         android:id="@+id/settingsEditStates"
-        android:layout_width="376dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/spinner_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ccpCountry_editCountry" />
@@ -51,13 +56,18 @@
         android:id="@+id/saveNewCountry_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsEditStates" />
+        app:layout_constraintTop_toBottomOf="@id/settingsEditStates"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,9 @@ package com.example.a2hands.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,16 +23,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class DeleteAccActivity extends AppCompatActivity {
+public class DeleteAccActivity extends AppCompatActivity implements TextWatcher {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private EditText currentPass;
+
+    private TextInputLayout currPassLayout;
+    private TextInputEditText currentPass;
     private Button deleteAcc;
 
 
@@ -53,14 +59,17 @@ public class DeleteAccActivity extends AppCompatActivity {
             }
         });
 
+        currPassLayout = findViewById(R.id.deleteAcc_currentPassLayout);
         currentPass = findViewById(R.id.editTxt_deleteAcc_currentPass);
         deleteAcc = findViewById(R.id.deleteEmail_btnReal);
+
+        currentPass.addTextChangedListener(this);
 
         deleteAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(currentPass.getText().toString())){
-                    currentPass.setError("Enter your Password");
+                    currPassLayout.setError(getResources().getString(R.string.enterYourPassword));
                 } else {
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(user.getEmail(), currentPass.getText().toString());
@@ -88,7 +97,7 @@ public class DeleteAccActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.d("deleteAcc", e.toString());
-                            currentPass.setError("Wrong Password");
+                            currPassLayout.setError(getResources().getString(R.string.wrongPassword));
                         }
                     });
 
@@ -120,4 +129,19 @@ public class DeleteAccActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(count>0)
+            currPassLayout.setError(null);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

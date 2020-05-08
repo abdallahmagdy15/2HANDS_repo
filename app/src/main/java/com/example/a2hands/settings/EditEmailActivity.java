@@ -2,7 +2,9 @@ package com.example.a2hands.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -20,16 +22,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class EditEmailActivity extends AppCompatActivity {
+public class EditEmailActivity extends AppCompatActivity implements TextWatcher {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private EditText email, currentPass;
+
+    private TextInputLayout textInputLayout;
+    private TextInputEditText email, currentPass;
     private Button saveEmail;
 
     @Override
@@ -51,20 +57,27 @@ public class EditEmailActivity extends AppCompatActivity {
             }
         });
 
+        textInputLayout = findViewById(R.id.settingsChangeEmailLayout);
+
         email = findViewById(R.id.editTxt_changeEmail);
         currentPass = findViewById(R.id.editTxt_changeEmail_currentPass);
         saveEmail = findViewById(R.id.saveNewEmail_btn);
+
+        email.addTextChangedListener(this);
+        currentPass.addTextChangedListener(this);
 
         saveEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(email.getText().toString().trim())){
-                    email.setError("Enter your Email");
-                    //Toast.makeText(RegisterActivity.this, "Empty Email or Password!", Toast.LENGTH_SHORT).show();
+                    textInputLayout = findViewById(R.id.settingsChangeEmailLayout);
+                    textInputLayout.setError(getResources().getString(R.string.enterYourEmail));
                 } else if(! Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                    email.setError("Email is not valid");
+                    textInputLayout = findViewById(R.id.settingsChangeEmailLayout);
+                    textInputLayout.setError(getResources().getString(R.string.emailIsNotValid));
                 } else if(TextUtils.isEmpty(currentPass.getText().toString())){
-                    currentPass.setError("Enter your Password");
+                    textInputLayout = findViewById(R.id.changeEmail_currentPassLayout);
+                    textInputLayout.setError(getResources().getString(R.string.enterYourPassword));
                 } else {
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(user.getEmail(), currentPass.getText().toString()); // Current Login Credentials \\
@@ -91,7 +104,8 @@ public class EditEmailActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.d("saveNewEmail", e.toString());
-                                    currentPass.setError("Wrong Password");
+                                    textInputLayout = findViewById(R.id.changeEmail_currentPassLayout);
+                                    textInputLayout.setError(getResources().getString(R.string.wrongPassword));
                                 }
                             });
 
@@ -122,4 +136,19 @@ public class EditEmailActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(count>0)
+            textInputLayout.setError(null);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

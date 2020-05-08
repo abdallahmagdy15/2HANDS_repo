@@ -243,9 +243,6 @@ private FloatingActionButton addPost;
 
                 header_fAndLName.setText(user.full_name);
                 header_uname.setText("@"+user.user_name);
-
-                Uri imageUri = Uri.parse(user.profile_pic);
-                Picasso.with(HomeActivity.this).load(imageUri).into(header_profilePic);
             }
         });
     }
@@ -501,8 +498,8 @@ private FloatingActionButton addPost;
     public void navigateChatList(){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.inbox));
-        catsSpinner.setVisibility(View.GONE);
-        searchView.setVisibility(View.GONE);
+        catsSpinner.setVisibility(View.INVISIBLE);
+        searchView.setVisibility(View.INVISIBLE);
 
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);

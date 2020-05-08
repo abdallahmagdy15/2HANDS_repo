@@ -2,7 +2,9 @@ package com.example.a2hands.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,9 +35,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EditUserNameActivity extends AppCompatActivity {
+public class EditUserNameActivity extends AppCompatActivity implements TextWatcher {
 
-    EditText userName;
+    private TextInputEditText userName;
+    private TextInputLayout textInputLayout;
 
     //firebase
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,16 +66,18 @@ public class EditUserNameActivity extends AppCompatActivity {
             }
         });
 
+        textInputLayout = findViewById(R.id.changeUserNameLayout);
+
         userName = findViewById(R.id.editTxt_changeUserName);
         Button saveUserName = findViewById(R.id.saveNewUserName_btn);
 
-
+        userName.addTextChangedListener(this);
 
         saveUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(userName.getText().toString().trim())) {
-                    userName.setError("Enter your new Username");
+                    textInputLayout.setError(getResources().getString(R.string.enterYourUserName));
                 }else {
                     checkIfValidUsernameAndUpdate(userName.getText().toString().trim());
                 }
@@ -100,7 +107,7 @@ public class EditUserNameActivity extends AppCompatActivity {
                         for (DocumentSnapshot ds: task.getResult()){
                             String userNames = ds.getString("user_name");
                             if (username.equals(userNames)) {
-                                userName.setError("Username is already used");
+                                textInputLayout.setError(getResources().getString(R.string.userNameIsAlreadyUsed));
                             }
                         }
                     }
@@ -129,7 +136,7 @@ public class EditUserNameActivity extends AppCompatActivity {
                 }
             });
         } else {
-            userName.setError("Username is not valid");
+            textInputLayout.setError(getResources().getString(R.string.userNameIsNotValid));
         }
 
     }// end of checkIfValidUsername
@@ -156,4 +163,19 @@ public class EditUserNameActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(count>0)
+            textInputLayout.setError(null);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }

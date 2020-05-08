@@ -18,48 +18,96 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorDark" />
 
-    <EditText
-        android:id="@+id/editTxt_changeEmail"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/settingsChangeEmailLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:hint="@string/newEmail"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmailToolbar" />
-
-    <EditText
-        android:id="@+id/editTxt_changeEmail_currentPass"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="viewStart"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="@string/currentPassword"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:endIconDrawable="@drawable/mail_black_24dp"
+        app:endIconMode="custom"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_changeEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editEmailToolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_changeEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/newEmail"
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/changeEmail_currentPassLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:boxBackgroundColor="@color/colorWhite"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:errorEnabled="true"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsChangeEmailLayout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTxt_changeEmail_currentPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="18"
+            android:hint="@string/currentPassword"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/saveNewEmail_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/save"
+        android:textColor="@color/colorPureWhite"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTxt_changeEmail_currentPass" />
+        app:layout_constraintTop_toBottomOf="@id/changeEmail_currentPassLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 

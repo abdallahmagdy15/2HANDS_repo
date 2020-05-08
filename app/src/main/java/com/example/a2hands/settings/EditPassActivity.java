@@ -2,7 +2,9 @@ package com.example.a2hands.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,11 +33,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EditPassActivity extends AppCompatActivity {
+public class EditPassActivity extends AppCompatActivity implements TextWatcher {
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    private EditText currentPass, newPass,  confirmPass;
+    private TextInputLayout textInputLayout;
+    private TextInputEditText currentPass, newPass,  confirmPass;
     private Button savePass;
 
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
@@ -58,26 +63,41 @@ public class EditPassActivity extends AppCompatActivity {
             }
         });
 
+        textInputLayout = findViewById(R.id.changePass_currentLayout);
+
         currentPass = findViewById(R.id.editTxt_changePass_current);
         newPass = findViewById(R.id.editTxt_changePass_new);
         confirmPass = findViewById(R.id.editTxt_changePass_confirm);
+
         savePass = findViewById(R.id.saveNewPass_btn);
+
+        currentPass.addTextChangedListener(this);
+        newPass.addTextChangedListener(this);
+        confirmPass.addTextChangedListener(this);
 
         savePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(newPass.getText().toString().length() < 8 ){
+                if (TextUtils.isEmpty(currentPass.getText().toString())){
+                    textInputLayout = findViewById(R.id.changePass_currentLayout);
+                    textInputLayout.setError(getResources().getString(R.string.enterYourPassword));
+                } else if(newPass.getText().toString().length() < 8 ){
                     if(TextUtils.isEmpty(newPass.getText().toString())){
-                        newPass.setError("Enter your Password");
+                        textInputLayout = findViewById(R.id.changePass_newLayout);
+                        textInputLayout.setError(getResources().getString(R.string.enterYourPassword));
                     }else{
-                        newPass.setError("Too short password");
+                        textInputLayout = findViewById(R.id.changePass_newLayout);
+                        textInputLayout.setError(getResources().getString(R.string.tooShortPassword));
                     }
                 } else if(TextUtils.isEmpty(confirmPass.getText().toString())){
-                    confirmPass.setError("Enter your Confirm Password");
+                    textInputLayout = findViewById(R.id.changePass_confirmLayout);
+                    textInputLayout.setError(getResources().getString(R.string.enterYourConfirmPassword));
                 } else if(! confirmPass.getText().toString().equals(newPass.getText().toString())){
-                    confirmPass.setError("Password doesn't match");
+                    textInputLayout = findViewById(R.id.changePass_confirmLayout);
+                    textInputLayout.setError(getResources().getString(R.string.passwordDoesnotMatch));
                 } else if (! isValidPassword(confirmPass.getText().toString())){
-                    Toast.makeText(EditPassActivity.this, "Please add at least 1 Alphabet," + "\n" +" 1 Number and 1 Special Character", Toast.LENGTH_LONG).show();
+                    textInputLayout = findViewById(R.id.changePass_confirmLayout);
+                    textInputLayout.setError(getResources().getString(R.string.atLeast1Capital1Number1SpecialChar));
                 } else {
                     AuthCredential credential = EmailAuthProvider
                             .getCredential(user.getEmail(), currentPass.getText().toString()); // Current Login Credentials \\
@@ -105,7 +125,8 @@ public class EditPassActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.d("saveNewEmail", e.toString());
-                            currentPass.setError("Wrong Password");
+                            textInputLayout = findViewById(R.id.changePass_currentLayout);
+                            textInputLayout.setError(getResources().getString(R.string.wrongPassword));
                         }
                     });
                 }
@@ -146,4 +167,19 @@ public class EditPassActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(count>0)
+            textInputLayout.setError(null);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }
