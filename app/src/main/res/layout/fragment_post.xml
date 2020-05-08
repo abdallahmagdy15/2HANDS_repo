@@ -5,7 +5,7 @@
     android:id="@+id/postContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="1dp"
     android:background="@color/colorPureWhite"
     android:focusableInTouchMode="true">
 
@@ -61,10 +61,12 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:focusableInTouchMode="true"
         app:civ_border_overlay="false"
         app:civ_border_width="0dp"
+        app:layout_constraintBottom_toTopOf="@id/content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view10" />
 
@@ -73,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:focusableInTouchMode="true"
         android:gravity="start|center_vertical"
         android:text="@string/app_name"
@@ -88,7 +90,7 @@
         android:id="@+id/postOptions"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/more"
         android:focusableInTouchMode="true"
@@ -135,7 +137,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:autoLink="all"
         android:focusable="auto"
         android:focusableInTouchMode="true"
@@ -145,7 +147,7 @@
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="#1B1B1B"
         android:textColorLink="@color/colorPrimaryDark"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:visibility="gone"
         app:colorClickableText="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@id/post_cardView"
@@ -158,9 +160,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/postImage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +180,7 @@
         android:id="@+id/postImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:focusableInTouchMode="true"
         android:maxHeight="384dp"
@@ -188,13 +189,13 @@
         app:layout_constraintBottom_toTopOf="@id/videoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content" />
+        app:layout_constraintTop_toBottomOf="@id/post_cardView" />
 
     <FrameLayout
         android:id="@+id/videoContainer"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorDark"
         android:clickable="true"
         android:focusableInTouchMode="true"
@@ -229,13 +230,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/postCounter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="30dp"
         android:focusableInTouchMode="true"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/postReactContainer"
+        app:layout_constraintBottom_toTopOf="@id/view12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/videoContainer">
@@ -295,16 +295,25 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/view12"
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@color/colorWhiteGray"
+        app:layout_constraintBottom_toTopOf="@id/postReactContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postCounter" />
+
     <LinearLayout
         android:id="@+id/postReactContainer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
         android:focusableInTouchMode="true"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postCounter">
+        app:layout_constraintTop_toBottomOf="@id/view12">
 
         <ImageView
             android:id="@+id/likeBtn"
