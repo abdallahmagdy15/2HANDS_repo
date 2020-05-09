@@ -142,6 +142,7 @@
 
     <!--drawer menu-->
     <string name="myProfile">Mon profil</string>
+    <string name="trending">Tendance</string>
     <string name="saved">Enregistré</string>
     <string name="settings">Réglages</string>
     <string name="signOut">Déconnexion</string>

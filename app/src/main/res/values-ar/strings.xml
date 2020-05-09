@@ -142,6 +142,7 @@
 
     <!--drawer menu-->
     <string name="myProfile">الصفحة الشخصية</string>
+    <string name="trending">الشائع</string>
     <string name="saved">المحفوظات</string>
     <string name="settings">الاعدادات</string>
     <string name="signOut">تسجيل الخروج</string>

@@ -141,6 +141,7 @@
 
     <!--drawer menu-->
     <string name="myProfile">My profile</string>
+    <string name="trending">Trending</string>
     <string name="saved">Saved</string>
     <string name="settings">Settings</string>
     <string name="signOut">Sign out</string>
@@ -247,7 +248,7 @@
     <string name="followers">Followers</string>
 
     <!--activity following-->
-    <string name="followings">Following</string>
+    <string name="followings">Followings</string>
 
     <!--sharing bottom sheet-->
     <string name="shareNow">Share Now</string>

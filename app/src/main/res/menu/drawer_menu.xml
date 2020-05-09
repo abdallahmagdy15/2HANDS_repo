@@ -13,18 +13,6 @@
 
             android:title="@string/home" />
         <item
-            android:id="@+id/nav_trending"
-
-            android:title="Trending" />
-        <item
-            android:id="@+id/nav_followingsPosts"
-
-            android:title="Followings Posts" />
-        <item
-            android:id="@+id/nav_saved"
-
-            android:title="@string/saved" />
-        <item
             android:id="@+id/nav_settings"
 
             android:title="@string/settings" />
@@ -34,7 +22,24 @@
             android:title="@string/signOut" />
     </group>
 
-    <item android:title="@string/communicate">
+    <item android:title="@string/posts">
+        <menu>
+            <item
+                android:id="@+id/nav_trending"
+
+                android:title="@string/trending" />
+            <item
+                android:id="@+id/nav_followingsPosts"
+
+                android:title="@string/followings" />
+            <item
+                android:id="@+id/nav_saved"
+
+                android:title="@string/saved" />
+        </menu>
+    </item>
+
+    <item android:title="@string/communicate" android:titleCondensed="@string/posts">
         <menu>
             <item
                 android:id="@+id/nav_share"

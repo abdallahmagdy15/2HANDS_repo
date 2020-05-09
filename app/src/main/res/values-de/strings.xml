@@ -142,6 +142,7 @@
 
     <!--drawer menu-->
     <string name="myProfile">Mein Profil</string>
+    <string name="trending">Trend</string>
     <string name="saved">Gerettet</string>
     <string name="settings">die Einstellungen</string>
     <string name="signOut">Ausloggen</string>
