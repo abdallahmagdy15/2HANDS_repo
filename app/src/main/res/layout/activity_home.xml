@@ -173,10 +173,11 @@
             android:layout_gravity="bottom"
             android:background="@color/colorPureWhite"
             android:elevation="4dp"
+            android:layoutDirection="ltr"
             android:padding="0dp"
+            app:bnc_mode="spread"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:bnc_mode="spread">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.gauravk.bubblenavigation.BubbleToggleView
                 android:id="@+id/bttmNav_home"
@@ -186,11 +187,11 @@
                 app:bt_colorActive="@color/colorPureWhite"
                 app:bt_colorInactive="@color/colorPrimaryDark"
                 app:bt_icon="@drawable/ic_home"
+                app:bt_padding="8dp"
                 app:bt_shape="@drawable/transition_background_drawable_home"
                 app:bt_title="@string/home"
-                app:bt_padding="8dp"
-                app:bt_titlePadding="8dp"
-                />
+                app:bt_titlePadding="8dp" />
+
             <com.gauravk.bubblenavigation.BubbleToggleView
                 android:id="@+id/bttmNav_search"
                 android:layout_width="wrap_content"
@@ -199,38 +200,38 @@
                 app:bt_colorActive="@color/colorPureWhite"
                 app:bt_colorInactive="@color/colorPrimaryDark"
                 app:bt_icon="@drawable/ic_search"
+                app:bt_padding="8dp"
                 app:bt_shape="@drawable/transition_background_drawable_home"
                 app:bt_title="@string/search"
-                app:bt_padding="8dp"
                 app:bt_titlePadding="8dp" />
+
             <com.gauravk.bubblenavigation.BubbleToggleView
                 android:id="@+id/bttmNav_notifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:bt_active="true"
+                app:bt_badgeTextSize="10sp"
                 app:bt_colorActive="@color/colorPureWhite"
                 app:bt_colorInactive="@color/colorPrimaryDark"
                 app:bt_icon="@drawable/ic_notification"
+                app:bt_padding="8dp"
                 app:bt_shape="@drawable/transition_background_drawable_home"
                 app:bt_title="@string/notifications"
-                app:bt_padding="8dp"
-                app:bt_titlePadding="8dp"
-                app:bt_badgeTextSize="10sp"
-                />
+                app:bt_titlePadding="8dp" />
+
             <com.gauravk.bubblenavigation.BubbleToggleView
                 android:id="@+id/bttmNav_messaging"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:bt_active="true"
+                app:bt_badgeTextSize="12sp"
                 app:bt_colorActive="@color/colorPureWhite"
                 app:bt_colorInactive="@color/colorPrimaryDark"
                 app:bt_icon="@drawable/messaging2"
+                app:bt_padding="8dp"
                 app:bt_shape="@drawable/transition_background_drawable_home"
                 app:bt_title="@string/messages"
-                app:bt_padding="8dp"
-                app:bt_titlePadding="8dp"
-                app:bt_badgeTextSize="12sp"
-                />
+                app:bt_titlePadding="8dp" />
             <!-- Add more child items here - max upto 5 -->
 
         </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
