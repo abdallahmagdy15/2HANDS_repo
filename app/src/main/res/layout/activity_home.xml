@@ -238,13 +238,20 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:scrollbars="vertical"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu" />
+<!--    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView-->
+<!--        android:id="@+id/slider"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:fitsSystemWindows="true" />-->
+
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/nav_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        android:scrollbars="vertical"-->
+<!--        app:headerLayout="@layout/drawer_header"-->
+<!--        app:menu="@menu/drawer_menu" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

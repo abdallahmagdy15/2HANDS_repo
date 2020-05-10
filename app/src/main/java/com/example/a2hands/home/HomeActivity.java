@@ -1,5 +1,6 @@
 package com.example.a2hands.home;
 
+import androidx.annotation.AnyRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,14 +9,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +62,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.mikepenz.iconics.typeface.IIcon;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.holder.ImageHolder;
+import com.mikepenz.materialdrawer.holder.StringHolder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +88,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class HomeActivity extends AppCompatActivity {
 
-    //drawer
-    private DrawerLayout drawer;
-    public NavigationView navigationView;
-private FloatingActionButton addPost;
+    //navigation drawer
+    AccountHeader headerResult;
+    Drawer result;
+
+    String userFullname;
+    String userUsername;
+
+    private FloatingActionButton addPost;
 
     //bottom navigation
     private BubbleNavigationConstraintView nav;
@@ -78,19 +105,15 @@ private FloatingActionButton addPost;
     SearchView searchView;
     TextView notificationsTitle;
 
-    //drawer header data
-    View headerView;
-    CircleImageView header_profilePic;
-    TextView header_fAndLName;
-    TextView header_uname;
-
     String selectedPostsType="HOME_DATE";
 
     private FirebaseFirestore db;
     String myUid;
+    Uri profileUri;
 
     List<ChatList> myUsersList = new ArrayList<>();
     int[] messagesCount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +123,6 @@ private FloatingActionButton addPost;
 
         db = FirebaseFirestore.getInstance();
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        //drawer
-        drawer = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
 
         nav = findViewById(R.id.bottom_navigation);
 
@@ -115,26 +134,12 @@ private FloatingActionButton addPost;
         profile_image = findViewById(R.id.home_profile_image);
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
 
-        //drawer header data
-        headerView = navigationView.getHeaderView(0);
-        header_profilePic = headerView.findViewById(R.id.drawer_profileImage);
-        header_fAndLName = headerView.findViewById(R.id.drawer_fAndLName);
-        header_uname = headerView.findViewById(R.id.drawer_userName);
-
         addPost = findViewById(R.id.home_addPost);
-
-        header_profilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        });
 
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
+                result.openDrawer();
             }
         });
 
@@ -151,17 +156,180 @@ private FloatingActionButton addPost;
             }
         });
 
+
         updateToken();
         loadUserPics();
         loadNavigationDrawerData();
         setListenerForBottomNavigation();
-        setListenerForNavigationView();
         getNewMessagesCountToBadge();
         checkForNotifications();
         navigateHome();
 
     }//////////////////////////////////end of onCreate method
 
+    private void initDrawer() {
+        PrimaryDrawerItem myProfileItem = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.myProfile).withIcon(R.drawable.ic_profile);
+        PrimaryDrawerItem homeItem = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.home).withIcon(R.drawable.ic_home_drawer);
+        PrimaryDrawerItem trendingItem = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.trending).withIcon(R.drawable.ic_trending);
+        PrimaryDrawerItem followingsItem = new PrimaryDrawerItem().withIdentifier(4).withName(R.string.followings).withIcon(R.drawable.ic_followings);
+        PrimaryDrawerItem savedItem = new PrimaryDrawerItem().withIdentifier(5).withName(R.string.saved).withIcon(R.drawable.ic_saved);
+        PrimaryDrawerItem settingsItem = new PrimaryDrawerItem().withIdentifier(6).withName(R.string.settings).withIcon(R.drawable.ic_settings);
+        PrimaryDrawerItem signOutItem = new PrimaryDrawerItem().withIdentifier(7).withName(R.string.signOut).withIcon(R.drawable.ic_sign_out);
+
+        //initialize and create the image loader logic
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(HomeActivity.this).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(HomeActivity.this).cancelRequest(imageView);
+            }
+        });
+
+        // Create the AccountHeader
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(HomeActivity.this)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
+                .withHeaderBackground(R.drawable.ic_large_triangles)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(userFullname)
+                                .withEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                                .withIcon(profileUri)
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
+        //create drawer menu
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult, true)
+                .addDrawerItems(
+                        myProfileItem,
+                        new SectionDrawerItem().withName(R.string.posts),
+                        homeItem,
+                        trendingItem,
+                        followingsItem,
+                        savedItem,
+                        new DividerDrawerItem(),
+                        settingsItem,
+                        signOutItem
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        getDrawerItemSelectedEvent(drawerItem);
+                        result.setSelection(-1);
+                        return false;
+                    }
+                })
+                .withSelectedItem(-1)
+                .build();
+    }
+
+    public void getDrawerItemSelectedEvent(IDrawerItem drawerItem){
+        switch ((int) drawerItem.getIdentifier()) {
+            case 1:
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                break;
+            case 2:
+                selectedPostsType = "HOME_DATE";
+                loadPosts(0,"HOME_DATE");
+                break;
+            case 3:
+                selectedPostsType = "HOME_PRIORITY";
+                loadPosts(0, "HOME_PRIORITY");
+                break;
+            case 4:
+                selectedPostsType = "HOME_FOLLOWINGS_POSTS";
+                loadPosts(0, "HOME_FOLLOWINGS_POSTS");
+                break;
+            case 5:
+                startActivity(new Intent(HomeActivity.this, SavedPostsActivity.class));
+                break;
+            case 6:
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                break;
+            case 7:
+                //stop notifications service
+                Intent intent = new Intent(HomeActivity.this, NotificationsService.class);
+                stopService(intent);
+
+                UserStatus.updateOnlineStatus(false, myUid);
+
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
+    }
+
+    public void loadUserPics(){
+        FirebaseFirestore.getInstance().collection("users/").document(myUid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                User user = task.getResult().toObject(User.class);
+                if(task.isSuccessful() && !user.profile_pic.equals("")){
+                    profileUri = Uri.parse(user.profile_pic);
+                    Picasso.with(HomeActivity.this).load(profileUri).into(profile_image);
+
+                } else if (user.profile_pic.equals("")){
+                    if (!user.gender) {
+                        profileUri = getUriToDrawable(R.drawable.female_1);
+                        profile_image.setImageResource(R.drawable.female_1);
+                    } else {
+                        profileUri = getUriToDrawable(R.drawable.male_1);
+                        profile_image.setImageResource(R.drawable.male_1);
+                    }
+                }
+            }
+        });
+    }
+
+    public Uri getUriToDrawable(int drawableId) {
+        Uri imageUri = (new Uri.Builder())
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(HomeActivity.this.getResources().getResourcePackageName(drawableId))
+                .appendPath(HomeActivity.this.getResources().getResourceTypeName(drawableId))
+                .appendPath(HomeActivity.this.getResources().getResourceEntryName(drawableId))
+                .build();
+        return imageUri;
+    }
+
+    public void loadNavigationDrawerData(){
+        FirebaseFirestore.getInstance().collection("users/").document(myUid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    User user = task.getResult().toObject(User.class);
+
+                    userFullname = user.full_name;
+                    userUsername = "@"+user.user_name;
+                    initDrawer();
+                }
+            }
+        });
+    }
 
 
     public void getNewMessagesCountToBadge(){
@@ -191,12 +359,10 @@ private FloatingActionButton addPost;
                                 allMessageCount += value;
                             }
                             if (allMessageCount > 0){
-
                                 nav.setBadgeValue(3,allMessageCount+"");
                             }
                             else
                                 nav.setBadgeValue(3,null);
-
                         }
 
                         @Override
@@ -210,42 +376,6 @@ private FloatingActionButton addPost;
         });
     }
 
-    public void loadUserPics(){
-        //load current user main pic in home top menu
-        FirebaseFirestore.getInstance().collection("users/").document(myUid)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-                if(task.isSuccessful() && !user.profile_pic.equals("")){
-                    Uri imageUri = Uri.parse(user.profile_pic);
-                    Picasso.with(HomeActivity.this).load(imageUri).into(profile_image);
-                    Picasso.with(HomeActivity.this).load(imageUri).into(header_profilePic);
-                } else if (user.profile_pic.equals("")){
-                    if (!user.gender) {
-                        profile_image.setBackground(getResources().getDrawable(R.drawable.female_1));
-                        header_profilePic.setBackground(getResources().getDrawable(R.drawable.female_1));
-                    } else {
-                        profile_image.setBackground(getResources().getDrawable(R.drawable.male_1));
-                        header_profilePic.setBackground(getResources().getDrawable(R.drawable.male_1));
-                    }
-                }
-            }
-        });
-    }
-
-    public void loadNavigationDrawerData(){
-        FirebaseFirestore.getInstance().collection("users/").document(myUid)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-
-                header_fAndLName.setText(user.full_name);
-                header_uname.setText("@"+user.user_name);
-            }
-        });
-    }
 
     public void setListenerForBottomNavigation() {
         //bottom navigation
@@ -265,51 +395,7 @@ private FloatingActionButton addPost;
             }
         });
     }
-    public void setListenerForNavigationView(){
-        //navigation drawer menu items
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_profile:
-                        startActivity(new Intent(HomeActivity.this , ProfileActivity.class));
-                        break;
-                    case R.id.nav_home:
-                        selectedPostsType = "HOME_DATE";
-                        loadPosts(0,"HOME_DATE");
-                        break;
-                    case R.id.nav_trending:
-                        selectedPostsType = "HOME_PRIORITY";
-                        loadPosts(0,"HOME_PRIORITY");
-                        break;
-                    case R.id.nav_followingsPosts:
-                        selectedPostsType = "HOME_FOLLOWINGS_POSTS";
-                        loadPosts(0,"HOME_FOLLOWINGS_POSTS");
-                        break;
-                    case R.id.nav_saved:
-                        startActivity(new Intent(HomeActivity.this , SavedPostsActivity.class));
-                        break;
-                    case R.id.nav_settings:
-                        startActivity(new Intent(HomeActivity.this , SettingsActivity.class));
-                        break;
-                    case R.id.nav_signOut:
-                        //stop notifications service
-                        Intent intent = new Intent(HomeActivity.this, NotificationsService.class);
-                        stopService(intent);
 
-                        UserStatus.updateOnlineStatus(false, myUid);
-
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(HomeActivity.this , LoginActivity.class));
-                        finish();
-                        break;
-                }
-
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
-            }
-        });
-    }
 
     public void checkForNotifications(){
         //check notifications
@@ -324,7 +410,7 @@ private FloatingActionButton addPost;
                             if(!ds.getValue(Notification.class).is_seen) count++;
                         }
                         if(count > 0){
-                           nav.setBadgeValue(2,count+"");
+                            nav.setBadgeValue(2,count+"");
                         }
                         else
                             nav.setBadgeValue(2,null);
@@ -397,14 +483,13 @@ private FloatingActionButton addPost;
     public void onBackPressed() {
         Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.homeFrag);
 
-        if(drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
+        if(result.isDrawerOpen()){
+            result.closeDrawer();
             return;
         } else if(f instanceof ChatListFragment ||
                 f instanceof SearchFragment ||
                 f instanceof NotificationFragment) {
 
-            //nav.setSelectedItemId(nav.getMenu().getItem(0).getItemId());
             navigateHome();
             return;
         } else if (doubleBackToExitPressedOnce) {

@@ -111,6 +111,10 @@ dependencies {
     //bubble bottom nav
     implementation 'com.gauravk.bubblenavigation:bubblenavigation:1.0.7'
 
+    //MaterialDrawer lib
+    //noinspection GradleDependency
+    implementation "com.mikepenz:materialdrawer:6.1.2"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
