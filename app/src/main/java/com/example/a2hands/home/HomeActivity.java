@@ -303,12 +303,6 @@ private FloatingActionButton addPost;
                         startActivity(new Intent(HomeActivity.this , LoginActivity.class));
                         finish();
                         break;
-                    case R.id.nav_share:
-                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.share), Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_send:
-                        Toast.makeText(HomeActivity.this, getResources().getString(R.string.send), Toast.LENGTH_SHORT).show();
-                        break;
                 }
 
                 drawer.closeDrawer(GravityCompat.START);

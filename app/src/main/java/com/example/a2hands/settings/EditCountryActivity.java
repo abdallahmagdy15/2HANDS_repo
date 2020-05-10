@@ -54,12 +54,6 @@ public class EditCountryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.editCountry));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         saveCountry = findViewById(R.id.saveNewCountry_btn);
         ccpCountry = findViewById(R.id.ccpCountry_editCountry);

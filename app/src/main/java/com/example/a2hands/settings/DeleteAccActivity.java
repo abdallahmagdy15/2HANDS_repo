@@ -52,12 +52,6 @@ public class DeleteAccActivity extends AppCompatActivity implements TextWatcher 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.deleteAccount));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         currPassLayout = findViewById(R.id.deleteAcc_currentPassLayout);
         currentPass = findViewById(R.id.editTxt_deleteAcc_currentPass);

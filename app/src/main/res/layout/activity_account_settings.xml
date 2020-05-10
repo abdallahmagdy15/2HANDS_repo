@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settings.AccountSettingsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/accountSettings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_line_gray"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/account"
+        app:titleTextColor="@color/colorDark" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountSettings_toolbar">
+
+        <TextView
+            android:id="@+id/accountSettings_editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editName"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editUsername"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editName"
+            app:srcCompat="@drawable/ic_user_name_outline" />
+
+        <TextView
+            android:id="@+id/accountSettings_editUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editUserName"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountSettings_editName" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editUsername"
+            app:srcCompat="@drawable/ic_username_outline" />
+
+        <TextView
+            android:id="@+id/accountSettings_editEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editEmail"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editPhone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountSettings_editUsername" />
+
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editEmail"
+            app:srcCompat="@drawable/ic_email_outline" />
+
+        <TextView
+            android:id="@+id/accountSettings_editPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editPhone"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editCountry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountSettings_editEmail" />
+
+        <ImageView
+            android:id="@+id/imageView19"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editPhone"
+            app:srcCompat="@drawable/ic_phone_outline" />
+
+        <TextView
+            android:id="@+id/accountSettings_editCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editCountry"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountSettings_editPhone" />
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editCountry"
+            app:srcCompat="@drawable/ic_location_outline" />
+
+        <TextView
+            android:id="@+id/accountSettings_editPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/editPassword"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accountSettings_editCountry" />
+
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_editPassword"
+            app:srcCompat="@drawable/ic_password_outline" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

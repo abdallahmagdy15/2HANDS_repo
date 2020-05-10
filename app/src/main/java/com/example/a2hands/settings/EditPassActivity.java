@@ -56,12 +56,7 @@ public class EditPassActivity extends AppCompatActivity implements TextWatcher {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.editPassword));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         textInputLayout = findViewById(R.id.changePass_currentLayout);
 

@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/drawer_posts"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_profile"
 
@@ -13,6 +15,24 @@
 
             android:title="@string/home" />
         <item
+            android:id="@+id/nav_trending"
+
+            android:title="@string/trending" />
+        <item
+            android:id="@+id/nav_followingsPosts"
+
+            android:title="@string/followings" />
+        <item
+            android:id="@+id/nav_saved"
+
+            android:title="@string/saved" />
+
+    </group>
+
+    <group
+        android:id="@+id/drawer_other"
+        android:checkableBehavior="single">
+        <item
             android:id="@+id/nav_settings"
 
             android:title="@string/settings" />
@@ -20,36 +40,6 @@
             android:id="@+id/nav_signOut"
 
             android:title="@string/signOut" />
+
     </group>
-
-    <item android:title="@string/posts">
-        <menu>
-            <item
-                android:id="@+id/nav_trending"
-
-                android:title="@string/trending" />
-            <item
-                android:id="@+id/nav_followingsPosts"
-
-                android:title="@string/followings" />
-            <item
-                android:id="@+id/nav_saved"
-
-                android:title="@string/saved" />
-        </menu>
-    </item>
-
-    <item android:title="@string/communicate" android:titleCondensed="@string/posts">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-
-                android:title="@string/share" />
-            <item
-                android:id="@+id/nav_send"
-
-                android:title="@string/send" />
-        </menu>
-    </item>
-
 </menu>

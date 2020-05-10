@@ -59,12 +59,7 @@ public class EditUserNameActivity extends AppCompatActivity implements TextWatch
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.editUserName));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         textInputLayout = findViewById(R.id.changeUserNameLayout);
 

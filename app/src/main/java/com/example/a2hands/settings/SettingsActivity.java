@@ -37,9 +37,14 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    String myUid;
 
-    String[] generalSettingsItems;
+    TextView settings_account;
+    TextView settings_Pref;
+    TextView settings_blockedUsers;
+    TextView settings_mutedUsers;
+    TextView settings_nightMode;
+    TextView settings_about;
+    String myUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,90 +57,21 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.settings));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
-            }
-        });
 
+        settings_account     =findViewById(R.id.settings_account);
+        settings_Pref        =findViewById(R.id.settings_preferences);
+        settings_blockedUsers=findViewById(R.id.settings_blocked_users);
+        settings_mutedUsers  =findViewById(R.id.settings_muted_users);;
+        settings_nightMode   =findViewById(R.id.settings_night_mode);;
+        settings_about       =findViewById(R.id.settings_about);;
         myUid = FirebaseAuth.getInstance().getUid();
 
-        //account
-        TextView editNamebtn = findViewById(R.id.btn_editName);
-        TextView editUserNamebtn = findViewById(R.id.btn_editUserName);
-        TextView editEmailbtn = findViewById(R.id.btn_editEmail);
-        TextView editPhonebtn = findViewById(R.id.btn_editPhone);
-        TextView editCountrybtn = findViewById(R.id.btn_editCountry);
-        TextView editPassbtn = findViewById(R.id.btn_editPass);
-        final TextView editPhoneTxt = findViewById(R.id.txtView_editPhone);
-        final TextView editNameTxt = findViewById(R.id.txtView_editName);
-        final TextView editUserNameTxt = findViewById(R.id.txtView_editUserName);
-        final TextView editCountryTxt = findViewById(R.id.txtView_editCountry);
-        final TextView editEmailTxt = findViewById(R.id.txtView_editEmail);
-        TextView editPassTxt = findViewById(R.id.textView_editPass);
-        TextView deleteAccTxt = findViewById(R.id.textView_deleteAcc);
-        deleteAccTxt.setBackgroundColor(Color.TRANSPARENT);
-
-        //general
-        ListView generalListView = findViewById(R.id.listView_generalSettings);
-
-        generalSettingsItems = getResources().getStringArray(R.array.generalSettings);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.simple_item_in_listview,generalSettingsItems);
-        generalListView.setAdapter(adapter);
-
-        setListViewHeightBasedOnChildren(generalListView);
-
-        generalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String itemSelected = generalSettingsItems[position];
-
-                switch (position){
-                    case 0:
-                        startActivity(new Intent(SettingsActivity.this , LanguageActivity.class));
-                        break;
-                    case 1:
-                        startActivity(new Intent(SettingsActivity.this , NotificationActivity.class));
-                        break;
-                    case 2:
-                        startActivity(new Intent(SettingsActivity.this , BlockedUsersActivity.class));
-                        break;
-                    case 3:
-
-                        break;
-                    case 4:
-                        startActivity(new Intent(SettingsActivity.this , AboutAppActivity.class));
-                        break;
-                }
-            }
-        });
-
-        editNamebtn.setOnClickListener(this);
-        editUserNamebtn.setOnClickListener(this);
-        editEmailbtn.setOnClickListener(this);
-        editPhonebtn.setOnClickListener(this);
-        editPassbtn.setOnClickListener(this);
-        editCountrybtn.setOnClickListener(this);
-        editPassTxt.setOnClickListener(this);
-        deleteAccTxt.setOnClickListener(this);
-
-        //drawer header data
-        FirebaseFirestore.getInstance().collection("users/").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-
-                editNameTxt.setText(user.full_name);
-                editUserNameTxt.setText("@" + user.user_name);
-                editCountryTxt.setText(loadCountryUsingItsISO(user.country));
-                editPhoneTxt.setText(user.phone);
-                editEmailTxt.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-            }
-        });
+        settings_account       .setOnClickListener(this);
+        settings_Pref          .setOnClickListener(this);
+        settings_blockedUsers  .setOnClickListener(this);
+        settings_mutedUsers    .setOnClickListener(this);
+        settings_nightMode     .setOnClickListener(this);
+        settings_about         .setOnClickListener(this);
 
 
     }// end of onCreate method
@@ -144,27 +80,23 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_editName:
-                startActivity(new Intent(SettingsActivity.this , EditNameActivity.class));
+            case R.id.settings_account:
+                startActivity(new Intent(SettingsActivity.this , AccountSettingsActivity.class));
                 break;
-            case R.id.btn_editUserName:
-                startActivity(new Intent(SettingsActivity.this , EditUserNameActivity.class));
+            case R.id.settings_preferences:
+                startActivity(new Intent(SettingsActivity.this , PreferencesSettingsActivity.class));
                 break;
-            case R.id.btn_editEmail:
-                startActivity(new Intent(SettingsActivity.this , EditEmailActivity.class));
+            case R.id.settings_blocked_users:
+                startActivity(new Intent(SettingsActivity.this , BlockedUsersActivity.class));
                 break;
-            case R.id.btn_editPhone:
+            case R.id.settings_muted_users:
                 startActivity(new Intent(SettingsActivity.this , EditPhoneActivity.class));
                 break;
-            case R.id.btn_editPass:
-            case R.id.textView_editPass:
+            case R.id.settings_night_mode:
                 startActivity(new Intent(SettingsActivity.this , EditPassActivity.class));
                 break;
-            case R.id.btn_editCountry:
-                startActivity(new Intent(SettingsActivity.this , EditCountryActivity.class));
-                break;
-            case R.id.textView_deleteAcc:
-                startActivity(new Intent(SettingsActivity.this , DeleteAccActivity.class));
+            case R.id.settings_about:
+                startActivity(new Intent(SettingsActivity.this , AboutAppActivity.class));
                 break;
         }
     }
@@ -172,69 +104,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
-    }
-
-
-    public void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-
-
-    // loading JSON file of countries and states from assets folder
-    public String loadCountryStateJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream inputStreanm = this.getAssets().open("countriesandstates.json");
-            int size = inputStreanm.available();
-            byte[] buffer = new byte[size];
-            inputStreanm.read(buffer);
-            inputStreanm.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
-
-    public String loadCountryUsingItsISO(String countryCode){
-        try {
-            JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
-            JSONArray countries_arr = obj.getJSONArray("countries");
-
-            Map<String,String> countries_code_name = new HashMap<>();
-
-            for (int i = 0; i < countries_arr.length(); i++) {
-                JSONObject jo_inside = countries_arr.getJSONObject(i);
-                String iso2 = jo_inside.getString("iso2");
-                String country_name = jo_inside.getString("name");
-
-                countries_code_name.put(iso2,country_name);
-            }
-            return countries_code_name.get(countryCode);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override

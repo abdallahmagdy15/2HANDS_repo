@@ -50,12 +50,7 @@ public class EditEmailActivity extends AppCompatActivity implements TextWatcher 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.editEmail));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         textInputLayout = findViewById(R.id.settingsChangeEmailLayout);
 

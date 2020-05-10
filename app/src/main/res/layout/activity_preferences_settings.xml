@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settings.PreferencesSettingsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/prefSettings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_line_gray"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Preferences"
+        app:titleTextColor="@color/colorDark" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/prefSettings_toolbar">
+
+        <TextView
+            android:id="@+id/prefSettings_editLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/language"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editUsername"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/prefSettings_editLang"
+            app:srcCompat="@drawable/ic_globe_outline" />
+
+        <TextView
+            android:id="@+id/prefSettings_editNotifis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/notifications"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/prefSettings_editFavCats"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prefSettings_editLang" />
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/prefSettings_editNotifis"
+            app:srcCompat="@drawable/ic_notification" />
+
+        <TextView
+            android:id="@+id/prefSettings_editFavCats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="Favourite Categories"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prefSettings_editNotifis" />
+
+        <ImageView
+            android:id="@+id/imageView18"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/prefSettings_editFavCats"
+            app:srcCompat="@drawable/ic_categorize" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,12 +49,7 @@ public class EditNameActivity extends AppCompatActivity implements TextWatcher {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.editName));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         textInputLayout = findViewById(R.id.changeFullNameLayout);
 

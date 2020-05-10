@@ -31,12 +31,6 @@ public class BlockedUsersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.blockedUsers));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(BlockedUsersActivity.this, SettingsActivity.class));
-            }
-        });
 
         myUid = FirebaseAuth.getInstance().getUid();
 
