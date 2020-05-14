@@ -78,7 +78,6 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     public MyPostRecyclerViewAdapter(List<Post> posts) {
         postsList = posts;
-
     }
 
     @Override

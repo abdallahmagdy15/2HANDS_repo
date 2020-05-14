@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- this permission is IMPORTANT for android kitkat API 19 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,36 +23,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".settings.PreferencesSettingsActivity" android:parentActivityName=".settings.PreferencesSettingsActivity"/>
-        <activity android:name=".settings.AccountSettingsActivity" android:parentActivityName=".settings.AccountSettingsActivity" />
+        <activity android:name=".settings.PreferencesSettingsActivity" android:parentActivityName=".settings.PreferencesSettingsActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.AccountSettingsActivity" android:parentActivityName=".settings.AccountSettingsActivity" android:launchMode="singleTop"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".home.posts.PostPreviewActivity" android:parentActivityName=".home.posts.PostPreviewActivity" />
-        <activity android:name=".settings.EditUserNameActivity" android:parentActivityName=".settings.EditUserNameActivity" />
-        <activity android:name=".profile.EditProfileActivity" android:parentActivityName=".profile.EditProfileActivity" />
-        <activity android:name=".VideoPreview" android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview" />
-        <activity android:name=".home.LikesActivity" android:parentActivityName=".home.LikesActivity" />
+        <activity android:name=".home.posts.PostPreviewActivity" android:parentActivityName=".home.posts.PostPreviewActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditUserNameActivity" android:parentActivityName=".settings.EditUserNameActivity" android:launchMode="singleTop"/>
+        <activity android:name=".profile.EditProfileActivity" android:parentActivityName=".profile.EditProfileActivity" android:launchMode="singleTop"/>
+        <activity android:name=".VideoPreview" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTop"/>
+        <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview" android:launchMode="singleTop"/>
+        <activity android:name=".home.LikesActivity" android:parentActivityName=".home.LikesActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".profile.FollowingsActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_followings"
             android:parentActivityName=".profile.FollowingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".profile.FollowersActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_followers"
             android:parentActivityName=".profile.FollowersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".locationsearch.SearchLocation" />
-        <activity android:name=".SavedPostsActivity" android:parentActivityName=".SavedPostsActivity" />
-        <activity android:name=".rating.RatingsActivity" android:parentActivityName=".rating.RatingsActivity" />
-        <activity android:name=".ForgetPasswordActivity" android:parentActivityName=".ForgetPasswordActivity"/>
-        <activity android:name=".profile.ProfileActivity" android:parentActivityName=".profile.ProfileActivity" />
-        <activity android:name=".CreatePostActivity" android:parentActivityName=".CreatePostActivity" />
-        <activity android:name=".signup.SignUpActivity" android:parentActivityName=".signup.SignUpActivity"/>
+        <activity android:name=".SavedPostsActivity" android:parentActivityName=".SavedPostsActivity" android:launchMode="singleTop"/>
+        <activity android:name=".rating.RatingsActivity" android:parentActivityName=".rating.RatingsActivity" android:launchMode="singleTop"/>
+        <activity android:name=".ForgetPasswordActivity" android:parentActivityName=".ForgetPasswordActivity" android:launchMode="singleTop"/>
+        <activity android:name=".profile.ProfileActivity" android:parentActivityName=".profile.ProfileActivity" android:launchMode="singleTop"/>
+        <activity android:name=".CreatePostActivity" android:parentActivityName=".CreatePostActivity" android:launchMode="singleTop"/>
+        <activity android:name=".signup.SignUpActivity" android:parentActivityName=".signup.SignUpActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -59,19 +62,20 @@
         <activity android:name=".signup.SignUpSetBioActivity" />
         <activity android:name=".signup.SignUpPickPictureActivity" />
         <activity android:name=".home.comments.CommentsActivity" />
-        <activity android:name=".settings.SettingsActivity" android:parentActivityName=".settings.SettingsActivity"/>
-        <activity android:name=".settings.AboutAppActivity" android:parentActivityName=".settings.AboutAppActivity" />
-        <activity android:name=".settings.BlockedUsersActivity" android:parentActivityName=".settings.BlockedUsersActivity" />
-        <activity android:name=".settings.DeleteAccActivity" android:parentActivityName=".settings.DeleteAccActivity" />
-        <activity android:name=".settings.EditCountryActivity" android:parentActivityName=".settings.EditCountryActivity"/>
-        <activity android:name=".settings.EditEmailActivity" android:parentActivityName=".settings.EditEmailActivity"/>
-        <activity android:name=".settings.EditNameActivity" android:parentActivityName=".settings.EditNameActivity" />
-        <activity android:name=".settings.EditPassActivity" android:parentActivityName=".settings.EditPassActivity" />
-        <activity android:name=".settings.EditPhoneActivity" android:parentActivityName=".settings.EditPhoneActivity"/>
-        <activity android:name=".settings.LanguageActivity" android:parentActivityName=".settings.LanguageActivity" />
-        <activity android:name=".settings.NotificationActivity" android:parentActivityName=".settings.NotificationActivity"/>
+        <activity android:name=".settings.SettingsActivity" android:parentActivityName=".settings.SettingsActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.AboutAppActivity" android:parentActivityName=".settings.AboutAppActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.BlockedUsersActivity" android:parentActivityName=".settings.BlockedUsersActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.DeleteAccActivity" android:parentActivityName=".settings.DeleteAccActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditCountryActivity" android:parentActivityName=".settings.EditCountryActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditEmailActivity" android:parentActivityName=".settings.EditEmailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditNameActivity" android:parentActivityName=".settings.EditNameActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditPassActivity" android:parentActivityName=".settings.EditPassActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.EditPhoneActivity" android:parentActivityName=".settings.EditPhoneActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.LanguageActivity" android:parentActivityName=".settings.LanguageActivity" android:launchMode="singleTop"/>
+        <activity android:name=".settings.NotificationActivity" android:parentActivityName=".settings.NotificationActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".chat.ChatActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
