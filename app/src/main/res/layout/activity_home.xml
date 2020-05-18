@@ -187,75 +187,134 @@
             card_view:srcCompat="@drawable/ic_add" />
 
 
-        <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
-            android:id="@+id/bottom_navigation"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48.5dp"
             android:layout_gravity="bottom"
-            android:background="@color/colorPureWhite"
-            android:elevation="4dp"
-            android:layoutDirection="ltr"
-            android:padding="0dp"
-            app:bnc_mode="spread"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="vertical">
 
-            <com.gauravk.bubblenavigation.BubbleToggleView
-                android:id="@+id/bttmNav_home"
+            <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPureWhite"
+                android:elevation="4dp"
+                android:layoutDirection="ltr"
+                android:padding="0dp"
+                app:bnc_mode="spread">
+
+                <com.gauravk.bubblenavigation.BubbleToggleView
+                    android:id="@+id/bttmNav_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bt_active="true"
+                    app:bt_colorActive="@color/colorPureWhite"
+                    app:bt_colorInactive="@color/colorPrimaryDark"
+                    app:bt_icon="@drawable/ic_home"
+                    app:bt_padding="8dp"
+                    app:bt_shape="@drawable/transition_background_drawable_home"
+                    app:bt_title="@string/home"
+                    app:bt_titlePadding="8dp" />
+
+                <com.gauravk.bubblenavigation.BubbleToggleView
+                    android:id="@+id/bttmNav_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bt_active="true"
+                    app:bt_colorActive="@color/colorPureWhite"
+                    app:bt_colorInactive="@color/colorPrimaryDark"
+                    app:bt_icon="@drawable/ic_search"
+                    app:bt_padding="8dp"
+                    app:bt_shape="@drawable/transition_background_drawable_home"
+                    app:bt_title="@string/search"
+                    app:bt_titlePadding="8dp" />
+
+                <com.gauravk.bubblenavigation.BubbleToggleView
+                    android:id="@+id/bttmNav_notifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bt_active="true"
+                    app:bt_badgeTextSize="10sp"
+                    app:bt_colorActive="@color/colorPureWhite"
+                    app:bt_colorInactive="@color/colorPrimaryDark"
+                    app:bt_icon="@drawable/ic_notification"
+                    app:bt_padding="8dp"
+                    app:bt_shape="@drawable/transition_background_drawable_home"
+                    app:bt_title="@string/notifications"
+                    app:bt_titlePadding="8dp" />
+
+                <com.gauravk.bubblenavigation.BubbleToggleView
+                    android:id="@+id/bttmNav_messaging"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bt_active="true"
+                    app:bt_badgeTextSize="12sp"
+                    app:bt_colorActive="@color/colorPureWhite"
+                    app:bt_colorInactive="@color/colorPrimaryDark"
+                    app:bt_icon="@drawable/messaging2"
+                    app:bt_padding="8dp"
+                    app:bt_shape="@drawable/transition_background_drawable_home"
+                    app:bt_title="@string/messages"
+                    app:bt_titlePadding="8dp" />
+                <!-- Add more child items here - max upto 5 -->
+
+            </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48.5dp"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingEnd="34dp">
+
+            <TextView
+                android:id="@+id/home_homeBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bt_active="true"
-                app:bt_colorActive="@color/colorPureWhite"
-                app:bt_colorInactive="@color/colorPrimaryDark"
-                app:bt_icon="@drawable/ic_home"
-                app:bt_padding="8dp"
-                app:bt_shape="@drawable/transition_background_drawable_home"
-                app:bt_title="@string/home"
-                app:bt_titlePadding="8dp" />
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:paddingStart="46dp"
+                android:paddingEnd="8dp"
+                android:text="@string/home"
+                android:textColor="#00000000" />
 
-            <com.gauravk.bubblenavigation.BubbleToggleView
-                android:id="@+id/bttmNav_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bt_active="true"
-                app:bt_colorActive="@color/colorPureWhite"
-                app:bt_colorInactive="@color/colorPrimaryDark"
-                app:bt_icon="@drawable/ic_search"
-                app:bt_padding="8dp"
-                app:bt_shape="@drawable/transition_background_drawable_home"
-                app:bt_title="@string/search"
-                app:bt_titlePadding="8dp" />
+            <TextView
+                android:id="@+id/home_searchBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:paddingStart="46dp"
+                android:paddingEnd="8dp"
+                android:text="@string/search"
+                android:textColor="#00000000"
+                android:textSize="15sp" />
 
-            <com.gauravk.bubblenavigation.BubbleToggleView
-                android:id="@+id/bttmNav_notifications"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bt_active="true"
-                app:bt_badgeTextSize="10sp"
-                app:bt_colorActive="@color/colorPureWhite"
-                app:bt_colorInactive="@color/colorPrimaryDark"
-                app:bt_icon="@drawable/ic_notification"
-                app:bt_padding="8dp"
-                app:bt_shape="@drawable/transition_background_drawable_home"
-                app:bt_title="@string/notifications"
-                app:bt_titlePadding="8dp" />
+            <TextView
+                android:id="@+id/home_notifiBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:paddingStart="46dp"
+                android:paddingEnd="8dp"
+                android:text="@string/notifications"
+                android:textColor="#00000000"
+                android:textSize="15sp" />
 
-            <com.gauravk.bubblenavigation.BubbleToggleView
-                android:id="@+id/bttmNav_messaging"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bt_active="true"
-                app:bt_badgeTextSize="12sp"
-                app:bt_colorActive="@color/colorPureWhite"
-                app:bt_colorInactive="@color/colorPrimaryDark"
-                app:bt_icon="@drawable/messaging2"
-                app:bt_padding="8dp"
-                app:bt_shape="@drawable/transition_background_drawable_home"
-                app:bt_title="@string/messages"
-                app:bt_titlePadding="8dp" />
-            <!-- Add more child items here - max upto 5 -->
-
-        </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
+            <TextView
+                android:id="@+id/home_messBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:paddingStart="46dp"
+                android:paddingEnd="8dp"
+                android:text="@string/messages"
+                android:textColor="#00000000"
+                android:textSize="15sp" />
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

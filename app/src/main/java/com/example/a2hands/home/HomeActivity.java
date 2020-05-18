@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView;
+import com.gauravk.bubblenavigation.BubbleToggleView;
 import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,7 +78,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     //navigation drawer
     AccountHeader headerResult;
@@ -91,6 +93,12 @@ public class HomeActivity extends AppCompatActivity {
     FrameLayout searchFrag;
     FrameLayout notifiFrag;
     FrameLayout messagingFrag;
+
+    TextView bttmNav_home;
+    TextView bttmNav_search;
+    TextView bttmNav_notifications;
+    TextView bttmNav_messaging;
+
 
     //bottom navigation
     private BubbleNavigationConstraintView nav;
@@ -129,6 +137,11 @@ public class HomeActivity extends AppCompatActivity {
         notifiFrag=findViewById(R.id.home_notifiFrag);
         messagingFrag=findViewById(R.id.home_messagingFrag);
 
+        bttmNav_home =findViewById(R.id.home_homeBtn);
+        bttmNav_search =findViewById(R.id.home_searchBtn);
+        bttmNav_notifications =findViewById(R.id.home_notifiBtn);
+        bttmNav_messaging =findViewById(R.id.home_messBtn);
+
         //category spinner declaration
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
@@ -157,14 +170,19 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
+        bttmNav_home.setOnClickListener(this);
+        bttmNav_search.setOnClickListener(this);
+        bttmNav_notifications.setOnClickListener(this);
+        bttmNav_messaging.setOnClickListener(this);
+
+
         updateToken();
         loadUserPics();
         loadNavigationDrawerData();
         setListenerForBottomNavigation();
         getNewMessagesCountToBadge();
         checkForNotifications();
-        navigateHome();
-
+        navigateHome(false);
     }//////////////////////////////////end of onCreate method
 
     private void initDrawer() {
@@ -383,13 +401,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onNavigationChanged(View view, int pos) {
                 switch (pos) {
-                    case 0: navigateHome();
+                    case 0: navigateHome(false);
                         break;
-                    case 1: navigateSearch();
+                    case 1: navigateSearch(false);
                         break;
-                    case 2: navigateNotification();
+                    case 2: navigateNotification(false);
                         break;
-                    case 3: navigateChatList();
+                    case 3: navigateChatList(false);
                         break;
                 }
             }
@@ -519,43 +537,58 @@ public class HomeActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void navigateHome(){
+    public void navigateHome(boolean refresh){
         catsSpinner.setVisibility(View.VISIBLE);
         catsSpinner.setTextSize(16);
         searchView.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
 
-        postsFrag.setVisibility(View.VISIBLE);
-        searchFrag.setVisibility(View.GONE);
-        notifiFrag.setVisibility(View.GONE);
-        messagingFrag.setVisibility(View.GONE);
+        if(!refresh) {
+            postsFrag.setVisibility(View.VISIBLE);
+            searchFrag.setVisibility(View.GONE);
+            notifiFrag.setVisibility(View.GONE);
+            messagingFrag.setVisibility(View.GONE);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null )
-            loadPostsFragment(0,"HOME_DATE");
+            if (getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null)
+                loadPostsFragment(0, "HOME_DATE");
+        }
+        else {
+            Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
+            loadPostsFragment(0, "HOME_DATE");
+        }
     }
 
-    public void navigateSearch(){
+    public void navigateSearch(boolean refresh){
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
 
-        postsFrag.setVisibility(View.GONE);
-        searchFrag.setVisibility(View.VISIBLE);
-        notifiFrag.setVisibility(View.GONE);
-        messagingFrag.setVisibility(View.GONE);
-        if( getSupportFragmentManager().findFragmentById(R.id.home_searchFrag) == null ){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                loadSearchFragment(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        if(!refresh) {
+            postsFrag.setVisibility(View.GONE);
+            searchFrag.setVisibility(View.VISIBLE);
+            notifiFrag.setVisibility(View.GONE);
+            messagingFrag.setVisibility(View.GONE);
+            if (getSupportFragmentManager().findFragmentById(R.id.home_searchFrag) == null) {
+                loadSearchFragment("");
+            }
+        }
+        else{
+            Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
             loadSearchFragment("");
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    loadSearchFragment(query);
-                    return false;
-                }
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
+
         }
     }
 
@@ -575,19 +608,28 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    void navigateNotification(){
+    void navigateNotification(boolean refresh){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.notifications));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 
-        postsFrag.setVisibility(View.GONE);
-        searchFrag.setVisibility(View.GONE);
-        notifiFrag.setVisibility(View.VISIBLE);
-        messagingFrag.setVisibility(View.GONE);
+        if(!refresh) {
+            postsFrag.setVisibility(View.GONE);
+            searchFrag.setVisibility(View.GONE);
+            notifiFrag.setVisibility(View.VISIBLE);
+            messagingFrag.setVisibility(View.GONE);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.home_notifiFrag) == null ) {
+            if (getSupportFragmentManager().findFragmentById(R.id.home_notifiFrag) == null) {
 
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.home_notifiFrag, new NotificationFragment()).addToBackStack(null);
+                ft.commit();
+                nav.setBadgeValue(2, null);
+            }
+        }
+        else {
+            Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.home_notifiFrag, new NotificationFragment()).addToBackStack(null);
             ft.commit();
@@ -595,22 +637,86 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void navigateChatList(){
+    public void navigateChatList(boolean refresh){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.inbox));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
 
-        postsFrag.setVisibility(View.GONE);
-        searchFrag.setVisibility(View.GONE);
-        notifiFrag.setVisibility(View.GONE);
-        messagingFrag.setVisibility(View.VISIBLE);
+        if(!refresh) {
+            postsFrag.setVisibility(View.GONE);
+            searchFrag.setVisibility(View.GONE);
+            notifiFrag.setVisibility(View.GONE);
+            messagingFrag.setVisibility(View.VISIBLE);
 
-        if( getSupportFragmentManager().findFragmentById(R.id.home_messagingFrag) == null ){
+            if (getSupportFragmentManager().findFragmentById(R.id.home_messagingFrag) == null) {
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.home_messagingFrag, new ChatListFragment()).addToBackStack(null);
+                ft.commit();
+            }
+        }
+        else {
+            Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.home_messagingFrag,new ChatListFragment()).addToBackStack(null);
+            ft.replace(R.id.home_messagingFrag, new ChatListFragment()).addToBackStack(null);
             ft.commit();
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        int id1= bttmNav_home.getId();
+        int id2= bttmNav_search.getId();
+        int id3= bttmNav_notifications.getId();
+        int id4= bttmNav_messaging.getId();
+        if(id==id1){
+            if(nav.getCurrentActiveItemPosition()==0){
+                navigateHome(true);
+            }
+            else {
+                bttmNav_home.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT,0.0f));
+                bttmNav_search.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_notifications.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_messaging.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                nav.setCurrentActiveItem(0);
+            }
+        }
+        else if(id==id2){
+            if(nav.getCurrentActiveItemPosition()==1){
+                navigateSearch(true);
+            }
+            else {
+                bttmNav_home.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_search.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT,0.0f));
+                bttmNav_notifications.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_messaging.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                nav.setCurrentActiveItem(1);
+            }
+        }
+        else if(id==id3){
+            if(nav.getCurrentActiveItemPosition()==2){
+                navigateNotification(true);
+            }
+            else {
+                bttmNav_home.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_search.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_notifications.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT,0.0f));
+                bttmNav_messaging.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                nav.setCurrentActiveItem(2);
+            }
+        }
+        else if(id==id4){
+            if(nav.getCurrentActiveItemPosition()==3){
+                navigateChatList(true);
+            }
+            else {
+                bttmNav_home.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_search.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_notifications.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+                bttmNav_messaging.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT,0.0f));
+                nav.setCurrentActiveItem(3);
+            }
+        }
+    }
 }
