@@ -105,6 +105,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/homeNestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:descendantFocusability="beforeDescendants"
@@ -121,13 +122,33 @@
                 android:persistentDrawingCache="scrolling">
 
                 <FrameLayout
-                    android:id="@+id/homeFrag"
+                    android:id="@+id/home_postsFrag"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="55dp">
-
-                </FrameLayout>
-
+                    android:layout_marginBottom="55dp"
+                    android:visibility="gone"
+                    />
+                <FrameLayout
+                    android:id="@+id/home_searchFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="55dp"
+                    android:visibility="gone"
+                    />
+                <FrameLayout
+                    android:id="@+id/home_notifiFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="55dp"
+                    android:visibility="gone"
+                    />
+                <FrameLayout
+                    android:id="@+id/home_messagingFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="55dp"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -238,20 +259,20 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-<!--    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView-->
-<!--        android:id="@+id/slider"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:fitsSystemWindows="true" />-->
+    <!--    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView-->
+    <!--        android:id="@+id/slider"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:fitsSystemWindows="true" />-->
 
-<!--    <com.google.android.material.navigation.NavigationView-->
-<!--        android:id="@+id/nav_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:scrollbars="vertical"-->
-<!--        app:headerLayout="@layout/drawer_header"-->
-<!--        app:menu="@menu/drawer_menu" />-->
+    <!--    <com.google.android.material.navigation.NavigationView-->
+    <!--        android:id="@+id/nav_view"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_gravity="start"-->
+    <!--        android:scrollbars="vertical"-->
+    <!--        app:headerLayout="@layout/drawer_header"-->
+    <!--        app:menu="@menu/drawer_menu" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

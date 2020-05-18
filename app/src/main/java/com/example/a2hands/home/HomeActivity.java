@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -86,6 +87,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private FloatingActionButton addPost;
 
+    FrameLayout postsFrag;
+    FrameLayout searchFrag;
+    FrameLayout notifiFrag;
+    FrameLayout messagingFrag;
+
     //bottom navigation
     private BubbleNavigationConstraintView nav;
 
@@ -118,6 +124,11 @@ public class HomeActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
+        postsFrag=findViewById(R.id.home_postsFrag);
+        searchFrag=findViewById(R.id.home_searchFrag);
+        notifiFrag=findViewById(R.id.home_notifiFrag);
+        messagingFrag=findViewById(R.id.home_messagingFrag);
+
         //category spinner declaration
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
@@ -134,7 +145,7 @@ public class HomeActivity extends AppCompatActivity {
 
         catsSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                loadPosts(position,selectedPostsType);
+                loadPostsFragment(position,selectedPostsType);
             }
         });
 
@@ -241,15 +252,15 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case 2:
                 selectedPostsType = "HOME_DATE";
-                loadPosts(0,"HOME_DATE");
+                loadPostsFragment(0,"HOME_DATE");
                 break;
             case 3:
                 selectedPostsType = "HOME_PRIORITY";
-                loadPosts(0, "HOME_PRIORITY");
+                loadPostsFragment(0, "HOME_PRIORITY");
                 break;
             case 4:
                 selectedPostsType = "HOME_FOLLOWINGS_POSTS";
-                loadPosts(0, "HOME_FOLLOWINGS_POSTS");
+                loadPostsFragment(0, "HOME_FOLLOWINGS_POSTS");
                 break;
             case 5:
                 startActivity(new Intent(HomeActivity.this, SavedPostsActivity.class));
@@ -468,9 +479,9 @@ public class HomeActivity extends AppCompatActivity {
         if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
-        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.homeFrag);
+        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.home_postsFrag);
 
         if(result.isDrawerOpen()){
             result.closeDrawer();
@@ -493,55 +504,68 @@ public class HomeActivity extends AppCompatActivity {
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, getResources().getString(R.string.pressBackAgainToExit), Toast.LENGTH_SHORT).show();
         mHandler.postDelayed(mRunnable, 2000);
-    }
+    }*/
 
 
 
-    void loadPosts(int pos,String type){
+    void loadPostsFragment(int pos,String type){
         Fragment frg = new PostsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("CAT", String.valueOf(pos));
         bundle.putString("FOR",type);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,frg).addToBackStack("");
+        ft.add(R.id.home_postsFrag,frg).addToBackStack("");
         ft.commit();
     }
 
     public void navigateHome(){
         catsSpinner.setVisibility(View.VISIBLE);
         catsSpinner.setTextSize(16);
-        searchView.setVisibility(View.INVISIBLE);
-        notificationsTitle.setVisibility(View.INVISIBLE);
-        loadPosts(0,"HOME_DATE");
+        searchView.setVisibility(View.GONE);
+        notificationsTitle.setVisibility(View.GONE);
+
+        postsFrag.setVisibility(View.VISIBLE);
+        searchFrag.setVisibility(View.GONE);
+        notifiFrag.setVisibility(View.GONE);
+        messagingFrag.setVisibility(View.GONE);
+
+        if( getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null )
+            loadPostsFragment(0,"HOME_DATE");
     }
 
     public void navigateSearch(){
         searchView.setVisibility(View.VISIBLE);
-        catsSpinner.setVisibility(View.INVISIBLE);
-        notificationsTitle.setVisibility(View.INVISIBLE);
+        catsSpinner.setVisibility(View.GONE);
+        notificationsTitle.setVisibility(View.GONE);
 
-        startFragmentSearch("");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                startFragmentSearch(query);
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+        postsFrag.setVisibility(View.GONE);
+        searchFrag.setVisibility(View.VISIBLE);
+        notifiFrag.setVisibility(View.GONE);
+        messagingFrag.setVisibility(View.GONE);
+        if( getSupportFragmentManager().findFragmentById(R.id.home_searchFrag) == null ){
+            loadSearchFragment("");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    loadSearchFragment(query);
+                    return false;
+                }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+        }
     }
 
-    void startFragmentSearch(String query){
+    void loadSearchFragment(String query){
         Fragment frg = new SearchFragment();
         Bundle b= new Bundle();
         b.putString("search_query",query);
         frg.setArguments(b);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,frg).addToBackStack(null);
+        ft.add(R.id.home_searchFrag,frg).addToBackStack(null);
         ft.commit();
     }
 
@@ -554,24 +578,39 @@ public class HomeActivity extends AppCompatActivity {
     void navigateNotification(){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.notifications));
-        catsSpinner.setVisibility(View.INVISIBLE);
-        searchView.setVisibility(View.INVISIBLE);
+        catsSpinner.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
 
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,new NotificationFragment()).addToBackStack(null);
-        ft.commit();
-        nav.setBadgeValue(2,null);
+        postsFrag.setVisibility(View.GONE);
+        searchFrag.setVisibility(View.GONE);
+        notifiFrag.setVisibility(View.VISIBLE);
+        messagingFrag.setVisibility(View.GONE);
+
+        if( getSupportFragmentManager().findFragmentById(R.id.home_notifiFrag) == null ) {
+
+            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.home_notifiFrag, new NotificationFragment()).addToBackStack(null);
+            ft.commit();
+            nav.setBadgeValue(2, null);
+        }
     }
 
     public void navigateChatList(){
         notificationsTitle.setVisibility(View.VISIBLE);
         notificationsTitle.setText(getResources().getString(R.string.inbox));
-        catsSpinner.setVisibility(View.INVISIBLE);
-        searchView.setVisibility(View.INVISIBLE);
+        catsSpinner.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
 
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.homeFrag,new com.example.a2hands.chat.chatlist.ChatListFragment()).addToBackStack(null);
-        ft.commit();
+        postsFrag.setVisibility(View.GONE);
+        searchFrag.setVisibility(View.GONE);
+        notifiFrag.setVisibility(View.GONE);
+        messagingFrag.setVisibility(View.VISIBLE);
+
+        if( getSupportFragmentManager().findFragmentById(R.id.home_messagingFrag) == null ){
+            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.home_messagingFrag,new ChatListFragment()).addToBackStack(null);
+            ft.commit();
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -157,7 +158,10 @@ public class PostsFragment extends Fragment {
                         for(DataSnapshot ds : dataSnapshot.getChildren()){
                             followingsIds.add(ds.getKey());
                         }
-                        getPostsForHomeByFollowings(followingsIds, selectedCat);
+                        if(followingsIds.size()>0)
+                            getPostsForHomeByFollowings(followingsIds, selectedCat);
+                        else
+                            Toast.makeText(getContext(),"You have no followings!",Toast.LENGTH_LONG).show();
                     }
 
                     @Override
