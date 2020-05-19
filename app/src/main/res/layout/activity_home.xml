@@ -128,27 +128,29 @@
                     android:layout_marginBottom="55dp"
                     android:visibility="gone"
                     />
+
                 <FrameLayout
                     android:id="@+id/home_searchFrag"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="55dp"
-                    android:visibility="gone"
-                    />
+                    android:background="@color/colorPureWhite"
+                    android:visibility="gone" />
+
                 <FrameLayout
                     android:id="@+id/home_notifiFrag"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="55dp"
-                    android:visibility="gone"
-                    />
+                    android:background="@color/colorPureWhite"
+                    android:visibility="gone" />
+
                 <FrameLayout
                     android:id="@+id/home_messagingFrag"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="55dp"
-                    android:visibility="gone"
-                    />
+                    android:background="@color/colorPureWhite"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -265,6 +267,7 @@
             android:layout_width="match_parent"
             android:layout_height="48.5dp"
             android:layout_gravity="bottom"
+            android:layoutDirection="ltr"
             android:orientation="horizontal"
             android:paddingStart="34dp"
             android:paddingEnd="34dp">
