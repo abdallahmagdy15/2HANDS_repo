@@ -46,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="His Name"
+                android:text="@string/name"
                 android:textColor="@color/cardview_light_background"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/profile_Image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="2dp"
-                android:text="online"
+                android:text="@string/online"
                 android:textColor="@color/cardview_light_background"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +89,7 @@
         android:id="@+id/messagelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -123,7 +123,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/sendingImage" />
 
             <ImageButton
                 android:id="@+id/imageButton_close"
@@ -136,7 +137,8 @@
                 app:layout_constraintStart_toStartOf="@+id/messageImage"
                 app:layout_constraintTop_toTopOf="@+id/messageImage"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="@string/cancel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,7 +156,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/uploadimage"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:autofillHints="@string/typeAMessage" />
 
         <ImageButton
             android:id="@+id/uploadimage"
@@ -167,7 +170,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sendbutton"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:contentDescription="@string/chooseImageFrom" />
 
         <ImageButton
             android:id="@+id/sendbutton"
@@ -180,7 +184,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:contentDescription="@string/send" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

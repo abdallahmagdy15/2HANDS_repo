@@ -56,7 +56,8 @@
             android:inputType="phone"
             android:singleLine="true"
             android:textAlignment="viewStart"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:autofillHints="@string/phone" />
 
     </LinearLayout>
 

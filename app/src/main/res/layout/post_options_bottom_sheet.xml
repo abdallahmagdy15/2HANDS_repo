@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,14 +17,16 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/save_post" />
+            app:srcCompat="@drawable/save_post"
+            android:contentDescription="@string/savePost" />
 
         <TextView
             android:id="@+id/textView10"
@@ -33,6 +36,7 @@
             android:text="@string/savePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -44,13 +48,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/disable_react" />
+            app:srcCompat="@drawable/disable_react"
+            android:contentDescription="@string/disableReact" />
 
         <TextView
             android:layout_width="0dp"
@@ -59,6 +65,7 @@
             android:text="@string/disableReact"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -70,13 +77,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/delete_post" />
+            app:srcCompat="@drawable/delete_post"
+            android:contentDescription="@string/deletePost" />
 
         <TextView
             android:layout_width="0dp"
@@ -85,6 +94,7 @@
             android:text="@string/deletePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -96,13 +106,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/hide_post" />
+            app:srcCompat="@drawable/hide_post"
+            android:contentDescription="@string/hidePost" />
 
         <TextView
             android:layout_width="0dp"
@@ -111,6 +123,7 @@
             android:text="@string/hidePost"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -122,13 +135,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/mute_user" />
+            app:srcCompat="@drawable/mute_user"
+            android:contentDescription="@string/muteUser" />
 
         <TextView
             android:layout_width="0dp"
@@ -137,7 +152,9 @@
             android:text="@string/muteUser"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/postOptionBlock"
         android:layout_width="match_parent"
@@ -147,13 +164,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/block_user" />
+            app:srcCompat="@drawable/block_user"
+            android:contentDescription="@string/blockUser" />
 
         <TextView
             android:layout_width="0dp"
@@ -162,6 +181,7 @@
             android:text="@string/blockUser"
             android:textColor="@color/colorDark"
             android:textSize="15sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -173,13 +193,15 @@
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            app:srcCompat="@drawable/report_user" />
+            app:srcCompat="@drawable/report_user"
+            android:contentDescription="@string/reportPost" />
 
         <TextView
             android:layout_width="0dp"

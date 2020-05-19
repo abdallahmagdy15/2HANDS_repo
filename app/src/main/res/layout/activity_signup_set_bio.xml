@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground" />
+        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground"
+        android:contentDescription="@string/app_name" />
 
     <LinearLayout
         android:id="@+id/signUp_setBio_LogoName"
@@ -33,7 +34,8 @@
             android:text="2Ha"
             android:textColor="@color/colorDark"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,7 +43,9 @@
             android:text="nds"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
     <TextView

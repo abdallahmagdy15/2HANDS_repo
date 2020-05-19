@@ -19,7 +19,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground" />
+        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground"
+        android:contentDescription="@string/app_name" />
 
     <LinearLayout
         android:id="@+id/signUp_LogoName"
@@ -37,7 +38,8 @@
             android:text="2Ha"
             android:textColor="@color/colorDark"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,7 +47,9 @@
             android:text="nds"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
     <TextView
@@ -191,7 +195,8 @@
                     android:singleLine="true"
                     android:text="@string/selectYourDateOfBirth"
                     android:textAlignment="viewStart"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="Deprecated" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
@@ -213,7 +218,8 @@
                     android:id="@+id/imageView6"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_gender" />
+                    app:srcCompat="@drawable/ic_gender"
+                    android:contentDescription="@string/gender" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -334,7 +340,8 @@
                     android:inputType="phone"
                     android:singleLine="true"
                     android:textAlignment="viewStart"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:autofillHints="@string/phone" />
 
             </LinearLayout>
 

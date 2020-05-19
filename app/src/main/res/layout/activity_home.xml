@@ -102,6 +102,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -126,8 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="55dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <FrameLayout
                     android:id="@+id/home_searchFrag"
@@ -176,6 +176,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation" />-->
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/home_addPost"
             android:layout_width="wrap_content"
@@ -188,7 +189,6 @@
             card_view:backgroundTint="@color/colorAccent"
             card_view:srcCompat="@drawable/ic_add" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48.5dp"
@@ -200,7 +200,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPureWhite"
-                android:elevation="4dp"
                 android:layoutDirection="ltr"
                 android:padding="0dp"
                 app:bnc_mode="spread">

@@ -50,7 +50,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editName"
-            app:srcCompat="@drawable/ic_user_name_outline" />
+            app:srcCompat="@drawable/ic_user_name_outline"
+            android:contentDescription="@string/editName" />
 
         <TextView
             android:id="@+id/accountSettings_editUsername"
@@ -76,7 +77,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editUsername"
-            app:srcCompat="@drawable/ic_username_outline" />
+            app:srcCompat="@drawable/ic_username_outline"
+            android:contentDescription="@string/editUserName" />
 
         <TextView
             android:id="@+id/accountSettings_editEmail"
@@ -102,7 +104,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editEmail"
-            app:srcCompat="@drawable/ic_email_outline" />
+            app:srcCompat="@drawable/ic_email_outline"
+            android:contentDescription="@string/editEmail" />
 
         <TextView
             android:id="@+id/accountSettings_editPhone"
@@ -128,7 +131,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editPhone"
-            app:srcCompat="@drawable/ic_phone_outline" />
+            app:srcCompat="@drawable/ic_phone_outline"
+            android:contentDescription="@string/editPhone" />
 
         <TextView
             android:id="@+id/accountSettings_editCountry"
@@ -154,7 +158,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editCountry"
-            app:srcCompat="@drawable/ic_location_outline" />
+            app:srcCompat="@drawable/ic_location_outline"
+            android:contentDescription="@string/editCountry" />
 
         <TextView
             android:id="@+id/accountSettings_editPassword"
@@ -180,7 +185,9 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/accountSettings_editPassword"
-            app:srcCompat="@drawable/ic_password_outline" />
+            app:srcCompat="@drawable/ic_password_outline"
+            android:contentDescription="@string/editPassword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

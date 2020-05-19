@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">Einloggen</string>
     <string name="orSignInWith">oder melden Sie sich mit an</string>
+    <string name="rememberPassword">passwort merken</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Überprüfen Sie Ihre E-Mails, um Ihr Passwort zurückzusetzen</string>

@@ -29,4 +29,5 @@
         app:layout_constraintTop_toBottomOf="@id/savedPostsToolbar">
 
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

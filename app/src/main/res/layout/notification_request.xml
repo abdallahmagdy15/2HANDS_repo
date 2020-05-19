@@ -28,7 +28,8 @@
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="@id/notifiPic"
         app:layout_constraintTop_toTopOf="@id/notifiPic"
-        app:srcCompat="@drawable/help_filled" />
+        app:srcCompat="@drawable/help_filled"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/notifiDesc"
@@ -39,7 +40,7 @@
         android:maxLines="3"
         android:singleLine="false"
         android:textColor="@color/colorDark"
-        android:textSize="17dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/notifiPic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,7 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="5 minutes ago"
         android:textColor="@color/colorGray"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/notifiPic"

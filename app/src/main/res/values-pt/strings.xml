@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">Login</string>
     <string name="orSignInWith">ou entre com</string>
+    <string name="rememberPassword">lembrar senha</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Verifique seu e-mail para redefinir sua senha</string>

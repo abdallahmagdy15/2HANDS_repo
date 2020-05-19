@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#00FFFFFF"
@@ -8,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
         android:paddingStart="16dp"
@@ -21,7 +22,8 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            app:civ_circle_background_color="@color/colorWhite" />
+            app:civ_circle_background_color="@color/colorWhite"
+            tools:ignore="NestedWeights" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -52,6 +54,7 @@
                     android:textColor="#090909"
                     android:textSize="16sp"
                     android:textStyle="bold|italic" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -109,14 +112,17 @@
                     android:inputType="textMultiLine"
                     android:textColor="@color/colorDark"
                     android:textSize="15sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:autofillHints="@string/expressYourGratitude" />
 
                 <ImageView
                     android:id="@+id/postReview"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:visibility="visible"
-                    app:srcCompat="@drawable/comment" />
+                    app:srcCompat="@drawable/comment"
+                    android:contentDescription="@string/send" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -145,6 +151,7 @@
                     android:text="@string/finised"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
+                
             </LinearLayout>
 
             <TextView

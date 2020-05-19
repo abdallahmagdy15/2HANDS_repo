@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">Accesso</string>
     <string name="orSignInWith">o accedi con</string>
+    <string name="rememberPassword">ricordare la password</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Controlla la tua e-mail per reimpostare la password</string>

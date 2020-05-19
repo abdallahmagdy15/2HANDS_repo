@@ -29,7 +29,7 @@
             android:focusableInTouchMode="true"
             android:paddingStart="16dp"
             android:paddingEnd="0dp"
-            android:text="Ahmed Kamal"
+            android:text="@string/name"
             android:textColor="@color/colorDark"
             android:textSize="14sp"
             android:textStyle="bold|italic" />
@@ -43,6 +43,7 @@
             android:paddingEnd="0dp"
             android:text="@string/shared"
             android:textStyle="italic" />
+
     </LinearLayout>
 
     <View
@@ -95,7 +96,8 @@
         android:background="@drawable/more"
         android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view10" />
+        app:layout_constraintTop_toBottomOf="@id/view10"
+        android:contentDescription="@string/settings" />
 
     <TextView
         android:id="@+id/postTime"
@@ -103,7 +105,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:focusableInTouchMode="true"
-        android:text="5 min ago"
         android:textColor="#2B2B2B"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/postOwnerPic"
@@ -116,14 +117,15 @@
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/postTime"
         app:layout_constraintTop_toBottomOf="@id/postOwner"
-        app:srcCompat="@drawable/location_btn_drawable" />
+        app:srcCompat="@drawable/location_btn_drawable"
+        android:contentDescription="@string/location" />
 
     <TextView
         android:id="@+id/postLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
-        android:text="Egypt"
+        android:text="@string/location"
         android:textColor="@color/colorGray"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -153,6 +155,7 @@
             android:text="@string/general"
             android:textColor="@color/colorDark"
             android:textSize="12sp" />
+
     </androidx.cardview.widget.CardView>
 
     <com.borjabravo.readmoretextview.ReadMoreTextView
@@ -213,7 +216,8 @@
         app:layout_constraintBottom_toTopOf="@id/videoContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_cardView" />
+        app:layout_constraintTop_toBottomOf="@id/post_cardView"
+        tools:ignore="ContentDescription" />
 
     <FrameLayout
         android:id="@+id/videoContainer"
@@ -227,7 +231,8 @@
         app:layout_constraintBottom_toTopOf="@id/postCounter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postImage">
+        app:layout_constraintTop_toBottomOf="@id/postImage"
+        tools:ignore="KeyboardInaccessibleWidget">
 
         <com.universalvideoview.UniversalVideoView
             android:id="@+id/postVideo"
@@ -345,59 +350,64 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#005E5E5E"
-            android:backgroundTint="#003C3C3C"
+            app:backgroundTint="#003C3C3C"
             android:focusableInTouchMode="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            app:srcCompat="@drawable/like" />
+            app:srcCompat="@drawable/like"
+            android:contentDescription="@string/like" />
 
         <ImageView
             android:id="@+id/commentBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
+            app:backgroundTint="#003C3C3C"
             android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            app:srcCompat="@drawable/comment" />
+            app:srcCompat="@drawable/comment"
+            android:contentDescription="@string/comments" />
 
         <ImageView
             android:id="@+id/helpBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
+            app:backgroundTint="#003C3C3C"
             android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            app:srcCompat="@drawable/help" />
+            app:srcCompat="@drawable/help"
+            android:contentDescription="@string/sendHelpRequestTo" />
 
         <ImageView
             android:id="@+id/ratingBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
+            app:backgroundTint="#003C3C3C"
             android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            app:srcCompat="@drawable/star" />
+            app:srcCompat="@drawable/star"
+            android:contentDescription="@string/ratings" />
 
         <ImageView
             android:id="@+id/shareBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#003C3C3C"
+            app:backgroundTint="#003C3C3C"
             android:focusableInTouchMode="true"
             android:hapticFeedbackEnabled="true"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            app:srcCompat="@drawable/share" />
+            app:srcCompat="@drawable/share"
+            android:contentDescription="@string/share" />
 
     </LinearLayout>
 

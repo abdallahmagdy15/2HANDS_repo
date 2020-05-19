@@ -38,7 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProfile_toolbar"
-        app:srcCompat="@drawable/default_bg" />
+        app:srcCompat="@drawable/default_bg"
+        android:contentDescription="@string/chooseImageFrom" />
 
     <ImageView
         android:id="@+id/editProfile_addCover"
@@ -51,7 +52,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProfile_toolbar"
-        app:srcCompat="@drawable/add_image" />
+        app:srcCompat="@drawable/add_image"
+        android:contentDescription="@string/chooseImageFrom" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/editProfile_pic"
@@ -77,7 +79,8 @@
         android:scaleY=".75"
         android:src="@drawable/camera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editProfile_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/editProfile_toolbar"
+        android:contentDescription="@string/chooseImageFrom" />
 
     <EditText
         android:id="@+id/editProfile_name"
@@ -93,7 +96,8 @@
         android:maxLength="50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editProfile_addCover" />
+        app:layout_constraintTop_toBottomOf="@id/editProfile_addCover"
+        android:autofillHints="@string/fullName" />
 
     <EditText
         android:id="@+id/editProfile_job"
@@ -109,7 +113,8 @@
         android:maxLength="64"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_name" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_name"
+        android:autofillHints="@string/yourJob" />
 
     <EditText
         android:id="@+id/editProfile_bio"
@@ -125,6 +130,7 @@
         android:maxLength="300"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_job" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_job"
+        android:autofillHints="@string/yourBio" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

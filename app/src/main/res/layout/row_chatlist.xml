@@ -23,7 +23,8 @@
         android:src="@drawable/circle_new_message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/onlineStatusIV"
@@ -31,7 +32,8 @@
         android:layout_height="15dp"
         android:src="@drawable/circle_online"
         app:layout_constraintBottom_toBottomOf="@+id/profileIv"
-        app:layout_constraintEnd_toEndOf="@+id/profileIv" />
+        app:layout_constraintEnd_toEndOf="@+id/profileIv"
+        android:contentDescription="@string/online" />
 
     <TextView
         android:id="@+id/nameTv"

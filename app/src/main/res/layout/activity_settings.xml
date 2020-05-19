@@ -54,7 +54,8 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_account"
-            app:srcCompat="@drawable/ic_user" />
+            app:srcCompat="@drawable/ic_user"
+            android:contentDescription="@string/account" />
 
         <TextView
             android:id="@+id/settings_preferences"
@@ -81,7 +82,8 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_preferences"
-            app:srcCompat="@drawable/ic_adjust" />
+            app:srcCompat="@drawable/ic_adjust"
+            android:contentDescription="@string/preferences" />
 
         <TextView
             android:id="@+id/settings_blocked_users"
@@ -108,7 +110,8 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_blocked_users"
-            app:srcCompat="@drawable/ic_blocked_user" />
+            app:srcCompat="@drawable/ic_blocked_user"
+            android:contentDescription="@string/blockedUsers" />
 
         <TextView
             android:id="@+id/settings_muted_users"
@@ -135,7 +138,8 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_muted_users"
-            app:srcCompat="@drawable/ic_muted_users" />
+            app:srcCompat="@drawable/ic_muted_users"
+            android:contentDescription="@string/mutedUsers" />
 
         <TextView
             android:id="@+id/settings_night_mode"
@@ -162,7 +166,8 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_night_mode"
-            app:srcCompat="@drawable/ic_night_mode" />
+            app:srcCompat="@drawable/ic_night_mode"
+            android:contentDescription="@string/nightMode" />
 
         <TextView
             android:id="@+id/settings_about"
@@ -173,6 +178,7 @@
             android:background="@drawable/settings_button_filled_pure_white"
             android:padding="16dp"
             android:paddingStart="64dp"
+            android:paddingEnd="0dp"
             android:text="@string/aboutApp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
@@ -189,7 +195,9 @@
             android:layout_marginTop="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/settings_about"
-            app:srcCompat="@drawable/ic_about" />
+            app:srcCompat="@drawable/ic_about"
+            android:contentDescription="@string/aboutApp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

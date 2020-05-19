@@ -15,224 +15,226 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/createPost_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/createPost_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:minHeight="?attr/actionBarSize"
-                    android:theme="?attr/actionBarTheme">
+                <TextView
+                    android:id="@+id/submitPost"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:text="@string/post"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/submitPost"
-                        android:layout_width="80dp"
-                        android:layout_height="match_parent"
-                        android:gravity="start"
-                        android:text="@string/post"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="16sp" />
-                </androidx.appcompat.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/postOwnerPic"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="25dp"
-                    android:src="@drawable/male"
-                    app:civ_border_color="#FF000000"
-                    app:civ_border_width="0dp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/postOwnerPic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/male"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="0dp" />
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="80dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/createdPostLocation"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:backgroundTint="#E9E9E9"
-                        android:drawableStart="@drawable/location_btn_drawable"
-                        android:shadowColor="#00DADADA"
-                        android:text="@string/location"
-                        android:textAllCaps="false"
-                        android:textColor="#1F1F1F"
-                        android:textSize="13sp" />
-
-                    <Spinner
-                        android:id="@+id/catSpinner"
-                        style="@style/Widget.AppCompat.Spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:entries="@array/categories"
-                        android:minWidth="100dp"
-                        android:stateListAnimator="@android:anim/fade_in" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/createdPostLocation"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    app:backgroundTint="#E9E9E9"
+                    android:drawableStart="@drawable/location_btn_drawable"
+                    android:shadowColor="#00DADADA"
+                    android:text="@string/location"
+                    android:textAllCaps="false"
+                    android:textColor="#1F1F1F"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/catSpinner"
+                    style="@style/Widget.AppCompat.Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="5dp"
+                    android:entries="@array/categories"
+                    android:minWidth="100dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/createdPostText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:textAlignment="viewStart"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/letsGetSomeHelp"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="8sp"
+                android:paddingTop="5dp"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="18sp"
+                android:autofillHints="@string/letsGetSomeHelp"
+                tools:ignore="NestedWeights" />
+
+            <ListView
+                android:id="@+id/mentionSuggestionsList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/createdPostText"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:textAlignment="viewStart"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:hint="@string/letsGetSomeHelp"
-                    android:inputType="textMultiLine"
-                    android:lineSpacingExtra="8sp"
-                    android:paddingTop="5dp"
-                    android:textColorHighlight="@color/colorPrimary"
-                    android:textColorLink="@color/colorAccent"
-                    android:textSize="18sp" />
-
-                <ListView
-                    android:id="@+id/mentionSuggestionsList"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPureWhite"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-            </LinearLayout>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/createPost_cardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone">
-
-                <include
-                    android:id="@+id/postSharedPreview"
-                    layout="@layout/fragment_post"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:id="@+id/selectedImage"
-                android:layout_width="wrap_content"
-                android:layout_height="192dp"
-                android:layout_marginStart="15dp"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
-
-            <VideoView
-                android:id="@+id/selectedVideo"
-                android:layout_width="150dp"
-                android:layout_height="150sp"
-                android:visibility="gone" />
-
-            <Switch
-                android:id="@+id/createdPostIsAnon"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:text="@string/postAnonymously" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:background="#ADADAD" />
-
-            <LinearLayout
-                android:id="@+id/createPostAttachContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="3"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="0dp"
-                    android:text="@string/addToYourPost"
-                    android:textColor="#1A1A1A"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/createPostWithImage"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:backgroundTint="#00FFFFFF"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F"
-                    app:srcCompat="@drawable/add_image" />
-
-                <ImageView
-                    android:id="@+id/createPostWithVideo"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:backgroundTint="#00FFFFFF"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F"
-                    app:srcCompat="@drawable/video" />
-
-                <ImageView
-                    android:id="@+id/createPostWithImageCamera"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:backgroundTint="#00FFFFFF"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F"
-                    app:srcCompat="@drawable/camera" />
-
-                <ImageView
-                    android:id="@+id/createPostWithCheckIn"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:backgroundTint="#00FFFFFF"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="#1F1F1F"
-                    app:srcCompat="@drawable/check_in" />
-            </LinearLayout>
+                android:background="@color/colorPureWhite"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/createPost_cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/postSharedPreview"
+                layout="@layout/fragment_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/selectedImage"
+            android:layout_width="wrap_content"
+            android:layout_height="192dp"
+            android:layout_marginStart="15dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            android:contentDescription="@string/sendingImage" />
+
+        <VideoView
+            android:id="@+id/selectedVideo"
+            android:layout_width="150dp"
+            android:layout_height="150sp"
+            android:visibility="gone" />
+
+        <Switch
+            android:id="@+id/createdPostIsAnon"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/postAnonymously" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height=".5dp"
+            android:background="#ADADAD" />
+
+        <LinearLayout
+            android:id="@+id/createPostAttachContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:paddingStart="15dp"
+                android:paddingEnd="0dp"
+                android:text="@string/addToYourPost"
+                android:textColor="#1A1A1A"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/createPostWithImage"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:backgroundTint="#00FFFFFF"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1F1F1F"
+                app:srcCompat="@drawable/add_image"
+                android:contentDescription="@string/chooseImageFrom" />
+
+            <ImageView
+                android:id="@+id/createPostWithVideo"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:backgroundTint="#00FFFFFF"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1F1F1F"
+                app:srcCompat="@drawable/video"
+                android:contentDescription="@string/chooseImageFrom" />
+
+            <ImageView
+                android:id="@+id/createPostWithImageCamera"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:backgroundTint="#00FFFFFF"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1F1F1F"
+                app:srcCompat="@drawable/camera"
+                android:contentDescription="@string/camera" />
+
+            <ImageView
+                android:id="@+id/createPostWithCheckIn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:backgroundTint="#00FFFFFF"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1F1F1F"
+                app:srcCompat="@drawable/check_in"
+                android:contentDescription="@string/location" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

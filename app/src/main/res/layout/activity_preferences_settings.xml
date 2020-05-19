@@ -49,7 +49,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/prefSettings_editLang"
-            app:srcCompat="@drawable/ic_globe_outline" />
+            app:srcCompat="@drawable/ic_globe_outline"
+            android:contentDescription="@string/language" />
 
         <TextView
             android:id="@+id/prefSettings_editNotifis"
@@ -75,7 +76,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/prefSettings_editNotifis"
-            app:srcCompat="@drawable/ic_notification" />
+            app:srcCompat="@drawable/ic_notification"
+            android:contentDescription="@string/notifications" />
 
         <TextView
             android:id="@+id/prefSettings_editFavCats"
@@ -100,7 +102,8 @@
             android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/prefSettings_editFavCats"
-            app:srcCompat="@drawable/ic_categorize" />
+            app:srcCompat="@drawable/ic_categorize"
+            android:contentDescription="@string/favouriteCategories" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

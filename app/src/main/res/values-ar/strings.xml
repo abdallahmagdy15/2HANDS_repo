@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">دخول</string>
     <string name="orSignInWith">او سجل دخول باستخدام</string>
+    <string name="rememberPassword">تذكر كلمة المرور</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">اذهب للبريد الالكتروني لتجديد كلمة المرور</string>

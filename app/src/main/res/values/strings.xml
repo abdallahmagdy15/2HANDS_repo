@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">Login</string>
     <string name="orSignInWith">or sign in with</string>
+    <string name="rememberPassword">remember password</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Check your Email to reset your password</string>

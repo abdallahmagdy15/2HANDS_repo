@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground" />
+        app:srcCompat="@mipmap/ic_launcher_2hands_2_foreground"
+        android:contentDescription="@string/app_name" />
 
     <LinearLayout
         android:id="@+id/login_LogoName"
@@ -34,7 +35,8 @@
             android:text="2Ha"
             android:textColor="@color/colorDark"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView13"
@@ -43,7 +45,9 @@
             android:text="nds"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
     <TextView
@@ -88,7 +92,8 @@
                 android:layout_marginStart="8dp"
                 android:scaleX=".5"
                 android:scaleY=".5"
-                app:srcCompat="@drawable/ic_email" />
+                app:srcCompat="@drawable/ic_email"
+                android:contentDescription="@string/email" />
 
             <EditText
                 android:id="@+id/loginEmail"
@@ -100,7 +105,8 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:singleLine="true"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:autofillHints="@string/email" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -132,7 +138,8 @@
                 android:layout_marginStart="8dp"
                 android:scaleX=".5"
                 android:scaleY=".5"
-                app:srcCompat="@drawable/ic_password" />
+                app:srcCompat="@drawable/ic_password"
+                android:contentDescription="@string/password" />
 
             <EditText
                 android:id="@+id/loginPassword"
@@ -144,7 +151,8 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:singleLine="true"
-                android:textAlignment="viewStart" />
+                android:textAlignment="viewStart"
+                android:autofillHints="@string/password" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -157,7 +165,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Remeber password"
+        android:textAlignment="viewStart"
+        android:text="@string/rememberPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

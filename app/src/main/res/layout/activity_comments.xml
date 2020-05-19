@@ -24,7 +24,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/like_filled" />
+                app:srcCompat="@drawable/like_filled"
+                android:contentDescription="@string/likes" />
 
             <TextView
                 android:id="@+id/like_count"
@@ -75,13 +76,16 @@
             android:textAlignment="viewStart"
             android:background="@android:color/transparent"
             android:hint="@string/writeAComment"
-            android:padding="10sp" />
+            android:padding="10sp"
+            android:autofillHints="@string/writeAComment"
+            android:inputType="text" />
 
         <ImageView
             android:id="@+id/postCommentBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/send_private_message" />
+            app:srcCompat="@drawable/send_private_message"
+            android:contentDescription="@string/send" />
 
     </LinearLayout>
 

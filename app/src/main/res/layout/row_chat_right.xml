@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,7 +15,7 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:gravity="end"
-        android:text="delivered"
+        android:text="@string/delivered"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,6 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_sender"
         android:paddingStart="2dp"
         android:paddingEnd="4dp"
@@ -48,14 +48,14 @@
             android:paddingStart="2dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
-            android:text="His Message"
             android:textAlignment="viewStart"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/messageImage"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/messageImage"
-            app:layout_constraintTop_toBottomOf="@+id/messageImage" />
+            app:layout_constraintTop_toBottomOf="@+id/messageImage"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/deletedMessageTv"
@@ -81,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="2dp"
-            android:text="05:59PM"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"

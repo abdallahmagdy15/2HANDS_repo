@@ -55,6 +55,7 @@
     <!--activity login-->
     <string name="login">S\'identifier</string>
     <string name="orSignInWith">ou connectez-vous avec</string>
+    <string name="rememberPassword">se souvenir du mot de passe</string>
 
     <!--ForgotPasswordActivity-->
     <string name="checkYourEmailToResetYourPassword">Vérifiez votre e-mail pour réinitialiser votre mot de passe</string>

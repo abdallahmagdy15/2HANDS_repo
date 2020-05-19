@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class UserStatus {
 
-    private static Calendar cal =Calendar.getInstance(Locale.ENGLISH);
+    private static Calendar cal = Calendar.getInstance(Locale.ENGLISH);
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH);
 
     public static void updateOnlineStatus(boolean status, String myUid) {
