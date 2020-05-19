@@ -44,6 +44,7 @@ public class Notification implements Comparable<Notification> {
     public Notification(String subscriber_id, String publisher_id, String publisher_pic, String subscriber_name,
                         String content, Date date, String type, String post_id , String subscriber_pic, boolean is_seen,
                         String help_request_id, String notification_id , String publisher_name) {
+
         this.subscriber_id = subscriber_id;
         this.publisher_id = publisher_id;
         this.publisher_pic = publisher_pic;

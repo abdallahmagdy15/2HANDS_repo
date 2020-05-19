@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -79,7 +80,7 @@ public class CommentsActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 if(add_comment.getText().toString().equals("")){
-                    Toast.makeText(CommentsActivity.this, "You Can’t Send Empty Comment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentsActivity.this, getResources().getString(R.string.youCanNotSendEmptyMessage), Toast.LENGTH_SHORT).show();
                 }
                 else
                     addComment();
@@ -119,6 +120,7 @@ public class CommentsActivity extends AppCompatActivity  {
         overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
     }
 
+    @SuppressLint("SetTextI18n")
     void setLikesCounter(){
         if(likesCount!=0)
             like_count.setText(likesCount+" "+getResources().getString(R.string.likes));

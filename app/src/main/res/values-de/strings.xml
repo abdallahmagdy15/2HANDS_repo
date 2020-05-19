@@ -102,6 +102,9 @@
     <string name="ratings">Bewertungen</string>
     <string name="shares">Anteile</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">Sie haben keine Gefolgschaft!</string>
+
     <!--fragment post-->
     <string name="shared">Geteilt</string>
 
@@ -152,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">Konto</string>
+    <string name="preferences">Vorlieben</string>
+    <string name="mutedUsers">Stummgeschaltete Benutzer</string>
+    <string name="nightMode">Nacht-Modus</string>
+    <string name="favouriteCategories">Lieblingskategorien</string>
     <string name="name">Name</string>
     <string name="country">Land</string>
     <string name="changeYourPassword">Ändern Sie Ihr Passwort</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">Sie können nicht folgen</string>
     <string name="andViewingHisPostsAndReviews">und Anzeigen seiner Beiträge und Bewertungen</string>
     <string name="isBlocked">ist blockiert!</string>
+    <string name="unblock">Entsperren</string>
+    <string name="unmute">Stummschaltung aufheben</string>
 
     <!--activity profile-->
     <string name="follow">Folgen</string>
@@ -268,7 +277,7 @@
     <string name="reportPost">Beitrag melden</string>
 
     <!--ChatListFragment-->
-    <string name="thisMessageWasDeleted">Diese Nachricht wurde gelöscht ...</string>
+    <string name="thisMessageWasDeleted">Diese Nachricht wurde gelöscht…</string>
     <string name="sentAPhoto">schickte ein Foto…</string>
 
     <!--ChatActivity-->
@@ -276,16 +285,21 @@
     <string name="gallery">Galerie</string>
     <string name="chooseImageFrom">Wählen Sie Bild aus</string>
     <string name="sendingImage">Bild senden…</string>
-    <string name="youCanNotSendEmptyMessage">Sie können keine leere Nachricht senden ...</string>
+    <string name="youCanNotSendEmptyMessage">Sie können keine leere Nachricht senden…</string>
     <string name="typing">Tippen…</string>
     <string name="online">online</string>
     <string name="typeAMessage">Geben Sie eine Nachricht ein…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">Kamera- und Speicherberechtigungen sind erforderlich…</string>
+    <string name="storagePermissionIsNecessary">Eine Speichererlaubnis ist erforderlich…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Sind Sie sicher, diese Nachricht zu löschen?</string>
     <string name="no">Nein</string>
     <string name="seen">gesehen</string>
     <string name="delivered">geliefert</string>
+    <string name="copy">Kopieren</string>
+    <string name="copied">Kopiert</string>
+    <string name="noText">Kein Text</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Hilfeanforderung abgelehnt</string>

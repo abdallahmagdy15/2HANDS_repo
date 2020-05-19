@@ -267,7 +267,7 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                block.setTitle("unblock");
+                                block.setTitle(R.string.unblock);
                                 block.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(MenuItem item) {
@@ -296,7 +296,7 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                mute.setTitle("unmute");
+                                mute.setTitle(R.string.unmute);
                                 mute.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(MenuItem item) {
@@ -330,7 +330,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ProfileActivity.this,"User has been blocked successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,getResources().getString(R.string.userIsBlockedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -340,7 +340,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ProfileActivity.this,"User has been muted successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,getResources().getString(R.string.userIsMutedSuccessfully),Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -350,7 +350,8 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ProfileActivity.this,"User has been unblocked successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,getResources().getString(R.string.unblock)
+                                + " " + getResources().getString(R.string.done),Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -360,7 +361,8 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(ProfileActivity.this,"User has been unmuted successfully!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,getResources().getString(R.string.unmute)
+                                + " " + getResources().getString(R.string.done),Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -540,7 +542,7 @@ public class ProfileActivity extends AppCompatActivity {
                 profileRate.setText(df.format(user.rate));
                 NumberFormat nf = NumberFormat.getInstance();
                 nf.setGroupingUsed(true);
-                ratings_count.setText( nf.format(user.ratings_count) + " Reviews" );
+                ratings_count.setText( nf.format(user.ratings_count) + " " +getResources().getString(R.string.reviews));
 
                 java.util.Date birthDate = user.birth_date.toDate();
                 java.util.Date newDate = new java.util.Date();

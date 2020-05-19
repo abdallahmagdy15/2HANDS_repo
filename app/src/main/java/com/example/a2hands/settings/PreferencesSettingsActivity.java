@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 
 public class PreferencesSettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -17,6 +18,7 @@ public class PreferencesSettingsActivity extends AppCompatActivity implements Vi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_preferences_settings);
 
         Toolbar toolbar = findViewById(R.id.prefSettings_toolbar);
@@ -43,7 +45,7 @@ public class PreferencesSettingsActivity extends AppCompatActivity implements Vi
                 startActivity(new Intent(PreferencesSettingsActivity.this, NotificationActivity.class));
                 break;
             case R.id.prefSettings_editFavCats:
-                startActivity(new Intent(PreferencesSettingsActivity.this, AccountSettingsActivity.class));
+//                startActivity(new Intent(PreferencesSettingsActivity.this, AccountSettingsActivity.class));
                 break;
         }
     }

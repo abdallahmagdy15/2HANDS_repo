@@ -108,9 +108,6 @@ dependencies {
     //user in RotateBitmap
     implementation "androidx.exifinterface:exifinterface:1.2.0"
 
-    //Splash Screen
-    implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
-
     //uCrop
     implementation 'com.github.yalantis:ucrop:2.2.4'
 

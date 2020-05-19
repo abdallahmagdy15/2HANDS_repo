@@ -102,6 +102,9 @@
     <string name="ratings">تقييمات</string>
     <string name="shares">مشاركة</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">ليس لديك اشخاص تتابعهم!</string>
+
     <!--fragment post-->
     <string name="shared">شاركه</string>
 
@@ -152,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">الحساب</string>
+    <string name="preferences">التفضيلات</string>
+    <string name="mutedUsers">الذين تم وقف اشعاراتهم</string>
+    <string name="nightMode">الوضع الليلي</string>
+    <string name="favouriteCategories">الفئات المفضلة</string>
     <string name="name">الاسم</string>
     <string name="country">الدولة</string>
     <string name="changeYourPassword">تغيير كلمة المرور</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">تم حظرك من متابعة</string>
     <string name="andViewingHisPostsAndReviews">ومشاهدة منشوراته وتقييماته</string>
     <string name="isBlocked">تم حظره!</string>
+    <string name="unblock">إلغاء الحظر</string>
+    <string name="unmute">إلغاء كتم الاشعارات</string>
 
     <!--activity profile-->
     <string name="follow">تابع</string>
@@ -280,12 +289,17 @@
     <string name="typing">يكتب الان…</string>
     <string name="online">متصل</string>
     <string name="typeAMessage">اكتب رسالة…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">أذونات الكاميرا والتخزين مطلوبة…</string>
+    <string name="storagePermissionIsNecessary">اذن التخزين مطلوب…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">هل انت متأكد من مسح الرسالة ؟</string>
     <string name="no">لا</string>
     <string name="seen">تمت رؤيتها</string>
     <string name="delivered">وصلت</string>
+    <string name="copy">نسخ</string>
+    <string name="copied">تم النسخ</string>
+    <string name="noText">لا يوجد نص</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">تم رفض طلب المساعدة</string>

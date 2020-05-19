@@ -102,6 +102,9 @@
     <string name="ratings">giudizi</string>
     <string name="shares">azioni</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">Non hai seguito!</string>
+
     <!--fragment post-->
     <string name="shared">Condivisa</string>
 
@@ -151,7 +154,11 @@
     <string name="send">Spedire</string>
 
     <!--activity settings-->
-    <string name="account">account</string>
+    <string name="account">Account</string>
+    <string name="preferences">Preferenze</string>
+    <string name="mutedUsers">Utenti Disattivati</string>
+    <string name="nightMode">Modalità Notturna</string>
+    <string name="favouriteCategories">Categorie Preferite</string>
     <string name="name">Nome</string>
     <string name="country">Nazione</string>
     <string name="changeYourPassword">Cambia la tua password</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">Non sei autorizzato a seguire</string>
     <string name="andViewingHisPostsAndReviews">e visualizzare i suoi post e recensioni</string>
     <string name="isBlocked">è bloccato!</string>
+    <string name="unblock">Sbloccare</string>
+    <string name="unmute">Attiva</string>
 
     <!--activity profile-->
     <string name="follow">Seguire</string>
@@ -280,12 +289,17 @@
     <string name="typing">digitando…</string>
     <string name="online">in linea</string>
     <string name="typeAMessage">Scrivi un messaggio…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">Sono necessarie le autorizzazioni per fotocamera e archiviazione…</string>
+    <string name="storagePermissionIsNecessary">È necessario il permesso di archiviazione…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Sei sicuro di eliminare questo messaggio?</string>
     <string name="no">No</string>
     <string name="seen">visto</string>
     <string name="delivered">consegnato</string>
+    <string name="copy">Copia</string>
+    <string name="copied">Copiato</string>
+    <string name="noText">Nessun testo</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Richiesta di aiuto rifiutata</string>

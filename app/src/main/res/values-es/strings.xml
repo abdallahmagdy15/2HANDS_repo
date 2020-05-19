@@ -102,6 +102,9 @@
     <string name="ratings">calificaciones</string>
     <string name="shares">Comparte</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">¡No tienes seguidores!</string>
+
     <!--fragment post-->
     <string name="shared">Compartido</string>
 
@@ -152,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">Cuenta</string>
+    <string name="preferences">Preferencias</string>
+    <string name="mutedUsers">Usuarios Silenciados</string>
+    <string name="nightMode">Modo Nocturno</string>
+    <string name="favouriteCategories">Categorías Favoritas</string>
     <string name="name">Nombre</string>
     <string name="country">País</string>
     <string name="changeYourPassword">Cambia tu contraseña</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">Estás bloqueado de seguir</string>
     <string name="andViewingHisPostsAndReviews">y viendo sus publicaciones y comentarios</string>
     <string name="isBlocked">está bloqueado!</string>
+    <string name="unblock">Desatascar</string>
+    <string name="unmute">Dejar de silenciar</string>
 
     <!--activity profile-->
     <string name="follow">Seguir</string>
@@ -280,12 +289,17 @@
     <string name="typing">mecanografía…</string>
     <string name="online">en línea</string>
     <string name="typeAMessage">Escribe un mensaje…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">Los permisos de cámara y almacenamiento son necesarios…</string>
+    <string name="storagePermissionIsNecessary">El permiso de almacenamiento es necesario…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">¿Estás seguro de eliminar este mensaje?</string>
     <string name="no">No</string>
     <string name="seen">visto</string>
     <string name="delivered">entregado</string>
+    <string name="copy">Copiar</string>
+    <string name="copied">Copiado</string>
+    <string name="noText">Sin texto</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Solicitud de ayuda rechazada</string>

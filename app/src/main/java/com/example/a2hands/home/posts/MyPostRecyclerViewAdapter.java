@@ -289,7 +289,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                 e.printStackTrace();
             }
             try {
-                setLikeBtnListner(holder, curr_post);
+                setLikeBtnListener(holder, curr_post);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -610,7 +610,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
 
     }
 
-    private void setLikeBtnListner(final ViewHolder holder , final Post curr_post){
+    private void setLikeBtnListener(final ViewHolder holder , final Post curr_post){
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

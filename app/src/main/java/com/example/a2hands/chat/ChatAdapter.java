@@ -48,8 +48,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     private LinearLayoutManager linearLayoutManager;
 
-    FirebaseUser user;
-    ClipboardManager clipboardManager;
+    private FirebaseUser user;
+    private ClipboardManager clipboardManager;
 
     public ChatAdapter(Context context, List<Chat> chatList, String imageURI,
                        String hisUid, LinearLayoutManager linearLayoutManager,
@@ -167,10 +167,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(chatList.get(position).getSender().equals(user.getUid())) {
-                    String[] options = {context.getResources().getString(R.string.delete),"CopyText"};
-                    AlertDialog.Builder builder= new AlertDialog.Builder(context);
-                    builder.setTitle("CopyText && Delete");
+                if(chatList.get(position).getSender().equals(user.getUid()) &&
+                        !chatList.get(position).getIsDeleted()) {
+
+                    String[] options = {context.getResources().getString(R.string.delete),context.getResources().getString(R.string.copy)};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -178,17 +179,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                                 deleteMessage(position);
                                 holder.messageImage.setVisibility(View.GONE);
                                 holder.message.setVisibility(View.GONE);
-                            }
-                            if (which == 1){
-                                String MSG_TO_BE_COPY = chatList.get(position).getMessage();
-                                if (!MSG_TO_BE_COPY.equals("") && !chatList.get(position).getIsDeleted()){
-                                    ClipData clipData = ClipData.newPlainText("MSG_TO_BE_COPY",MSG_TO_BE_COPY);
-                                    clipboardManager.setPrimaryClip(clipData);
-                                    Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
-                                }
-                                if (chatList.get(position).getIsDeleted()){
-                                    Toast.makeText(context, "Cannot copy this message..", Toast.LENGTH_SHORT).show();
-                                }
+                            } else if (which == 1 && !chatList.get(position).getMessage().equals("")){
+                                ClipData clipData = ClipData.newPlainText("MSG_TO_BE_COPY", chatList.get(position).getMessage());
+                                clipboardManager.setPrimaryClip(clipData);
+                                Toast.makeText(context, context.getResources().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, context.getResources().getString(R.string.noText), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

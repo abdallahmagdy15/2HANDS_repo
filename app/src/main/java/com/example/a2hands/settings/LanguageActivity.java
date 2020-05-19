@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.a2hands.ChangeLocale;
+import com.example.a2hands.LoginActivity;
 import com.example.a2hands.R;
 import com.example.a2hands.UserStatus;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,7 +74,13 @@ public class LanguageActivity extends AppCompatActivity {
                     } else if(selectedRadioButton.getText().equals(getResources().getString(R.string.italian))){
                         setLocale("it");
                     }
-                    onBackPressed();
+
+                    //clear stack of activities and go to starting activity (login)
+                    // which will start homeActivity (cuz user is signed in)
+                    // so all activities will be recreated to inflate the layout with the right locale
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    getApplicationContext().startActivity(intent);
                 }
             }
         });
@@ -82,7 +89,8 @@ public class LanguageActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(LanguageActivity.this, SettingsActivity.class));
+        finish();
+        startActivity(new Intent(LanguageActivity.this, PreferencesSettingsActivity.class));
     }
 
     private void setLocale(String lang) {
