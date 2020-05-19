@@ -102,6 +102,9 @@
     <string name="ratings">evaluation</string>
     <string name="shares">Partages</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">Vous n\'avez aucun suivi!</string>
+
     <!--fragment post-->
     <string name="shared">partagé</string>
 
@@ -152,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">Compte</string>
+    <string name="preferences">Préférences</string>
+    <string name="mutedUsers">Utilisateurs Muets</string>
+    <string name="nightMode">Mode Nuit</string>
+    <string name="favouriteCategories">Catégories Préférées</string>
     <string name="name">Nom</string>
     <string name="country">Pays</string>
     <string name="changeYourPassword">Changez votre mot de passe</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">Vous n\'êtes pas autorisé à suivre</string>
     <string name="andViewingHisPostsAndReviews">et voir ses publications et avis</string>
     <string name="isBlocked">est bloqué!</string>
+    <string name="unblock">Débloquer</string>
+    <string name="unmute">Activer le son</string>
 
     <!--activity profile-->
     <string name="follow">Suivre</string>
@@ -280,12 +289,17 @@
     <string name="typing">il tape…</string>
     <string name="online">en ligne</string>
     <string name="typeAMessage">Tapez un message…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">Les autorisations de caméra et de stockage sont nécessaires…</string>
+    <string name="storagePermissionIsNecessary">Une autorisation de stockage est nécessaire…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Voulez-vous vraiment supprimer ce message?</string>
     <string name="no">Non</string>
     <string name="seen">a été vu</string>
     <string name="delivered">a été livré</string>
+    <string name="copy">Copie</string>
+    <string name="copied">Copié</string>
+    <string name="noText">Pas de texte</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Demande d\'aide refusée</string>

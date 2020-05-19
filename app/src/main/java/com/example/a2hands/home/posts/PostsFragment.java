@@ -161,7 +161,7 @@ public class PostsFragment extends Fragment {
                         if(followingsIds.size()>0)
                             getPostsForHomeByFollowings(followingsIds, selectedCat);
                         else
-                            Toast.makeText(getContext(),"You have no followings!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),getResources().getString(R.string.youHaveNoFollowings),Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -526,25 +526,5 @@ public class PostsFragment extends Fragment {
 
 
     }
-
-
-    ///////////////////////////////////////////////////////////
-    // changing the language only to get english strings for //
-    // categories to be able to load posts correctly ....... //
-    ///////////////////////////////////////////////////////////
-    @NonNull
-    private String getEnglishString(int word) {
-        Configuration configuration = getEnglishConfiguration();
-
-        return getContext().createConfigurationContext(configuration).getResources().getString(word);
-    }
-
-    @NonNull
-    private Configuration getEnglishConfiguration() {
-        Configuration configuration = new Configuration(getContext().getResources().getConfiguration());
-        configuration.setLocale(new Locale("en"));
-        return configuration;
-    }////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////
 
 }

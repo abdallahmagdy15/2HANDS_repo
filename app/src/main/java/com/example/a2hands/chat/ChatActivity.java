@@ -629,7 +629,7 @@ public class ChatActivity extends AppCompatActivity {
                     if (cameraAccepted & storageAccepted){
                         pickFromCamera();
                     }else {
-                        Toast.makeText(this, "Camera & Storage both permissions are necessary...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.cameraAndStoragePermissionsAreNecessary), Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -643,7 +643,7 @@ public class ChatActivity extends AppCompatActivity {
                     if (storageAccepted){
                         pickFromGallery();
                     }else {
-                        Toast.makeText(this, "Storage permissions necessary...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getResources().getString(R.string.storagePermissionIsNecessary), Toast.LENGTH_SHORT).show();
                     }
 
                 }else {

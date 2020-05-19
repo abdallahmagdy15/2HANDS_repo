@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +22,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_account_settings);
 
         Toolbar toolbar = findViewById(R.id.accountSettings_toolbar);
@@ -28,19 +30,19 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        accountSettings_editName     =findViewById(R.id.accountSettings_editName);
-        accountSettings_editUsername        =findViewById(R.id.accountSettings_editUsername);
-        accountSettings_editEmail=findViewById(R.id.accountSettings_editEmail);
-        accountSettings_editPhone  =findViewById(R.id.accountSettings_editPhone);;
-        accountSettings_editCountry   =findViewById(R.id.accountSettings_editCountry);;
-        accountSettings_editPassword       =findViewById(R.id.accountSettings_editPassword);;
+        accountSettings_editName = findViewById(R.id.accountSettings_editName);
+        accountSettings_editUsername = findViewById(R.id.accountSettings_editUsername);
+        accountSettings_editEmail = findViewById(R.id.accountSettings_editEmail);
+        accountSettings_editPhone = findViewById(R.id.accountSettings_editPhone);;
+        accountSettings_editCountry = findViewById(R.id.accountSettings_editCountry);;
+        accountSettings_editPassword = findViewById(R.id.accountSettings_editPassword);;
 
-        accountSettings_editName       .setOnClickListener(this);
-        accountSettings_editUsername          .setOnClickListener(this);
-        accountSettings_editEmail  .setOnClickListener(this);
-        accountSettings_editPhone    .setOnClickListener(this);
-        accountSettings_editCountry     .setOnClickListener(this);
-        accountSettings_editPassword         .setOnClickListener(this);
+        accountSettings_editName.setOnClickListener(this);
+        accountSettings_editUsername.setOnClickListener(this);
+        accountSettings_editEmail.setOnClickListener(this);
+        accountSettings_editPhone.setOnClickListener(this);
+        accountSettings_editCountry.setOnClickListener(this);
+        accountSettings_editPassword.setOnClickListener(this);
 
 
     }// end of onCreate method

@@ -102,6 +102,9 @@
     <string name="ratings">classificações</string>
     <string name="shares">ações</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">Você não tem seguidores!</string>
+
     <!--fragment post-->
     <string name="shared">Compartilhado</string>
 
@@ -152,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">Conta</string>
+    <string name="preferences">Preferências</string>
+    <string name="mutedUsers">Usuários Silenciados</string>
+    <string name="nightMode">Modo Noturno</string>
+    <string name="favouriteCategories">Categorias Favoritas</string>
     <string name="name">Nome</string>
     <string name="country">País</string>
     <string name="changeYourPassword">Mude sua senha</string>
@@ -229,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">Você está impedido de seguir</string>
     <string name="andViewingHisPostsAndReviews">e visualizando suas postagens e críticas</string>
     <string name="isBlocked">está bloqueado!</string>
+    <string name="unblock">Desbloquear</string>
+    <string name="unmute">Ativar som</string>
 
     <!--activity profile-->
     <string name="follow">Segue</string>
@@ -280,12 +289,17 @@
     <string name="typing">digitando…</string>
     <string name="online">conectados</string>
     <string name="typeAMessage">Digite uma mensagem…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">São necessárias permissões de câmera e armazenamento…</string>
+    <string name="storagePermissionIsNecessary">É necessária permissão de armazenamento…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Tem certeza de que deseja excluir esta mensagem?</string>
     <string name="no">No</string>
     <string name="seen">visto</string>
     <string name="delivered">entregue</string>
+    <string name="copy">Cópia de</string>
+    <string name="copied">Copiado</string>
+    <string name="noText">Nenhum texto</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Pedido de ajuda recusado</string>

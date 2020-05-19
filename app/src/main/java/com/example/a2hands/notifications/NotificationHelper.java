@@ -40,7 +40,7 @@ import java.util.List;
 public class NotificationHelper {
     Context context;
     private Uri soundUri;
-    private static String CHANNEL_ID="CHANNEL_1";
+    private static String CHANNEL_ID = "CHANNEL_1";
 
     public NotificationHelper(Context context) {
     this.context = context;

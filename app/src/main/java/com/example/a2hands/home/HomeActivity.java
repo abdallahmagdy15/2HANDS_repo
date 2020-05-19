@@ -497,7 +497,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
         Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.home_postsFrag);
 
@@ -508,7 +508,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 f instanceof SearchFragment ||
                 f instanceof NotificationFragment) {
 
-            navigateHome();
+            navigateHome(false);
             return;
         } else if (doubleBackToExitPressedOnce) {
 
@@ -522,7 +522,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, getResources().getString(R.string.pressBackAgainToExit), Toast.LENGTH_SHORT).show();
         mHandler.postDelayed(mRunnable, 2000);
-    }*/
+    }
 
 
 

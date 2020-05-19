@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Preferences"
+        app:title="@string/preferences"
         app:titleTextColor="@color/colorDark" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,6 @@
             android:text="@string/language"
             android:textColor="@color/colorDark"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/accountSettings_editUsername"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +85,7 @@
             android:padding="16dp"
             android:paddingStart="64dp"
             android:paddingEnd="8dp"
-            android:text="Favourite Categories"
+            android:text="@string/favouriteCategories"
             android:textColor="@color/colorDark"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,4 +103,5 @@
             app:srcCompat="@drawable/ic_categorize" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--SignUpActivity-->
@@ -101,6 +102,9 @@
     <string name="ratings">ratings</string>
     <string name="shares">shares</string>
 
+    <!--PostsFragment-->
+    <string name="youHaveNoFollowings">You have no followings!</string>
+
     <!--fragment post-->
     <string name="shared">Shared</string>
 
@@ -151,6 +155,10 @@
 
     <!--activity settings-->
     <string name="account">Account</string>
+    <string name="preferences">Preferences</string>
+    <string name="mutedUsers">Muted Users</string>
+    <string name="nightMode">Night Mode</string>
+    <string name="favouriteCategories">Favourite Categories</string>
     <string name="name">Name</string>
     <string name="country">Country</string>
     <string name="changeYourPassword">Change Your Password</string>
@@ -228,6 +236,8 @@
     <string name="youAreBlockedFromfollowing">You are blocked from following</string>
     <string name="andViewingHisPostsAndReviews">and viewing his Posts and Reviews</string>
     <string name="isBlocked">is blocked!</string>
+    <string name="unblock">Unblock</string>
+    <string name="unmute">Unmute</string>
 
     <!--activity profile-->
     <string name="follow">Follow</string>
@@ -279,12 +289,17 @@
     <string name="typing">typing…</string>
     <string name="online">online</string>
     <string name="typeAMessage">Type a message…</string>
+    <string name="cameraAndStoragePermissionsAreNecessary">"Camera and Storage permissions are necessary…</string>
+    <string name="storagePermissionIsNecessary">Storage permission is necessary…</string>
 
     <!--ChatAdapter-->
     <string name="areYouSureToDeleteThisMessage">Are you sure to delete this message?</string>
     <string name="no">No</string>
     <string name="seen">seen</string>
     <string name="delivered">delivered</string>
+    <string name="copy">Copy</string>
+    <string name="copied">Copied</string>
+    <string name="noText">No Text</string>
 
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Help Request Refused</string>

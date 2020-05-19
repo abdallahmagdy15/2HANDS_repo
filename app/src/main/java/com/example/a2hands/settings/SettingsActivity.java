@@ -90,10 +90,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(SettingsActivity.this , BlockedUsersActivity.class));
                 break;
             case R.id.settings_muted_users:
-                startActivity(new Intent(SettingsActivity.this , EditPhoneActivity.class));
+//                startActivity(new Intent(SettingsActivity.this , EditPhoneActivity.class));
                 break;
             case R.id.settings_night_mode:
-                startActivity(new Intent(SettingsActivity.this , EditPassActivity.class));
+//                startActivity(new Intent(SettingsActivity.this , EditPassActivity.class));
                 break;
             case R.id.settings_about:
                 startActivity(new Intent(SettingsActivity.this , AboutAppActivity.class));

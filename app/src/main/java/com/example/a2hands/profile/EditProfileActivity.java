@@ -280,7 +280,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(EditProfileActivity.this,"Profile updated!",Toast.LENGTH_SHORT).show();
                         setResult(Activity.RESULT_OK);
                         finish();
                     }

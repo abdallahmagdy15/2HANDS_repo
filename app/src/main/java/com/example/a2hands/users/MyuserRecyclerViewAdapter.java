@@ -136,7 +136,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
 
                             setFollowListener(h,user);
                         } else {
-                            //change style of follow btn to unfollowed
+                            //change style of follow btn to unFollowed
                             h.userFollowBtn.setImageResource(R.drawable.add_user);
 
                             setUnfollowListener(h,user);
@@ -152,7 +152,7 @@ public class MyuserRecyclerViewAdapter extends RecyclerView.Adapter<MyuserRecycl
         h.userFollowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //confirm unfollow
+                //confirm unFollow
                 new AlertDialog.Builder(context)
                         .setTitle(context.getResources().getString(R.string.areYouSureYouWantToUnFollow))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

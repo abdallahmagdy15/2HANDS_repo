@@ -109,7 +109,7 @@ public class MyCommentRecyclerViewAdapter extends RecyclerView.Adapter<MyComment
         }
 
 
-        //Like comment button chnage color if it clicked by current user
+        //Like comment button change color if it clicked by current user
         try {
             holder.commentLikeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
