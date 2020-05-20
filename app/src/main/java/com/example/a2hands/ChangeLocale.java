@@ -11,16 +11,18 @@ public class ChangeLocale {
 
     //for changing app language
     private static void setLocale(String lang, Context context) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.setLocale(locale);
+        if (!"".equals(lang)){
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.setLocale(locale);
 
-        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        //save the data to shared preferences
-        SharedPreferences.Editor editor = context.getSharedPreferences("settings", Activity.MODE_PRIVATE).edit();
-        editor.putString("My_Language", lang);
-        editor.apply();
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            //save the data to shared preferences
+            SharedPreferences.Editor editor = context.getSharedPreferences("settings", Activity.MODE_PRIVATE).edit();
+            editor.putString("My_Language", lang);
+            editor.apply();
+        }
     }
 
     public static void loadLocale (Context context){

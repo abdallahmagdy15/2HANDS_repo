@@ -163,13 +163,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
-        String language = prefs.getString("My_Language", "");
-        if(language.equals("ar")){
-            sendButton.setScaleX(-1f);
-            uploadImage.setScaleX(-1f);
-        }
-
         final Intent intent = getIntent();
         hisUid = intent.getStringExtra("hisUid");
 

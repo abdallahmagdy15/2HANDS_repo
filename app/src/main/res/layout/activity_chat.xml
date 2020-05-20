@@ -180,12 +180,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="6dp"
             android:background="@null"
-            app:srcCompat="@drawable/ic_send_black_24dp"
+            android:contentDescription="@string/send"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/send" />
+            app:srcCompat="@drawable/ic_send" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
