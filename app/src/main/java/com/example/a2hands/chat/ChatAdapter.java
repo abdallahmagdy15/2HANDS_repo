@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.joooonho.SelectableRoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
@@ -46,6 +49,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private String imageURI;
     private String hisUid;
 
+    String language;
+
     private LinearLayoutManager linearLayoutManager;
 
     private FirebaseUser user;
@@ -53,7 +58,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     public ChatAdapter(Context context, List<Chat> chatList, String imageURI,
                        String hisUid, LinearLayoutManager linearLayoutManager,
-                       FloatingActionButton scrollDownBtn)
+                       FloatingActionButton scrollDownBtn, String language)
     {
         this.context = context;
         this.chatList = chatList;
@@ -61,6 +66,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         this.hisUid = hisUid;
         this.linearLayoutManager = linearLayoutManager;
         this.scrollDownBtn = scrollDownBtn;
+        this.language = language;
     }
 
     @NonNull
@@ -83,6 +89,35 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         final String message = chatList.get(position).getMessage();
         String timestamp = chatList.get(position).getTimestamp();
         final String messageImagee = chatList.get(position).getMessageImage();
+
+        //change direction of message layout if language is arabic to rtl and
+        // modifying SelectableRoundedImageView corner radius
+        if (holder.messageLayout.getViewById(R.id.messageBodyLayout) != null) {
+
+            if ("ar".equals(language)){
+                if (getItemViewType(position) == MSG_TYPE_LEFT) {
+                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
+                            .setBackground(context.getResources().getDrawable(R.drawable.bg_receiver_rtl));
+                    holder.messageImage.setCornerRadiiDP(15,0,0,0);
+                }
+                else if (getItemViewType(position) == MSG_TYPE_RIGHT) {
+                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
+                            .setBackground(context.getResources().getDrawable(R.drawable.bg_sender_rtl));
+                    holder.messageImage.setCornerRadiiDP(0,15,0,0);
+                }
+            } else {
+                if (getItemViewType(position) == MSG_TYPE_LEFT) {
+                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
+                            .setBackground(context.getResources().getDrawable(R.drawable.bg_receiver_ltr));
+                    holder.messageImage.setCornerRadiiDP(0,15,0,0);
+                }
+                else if (getItemViewType(position) == MSG_TYPE_RIGHT) {
+                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
+                            .setBackground(context.getResources().getDrawable(R.drawable.bg_sender_ltr));
+                    holder.messageImage.setCornerRadiiDP(15,0,0,0);
+                }
+            }
+        }
 
         if(chatList.get(position).getIsDeleted()){
             holder.messageImage.setVisibility(View.GONE);
@@ -127,13 +162,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.isSeen.setVisibility(View.GONE);
         }
 
-        //for showing or hiding left message imageView
-        if(position - 1 != -1 && holder.otherProfileImage != null &&
-                chatList.get(position - 1).getReceiver().equals(chatList.get(position).getReceiver()))
-        {
-            holder.otherProfileImage.setVisibility(View.INVISIBLE);
-        }else if(position - 1 != -1 && holder.otherProfileImage != null){
-            holder.otherProfileImage.setVisibility(View.VISIBLE);
+        //show image of sender only in last message
+        try{
+            //for showing or hiding left message imageView
+            if(holder.otherProfileImage != null &&
+                    chatList.get(position).getReceiver().equals(chatList.get(position + 1).getReceiver()))
+            {
+                holder.otherProfileImage.setVisibility(View.INVISIBLE);
+            }else if(holder.otherProfileImage != null){
+                holder.otherProfileImage.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e){
+            Log.i("messageSenderProfile", Objects.requireNonNull(e.getMessage()));
         }
 
         //for spacing between messages types (RIGHT or LEFT)
@@ -305,7 +345,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
     class MyHolder extends RecyclerView.ViewHolder{
 
-        ImageView otherProfileImage, messageImage;
+        ImageView otherProfileImage;
+        SelectableRoundedImageView messageImage;
         TextView message, deletedMessage, time, isSeen;
         androidx.constraintlayout.widget.ConstraintLayout messageLayout;
 

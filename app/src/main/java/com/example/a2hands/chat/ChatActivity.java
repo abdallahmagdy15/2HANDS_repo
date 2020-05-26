@@ -106,6 +106,8 @@ public class ChatActivity extends AppCompatActivity {
 
     APIService apiService;
 
+    String language;
+
     //UPLOAD IMAGE
     private static final int CAMERA_REQUEST_CODE=100;
     private static final int STORAGE_REQUEST_CODE=200;
@@ -140,6 +142,9 @@ public class ChatActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        language = prefs.getString("My_Language", "");
 
         recyclerView = findViewById(R.id.chatrecycleview);
         profileImage = findViewById(R.id.profile_Image);
@@ -296,7 +301,7 @@ public class ChatActivity extends AppCompatActivity {
                             chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
                         chatList.add(chat);
                     }
-                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager,scrollDownBtn);
+                    adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager,scrollDownBtn,language);
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);

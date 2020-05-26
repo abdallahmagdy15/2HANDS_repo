@@ -11,12 +11,13 @@
 
             <!-- View background color -->
             <solid
-                android:color="#B7E6FF" >
+                android:color="#FFE6E6" >
             </solid>
 
             <!-- The radius makes the corners rounded -->
             <corners
-                android:radius="15dp">
+                android:topRightRadius="15dp"
+                android:bottomRightRadius="15dp">
             </corners>
         </shape>
     </item>
@@ -25,12 +26,13 @@
 
             <!-- View background color -->
             <solid
-                android:color="#CBEBFC" >
+                android:color="#fafafa" >
             </solid>
 
             <!-- The radius makes the corners rounded -->
             <corners
-                android:radius="15dp">
+                android:topRightRadius="15dp"
+                android:bottomRightRadius="15dp">
             </corners>
         </shape>
     </item>
