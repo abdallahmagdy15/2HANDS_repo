@@ -16,8 +16,8 @@ public class ChangeLocale {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.setLocale(locale);
-
             context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+
             //save the data to shared preferences
             SharedPreferences.Editor editor = context.getSharedPreferences("settings", Activity.MODE_PRIVATE).edit();
             editor.putString("My_Language", lang);

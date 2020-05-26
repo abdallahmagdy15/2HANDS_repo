@@ -226,22 +226,14 @@
                         card_view:cardBackgroundColor="@color/colorWhite"
                         card_view:cardCornerRadius="15dp">
 
-                        <ImageView
-                            android:id="@+id/imageView8"
-                            android:layout_width="22dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="8dp"
-                            card_view:srcCompat="@drawable/ic_star1"
-                            android:contentDescription="@string/reviews" />
-
                         <TextView
                             android:id="@+id/profileRate"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="38dp"
-                            android:layout_marginEnd="8dp"
-                            android:gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center_vertical"
+                            android:drawableEnd="@drawable/ic_star1"
+                            android:drawablePadding="8dp"
                             android:text="0"
                             android:textSize="18sp"
                             android:textStyle="bold"

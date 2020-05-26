@@ -12,13 +12,15 @@ import com.example.a2hands.ChangeLocale;
 import com.example.a2hands.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AccountSettingsActivity extends AppCompatActivity implements View.OnClickListener{
+public class AccountSettingsActivity extends AppCompatActivity implements View.OnClickListener {
+
     TextView accountSettings_editName;
     TextView accountSettings_editUsername;
     TextView accountSettings_editEmail;
     TextView accountSettings_editPhone;
     TextView accountSettings_editCountry;
     TextView accountSettings_editPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +28,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_account_settings);
 
         Toolbar toolbar = findViewById(R.id.accountSettings_toolbar);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         accountSettings_editName = findViewById(R.id.accountSettings_editName);
         accountSettings_editUsername = findViewById(R.id.accountSettings_editUsername);
         accountSettings_editEmail = findViewById(R.id.accountSettings_editEmail);
@@ -43,7 +45,6 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
         accountSettings_editPhone.setOnClickListener(this);
         accountSettings_editCountry.setOnClickListener(this);
         accountSettings_editPassword.setOnClickListener(this);
-
 
     }// end of onCreate method
 

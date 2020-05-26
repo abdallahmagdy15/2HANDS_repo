@@ -5,7 +5,10 @@
     <!--Background color of your Splash Screen-->
     <item android:drawable="@color/colorPureWhite" />
 
-    <item android:gravity="center"
-        android:drawable="@mipmap/ic_launcher_2hands_2"/>
+    <item>
+        <bitmap
+            android:src="@drawable/ic_launcher_2hands_2_foreground"
+            android:gravity="center" />
+    </item>
 
 </layer-list>

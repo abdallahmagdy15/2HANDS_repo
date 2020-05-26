@@ -551,7 +551,7 @@ public class ProfileActivity extends AppCompatActivity {
                 calBirth.setTime(birthDate);
                 calNew.setTime(newDate);
 
-                //start konfetti animation if today is the user's birthday
+                //start confetti animation if today is the user's birthday
                 if(calBirth.get(Calendar.MONTH) == calNew.get(Calendar.MONTH)
                         && calBirth.get(Calendar.DAY_OF_MONTH) == calNew.get(Calendar.DAY_OF_MONTH)){
 
