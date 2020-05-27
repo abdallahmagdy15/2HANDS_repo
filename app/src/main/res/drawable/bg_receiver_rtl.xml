@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape android:shape="rectangle" >
+
+        <padding
+            android:top="1px"
+            android:bottom="1px"
+            android:start="3px"
+            android:end="3px" />
+
+        <!-- View background color -->
+        <solid
+            android:color="#FFE6E6" >
+        </solid>
+
+        <!-- The radius makes the corners rounded -->
+        <corners
+            android:topLeftRadius="15dp"
+            android:bottomLeftRadius="15dp">
+        </corners>
+    </shape>
+</item>
+<item>
+    <shape android:shape="rectangle" >
+
+        <!-- View background color -->
+        <solid
+            android:color="#fafafa" >
+        </solid>
+
+        <!-- The radius makes the corners rounded -->
+        <corners
+            android:topLeftRadius="15dp"
+            android:bottomLeftRadius="15dp">
+        </corners>
+    </shape>
+</item>
+</layer-list>

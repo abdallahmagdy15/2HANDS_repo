@@ -25,7 +25,8 @@ public class FollowersActivity extends AppCompatActivity  {
         ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_followers);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.followers_toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

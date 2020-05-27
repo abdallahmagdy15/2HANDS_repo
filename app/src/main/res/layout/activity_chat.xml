@@ -198,8 +198,11 @@
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:elevation="10dp"
         android:visibility="gone"
+        app:fabSize="mini"
+        app:backgroundTint="@color/colorPureWhite"
+        app:pressedTranslationZ="100dp"
+        app:srcCompat="@drawable/ic_arrow_downward_white_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/chatrecycleview"
         app:layout_constraintEnd_toEndOf="parent" />
 

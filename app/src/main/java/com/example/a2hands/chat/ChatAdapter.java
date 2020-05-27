@@ -49,7 +49,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     private String imageURI;
     private String hisUid;
 
-    String language;
+    private String language;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -93,7 +93,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         //change direction of message layout if language is arabic to rtl and
         // modifying SelectableRoundedImageView corner radius
         if (holder.messageLayout.getViewById(R.id.messageBodyLayout) != null) {
-
             if ("ar".equals(language)){
                 if (getItemViewType(position) == MSG_TYPE_LEFT) {
                     holder.messageLayout.getViewById(R.id.messageBodyLayout)
@@ -173,7 +172,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 holder.otherProfileImage.setVisibility(View.VISIBLE);
             }
         } catch (Exception e){
-            Log.i("messageSenderProfile", Objects.requireNonNull(e.getMessage()));
+            Log.i("SenderProfile", Objects.requireNonNull(e.getMessage()));
         }
 
         //for spacing between messages types (RIGHT or LEFT)
@@ -237,7 +236,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         holder.messageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(chatList.get(position).getSender().equals(user.getUid())) {
+                if(chatList.get(position).getSender().equals(user.getUid()) && !chatList.get(position).getIsDeleted()) {
                     if(holder.isSeen.getVisibility() == View.GONE){
                         holder.isSeen.setVisibility(View.VISIBLE);
 

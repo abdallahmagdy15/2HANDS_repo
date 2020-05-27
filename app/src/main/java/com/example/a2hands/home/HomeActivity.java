@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -129,6 +130,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         nav = findViewById(R.id.bottom_navigation);
 
+        addPost = findViewById(R.id.home_addPost);
+        addPost.setColorFilter(Color.WHITE);
+
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
 
@@ -146,8 +150,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         catsSpinner = findViewById(R.id.catsSpinner);
         profile_image = findViewById(R.id.home_profile_image);
         catsSpinner.setItems(getResources().getStringArray(R.array.categories));
-
-        addPost = findViewById(R.id.home_addPost);
 
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override

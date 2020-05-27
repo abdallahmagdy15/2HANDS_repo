@@ -44,21 +44,23 @@ public class ImagePreview extends AppCompatActivity {
 
         //Custom Animation To Activity
         SlidrConfig config = new SlidrConfig.Builder()
-                .position(SlidrPosition.TOP)
+                .position(SlidrPosition.VERTICAL)
                 .sensitivity(1f)
                 .scrimColor(Color.BLACK)
                 .scrimStartAlpha(0.8f)
-                .scrimEndAlpha(0.0f)
-                .velocityThreshold(1000)
+                .scrimEndAlpha(0f)
+                .velocityThreshold(2400)
                 .distanceThreshold(0.25f)
-                .edge(true|false)
-                .edgeSize(0.18f) // The % of the screen that counts as the edge, default 18%
+                .edge(true)
+                .edgeSize(0.5f) // The % of the screen that counts as the edge, default 18%
                 .build();
 
         slidr = Slidr.attach(this, config);
+
         //starting when Intent begins
         overridePendingTransition(R.anim.slide_in_bottom,R.anim.slide_out_up);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

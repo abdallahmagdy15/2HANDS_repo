@@ -25,7 +25,8 @@ public class FollowingsActivity extends AppCompatActivity {
         ChangeLocale.loadLocale(getBaseContext());
         setContentView(R.layout.activity_followings);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.followings_toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -33,7 +33,7 @@
         <activity android:name=".settings.EditUserNameActivity" android:parentActivityName=".settings.EditUserNameActivity" android:launchMode="singleTop"/>
         <activity android:name=".profile.EditProfileActivity" android:parentActivityName=".profile.EditProfileActivity" android:launchMode="singleTop"/>
         <activity android:name=".VideoPreview" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTop"/>
-        <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview" android:launchMode="singleTop"/>
+        <activity android:name=".ImagePreview" android:parentActivityName=".ImagePreview" android:launchMode="singleTop" android:theme="@style/AppTheme.NoActionBar.SliderTheme"/>
         <activity android:name=".home.LikesActivity" android:parentActivityName=".home.LikesActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".profile.FollowingsActivity"
