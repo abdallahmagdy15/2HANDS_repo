@@ -186,13 +186,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             holder.messageLayout.setPaddingRelative(0,0,10,2);
         }
 
-        //change the visibility of scrollDown button
-        if(chatList.size() - 2 != -1 && position >= chatList.size() - 2){
-            scrollDownBtn.setVisibility(View.GONE);
-        }else {
-            scrollDownBtn.setVisibility(View.VISIBLE);
-        }
-
 
         holder.time.setText(timestamp);
         try{

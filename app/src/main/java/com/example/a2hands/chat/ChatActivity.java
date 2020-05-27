@@ -147,6 +147,21 @@ public class ChatActivity extends AppCompatActivity {
         language = prefs.getString("My_Language", "");
 
         recyclerView = findViewById(R.id.chatrecycleview);
+        scrollDownBtn = findViewById(R.id.scrollDownFloatingActionBtn);
+
+        //change the visibility of scrollDown button
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1))
+                    scrollDownBtn.setVisibility(View.GONE);
+                else
+                    scrollDownBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
         profileImage = findViewById(R.id.profile_Image);
 
         /////UPLOAD_IMAGE
@@ -160,11 +175,11 @@ public class ChatActivity extends AppCompatActivity {
         message = findViewById(R.id.messageEdit);
         sendButton = findViewById(R.id.sendbutton);
 
-        scrollDownBtn = findViewById(R.id.scrollDownFloatingActionBtn);
+
         scrollDownBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollToBottom();
+                scrollToBottom(true);
             }
         });
 
@@ -189,9 +204,7 @@ public class ChatActivity extends AppCompatActivity {
 
         message.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -200,13 +213,10 @@ public class ChatActivity extends AppCompatActivity {
                 }else {
                     updateTypingStatus(hisUid);
                 }
-
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         closeImageButton = findViewById(R.id.imageButton_close);
@@ -244,15 +254,21 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-    public void scrollToBottom(){
+    public void scrollToBottom(boolean fromScrollButton){
         recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scrollDownBtn.setVisibility(View.GONE);
-                recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-            }
-        }, 1000);
+        if (!fromScrollButton) {
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                }
+            }, 1000);
+        }
+        if (!recyclerView.canScrollVertically(1))
+            scrollDownBtn.setVisibility(View.GONE);
+        else {
+            scrollDownBtn.setVisibility(View.GONE);
+        }
     }
 
 
@@ -305,7 +321,7 @@ public class ChatActivity extends AppCompatActivity {
                     adapterChat.notifyDataSetChanged();
                     //set adapter to recyclerView
                     recyclerView.setAdapter(adapterChat);
-                    scrollToBottom();
+                    scrollToBottom(false);
                 }
             }
 
