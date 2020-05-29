@@ -71,6 +71,7 @@
     <string name="pressBackAgainToExit">Drücken Sie erneut BACK, um den Vorgang zu beenden</string>
 
     <!--activity home-->
+    <string name="suggestedPeople">Vorgeschlagene personen</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="inbox">Posteingang</string>
 

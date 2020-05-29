@@ -114,7 +114,7 @@
             android:focusableInTouchMode="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
@@ -122,12 +122,61 @@
                 android:orientation="vertical"
                 android:persistentDrawingCache="scrolling">
 
+                <LinearLayout
+                    android:id="@+id/peopleYouMayKnowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="4dp"
+                        android:text="@string/suggestedPeople"
+                        android:textAlignment="viewStart"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:background="@color/colorPureWhite"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/peopleYouMayKnowRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPureWhite"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="0dp"
+                        android:clipToPadding="false"
+                        app:layoutManager="LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        tools:context=".home.posts.PostsFragment"
+                        tools:listitem="@layout/user_you_may_know"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userYouMayKnowHeader"/>
+                </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/home_postsFrag"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="55dp"
-                    android:visibility="gone" />
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/peopleYouMayKnowLayout"/>
 
                 <FrameLayout
                     android:id="@+id/home_searchFrag"
@@ -151,7 +200,8 @@
                     android:layout_marginBottom="55dp"
                     android:background="@color/colorPureWhite"
                     android:visibility="gone" />
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 

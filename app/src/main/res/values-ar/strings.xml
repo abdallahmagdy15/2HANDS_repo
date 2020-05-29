@@ -71,6 +71,7 @@
     <string name="pressBackAgainToExit">اضغط رجوع مرة اخرى للخروج</string>
 
     <!--activity home-->
+    <string name="suggestedPeople">الأشخاص المقترحون</string>
     <string name="notifications">الاشعارات</string>
     <string name="inbox">صندوق الوارد</string>
 

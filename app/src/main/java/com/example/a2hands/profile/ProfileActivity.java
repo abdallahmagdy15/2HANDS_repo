@@ -256,6 +256,7 @@ public class ProfileActivity extends AppCompatActivity {
                 profile_blockedStatus.setTextSize(24);
             }});
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem block = menu.findItem(R.id.blockUserItem);

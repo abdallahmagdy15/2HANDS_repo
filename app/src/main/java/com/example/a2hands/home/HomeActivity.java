@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -41,6 +43,8 @@ import com.example.a2hands.search.SearchFragment;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
+import com.example.a2hands.users.MyuserRecyclerViewAdapter;
+import com.example.a2hands.users.PeopleYouMayKnowAdapter;
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView;
 import com.gauravk.bubblenavigation.BubbleToggleView;
 import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
@@ -56,6 +60,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -118,6 +124,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     List<ChatList> myUsersList = new ArrayList<>();
     int[] messagesCount;
 
+    final List<User> usersYouMayKnow = new ArrayList<>();
+    RecyclerView peopleYouMayKnowRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +138,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         nav = findViewById(R.id.bottom_navigation);
+
+        peopleYouMayKnowRecyclerView = findViewById(R.id.peopleYouMayKnowRecyclerView);
 
         addPost = findViewById(R.id.home_addPost);
         addPost.setColorFilter(Color.WHITE);
@@ -185,6 +196,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getNewMessagesCountToBadge();
         checkForNotifications();
         navigateHome(false);
+        List<String> usersIds = new ArrayList<>();
+        usersIds.add("ZxKB29eCgocZoV2Yl4dLroqmQ992");
+        usersIds.add("RVJ9rKcrd2UQMODZVDZIKQT9z6s1");
+        usersIds.add("m96SUweO9Fbq0zcqesnv1mqO2ev1");
+        usersIds.add("xAAobfE01VQJG1Wbf7M8hDwTGTd2");
+        usersIds.add("nUKAJEONEZTKbUc8BvPxzOGRaxj2");
+
+        if (usersIds.contains(myUid))
+            usersIds.remove(myUid);
+
+        getUsersYouMayKnow(usersIds);
+
     }//////////////////////////////////end of onCreate method
 
     private void initDrawer() {
@@ -501,15 +524,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.home_postsFrag);
-
         if(result.isDrawerOpen()){
             result.closeDrawer();
             return;
-        } else if(f instanceof ChatListFragment ||
-                f instanceof SearchFragment ||
-                f instanceof NotificationFragment) {
+        } else if(postsFrag.getVisibility() == View.GONE) {
 
+            nav.setCurrentActiveItem(0);
             navigateHome(false);
             return;
         } else if (doubleBackToExitPressedOnce) {
@@ -544,6 +564,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         catsSpinner.setTextSize(16);
         searchView.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
+        peopleYouMayKnowRecyclerView.setVisibility(View.VISIBLE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.VISIBLE);
@@ -564,6 +585,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
+        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -615,6 +637,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notificationsTitle.setText(getResources().getString(R.string.notifications));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
+        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.GONE);
@@ -644,6 +667,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notificationsTitle.setText(getResources().getString(R.string.inbox));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
+        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.GONE);
@@ -721,4 +745,31 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    private void getUsersYouMayKnow(List<String> usersId){
+        Query query = FirebaseFirestore.getInstance().collection("users");
+        query
+                .whereIn("user_id",usersId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for( DocumentSnapshot sn : task.getResult()){
+                                usersYouMayKnow.add(sn.toObject(User.class));
+                            }
+                            updateUiWithUsersYouMayKnow();
+                        }
+                    }
+                });
+    }
+
+    private void updateUiWithUsersYouMayKnow() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(peopleYouMayKnowRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        peopleYouMayKnowRecyclerView.setLayoutManager(layoutManager);
+        peopleYouMayKnowRecyclerView.setAdapter(new PeopleYouMayKnowAdapter(usersYouMayKnow));
+        findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.VISIBLE);
+    }
+
+
 }

@@ -71,6 +71,7 @@
     <string name="pressBackAgainToExit">Presione ATRÁS nuevamente para salir</string>
 
     <!--activity home-->
+    <string name="suggestedPeople">Personas sugeridas</string>
     <string name="notifications">Notificaciones</string>
     <string name="inbox">Bandeja de entrada</string>
 

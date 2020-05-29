@@ -94,6 +94,7 @@ public class UsersFragment extends Fragment  {
                     }
                 });
     }
+
     private void updateUiWithUsers(){
         Context context = view.getContext();
         final RecyclerView recyclerView = (RecyclerView) view;

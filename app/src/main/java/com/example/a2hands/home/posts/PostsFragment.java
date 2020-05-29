@@ -64,12 +64,12 @@ public class PostsFragment extends Fragment {
     MyPostRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    int lastPostsCount = 0;
-    boolean loading = false;
-    boolean firstTimeLoadingPosts = true;
-    Date lastPostDate;
-    double lastPostPriority = MAX_VALUE;
-    String postsType;
+    private int lastPostsCount = 0;
+    private boolean loading = false;
+    private boolean firstTimeLoadingPosts = true;
+    private Date lastPostDate;
+    private double lastPostPriority = MAX_VALUE;
+    private String postsType;
 
     public PostsFragment() {
     }
@@ -272,7 +272,7 @@ public class PostsFragment extends Fragment {
             query = query.whereEqualTo("category", category);
         }
         query.whereEqualTo("state", true)
-                .limit(20)
+                .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -71,6 +71,7 @@
     <string name="pressBackAgainToExit">Press BACK again to exit</string>
 
     <!--activity home-->
+    <string name="suggestedPeople">Suggested people</string>
     <string name="notifications">Notifications</string>
     <string name="inbox">Inbox</string>
 

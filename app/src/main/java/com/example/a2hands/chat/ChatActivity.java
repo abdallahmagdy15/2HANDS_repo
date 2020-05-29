@@ -68,6 +68,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -152,7 +154,7 @@ public class ChatActivity extends AppCompatActivity {
         //change the visibility of scrollDown button
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1))
