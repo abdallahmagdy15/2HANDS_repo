@@ -43,10 +43,8 @@ import com.example.a2hands.search.SearchFragment;
 import com.example.a2hands.User;
 import com.example.a2hands.home.posts.PostsFragment;
 import com.example.a2hands.settings.SettingsActivity;
-import com.example.a2hands.users.MyuserRecyclerViewAdapter;
 import com.example.a2hands.users.PeopleYouMayKnowAdapter;
 import com.gauravk.bubblenavigation.BubbleNavigationConstraintView;
-import com.gauravk.bubblenavigation.BubbleToggleView;
 import com.gauravk.bubblenavigation.listener.BubbleNavigationChangeListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,7 +58,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -495,6 +492,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         UserStatus.updateOnlineStatus(true, myUid);
+        if(postsFrag.getVisibility() == View.VISIBLE)
+            nav.setCurrentActiveItem(0);
         super.onResume();
     }
 
@@ -564,7 +563,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         catsSpinner.setTextSize(16);
         searchView.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
-        peopleYouMayKnowRecyclerView.setVisibility(View.VISIBLE);
+        findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.VISIBLE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.VISIBLE);
@@ -585,7 +584,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         searchView.setVisibility(View.VISIBLE);
         catsSpinner.setVisibility(View.GONE);
         notificationsTitle.setVisibility(View.GONE);
-        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
+        findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.GONE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -637,7 +636,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notificationsTitle.setText(getResources().getString(R.string.notifications));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
-        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
+        findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.GONE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.GONE);
@@ -667,7 +666,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notificationsTitle.setText(getResources().getString(R.string.inbox));
         catsSpinner.setVisibility(View.GONE);
         searchView.setVisibility(View.GONE);
-        peopleYouMayKnowRecyclerView.setVisibility(View.GONE);
+        findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.GONE);
 
         if(!refresh) {
             postsFrag.setVisibility(View.GONE);
@@ -747,8 +746,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getUsersYouMayKnow(List<String> usersId){
-        Query query = FirebaseFirestore.getInstance().collection("users");
-        query
+        FirebaseFirestore.getInstance().collection("users")
                 .whereIn("user_id",usersId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

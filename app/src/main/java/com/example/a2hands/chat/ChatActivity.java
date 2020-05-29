@@ -315,8 +315,8 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     Chat chat = ds.getValue(Chat.class);
 
-                    if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)||
-                            chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
+                    if (myUid.equals(chat.getReceiver()) && hisUid.equals(chat.getSender())||
+                            hisUid.equals(chat.getReceiver()) && myUid.equals(chat.getSender())){
                         chatList.add(chat);
                     }
                     adapterChat =new ChatAdapter(ChatActivity.this,chatList,hisImage,hisUid,linearLayoutManager,scrollDownBtn,language);

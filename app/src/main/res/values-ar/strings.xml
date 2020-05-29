@@ -303,6 +303,11 @@
     <string name="copied">تم النسخ</string>
     <string name="noText">لا يوجد نص</string>
 
+    <!--chat bottomSheets-->
+    <string name="deleteForMe">حذف بالنسبة لي</string>
+    <string name="deleteForAll">حذف للكل</string>
+    <string name="hide">اخفاء</string>
+
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">تم رفض طلب المساعدة</string>
     <string name="helpRequestAccepted">تم قبول طلب المساعدة</string>

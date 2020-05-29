@@ -47,6 +47,7 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
         usersList = items;
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -71,14 +72,14 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
             userYouMayKnowName = view.findViewById(R.id.userYouMayKnowName);
             curr_uid = FirebaseAuth.getInstance().getUid();
         }
-
     }
+
     @Override
     public void onBindViewHolder(@NotNull final ViewHolder holder, int position) {
-
         final User user = usersList.get(position);
         DecimalFormat df = new DecimalFormat("##.##");
         holder.userYouMayKnowName.setText(user.full_name);
+
         //check if there is a pro pic
         if(!user.profile_pic.equals("")){
             FirebaseFirestore.getInstance().collection("users/").document(user.user_id)
@@ -92,7 +93,6 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
                 }
             });
         }
-
 
         //check if followed
         checkFollowingState(holder , user);
@@ -138,6 +138,7 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
                     }
                 });
     }
+
     private void setFollowListener(final ViewHolder h, final User user){
         h.userFollowCardV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +161,7 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
             }
         });
     }
+
     private void setUnfollowListener(final ViewHolder h, final User user) {
         h.userFollowCardV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +174,7 @@ public class PeopleYouMayKnowAdapter extends RecyclerView.Adapter<PeopleYouMayKn
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return usersList.size();

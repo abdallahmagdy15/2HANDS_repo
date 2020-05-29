@@ -303,6 +303,11 @@
     <string name="copied">Copiato</string>
     <string name="noText">Nessun testo</string>
 
+    <!--chat bottomSheets-->
+    <string name="deleteForMe">Elimina per me</string>
+    <string name="deleteForAll">Elimina per tutti</string>
+    <string name="hide">Nascondere</string>
+
     <!--notifications MyNotificationRecyclerViewAdapter-->
     <string name="helpRequestRefused">Richiesta di aiuto rifiutata</string>
     <string name="helpRequestAccepted">Richiesta di aiuto accettata</string>

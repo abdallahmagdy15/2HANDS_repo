@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a2hands.ImagePreview;
 import com.example.a2hands.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,11 +74,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType==MSG_TYPE_RIGHT){
-            View view= LayoutInflater.from(context).inflate(R.layout.row_chat_right,parent,false);
+        View view;
+        if(viewType == MSG_TYPE_RIGHT){
+            if ("ar".equals(language))
+                view = LayoutInflater.from(context).inflate(R.layout.row_chat_right_rtl,parent,false);
+            else
+                view = LayoutInflater.from(context).inflate(R.layout.row_chat_right_ltr,parent,false);
+
             return new MyHolder(view);
         }else {
-            View view= LayoutInflater.from(context).inflate(R.layout.row_chat_left,parent,false);
+            if ("ar".equals(language))
+                view = LayoutInflater.from(context).inflate(R.layout.row_chat_left_rtl,parent,false);
+            else
+                view = LayoutInflater.from(context).inflate(R.layout.row_chat_left_ltr,parent,false);
+
             return new MyHolder(view);
         }
     }
@@ -89,34 +100,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         final String message = chatList.get(position).getMessage();
         String timestamp = chatList.get(position).getTimestamp();
         final String messageImagee = chatList.get(position).getMessageImage();
-
-        //change direction of message layout if language is arabic to rtl and
-        // modifying SelectableRoundedImageView corner radius
-        if (holder.messageLayout.getViewById(R.id.messageBodyLayout) != null) {
-            if ("ar".equals(language)){
-                if (getItemViewType(position) == MSG_TYPE_LEFT) {
-                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
-                            .setBackground(context.getResources().getDrawable(R.drawable.bg_receiver_rtl));
-                    holder.messageImage.setCornerRadiiDP(15,0,0,0);
-                }
-                else if (getItemViewType(position) == MSG_TYPE_RIGHT) {
-                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
-                            .setBackground(context.getResources().getDrawable(R.drawable.bg_sender_rtl));
-                    holder.messageImage.setCornerRadiiDP(0,15,0,0);
-                }
-            } else {
-                if (getItemViewType(position) == MSG_TYPE_LEFT) {
-                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
-                            .setBackground(context.getResources().getDrawable(R.drawable.bg_receiver_ltr));
-                    holder.messageImage.setCornerRadiiDP(0,15,0,0);
-                }
-                else if (getItemViewType(position) == MSG_TYPE_RIGHT) {
-                    holder.messageLayout.getViewById(R.id.messageBodyLayout)
-                            .setBackground(context.getResources().getDrawable(R.drawable.bg_sender_ltr));
-                    holder.messageImage.setCornerRadiiDP(15,0,0,0);
-                }
-            }
-        }
 
         if(chatList.get(position).getIsDeleted()){
             holder.messageImage.setVisibility(View.GONE);
@@ -195,37 +178,106 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             //handle errors
         }
 
-        //long click to show delete dialog
+        //long click to show bottom sheet dialog to delete and copy message
         holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
+                final BottomSheetDialog[] bottomSheetDialog = new BottomSheetDialog[1];
+
                 if(chatList.get(position).getSender().equals(user.getUid()) &&
                         !chatList.get(position).getIsDeleted()) {
 
-                    String[] options = {context.getResources().getString(R.string.delete),context.getResources().getString(R.string.copy)};
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                    View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_copy_delete_message, null);
+                    bottomSheetDialog[0] = new BottomSheetDialog(context);
+                    bottomSheetDialog[0].setContentView(view);
+                    bottomSheetDialog[0].show();
+
+                    bottomSheetDialog[0].findViewById(R.id.copyLayout).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                deleteMessage(position);
-                                holder.messageImage.setVisibility(View.GONE);
-                                holder.message.setVisibility(View.GONE);
-                            } else if (which == 1 && !chatList.get(position).getMessage().equals("")){
-                                ClipData clipData = ClipData.newPlainText("MSG_TO_BE_COPY", chatList.get(position).getMessage());
-                                clipboardManager.setPrimaryClip(clipData);
-                                Toast.makeText(context, context.getResources().getString(R.string.copied), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(context, context.getResources().getString(R.string.noText), Toast.LENGTH_SHORT).show();
+                        public void onClick(View v) {
+                            ClipData clipData = ClipData.newPlainText("MSG_TO_BE_COPY", chatList.get(position).getMessage());
+                            clipboardManager.setPrimaryClip(clipData);
+                            Toast.makeText(context, context.getResources().getString(R.string.copied), Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog[0].dismiss();
+                        }
+                    });
+
+                    bottomSheetDialog[0].findViewById(R.id.deleteLayout).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!chatList.get(position).getIsSeen()) {
+                                bottomSheetDialog[0].dismiss();
+
+                                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_for_delete, null);
+                                bottomSheetDialog[0] = new BottomSheetDialog(context);
+                                bottomSheetDialog[0].setContentView(view);
+                                bottomSheetDialog[0].show();
+
+                                bottomSheetDialog[0].findViewById(R.id.delete_for_me_Layout).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteMessage(position, false, false);
+                                        holder.messageImage.setVisibility(View.GONE);
+                                        holder.message.setVisibility(View.GONE);
+                                        bottomSheetDialog[0].dismiss();
+                                    }
+                                });
+
+                                bottomSheetDialog[0].findViewById(R.id.delete_for_all_Layout).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteMessage(position, true, false);
+                                        holder.messageImage.setVisibility(View.GONE);
+                                        holder.message.setVisibility(View.GONE);
+                                        bottomSheetDialog[0].dismiss();
+                                    }
+                                });
+                            }
+                            else if (chatList.get(position).getIsSeen()){
+                                bottomSheetDialog[0].dismiss();
+
+                                View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_delete_for_me, null);
+                                bottomSheetDialog[0] = new BottomSheetDialog(context);
+                                bottomSheetDialog[0].setContentView(view);
+                                bottomSheetDialog[0].show();
+
+                                bottomSheetDialog[0].findViewById(R.id.delete_for_me_Layout).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        deleteMessage(position, false, false);
+                                        holder.messageImage.setVisibility(View.GONE);
+                                        holder.message.setVisibility(View.GONE);
+                                        bottomSheetDialog[0].dismiss();
+                                    }
+                                });
                             }
                         }
                     });
-                    builder.create().show();
                 }
+                else if (chatList.get(position).getSender().equals(user.getUid()) &&
+                        chatList.get(position).getIsDeleted()){
+
+                    View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_hide_message, null);
+                    bottomSheetDialog[0] = new BottomSheetDialog(context);
+                    bottomSheetDialog[0].setContentView(view);
+                    bottomSheetDialog[0].show();
+
+                    bottomSheetDialog[0].findViewById(R.id.hide_message_Layout).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteMessage(position,false,true);
+                            bottomSheetDialog[0].dismiss();
+                        }
+                    });
+                }
+
                 return false;
             }
         });
 
+
+        //message layout onClick
         holder.messageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,7 +312,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         });
     }
 
-    private void deleteMessage(int position) {
+    private void deleteMessage(int position, boolean deleteForAll, boolean removePermanently) {
 
         final String myUid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         String MSG_ID = chatList.get(position).getMSGID();
@@ -269,12 +321,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                 .child(myUid)
                 .child(hisUid)
                 .child("messages");
-
-        DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
-                .child(hisUid)
-                .child(myUid)
-                .child("messages");
-
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -282,10 +328,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
                     //ds.getRef().removeValue();
                     Chat chat = ds.getValue(Chat.class);
 
-                    if(chat.getMSGID().equals(MSG_ID)){
-                        HashMap<String,Object> hashMap=new HashMap<>();
-                        hashMap.put("isDeleted",true);
-                        ds.getRef().updateChildren(hashMap);
+                    if(MSG_ID.equals(chat.getMSGID())){
+                        if(removePermanently){
+                            ds.getRef().removeValue();
+                        } else {
+                            HashMap<String,Object> hashMap=new HashMap<>();
+                            hashMap.put("isDeleted",true);
+                            ds.getRef().updateChildren(hashMap);
+                        }
                     }
                 }
             }
@@ -296,26 +346,33 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
             }
         });
 
-        chatRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    //ds.getRef().removeValue();
-                    Chat chat = ds.getValue(Chat.class);
+        if (deleteForAll){
+            DatabaseReference chatRef2 = FirebaseDatabase.getInstance().getReference("chatList")
+                    .child(hisUid)
+                    .child(myUid)
+                    .child("messages");
+            chatRef2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds: dataSnapshot.getChildren()){
+                        //ds.getRef().removeValue();
+                        Chat chat = ds.getValue(Chat.class);
 
-                    if(chat.getMSGID().equals(MSG_ID)){
-                        HashMap<String,Object> hashMap=new HashMap<>();
-                        hashMap.put("isDeleted",true);
-                        ds.getRef().updateChildren(hashMap);
+                        if(chat.getMSGID().equals(MSG_ID)){
+                            HashMap<String,Object> hashMap=new HashMap<>();
+                            hashMap.put("isDeleted",true);
+                            ds.getRef().updateChildren(hashMap);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
 
