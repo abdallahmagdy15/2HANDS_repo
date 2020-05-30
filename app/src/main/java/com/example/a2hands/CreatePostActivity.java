@@ -116,7 +116,7 @@ public class CreatePostActivity extends AppCompatActivity {
     String videoName;
 
     //Search Location button
-    Button postLocation;
+    TextView postLocation;
     public static final int LOCATION_REQUEST_CODE = 5;
     String location;
 

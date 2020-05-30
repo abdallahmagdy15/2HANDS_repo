@@ -19,7 +19,7 @@
             android:id="@+id/ratingsToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPureWhite"
+            android:background="@drawable/bottom_line_gray_light"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:titleTextColor="@color/colorDark" />

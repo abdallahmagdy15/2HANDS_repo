@@ -172,7 +172,7 @@
             android:text="@string/editPassword"
             android:textColor="@color/colorDark"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/accountSettings_deleteAcc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/accountSettings_editCountry" />
@@ -187,6 +187,33 @@
             app:layout_constraintTop_toTopOf="@id/accountSettings_editPassword"
             app:srcCompat="@drawable/ic_password_outline"
             android:contentDescription="@string/editPassword" />
+
+        <TextView
+            android:id="@+id/accountSettings_deleteAcc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_line_gray_light"
+            android:padding="16dp"
+            android:paddingStart="64dp"
+            android:paddingEnd="8dp"
+            android:text="@string/deleteAccount"
+            android:textColor="@color/colorDark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountSettings_editPassword" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="13dp"
+            android:contentDescription="@string/editPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountSettings_deleteAcc"
+            app:srcCompat="@drawable/delete_post" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

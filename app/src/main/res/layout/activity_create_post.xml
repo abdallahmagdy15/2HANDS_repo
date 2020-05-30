@@ -23,7 +23,7 @@
                 android:id="@+id/createPost_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:background="@color/colorPrimary"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme">
 
@@ -51,32 +51,65 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="90dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/createdPostLocation"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    app:backgroundTint="#E9E9E9"
-                    android:drawableStart="@drawable/location_btn_drawable"
-                    android:shadowColor="#00DADADA"
-                    android:text="@string/location"
-                    android:textAllCaps="false"
-                    android:textColor="#1F1F1F"
-                    android:textSize="13sp" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    app:cardElevation="0dp">
 
-                <Spinner
-                    android:id="@+id/catSpinner"
-                    style="@style/Widget.AppCompat.Spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="5dp"
-                    android:entries="@array/categories"
-                    android:minWidth="100dp" />
+                    <TextView
+                        android:id="@+id/createdPostLocation"
+                        android:layout_width="128dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@drawable/button_outline_primary"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="@string/location"
+                        android:textColor="@color/colorDark"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/imageView23"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="16dp"
+                        app:srcCompat="@drawable/location_btn_drawable" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    app:cardElevation="0dp">
+
+                    <Spinner
+                        android:id="@+id/catSpinner"
+                        android:layout_width="128dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/button_filled_primary_light"
+                        android:entries="@array/categories"
+                        android:gravity="start|center_vertical"
+                        android:minWidth="100dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+
+                    <ImageView
+                        android:id="@+id/imageView22"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="82dp"
+                        app:srcCompat="@drawable/ic_categorize_colored" />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
@@ -92,10 +125,11 @@
                 android:id="@+id/createdPostText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:textAlignment="viewStart"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_weight="1"
+                android:autofillHints="@string/letsGetSomeHelp"
                 android:background="@null"
                 android:ems="10"
                 android:gravity="start|top"
@@ -103,10 +137,10 @@
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
                 android:paddingTop="5dp"
+                android:textAlignment="viewStart"
                 android:textColorHighlight="@color/colorPrimary"
                 android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
-                android:autofillHints="@string/letsGetSomeHelp"
                 tools:ignore="NestedWeights" />
 
             <ListView

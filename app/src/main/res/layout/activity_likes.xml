@@ -10,7 +10,7 @@
         android:id="@+id/likesToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@drawable/bottom_line_gray"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toTopOf="@+id/likesContainer"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/peopleLikedThisPost"
-        app:titleTextColor="@color/colorPureWhite" />
+        app:titleTextColor="@color/colorDark" />
 
     <FrameLayout
         android:id="@+id/likesContainer"
