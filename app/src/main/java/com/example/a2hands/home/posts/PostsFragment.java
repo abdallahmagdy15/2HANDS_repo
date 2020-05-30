@@ -94,7 +94,9 @@ public class PostsFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            //using custom LinearLayout to catch (RecyclerView and java.lang.IndexOutOfBoundsException)
+            recyclerView.setLayoutManager(new CustomLinearLayoutManager(context));
             recyclerView.setHasFixedSize(true);
             adapter = new MyPostRecyclerViewAdapter(posts);
             recyclerView.setAdapter(adapter);
@@ -519,12 +521,29 @@ public class PostsFragment extends Fragment {
             firstTimeLoadingPosts = false;
         } else {
             if(lastPostsCount !=0) {
-                adapter.notifyItemRangeInserted((posts.size() == 0) ? 0 : posts.size() - 1, lastPostsCount);
+                adapter.notifyItemRangeInserted(0, lastPostsCount);
                 loading = false;
             }
         }
 
 
     }
+
+    //using custom LinearLayout to catch (RecyclerView and java.lang.IndexOutOfBoundsException)
+    public static class CustomLinearLayoutManager extends LinearLayoutManager {
+        public CustomLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        //Generate constructors
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("outOfBoundPosition", "Inconsistency detected");
+            }
+        }
+    }///////////////////////////////////////////////////////////////////////////////////////////
 
 }
