@@ -118,6 +118,10 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.mikepenz:materialdrawer:6.1.2"
 
+    //ShimmerRecyclerView lib
+    implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    implementation 'com.todkars:shimmer-recyclerview:0.4.0'
+
 //    //adding room
 //    // ViewModel
 //    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"

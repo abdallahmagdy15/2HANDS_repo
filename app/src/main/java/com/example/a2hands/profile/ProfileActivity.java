@@ -108,6 +108,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         //declare
         Toolbar toolbar = findViewById(R.id.profileToolbar);
+        // setup
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         Intent intent = getIntent();
 
         //initiate
@@ -138,12 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
         profile_blockedStatus = findViewById(R.id.profile_blockedStatus);
 
         konfettiView = findViewById(R.id.viewKonfetti);
-
-        // setup
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         profile_addPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -654,6 +653,7 @@ public class ProfileActivity extends AppCompatActivity {
         public int getCount() {
             return NUM_PAGES;
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             if(position == 0)

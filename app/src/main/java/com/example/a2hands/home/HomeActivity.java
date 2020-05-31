@@ -558,6 +558,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ft.commit();
     }
 
+
     public void navigateHome(boolean refresh){
         catsSpinner.setVisibility(View.VISIBLE);
         catsSpinner.setTextSize(16);

@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.a2hands.PostFragment"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGrayLight"
-    android:clipToPadding="false"
-    app:layoutManager="LinearLayoutManager"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".home.posts.PostsFragment"
-    tools:listitem="@layout/fragment_post" />
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
+
+    <com.todkars.shimmer.ShimmerRecyclerView
+        android:id="@+id/postsRecyclerView_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:shimmer_recycler_layout="@layout/fragment_post_shimmer"
+        app:shimmer_recycler_item_count="5"
+        tools:context=".home.posts.PostsFragment"
+        tools:listitem="@layout/fragment_post"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/postsRecyclerView"
+        android:name="com.example.a2hands.PostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGrayLight"
+        android:clipToPadding="false"
+        android:visibility="visible"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".home.posts.PostsFragment"
+        tools:listitem="@layout/fragment_post" />
+
+<!--    <com.cooltechworks.views.shimmer.ShimmerRecyclerView-->
+<!--        android:id="@+id/postsRecyclerView_shimmer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:shimmer_demo_child_count="10"-->
+<!--        app:shimmer_demo_grid_child_count="2"-->
+<!--        app:shimmer_demo_layout="@layout/fragment_post_shimmer"-->
+<!--        app:shimmer_demo_layout_manager_type="grid"-->
+<!--        app:shimmer_demo_angle="20" />-->
+
+</LinearLayout>

@@ -512,13 +512,14 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
             //load image
             String imagePath = curr_post.images.get(0);
             Picasso.with(context).load(Uri.parse(imagePath)).into(holder.postImage);
-            //set on Photo Clicked listener
-            final Intent i = new Intent(context, ImagePreview.class);
-            i.putExtra("IMAGE_PATH",imagePath);
+
             holder.postImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(i);
+                    //set on Photo Clicked listener
+                    Intent i = new Intent(v.getContext(), ImagePreview.class);
+                    i.putExtra("IMAGE_PATH",imagePath);
+                    v.getContext().startActivity(i);
                 }
             });
         }

@@ -75,6 +75,11 @@ public class ImagePreview extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
         UserStatus.updateOnlineStatus(true, myUid);
         super.onResume();

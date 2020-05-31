@@ -20,6 +20,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
     TextView accountSettings_editPhone;
     TextView accountSettings_editCountry;
     TextView accountSettings_editPassword;
+    TextView accountSettings_deleteAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,10 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
         accountSettings_editName = findViewById(R.id.accountSettings_editName);
         accountSettings_editUsername = findViewById(R.id.accountSettings_editUsername);
         accountSettings_editEmail = findViewById(R.id.accountSettings_editEmail);
-        accountSettings_editPhone = findViewById(R.id.accountSettings_editPhone);;
-        accountSettings_editCountry = findViewById(R.id.accountSettings_editCountry);;
-        accountSettings_editPassword = findViewById(R.id.accountSettings_editPassword);;
+        accountSettings_editPhone = findViewById(R.id.accountSettings_editPhone);
+        accountSettings_editCountry = findViewById(R.id.accountSettings_editCountry);
+        accountSettings_editPassword = findViewById(R.id.accountSettings_editPassword);
+        accountSettings_deleteAccount = findViewById(R.id.accountSettings_deleteAcc);
 
         accountSettings_editName.setOnClickListener(this);
         accountSettings_editUsername.setOnClickListener(this);
@@ -45,6 +47,7 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
         accountSettings_editPhone.setOnClickListener(this);
         accountSettings_editCountry.setOnClickListener(this);
         accountSettings_editPassword.setOnClickListener(this);
+        accountSettings_deleteAccount.setOnClickListener(this);
 
     }// end of onCreate method
 
@@ -69,6 +72,9 @@ public class AccountSettingsActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.accountSettings_editPassword:
                 startActivity(new Intent(AccountSettingsActivity.this , EditPassActivity.class));
+                break;
+            case R.id.accountSettings_deleteAcc:
+                startActivity(new Intent(AccountSettingsActivity.this , DeleteAccActivity.class));
                 break;
         }
     }

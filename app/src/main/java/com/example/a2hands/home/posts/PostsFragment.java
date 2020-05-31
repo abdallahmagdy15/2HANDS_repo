@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.facebook.shimmer.Shimmer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.todkars.shimmer.ShimmerAdapter;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,19 +55,18 @@ import static java.lang.Double.MAX_VALUE;
 
 public class PostsFragment extends Fragment {
 
-    FirebaseAuth mAuth;
-    String selectedCat;
-    List<String> location = new ArrayList<>();
-    String uid;
-    String profile_user_id;
-    View view;
-    final List<String> hiddenPostsIds = new ArrayList<>();
-    final List<String> mutedUsersId = new ArrayList<>();
-    final List<String> blockedUsersId = new ArrayList<>();
-    final List<Post> posts = new ArrayList<>();
-    MyPostRecyclerViewAdapter adapter;
-    RecyclerView recyclerView;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private String selectedCat;
+    private List<String> location = new ArrayList<>();
+    private String uid;
+    private String profile_user_id;
+    private View view;
+    private final List<String> hiddenPostsIds = new ArrayList<>();
+    private final List<String> mutedUsersId = new ArrayList<>();
+    private final List<String> blockedUsersId = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
+    private MyPostRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
     private int lastPostsCount = 0;
     private boolean loading = false;
     private boolean firstTimeLoadingPosts = true;
@@ -71,19 +74,29 @@ public class PostsFragment extends Fragment {
     private double lastPostPriority = MAX_VALUE;
     private String postsType;
 
+    private ShimmerRecyclerView mShimmerRecyclerView;
+
     public PostsFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerRecyclerView.showShimmer();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+
+        mShimmerRecyclerView = view.findViewById(R.id.postsRecyclerView_shimmer);
+
         Bundle bundle = this.getArguments();
         mAuth = FirebaseAuth.getInstance();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -91,16 +104,14 @@ public class PostsFragment extends Fragment {
         postsType = bundle.getString("FOR");
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+        Context context = view.getContext();
+        recyclerView = view.findViewById(R.id.postsRecyclerView);
 
-            //using custom LinearLayout to catch (RecyclerView and java.lang.IndexOutOfBoundsException)
-            recyclerView.setLayoutManager(new CustomLinearLayoutManager(context));
-            recyclerView.setHasFixedSize(true);
-            adapter = new MyPostRecyclerViewAdapter(posts);
-            recyclerView.setAdapter(adapter);
-        }
+        //using custom LinearLayout to catch (RecyclerView and java.lang.IndexOutOfBoundsException)
+        recyclerView.setLayoutManager(new CustomLinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+        adapter = new MyPostRecyclerViewAdapter(posts);
+        recyclerView.setAdapter(adapter);
 
         lastPostDate = new Date();
         if (postsType.equals("HOME_DATE")) {
@@ -285,6 +296,7 @@ public class PostsFragment extends Fragment {
                                 final Post p = doc.toObject(Post.class);
                                 ps.add(p);
                             }
+
                             if(ps.size() !=0){
                                 posts.addAll(ps);
                                 lastPostsCount=ps.size();
@@ -303,7 +315,7 @@ public class PostsFragment extends Fragment {
     }
 
     //loading JSON file of countries and states from assets folder
-    public String loadCountryStateJSONFromAsset() {
+    private String loadCountryStateJSONFromAsset() {
         String json = null;
         try {
             InputStream inputStreanm = getActivity().getAssets().open("countriesandstates.json");
@@ -319,7 +331,7 @@ public class PostsFragment extends Fragment {
         return json;
     }
 
-    public String loadCountryUsingItsISO(String countryCode) {
+    private String loadCountryUsingItsISO(String countryCode) {
         try {
             JSONObject obj = new JSONObject(loadCountryStateJSONFromAsset());
             JSONArray countries_arr = obj.getJSONArray("countries");
@@ -367,6 +379,8 @@ public class PostsFragment extends Fragment {
                                 lastPostsCount=0;
                                 recyclerView.clearOnScrollListeners();
                             }
+                            mShimmerRecyclerView.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
                             updateUiWithPosts();
                         } else {
                             Log.w("", "Error getting documents.", task2.getException());
@@ -385,6 +399,8 @@ public class PostsFragment extends Fragment {
                 lastPostsCount--;
             }
         }
+        mShimmerRecyclerView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         updateUiWithPosts();
     }
 
@@ -501,7 +517,7 @@ public class PostsFragment extends Fragment {
             adapter.notifyDataSetChanged();
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                public void onScrollStateChanged(@NotNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
                     if (!recyclerView.canScrollVertically(1) && !loading  /*check if still loading*/) {
                         loading = true;
