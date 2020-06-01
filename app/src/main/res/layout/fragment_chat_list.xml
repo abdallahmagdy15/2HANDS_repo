@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".chat.chatlist.ChatListFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.todkars.shimmer.ShimmerRecyclerView
+        android:id="@+id/chatListRecyclerView_shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/row_chatlist"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:shimmer_recycler_shape="radial"
+        app:shimmer_recycler_dropoff=".4"
+        app:shimmer_recycler_width_ratio="2"
+        app:shimmer_recycler_height_ratio="1"
+        app:shimmer_recycler_highlight_alpha=".6"
+        app:shimmer_recycler_layout="@layout/fragment_notification_shimmer"
+        app:shimmer_recycler_item_count="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".home.posts.PostsFragment"
+        tools:listitem="@layout/fragment_notification_shimmer"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatListRecyclerView"
+        android:name="com.example.a2hands.searchItemFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPureWhite"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".search.SearchItemFragment"
+        tools:listitem="@layout/fragment_notification" />
+
+</LinearLayout>

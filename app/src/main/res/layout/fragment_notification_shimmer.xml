@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/postContainer_shimmer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorPureWhite">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notificationProfileShimmer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notificationNameShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="120dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/notificationProfileShimmer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notificationContentShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/notificationProfileShimmer"
+        app:layout_constraintTop_toBottomOf="@+id/notificationNameShimmer" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notificationTimeShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="80dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/notificationProfileShimmer"
+        app:layout_constraintTop_toBottomOf="@+id/notificationContentShimmer" />
+
+    <view
+        android:id="@+id/view3"
+        class="android.widget.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorGrayLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notificationTimeShimmer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

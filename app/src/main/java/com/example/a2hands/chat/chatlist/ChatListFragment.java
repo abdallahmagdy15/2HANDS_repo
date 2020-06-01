@@ -29,6 +29,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.todkars.shimmer.ShimmerRecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,33 +42,44 @@ import java.util.List;
 public class ChatListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
-    FirebaseAuth firebaseAuth;
-    RecyclerView recyclerView;
-    List<ChatList> chatListList;
-    List<User> userList;
-    DatabaseReference reference;
-    FirebaseUser currentUser;
-    FirebaseFirestore db;
-    CollectionReference userReference ;
-    AdapterChatList adapterChatList;
-    String myUid;
+    private FirebaseAuth firebaseAuth;
+    private RecyclerView recyclerView;
+    private List<ChatList> chatListList;
+    private List<User> userList;
+    private DatabaseReference reference;
+    private FirebaseUser currentUser;
+    private FirebaseFirestore db;
+    private CollectionReference userReference ;
+    private AdapterChatList adapterChatList;
+    private String myUid;
+
+    private ShimmerRecyclerView mShimmerRecyclerView;
 
     public ChatListFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerRecyclerView.showShimmer();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
+
+        mShimmerRecyclerView = view.findViewById(R.id.chatListRecyclerView_shimmer);
+
         firebaseAuth =FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         userReference = db.collection("users");
         currentUser =FirebaseAuth.getInstance().getCurrentUser();
         myUid =FirebaseAuth.getInstance().getCurrentUser().getUid();
-        recyclerView = view.findViewById(R.id.recyclerView);
+
+        recyclerView = view.findViewById(R.id.chatListRecyclerView);
         chatListList = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("chatList").child(currentUser.getUid()).child("myUsersList");
@@ -87,13 +101,9 @@ public class ChatListFragment extends Fragment {
         });
         return view;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
     }
 
@@ -127,7 +137,6 @@ public class ChatListFragment extends Fragment {
                             recyclerView.setAdapter(adapterChatList);
                         } else {
                             Log.w("DOCS", "Error getting documents.", task.getException());
-
                         }
                     }
                 });
@@ -173,6 +182,7 @@ public class ChatListFragment extends Fragment {
                 }
                 adapterChatList.setLastMessageAndSeenMap(userId, theLastMessage, seen);
                 adapterChatList.notifyDataSetChanged();
+                mShimmerRecyclerView.setVisibility(View.GONE);
             }
 
             @Override

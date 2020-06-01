@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -198,25 +199,4 @@ public class NotificationHelper {
         }
     }
 
-    public void getNotifications(final RecyclerView recyclerView){
-        //get notifications of current user from realtime
-        FirebaseDatabase.getInstance().getReference("notifications")
-                .orderByChild("subscriber_id").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .limitToLast(30)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Notification> notifis  = new ArrayList<>();
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            notifis.add(snapshot.getValue(Notification.class));
-                        }
-                        Collections.reverse(notifis);
-                        recyclerView.setAdapter(new MyNotificationRecyclerViewAdapter(notifis));
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
 }

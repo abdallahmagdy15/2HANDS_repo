@@ -72,6 +72,7 @@ public class UsersFragment extends Fragment  {
         getUsersId(activityName.toLowerCase());
         return view;
     }
+
     private void getUsersId(String type){
         FirebaseDatabase.getInstance().getReference(type).child(id)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
