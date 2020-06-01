@@ -578,7 +578,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         else {
             Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
-            findViewById(R.id.postsRecyclerView).setVisibility(View.GONE);
             loadPostsFragment(0, "HOME_DATE");
         }
     }

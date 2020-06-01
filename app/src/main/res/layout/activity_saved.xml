@@ -26,8 +26,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/savedPostsToolbar">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/savedPostsToolbar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

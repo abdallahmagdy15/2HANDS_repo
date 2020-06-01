@@ -28,8 +28,8 @@ public class SavedPostsActivity extends AppCompatActivity {
         Bundle b = new Bundle();
         b.putString("FOR","SAVED_POSTS");
         frg.setArguments(b);
-        FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.savedPostsContainer,frg,null).addToBackStack(null);
+        FragmentTransaction tr = this.getSupportFragmentManager().beginTransaction();
+        tr.replace(R.id.savedPostsContainer, frg);
         tr.commit();
     }
 

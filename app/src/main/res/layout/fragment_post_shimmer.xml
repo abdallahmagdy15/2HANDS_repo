@@ -98,14 +98,85 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/postReactContainerShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postContent3Shimmer">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:src="#D028B5ED"
+            app:sriv_right_top_corner_radius="20dp"
+            app:sriv_left_top_corner_radius="20dp"
+            app:sriv_left_bottom_corner_radius="20dp"
+            app:sriv_right_bottom_corner_radius="20dp" />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:src="#D028B5ED"
+            app:sriv_right_top_corner_radius="20dp"
+            app:sriv_left_top_corner_radius="20dp"
+            app:sriv_left_bottom_corner_radius="20dp"
+            app:sriv_right_bottom_corner_radius="20dp" />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:src="#D028B5ED"
+            app:sriv_right_top_corner_radius="20dp"
+            app:sriv_left_top_corner_radius="20dp"
+            app:sriv_left_bottom_corner_radius="20dp"
+            app:sriv_right_bottom_corner_radius="20dp" />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:src="#D028B5ED"
+            app:sriv_right_top_corner_radius="20dp"
+            app:sriv_left_top_corner_radius="20dp"
+            app:sriv_left_bottom_corner_radius="20dp"
+            app:sriv_right_bottom_corner_radius="20dp" />
+
+        <com.joooonho.SelectableRoundedImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:src="#D028B5ED"
+            app:sriv_right_top_corner_radius="20dp"
+            app:sriv_left_top_corner_radius="20dp"
+            app:sriv_left_bottom_corner_radius="20dp"
+            app:sriv_right_bottom_corner_radius="20dp" />
+
+    </LinearLayout>
+
     <view
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="@color/colorGrayLight"
-        android:layout_marginTop="8dp"
         class="android.widget.TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/postContent3Shimmer" />
+        app:layout_constraintTop_toBottomOf="@id/postReactContainerShimmer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

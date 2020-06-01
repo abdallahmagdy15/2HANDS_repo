@@ -1,13 +1,11 @@
 package com.example.a2hands.home.posts;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.a2hands.Callback;
 import com.example.a2hands.R;
 import com.example.a2hands.User;
-import com.facebook.shimmer.Shimmer;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.todkars.shimmer.ShimmerAdapter;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +44,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import static java.lang.Double.MAX_VALUE;
@@ -427,6 +423,7 @@ public class PostsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        mShimmerRecyclerView.setVisibility(View.GONE);
                         List<String> savedPostsId = new ArrayList<>();
                         if (dataSnapshot.getChildrenCount() != 0) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -447,7 +444,7 @@ public class PostsFragment extends Fragment {
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (!task.getResult().isEmpty()) {
+                if (task.isSuccessful()) {
                     for (DocumentSnapshot ds : task.getResult()) {
                         posts.add(ds.toObject(Post.class));
                     }
