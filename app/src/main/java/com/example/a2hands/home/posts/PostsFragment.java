@@ -169,8 +169,10 @@ public class PostsFragment extends Fragment {
                         }
                         if(followingsIds.size()>0)
                             getPostsForHomeByFollowings(followingsIds, selectedCat);
-                        else
+                        else {
                             Toast.makeText(getContext(),getResources().getString(R.string.youHaveNoFollowings),Toast.LENGTH_LONG).show();
+                            mShimmerRecyclerView.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -423,7 +425,7 @@ public class PostsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        mShimmerRecyclerView.setVisibility(View.GONE);
+
                         List<String> savedPostsId = new ArrayList<>();
                         if (dataSnapshot.getChildrenCount() != 0) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -449,6 +451,7 @@ public class PostsFragment extends Fragment {
                         posts.add(ds.toObject(Post.class));
                     }
                 }
+                mShimmerRecyclerView.setVisibility(View.GONE);
                 updateUiWithPosts();
             }
         });
