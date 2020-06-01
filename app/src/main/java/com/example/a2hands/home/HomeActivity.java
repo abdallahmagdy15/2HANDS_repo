@@ -554,7 +554,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         bundle.putString("FOR",type);
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.home_postsFrag,frg).addToBackStack("");
+        ft.replace(R.id.home_postsFrag,frg).addToBackStack("");
         ft.commit();
     }
 
@@ -572,11 +572,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             notifiFrag.setVisibility(View.GONE);
             messagingFrag.setVisibility(View.GONE);
 
-            if (getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null)
+            if (getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null){
                 loadPostsFragment(0, "HOME_DATE");
+            }
         }
         else {
             Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
+            findViewById(R.id.postsRecyclerView).setVisibility(View.GONE);
             loadPostsFragment(0, "HOME_DATE");
         }
     }
@@ -622,7 +624,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         b.putString("search_query",query);
         frg.setArguments(b);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.home_searchFrag,frg).addToBackStack(null);
+        ft.replace(R.id.home_searchFrag, frg).addToBackStack(null);
         ft.commit();
     }
 
@@ -767,6 +769,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager layoutManager = new LinearLayoutManager(peopleYouMayKnowRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         peopleYouMayKnowRecyclerView.setLayoutManager(layoutManager);
         peopleYouMayKnowRecyclerView.setAdapter(new PeopleYouMayKnowAdapter(usersYouMayKnow));
+        findViewById(R.id.suggestedPeopleTV).setVisibility(View.VISIBLE);
         findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.VISIBLE);
     }
 

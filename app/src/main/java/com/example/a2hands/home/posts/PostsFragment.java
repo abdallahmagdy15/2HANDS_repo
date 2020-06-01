@@ -96,6 +96,8 @@ public class PostsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
 
         mShimmerRecyclerView = view.findViewById(R.id.postsRecyclerView_shimmer);
+        recyclerView = view.findViewById(R.id.postsRecyclerView);
+
 
         Bundle bundle = this.getArguments();
         mAuth = FirebaseAuth.getInstance();
@@ -105,8 +107,6 @@ public class PostsFragment extends Fragment {
 
         // Set the adapter
         Context context = view.getContext();
-        recyclerView = view.findViewById(R.id.postsRecyclerView);
-
         //using custom LinearLayout to catch (RecyclerView and java.lang.IndexOutOfBoundsException)
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
