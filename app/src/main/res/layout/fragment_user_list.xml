@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.a2hands.profile.userFragment"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".users.UsersFragment"
-    tools:listitem="@layout/fragment_user" />
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <com.todkars.shimmer.ShimmerRecyclerView
+        android:id="@+id/usersRecyclerView_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:shimmer_recycler_shape="radial"
+        app:shimmer_recycler_dropoff=".4"
+        app:shimmer_recycler_width_ratio="2"
+        app:shimmer_recycler_height_ratio="1"
+        app:shimmer_recycler_highlight_alpha=".6"
+        app:shimmer_recycler_layout="@layout/fragment_user_shimmer"
+        app:shimmer_recycler_item_count="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:context=".home.posts.PostsFragment"
+        tools:listitem="@layout/fragment_user_shimmer"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/usersRecyclerView"
+        android:name="com.example.a2hands.searchItemFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/colorPureWhite"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".search.SearchItemFragment"
+        tools:listitem="@layout/fragment_user" />
+
+</LinearLayout>

@@ -61,8 +61,6 @@ public class PostsFragment extends Fragment {
     private final List<String> mutedUsersId = new ArrayList<>();
     private final List<String> blockedUsersId = new ArrayList<>();
     private final List<Post> posts = new ArrayList<>();
-    private MyPostRecyclerViewAdapter adapter;
-    private RecyclerView recyclerView;
     private int lastPostsCount = 0;
     private boolean loading = false;
     private boolean firstTimeLoadingPosts = true;
@@ -70,6 +68,8 @@ public class PostsFragment extends Fragment {
     private double lastPostPriority = MAX_VALUE;
     private String postsType;
 
+    private MyPostRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
     private ShimmerRecyclerView mShimmerRecyclerView;
 
     public PostsFragment() {

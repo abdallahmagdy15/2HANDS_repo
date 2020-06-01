@@ -22,15 +22,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsersFragment extends Fragment  {
 
-    View view;
-    String id;
-    final List<User> users = new ArrayList<>();
+    private View view;
+    private String id;
+    private final List<User> users = new ArrayList<>();
+
+    private MyuserRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+    private ShimmerRecyclerView mShimmerRecyclerView;
 
     public UsersFragment() {
     }
@@ -42,9 +47,25 @@ public class UsersFragment extends Fragment  {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerRecyclerView.showShimmer();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_list, container, false);
+
+        mShimmerRecyclerView = view.findViewById(R.id.usersRecyclerView_shimmer);
+        recyclerView = view.findViewById(R.id.usersRecyclerView);
+
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+        adapter = new MyuserRecyclerViewAdapter(users);
+        recyclerView.setAdapter(adapter);
+
         Bundle b = this.getArguments();
         id = b.getString("ID");
         final String activityName = b.getString("FOR");
@@ -96,10 +117,7 @@ public class UsersFragment extends Fragment  {
     }
 
     private void updateUiWithUsers(){
-        Context context = view.getContext();
-        final RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new MyuserRecyclerViewAdapter(users));
-
+        mShimmerRecyclerView.setVisibility(View.GONE);
+        adapter.notifyDataSetChanged();
     }
 }

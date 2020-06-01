@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.a2hands.R;
 import com.example.a2hands.User;
+import com.example.a2hands.home.posts.MyPostRecyclerViewAdapter;
 import com.example.a2hands.users.MyuserRecyclerViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,27 +26,49 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.todkars.shimmer.ShimmerRecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchItemFragment extends Fragment {
-    final List<User> users = new ArrayList<>();
+
+    private final List<User> users = new ArrayList<>();
+
+    private MyuserRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
+    private ShimmerRecyclerView mShimmerRecyclerView;
 
 
     public SearchItemFragment() {
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerRecyclerView.showShimmer();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_searchitem_list, container, false);
+
+        mShimmerRecyclerView = view.findViewById(R.id.searchItemRecyclerView_shimmer);
+        recyclerView = view.findViewById(R.id.searchItemRecyclerView);
+
+        Context context = view.getContext();
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+        adapter = new MyuserRecyclerViewAdapter(users);
+        recyclerView.setAdapter(adapter);
 
         //get Search results
         String query = getArguments().getString("search_query");
@@ -96,23 +119,16 @@ public class SearchItemFragment extends Fragment {
         return view;
     }
 
-    void loadUsersData(@NonNull Task<QuerySnapshot> task , View view ){
+    private void loadUsersData(@NonNull Task<QuerySnapshot> task, View view){
         for (DocumentSnapshot doc : task.getResult()) {
             users.add(doc.toObject(User.class));
         }
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(new MyuserRecyclerViewAdapter(users));
-        }
+        mShimmerRecyclerView.setVisibility(View.GONE);
+        adapter.notifyDataSetChanged();
     }
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
-
     }
 
     @Override

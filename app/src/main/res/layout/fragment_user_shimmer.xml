@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/postContainer_shimmer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorPureWhite">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userProfileShimmer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userFollowShimmer"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userNameShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="160dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/userFollowShimmer"
+        app:layout_constraintStart_toEndOf="@id/userProfileShimmer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userBioShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/userFollowShimmer"
+        app:layout_constraintStart_toEndOf="@id/userProfileShimmer"
+        app:layout_constraintTop_toBottomOf="@id/userNameShimmer" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userLocationShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="120dp"
+        app:cardBackgroundColor="#D028B5ED"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/userFollowShimmer"
+        app:layout_constraintStart_toEndOf="@+id/userProfileShimmer"
+        app:layout_constraintTop_toBottomOf="@id/userBioShimmer" />
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/colorGrayLight"
+        class="android.widget.TextView"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userLocationShimmer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
