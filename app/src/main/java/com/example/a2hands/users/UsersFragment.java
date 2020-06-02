@@ -78,13 +78,16 @@ public class UsersFragment extends Fragment  {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final List<String> usersId = new ArrayList<>();
-                        if(dataSnapshot.getChildrenCount() !=0){
-                            for(DataSnapshot ds : dataSnapshot.getChildren()){
-                                usersId.add(ds.getKey());
+                        if (dataSnapshot.exists()){
+                            final List<String> usersId = new ArrayList<>();
+                            if(dataSnapshot.getChildrenCount() !=0){
+                                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                    usersId.add(ds.getKey());
+                                }
+                                getUsers(usersId);
                             }
-                            getUsers(usersId);
-                        }
+                        } else
+                            mShimmerRecyclerView.setVisibility(View.GONE);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }

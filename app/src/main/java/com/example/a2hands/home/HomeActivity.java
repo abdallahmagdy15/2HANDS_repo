@@ -121,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     List<ChatList> myUsersList = new ArrayList<>();
     int[] messagesCount;
 
+    List<String> usersYouMayKnowIds;
     final List<User> usersYouMayKnow = new ArrayList<>();
     RecyclerView peopleYouMayKnowRecyclerView;
 
@@ -193,17 +194,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getNewMessagesCountToBadge();
         checkForNotifications();
         navigateHome(false);
-        List<String> usersIds = new ArrayList<>();
-        usersIds.add("ZxKB29eCgocZoV2Yl4dLroqmQ992");
-        usersIds.add("RVJ9rKcrd2UQMODZVDZIKQT9z6s1");
-        usersIds.add("m96SUweO9Fbq0zcqesnv1mqO2ev1");
-        usersIds.add("xAAobfE01VQJG1Wbf7M8hDwTGTd2");
-        usersIds.add("nUKAJEONEZTKbUc8BvPxzOGRaxj2");
+        usersYouMayKnowIds = new ArrayList<>();
+        usersYouMayKnowIds.add("ZxKB29eCgocZoV2Yl4dLroqmQ992");
+        usersYouMayKnowIds.add("RVJ9rKcrd2UQMODZVDZIKQT9z6s1");
+        usersYouMayKnowIds.add("m96SUweO9Fbq0zcqesnv1mqO2ev1");
+        usersYouMayKnowIds.add("xAAobfE01VQJG1Wbf7M8hDwTGTd2");
+        usersYouMayKnowIds.add("nUKAJEONEZTKbUc8BvPxzOGRaxj2");
 
-        if (usersIds.contains(myUid))
-            usersIds.remove(myUid);
+        if (usersYouMayKnowIds.contains(myUid))
+            usersYouMayKnowIds.remove(myUid);
 
-        getUsersYouMayKnow(usersIds);
+        getUsersYouMayKnow(usersYouMayKnowIds);
 
     }//////////////////////////////////end of onCreate method
 
@@ -578,6 +579,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         else {
             Toast.makeText(this,"Reloading...",Toast.LENGTH_SHORT).show();
+            findViewById(R.id.suggestedPeopleTV).setVisibility(View.GONE);
+            findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.GONE);
+            getUsersYouMayKnow(usersYouMayKnowIds);
             loadPostsFragment(0, "HOME_DATE");
         }
     }

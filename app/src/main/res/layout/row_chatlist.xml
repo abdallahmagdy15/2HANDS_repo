@@ -3,22 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:layout_height="wrap_content" >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileIv"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        app:srcCompat="@drawable/ic_face_black_24dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_face_black_24dp" />
 
     <ImageView
         android:id="@+id/newMessageStatusIV"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/circle_new_message"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_toEndOf="@+id/profileIv"
         android:textAlignment="viewStart"
@@ -61,9 +66,11 @@
         android:maxLines="2"
         android:textAlignment="viewStart"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newMessageStatusIV"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/profileIv"
-        app:layout_constraintTop_toBottomOf="@+id/nameTv" />
+        app:layout_constraintTop_toBottomOf="@+id/nameTv"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

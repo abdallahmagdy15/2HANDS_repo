@@ -425,14 +425,19 @@ public class PostsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            List<String> savedPostsId = new ArrayList<>();
+                            if (dataSnapshot.getChildrenCount() != 0) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    savedPostsId.add(ds.getKey());
+                                }
+                                if (savedPostsId.size() == 0)
+                                    mShimmerRecyclerView.setVisibility(View.GONE);
+                                getSavedPosts(savedPostsId);
 
-                        List<String> savedPostsId = new ArrayList<>();
-                        if (dataSnapshot.getChildrenCount() != 0) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                savedPostsId.add(ds.getKey());
                             }
-                            getSavedPosts(savedPostsId);
-                        }
+                        } else
+                            mShimmerRecyclerView.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -461,7 +466,7 @@ public class PostsFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference("muted_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getChildrenCount() != 0) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 mutedUsersId.add(ds.getKey());
@@ -480,7 +485,7 @@ public class PostsFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference("blocked_users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getChildrenCount() != 0) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 blockedUsersId.add(ds.getKey());

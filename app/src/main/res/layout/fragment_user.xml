@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_line_gray_light"
-    android:paddingTop="8dp"
-    android:paddingBottom="0dp">
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <ImageView
         android:id="@+id/userFollowBtn"
@@ -33,18 +33,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingEnd="0dp"
             android:paddingStart="0dp"
+            android:paddingEnd="0dp"
             android:textColor="@color/colorAccent" />
 
         <RatingBar
             android:id="@+id/resultRatingBar"
             style="@style/Widget.AppCompat.RatingBar.Small"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5" />
+            android:numStars="5"
+            android:paddingStart="8dp"
+            android:paddingEnd="0dp" />
 
     </LinearLayout>
 

@@ -33,15 +33,13 @@ public class LikesActivity extends AppCompatActivity {
         myUid = FirebaseAuth.getInstance().getUid();
         String postId = getIntent().getStringExtra("POST_ID");
 
-        FrameLayout likesContainer = findViewById(R.id.likesContainer);
-
         Fragment frg = new UsersFragment();
         Bundle bundle = new Bundle();
         bundle.putString("ID", postId);
         bundle.putString("FOR", "LIKES");
         frg.setArguments(bundle);
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.likesContainer,frg).addToBackStack(null);
+        ft.replace(R.id.likesContainer,frg);
         ft.commit();
     }
 
