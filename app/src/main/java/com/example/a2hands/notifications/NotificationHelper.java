@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.net.Uri;
@@ -138,7 +139,7 @@ public class NotificationHelper {
 
         // Builds your notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_2hands_notification)
+                .setSmallIcon(R.drawable.ic_2hands_notifi2)
                 .setContentTitle("2Hands")
                 .setContentText(notification.content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
