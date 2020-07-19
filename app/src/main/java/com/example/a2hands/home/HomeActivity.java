@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         peopleYouMayKnowRecyclerView = findViewById(R.id.peopleYouMayKnowRecyclerView);
 
         addPost = findViewById(R.id.home_addPost);
-        addPost.setColorFilter(Color.WHITE);
+        addPost.setColorFilter(Color.BLACK);
 
         searchView = findViewById(R.id.searchView);
         notificationsTitle = findViewById(R.id.notificationsTitle);
