@@ -50,5 +50,9 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/colorGrayLight</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
 
 </resources>

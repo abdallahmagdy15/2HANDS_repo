@@ -72,6 +72,7 @@
                     android:isIndicator="true"
                     android:numStars="5"
                     android:rating="0"
+                    android:theme="@style/RatingBar"
                     android:visibility="visible" />
 
                 <RatingBar
@@ -81,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:numStars="5"
+                    android:theme="@style/RatingBar"
                     android:visibility="gone" />
 
                 <TextView
