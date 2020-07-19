@@ -570,7 +570,7 @@ public class MyPostRecyclerViewAdapter extends RecyclerView.Adapter<MyPostRecycl
                     //show confirmation dialog if u want to send help request
                     new AlertDialog.Builder(context)
                             .setTitle(context.getResources().getString(R.string.sendHelpRequestTo)+ " " +
-                                    ((curr_post.visibility) ? postOwner[0] : context.getResources().getString(R.string.anonymous)) + "?")
+                                    ((curr_post.visibility) ? holder.postOwner.getText() : context.getResources().getString(R.string.anonymous)) + "?")
                             .setPositiveButton(context.getResources().getString(R.string.send), new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {

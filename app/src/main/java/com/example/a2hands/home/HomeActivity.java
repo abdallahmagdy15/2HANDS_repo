@@ -293,15 +293,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
                 selectedPostsType = "HOME_DATE";
-                loadPostsFragment(0,"HOME_DATE");
+                loadPostsFragment(catsSpinner.getSelectedIndex(),"HOME_DATE");
                 break;
             case 3:
                 selectedPostsType = "HOME_PRIORITY";
-                loadPostsFragment(0, "HOME_PRIORITY");
+                loadPostsFragment(catsSpinner.getSelectedIndex(), "HOME_PRIORITY");
                 break;
             case 4:
                 selectedPostsType = "HOME_FOLLOWINGS_POSTS";
-                loadPostsFragment(0, "HOME_FOLLOWINGS_POSTS");
+                loadPostsFragment(catsSpinner.getSelectedIndex(), "HOME_FOLLOWINGS_POSTS");
                 break;
             case 5:
                 startActivity(new Intent(HomeActivity.this, SavedPostsActivity.class));
@@ -574,7 +574,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             messagingFrag.setVisibility(View.GONE);
 
             if (getSupportFragmentManager().findFragmentById(R.id.home_postsFrag) == null){
-                loadPostsFragment(0, "HOME_DATE");
+                loadPostsFragment(catsSpinner.getSelectedIndex(), "HOME_DATE");
             }
         }
         else {
@@ -582,7 +582,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.suggestedPeopleTV).setVisibility(View.GONE);
             findViewById(R.id.peopleYouMayKnowLayout).setVisibility(View.GONE);
             getUsersYouMayKnow(usersYouMayKnowIds);
-            loadPostsFragment(0, "HOME_DATE");
+            loadPostsFragment(catsSpinner.getSelectedIndex(), "HOME_DATE");
         }
     }
 
